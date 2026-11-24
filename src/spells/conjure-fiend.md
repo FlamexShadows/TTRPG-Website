@@ -1,0 +1,43 @@
+---
+name: "Conjure Fiend"
+range: "5 Meters"
+ap: "6"
+rank: "Adept"
+school: "Demonology"
+subtype: "Torment"
+requirements: "Words of Power, Sigils, An obsidian skull worth at least 750 gold"
+duration: "1 Minute"
+concentration: "Yes"
+---
+<div class="spell-text-html">
+<p>The caster summons a fiend from the Underworld at a point it can see in range.
+If the fiend is not able to fit in the spot its summoned the spell fails wasting the casters mana.
+The fiend is hostile to all creatures including the caster and will attack the nearest creature until it is reduced to 0 hit points, the caster's concentration is broken, or the spells duration ends.
+The fiend is banished to the Underworld when the caster's concentration is broken.
+All of the fiends DC's use the caster's Magic Potency DC. When upcast the spell only modifies the stats effected by its tier.
+The fiend has the following stats:</p>
+<ul>
+<li>AC: Casting Modifier+10</li>
+<li>Size: Medium</li>
+<li>Armor: Casting Modifier*5</li>
+<li>HP: 50+Casting Modifier</li>
+<li>Speed: 5 Meters</li>
+<li>STR: (5*Spell Tier) +Casting Modifier</li>
+<li>DEX: Casting Modifier</li>
+<li>CON: (3*Spell Tier) +Casting Modifier</li>
+<li>INT: Casting Modifier</li>
+<li>WIS: Casting Modifier</li>
+<li>CHA: Casting Modifier</li>
+<li>Damage Immunities: Poison, Unholy</li>
+<li>Condition Immunities: Poisoned</li>
+<li>Senses: Dark Sight 18 meters</li>
+<li>Languages: Bellsybabble</li> <br>
+<b>Actions:</b> <br>
+Range: 1 Meter <br>
+Attack Modifier: (5*Spell Tier)+Str Modifier <br>
+Attack Damage: 2d10+Str Modifier+2d4 Unholy <br><br>
+<b>Abilities:</b> <br>
+Frightening Presence: Each creature of the fiend's choice that is within 5 meters of the fiend and aware of it must succeed on a Resistance (Mind) save or become fearful for 1 minute. A fearful target can repeat the save at the end of each of its turns, ending the effect on itself on a success. If a target's save is successful or the effect ends for it, the target is immune to the fiend's Frightening Presence. <br><br>
+Bloodbath: When the fiend reduces a creature to 0 hit points it can make an additional attack for no AP against a creature within 1 meter of itself.  <br><br>
+</ul>
+</div>

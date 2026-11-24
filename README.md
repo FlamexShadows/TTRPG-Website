@@ -6,8 +6,13 @@ A fantasy tabletop role-playing game of magic, swordsmanship, and archery. This 
 
 | Path | What it holds |
 |---|---|
-| `Webpages/` | The website. Every page, the stylesheet, the character sheet, and the shops. |
+| `src/spells/` | One Markdown file per spell. Eleventy turns each into a page. |
+| `src/_includes/layouts/` | The templates every built page shares. |
+| `src/spells-complete.njk` | The spell list, generated from the spell files. |
+| `Webpages/` | Every page not converted yet, plus the stylesheet, character sheet, and shops. Copied to the site as they are. |
 | `Webpages/index.html` | The home page with the closed book that opens on scroll (`tome.css`, `tome.js`). |
+| `tools/` | The spell converter and the script that retires the old spell pages. |
+| `_site/` | The built website. Made by Eleventy, never edited by hand, and kept off GitHub. |
 | `Images/` | Art and reference images. |
 | `_archive/` | Older versions of pages and scripts, kept for reference. |
 | `.vscode/Programs/` | Earlier spell and page tools in Python, PowerShell, and C++. |
@@ -16,14 +21,18 @@ A fantasy tabletop role-playing game of magic, swordsmanship, and archery. This 
 
 ## Preview the site on your computer
 
-The pages load a shared header with jQuery, so open them through a local web server instead of double-clicking the file.
+Install Node.js (the LTS version from nodejs.org) once. Then double-click `Preview Site.bat`, or run:
 
 ```
-cd Webpages
-python -m http.server 8000
+npm install
+npm start
 ```
 
-Then visit http://localhost:8000 in your browser. The Live Server extension in VS Code works too.
+Your browser opens http://localhost:8080 and refreshes every time you save a file. `Build Site.bat` (or `npm run build`) builds the site into `_site/` once.
+
+## Add or change a spell
+
+Copy any file in `src/spells/`, rename it (the file name becomes the page address), and edit it. The spell list picks it up on the next build. `GENERATOR-GUIDE.md` explains how the build works.
 
 ## Update the rules
 
@@ -31,10 +40,11 @@ Edit `Sparks Basic Rules.docx`, then run `Update Rules.bat`. `RULES-UPDATER.md` 
 
 ## Publish
 
-Every push publishes `Webpages/` to GitHub Pages through `.github/workflows/pages.yml`.
+Every push builds the site with Eleventy and publishes `_site/` to GitHub Pages through `.github/workflows/pages.yml`.
 
 ## Guides
 
+- `GENERATOR-GUIDE.md`: how the Eleventy build works, file by file.
 - `CHARACTER-SHEET-NOTES.md`: how the character sheet works and which rules it follows.
 - `ITEM-EFFECTS.md`: how to write effects so magic items and class features apply bonuses on the sheet.
 - `RULES-UPDATER.md`: how the rules updater works.

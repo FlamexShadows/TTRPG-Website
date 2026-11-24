@@ -1,0 +1,20 @@
+---
+layout: layouts/base.njk
+---
+{#- One spell page. The stats come from the front matter of src/spells/<name>.md, the text from its body. -#}
+    <div class="main-content">
+        <article class="content-panel spell">
+            <h2>{{ name }}</h2>
+            <dl class="stat-block">
+            {%- for stat in stats %}
+                <div><dt>{{ stat.label }}</dt><dd>{{ stat.value }}</dd></div>
+            {%- endfor %}
+            </dl>
+            <div class="spell-text">
+{{ content | safe }}
+            </div>
+            {%- if not unlisted %}
+            <p class="spell-back"><a href="spells-complete.html#{{ school | slugify }}">More {{ school }} spells</a></p>
+            {%- endif %}
+        </article>
+    </div>

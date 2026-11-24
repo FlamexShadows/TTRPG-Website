@@ -16,17 +16,19 @@ What it does
         <!-- BASIC-RULES: Martial Maneuvers and Spells / Upcasting -->  <!-- /BASIC-RULES -->
     (chapter / section, as named by the docx headings; join several with ;)
   - Fixes old terms on every other page so they match the Basic Rules (see SWAPS below).
+    That includes the Eleventy spell files in src/spells/ and the page templates in src/.
   - Checks every page for terms the Basic Rules do not define and lists them in rules-report.txt.
   - Backs up every file it changes to _archive/auto/<date and time>/ first.
 
 Needs only Python 3.8 or newer. No extra packages.
 Options: --check (report only, change nothing), --watch (rebuild on every save), --docx PATH
 """
-import sys, os, re, html, zipfile, shutil, time, datetime, glob
+import sys, os, re, html, json, zipfile, shutil, time, datetime, glob
 import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 WEB = os.path.join(HERE, 'Webpages')
+SRC = os.path.join(HERE, 'src')  # Eleventy source: spell files and page templates
 ARCHIVE = os.path.join(HERE, '_archive', 'auto')
 REPORT = os.path.join(HERE, 'rules-report.txt')
 
@@ -585,6 +587,25 @@ def plain(src):
     return html.unescape(re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', t)))
 
 
+SPELL_LABELS = [('range', 'Range'), ('ap', 'AP Cost'), ('casting_time', 'Casting Time'), ('action_cost', 'Action Cost'),
+                ('rank', 'Spell Rank'), ('school', 'Class'), ('subtype', 'Subtype'), ('requirements', 'Requirements'),
+                ('duration', 'Duration'), ('concentration', 'Concentration')]
+
+
+def spell_plain(md):
+    # A spell file reads like its page for the checks: "Spell Rank: Adept ... Class: Pyromancy ..." then the text.
+    parts = md.split('\n---\n', 1)
+    vals = {}
+    for line in parts[0].splitlines()[1:]:
+        k, _, v = line.partition(':')
+        try:
+            vals[k.strip()] = json.loads(v.strip())
+        except ValueError:
+            vals[k.strip()] = v.strip().strip('"')
+    head = ' '.join(f'{label}: {vals[key]}' for key, label in SPELL_LABELS if isinstance(vals.get(key), str))
+    return head + ' ' + (parts[1] if len(parts) > 1 else '')
+
+
 def check_page(fn, src, terms, issues):
     t = plain(src)
     for m in re.finditer(r'\b([A-Za-z]+) damage\b', t):
@@ -670,6 +691,18 @@ def run(docx_arg=None, check_only=False):
             new = fill_markers(new, ch, order, warn, fn)
         write(os.path.join('Webpages', fn), new)
         check_page(fn, new, terms, issues)
+    # 3b. Eleventy source: page templates (with their rules boxes) and one file per spell
+    for full in sorted(glob.glob(os.path.join(SRC, '**', '*.njk'), recursive=True)):
+        src = open(full, encoding='utf-8', errors='replace').read()
+        new = swap_html(src, counts)
+        if 'BASIC-RULES:' in new:
+            new = fill_markers(new, ch, order, warn, os.path.basename(full))
+        write(os.path.relpath(full, HERE), new)
+    for full in sorted(glob.glob(os.path.join(SRC, 'spells', '*.md'))):
+        src = open(full, encoding='utf-8', errors='replace').read()
+        new = swap_html(src, counts)
+        write(os.path.relpath(full, HERE), new)
+        check_page(os.path.basename(full), spell_plain(new), terms, issues)
     for rel in EXTRA_FILES:
         full = os.path.join(HERE, rel)
         if os.path.exists(full):

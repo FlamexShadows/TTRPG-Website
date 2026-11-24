@@ -1,0 +1,258 @@
+/* Spell list page (spells-complete.html): sidebar of schools beside the grid of spells. */
+/* Sidebar + content sit side by side below the header */
+.page-layout {
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    box-sizing: border-box;
+    width: 250px;
+    flex-shrink: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    border-right: 2px solid #ff4136;
+    border-radius: 0 0 10px 0;
+}
+
+.sidebar h3 {
+    color: #ff4136;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #ff4136;
+    padding-bottom: 10px;
+}
+
+.school-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.school-nav li {
+    margin-bottom: 8px;
+}
+
+.school-nav a {
+    color: #e0e0e0;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: block;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.school-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-left-color: #ff4136;
+}
+
+.school-nav a.active {
+    background-color: rgba(255, 65, 54, 0.2);
+    border-left-color: #ff4136;
+    color: #ff4136;
+}
+
+/* Main Content (overrides the centered-column layout from styles.css) */
+.main-content {
+    display: block;
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 25px 30px;
+    max-width: none;
+}
+
+.spell-description-box {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    padding: 25px;
+    color: #f0f0f0;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    font-size: 0.95em;
+}
+
+.spell-description-box h3 {
+    color: #ff4136;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.spell-description-box strong {
+    color: #ff851b;
+    font-weight: bold;
+}
+
+/* School Grid Layout */
+.schools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.school-section {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.school-section:hover {
+    border-color: rgba(255, 65, 54, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.school-title {
+    color: #ff4136;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ff4136;
+    padding-bottom: 8px;
+    text-align: center;
+}
+
+.rank-section {
+    margin-bottom: 20px;
+}
+
+.rank-title {
+    color: #ff851b;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-left: 4px solid #ff851b;
+    padding-left: 10px;
+    background-color: rgba(255, 133, 27, 0.1);
+    padding: 8px 10px;
+    border-radius: 0 5px 5px 0;
+}
+
+.spell-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px;
+    margin-left: 15px;
+}
+
+.spell-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 6px 10px;
+    border-radius: 4px;
+    border-left: 2px solid rgba(255, 133, 27, 0.6);
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+}
+
+.spell-item:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(3px);
+}
+
+.spell-item a {
+    color: #e0e0e0;
+    text-decoration: none;
+    font-weight: 500;
+    display: block;
+}
+
+.spell-item a:hover {
+    color: #ffffff;
+}
+
+.no-spells {
+    color: #888;
+    font-style: italic;
+    margin-left: 20px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .schools-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    /* Stack: school links become a wrapping strip above the content */
+    .page-layout {
+        display: block;
+    }
+
+    .sidebar {
+        position: static;
+        width: auto;
+        max-height: none;
+        padding: 10px 15px;
+        border-right: none;
+        border-bottom: 2px solid #ff4136;
+        border-radius: 0;
+    }
+
+    .sidebar h3 {
+        margin: 0 0 10px;
+        padding-bottom: 5px;
+    }
+
+    .school-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        justify-content: center;
+    }
+
+    .school-nav li {
+        margin-bottom: 0;
+    }
+
+    .school-nav a {
+        padding: 6px 10px;
+        border: 1px solid rgba(255, 65, 54, 0.4);
+        border-left: 1px solid rgba(255, 65, 54, 0.4);
+        font-size: 0.85em;
+    }
+
+    .main-content {
+        margin-left: 0;
+        margin-top: 0;
+        padding: 15px;
+        max-width: 100vw;
+    }
+
+    .schools-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* The list is real headings and lists now. Keep them looking like the old boxes. */
+.school-title,
+.rank-title {
+    margin-top: 0;
+    font-family: inherit;
+    letter-spacing: normal;
+    line-height: 1.4;
+}
+.spell-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}

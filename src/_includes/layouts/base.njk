@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparks | {{ title }}</title>
+    {%- if description %}
+    <meta name="description" content="{{ description }}">
+    {%- endif %}
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    {%- for sheet in styles %}
+    <link rel="stylesheet" type="text/css" href="{{ sheet }}">
+    {%- endfor %}
+</head>
+<body>
+    <div id="header-placeholder">{% siteHeader %}</div>
+{{ content | safe }}
+    {%- for script in scripts %}
+    <script src="{{ script }}"></script>
+    {%- endfor %}
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "sparks-of-dynasty",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The Sparks of Dynasty website. Eleventy builds the spell pages from src/ and copies everything else from Webpages/.",
+  "type": "module",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.8"
+  }
+}

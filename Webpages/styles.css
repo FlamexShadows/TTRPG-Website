@@ -1539,3 +1539,35 @@ header#main-header::after {
         transform: none;
     }
 }
+
+/* ==========================================================================
+   SPELL PAGES (built by Eleventy from src/spells/)
+   ========================================================================== */
+.stat-block {
+    margin: 0 0 18px;
+}
+.stat-block > div {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 0.4em;
+}
+.stat-block dt {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: var(--ink-amber);
+    font-size: 0.96em;
+    letter-spacing: 0.5px;
+}
+.stat-block dt::after {
+    content: ':';
+}
+.stat-block dd {
+    margin: 0;
+}
+.spell-back {
+    margin: 26px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid rgba(154, 118, 66, 0.35);
+    font-style: italic;
+    text-align: right;
+}

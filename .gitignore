@@ -1,3 +1,7 @@
+# Eleventy: installed packages and the built site. Both rebuild from the source.
+node_modules/
+_site/
+
 # Python caches
 __pycache__/
 *.pyc
