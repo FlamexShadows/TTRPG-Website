@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sparks | Hunter</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+        <link rel="stylesheet"
+        type="text/css" 
+        href="styles.css"/>
+
+        <style>
+            header {
+                width: 100%;
+            }
+
+            #centered-text-middle {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    position: absolute;
+    left: 50%;
+}
+
+#centered-text {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    
+  
+}
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+    $(function(){
+      $("#header-placeholder").load("a-header.html"); 
+    });
+    </script>
+    
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <div style="margin-top: 100px; color: white;">
+            <div class="main-content">
+                <div class="content-panel">
+
+                    <div class="section-title">
+                        Class Chart
+                        </div>
+                        <br><br>
+                    <table class="class-table">
+                        <tr>
+                          <th>Level</th>
+                          <th>Class Bonus Statistics</th>
+                          <th>Class Features</th>
+                          <th>Skill Progression</th>
+                          <th>Stamina</th>
+                          <th>Maneuver Slots</th>
+                          <th>Hit Points</th>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>+2 Finesse, +1 Wits</td>
+                          <td>Hunter's Track & Subclass Feature</td>
+                          <td>3 Levels</td>
+                          <td>2</td>
+                          <td>2</td>
+                          <td>1d6</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>+2 Finesse, +2 Wits</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>4</td>
+                          <td>2</td>
+                          <td>2d6</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>+3 Finesse, +2 Wits</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>6</td>
+                          <td>2</td>
+                          <td>3d6</td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>+4 Finesse, +2 Wits</td>
+                          <td>-</td>
+                          <td>6 Levels</td>
+                          <td>8</td>
+                          <td>4</td>
+                          <td>4d6</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>+5 Finesse, +3 Wits</td>
+                            <td>Barrage</td>
+                            <td>-</td>
+                            <td>10</td>
+                            <td>4</td>
+                            <td>5d6</td>
+                          </tr>
+                          <tr>
+                            <td>6</td>
+                            <td>+6 Finesse, +3 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>12</td>
+                            <td>4</td>
+                            <td>6d6</td>
+                          </tr>
+                          <tr>
+                            <td>7</td>
+                            <td>+6 Finesse, +4 Wits</td>
+                            <td>-</td>
+                            <td>9 Levels</td>
+                            <td>14</td>
+                            <td>6</td>
+                            <td>7d6</td>
+                          </tr>
+                          <tr>
+                            <td>8</td>
+                            <td>+7 Finesse, +4 Wits</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>16</td>
+                            <td>6</td>
+                            <td>8d6</td>
+                          </tr>
+                          <tr>
+                            <td>9</td>
+                            <td>+8 Finesse, +4 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>18</td>
+                            <td>6</td>
+                            <td>9d6</td>
+                          </tr>
+                          <tr>
+                            <td>10</td>
+                            <td>+10 Finesse, +5 Wits</td>
+                            <td>Renown Accuracy</td>
+                            <td>12 Levels</td>
+                            <td>20</td>
+                            <td>6</td>
+                            <td>10d6</td>
+                          </tr>
+                          <tr>
+                            <td>11</td>
+                            <td>+12 Finesse, +5 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>22</td>
+                            <td>6</td>
+                            <td>11d6</td>
+                          </tr>
+                          <tr>
+                            <td>12</td>
+                            <td>+12 Finesse, +7 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>24</td>
+                            <td>8</td>
+                            <td>12d6</td>
+                          </tr>
+                          <tr>
+                            <td>13</td>
+                            <td>+14 Finesse, +7 Wits</td>
+                            <td>Subclass Feature</td>
+                            <td>15 Levels</td>
+                            <td>26</td>
+                            <td>8</td>
+                            <td>13d6</td>
+                          </tr>
+                          <tr>
+                            <td>14</td>
+                            <td>+16 Finesse, +7 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>28</td>
+                            <td>8</td>
+                            <td>14d6</td>
+                          </tr>
+                          <tr>
+                            <td>15</td>
+                            <td>+19 Finesse, +10 Wits</td>
+                            <td>Bouncing Shot</td>
+                            <td>-</td>
+                            <td>30</td>
+                            <td>10</td>
+                            <td>15d6</td>
+                          </tr>
+                          <tr>
+                            <td>16</td>
+                            <td>+22 Finesse, +10 Wits</td>
+                            <td>-</td>
+                            <td>18 Levels</td>
+                            <td>32</td>
+                            <td>10</td>
+                            <td>16d6</td>
+                          </tr>
+                          <tr>
+                            <td>17</td>
+                            <td>+22 Finesse, +13 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>34</td>
+                            <td>10</td>
+                            <td>17d6</td>
+                          </tr>
+                          <tr>
+                            <td>18</td>
+                            <td>+25 Finesse, +13 Wits</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>36</td>
+                            <td>10</td>
+                            <td>18d6</td>
+                          </tr>
+                    
+                          <tr>
+                            <td>19</td>
+                            <td>+28 Finesse, +13 Wits</td>
+                            <td>-</td>
+                            <td>21 Levels</td>
+                            <td>38</td>
+                            <td>10</td>
+                            <td>19d6</td>
+                          </tr>
+                          <tr>
+                            <td>20</td>
+                            <td>+32 Finesse, +17 Wits</td>
+                            <td>Pinning Shot</td>
+                            <td>-</td>
+                            <td>40</td>
+                            <td>12</td>
+                            <td>20d6</td>
+                          </tr>
+                          <tr>
+                            <td>21</td>
+                            <td>+36 Finesse, +17 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>42</td>
+                            <td>14</td>
+                            <td>21d6</td>
+                          </tr>
+                          <tr>
+                            <td>22</td>
+                            <td>+36 Finesse, +21 Wits</td>
+                            <td>-</td>
+                            <td>24 Levels</td>
+                            <td>44</td>
+                            <td>14</td>
+                            <td>22d6</td>
+                          </tr>
+                          <tr>
+                            <td>23</td>
+                            <td>+40 Finesse, +21 Wits</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>46</td>
+                            <td>14</td>
+                            <td>23d6</td>
+                          </tr>
+                          <tr>
+                            <td>24</td>
+                            <td>+44 Finesse, +21 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>48</td>
+                            <td>14</td>
+                            <td>24d6</td>
+                          </tr>
+                          <tr>
+                            <td>25</td>
+                            <td>+49 Finesse, +26 Wits</td>
+                            <td>God's Eye</td>
+                            <td>27 Levels</td>
+                            <td>50</td>
+                            <td>14</td>
+                            <td>25d6</td>
+                          </tr>
+                        </table>
+        
+        <br> <br>
+        <div class="section-title">
+          Class Features
+  </div>
+  <div style="color: white; text-align: left;">
+      <div id="centered-text-2">
+          Hunter's Track
+      </div>
+        Spending 2 AP the hunter imbues a ranged weapon with magic allowing them to pinpoint the location of where the next projectile fired lands. The hunter always knows the location and distance of where the projectile hit for the next 10 minutes. If this attack hits a creature the Hunter gains immunity to the Unaware condition from that target for the duration.<br><br>
+                Barrage <br>
+                Starting at 5th level the Hunter gains the following basic maneuver<br><br>
+                Name: Barrage <br>
+                Tier: Basic<br>
+                AP: 4<br>
+                Requirements: Ranged Weapon<br>
+                Type: Attack (Ranged)<br>
+                Duration: Instant<br>
+                Concentration: No <br><br>
+               Unleashing a barrage of projectiles that occupies a 4 meter cube of the hunter's choice. Any creature in a selected tile must succeed on an Evasion save against the hunter or take 6d6+Finesse Mod physical damage. <br> <br>
+               
+                       Renown Accuracy <br>
+        Starting at 10th level, Once per turn when the hunter make a ranged attack roll before the result of the roll is determined they may choose to reroll the attack taking the second roll.<br><br>
+        
+        Bouncing Shot <br>
+        Starting at 15th level, the Hunter gains the following maneuver <br><br>
+Name: Bouncing Shot <br>
+ Tier: Expert<br>
+ AP: 3 <br>
+ Requirements: Ranged Weapon<br>
+ Type: Attack (Ranged)<br>
+ Duration: Instant<br>
+ Concentration: No <br><br>
+Making a maneuver attack with a ranged weapon, the projectile will bounce off the terrain or target to another target of the martialist’s choice within 10 meters of the original target using the same attack roll. The initial target takes an additional 4d12 true damage and the second target instead takes 2d12 true damage. Using this maneuver incurs a -5 penalty to its attack roll. Bouncing attacks can be directed to ignore cover. This attack keeps all damage and attack bonuses and penalties to both die. <br> <br>
+
+
+Pinning Shot <br>
+When a hunter uses Hunters' Track they may spend 15 stamina to deal an additional 6d12 physical damage. If the target has no physical armor when hit by this attack, it must succeed a Resistance (Body) save or become pinned until the end of its next turn. While pinned the creature takes an additional 2d6 true damage from all sources.        
+ <br><br>
+God's Eye <br>
+Starting at 25th level a hunter gains a new perspective of the world. Any creature within 20 meters of the hunter becomes aware of unless protected by grand, master or more powerful magic. The hunter gains the ability to reroll all percentile die made with attacks and take the highest roll when rolling for critical and decisive hits. In addition, the hunter now gains a level of deadly on all weapons. <br><br>
+<br><br>
+</div>
+
+    <div class="section-title">
+      Subclasses
+</div>
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+        Slayer
+    </div>
+    <br>
+    Slayer's Mark<br>
+    Starting at 1st level when the Slayer uses its Hunter's Track on a creature it gains an additional 1d6 damage on all attacks that hit the creature for its duration. This damage increases by 1d6 at 5th, 10th 15th, 20th, and 25th level.<br><br>
+    Dreaded Trapper <br>
+    Starting at 3rd level a Slayer becomes adept in setting traps. The Slayer prepares a trap and covers it with leaves or other camouflage. Spotting the trap requires a Sense Environment check against the slayer's Physical Potency DC. A creature that triggers the trap takes 2d6+Finesse Modifier physical damage. A creature with no physical armor must succeed on a Resistance (Body) save against the slayer's Physical Potency DC. On a failure the creature is Crippled and on a success, the creature is Pinned until the trap is removed from it. <br><br>    
+    Rapid Movement <br>
+    Starting at 8th level the Slayer gains the ability to spend 10 stamina to teleport to a location within 5 meters of itself. After this teleportation, the slayer is Hastened until the end of its next turn <br><br>
+    Isolationist <br>
+    Starting at 13th level the slayer gains the ability to isolate enemies. A target hit by the slayer's Hunter's Track loses the ability to teleport or perform any movement abilities for the duration. The abilities of the such used by other creatures or objects automatically fail. <br><br>
+    Delayed Shot <br>
+    Starting at 18th level the slayer gains the ability to stop a projectile they shoot mid-flight and wait for a more opportune time to let the projectile fly. A number of times per day equal to the slayer's Finesse modifier it may shoot a projectile and hold it in place for a later time. Using 1 AP the slayer may command all arrows delayed to fire. Any creature struck by a projectile with any effects present when the arrow was shot suffers those effects. <br><br>
+Debilitating Shots <br>
+Starting at 23rd level the slayer gains the ability to hold a creature still with deadly precision. Whenever a slayer hits a creature with no physical armor it applies the Pinned condition. If the attack is a critical or decisive hit it instead applies the Crippled condition. <br><br>
+<div style="color: black; text-align: left;">
+      <div class="subsection-title">
+         Gunslinger
+    </div>
+    <br>
+Marksman Adaptation <br>
+Starting at 1st level the gunslinger gains the ability to use firearms with deadly speed. Reloading firearms no longer costs AP. <br><br>
+Curving Bullet <br>
+Starting at 3rd level the Gunslinger gains the ability to curve bullets around targets. When the gunslinger shoots a target they ignore cover<br><br>
+Stylized Shots <br>
+Beginning at 8th level the gunslinger learns to control a blade while holding a one handed firearm. While holding a melee weapon a gunslinger no longer suffers from penalties in melee on ranged attacks made with firearms. <br><br>
+Deadeye <br>
+Starting at 13th level the gunslinger gains a +5 bonus to initiative checks and attack rolls. This bonus increases by 1 for every additional 3 levels in Hunter. <br><br>
+Fancy Fanning <br>
+Beginning at 18th level the Gunslinger gains the ability to fan their gun allowing for rapid fire. Twice per day for 6 AP and 20 Stamina, the slayer makes a number of attacks equal to their Wits modifier. While Fancy Fanning the gunslinger may apply other abilities and spells on its shots. <br><br>
+Dual Wielding <br>
+Starting at 23rd level, a gunslinger becomes so adept at shooting and attacking whenever they make they take the attack action while wielding a firearm and one-handed melee weapon or two firearms, they may attack with each of them. <br><br>
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+     Soul Symbiote
+</div>
+<br>
+Invasive Entity<br>
+Starting at 1st level the Soul Symbiote gains a ranged gelatinous weapon with the Ranged Finesse (15) and Deadly I properties that deals 1d10 physical damage.<br><br>
+Hunger of the Entity <br>
+Starting at 3rd level the Soul Symbiote gains the ability to consume the life force of creatures killed by its gelatinous weapon. When the Soul Symbiote kills a creature it gains 1d10 true armor. This bonus increases by 1d10 for every 3 levels the Soul Symbiote possess <br><br>
+Protective Sludge <br>
+Starting at 8th level the Soul Symbiote gains the ability to create a protective barrier of sludge around its host. Three times per day, as a reaction when the host is hit the symbiote creates a protective shell around it granting it Resistance 20 to the damage dealt.<br><br>
+Symbiotic Strike <br>
+Starting at 13th level the Soul Symbiote gains more sentience allowing it to attack on its own. Once per turn the Hunter makes an additional attack when they attack using their gelatinous weapon.<br><br>
+Parasitic Growth <br>
+Starting at 18th level the Soul Symbiote gains the ability to grow and consume the life force of its host to empower its gelatinous weapon. A number of times equal to the Soul Symbiote's Wits modifier per day, the Soul Symbiote can sacrifice 10 Health to give its gelatinous weapon the Enchanted III trait until the end of their next turn. <br><br>
+Perfect Symbiosis<br>
+Starting at 23rd level the Soul Symbiote fully adapts to its hosts body granting its gelatinous weapon an additional 2d10 physical damage and a gives its host's maximum health by 40. <br><br> 
+
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+     Hell Tracker
+</div>
+<br>
+Infernal Marksman<br>
+Starting at 1st level a number of times per day equal to the Hell Tracker's wits score, they gain the ability to infuse their ranged weapons with hellfire. The Hell Tracker's ranged weapon deals an additional 1d6 unholy damage. This damage increases by 1d6 at 5th, 10th, 15th, 20th, and 25th level.<br><br>
+Demonic Snare<br>
+Starting at 3rd level any creature stuck by a a Hell Tracker's Infernal Marksman must succeed on a Resistance (Body) save or become cursed until the end of the hellfire tracker's next turn. <br><br>
+Illusionary Volley<br>
+Starting at 8th level the Hell Tracker gains the following Maneuver <br>
+Name: Illusionary Volley <br>
+Tier: Adept<br>
+AP: 3 <br>
+Requirements: Ranged Weapon<br>
+Type: Attack (Ranged)<br>
+Duration: Instant<br>
+Concentration: No <br><br>
+Making an attack with a ranged weapon, the martialist creates an illusionary duplicate of their arrow granting them a +5 bonus to the attack roll. <br> <br>
+Leyline of the Dammed<br>
+Starting at 13th level the Hell Tracker gains the ability to teleport to an unoccupied location within 10 meters of itself. After this teleportation, all creatures of their choice within 1 meter of the Hell Tracker's original location must succeed on a Evasion save or take 8d6 unholy damage. <br><br>
+Explosive Sins<br>
+Starting at 18th level when the Hell Tracker uses their Infernal Marksman all creatures within 5 meters of the arrows landing point must succeed on an Resistance (Body) save or be subjected to the unholy damage. <br><br>
+Hellfire Rain<br>
+Starting at 23rd level the Hell Tracker gains the ability to summon a rain of hellfire. Once per day the Hell Tracker may summon a rain of hellfire in a 10 meter radius. All creatures in the area must succeed on a Resistance (Body) save or take 25d10 unholy damage or half as much on a success. A creature that fails its save becomes cursed for 1 Minute and may repeat its save at the start of each of its turns.<br><br>
+
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+     Shadow
+</div>
+<br>
+Darkness's Friend<br>
+Starting at 1st level the Shadow gains the ability to manipulate the dark. The Shadow learns three minor Tenemancy spells and gains the ability to cast these spells three times per day. The same spell may be cast more than once but the total castings of these spells may not exceed three.<br><br>
+Stalker<br>
+Starting at 3rd level the Shadow gains the ability to move through the shadows unseen. While in dim light or darkness the Shadow gains a +5 bonus to all sneak checks. In addition they gain 10 meters of Dark Sight. If the Shadow already possesses Dark Sight they increase previous Dark Sight by 5 meters. <br><br>
+Darkness's Embrace<br>
+Starting at 8th level the Shadow gains the ability to become one with the shadows. Once per day the Shadow may spend 10 stamina to become invisible for 1 minute. <br><br>
+Shadow's Grasp<br>
+Starting at 13th level the Shadow gains the ability to manipulate the shadows to hold creatures in place. A number of times equal to the Shadow's wits score when it hits a creature with an attack it must succeed on a Resistance (Body) save or become paralyzed for 1 minute. The creature that failed may repeat its save at the start of each of its turns. <br><br>
+Shadow's Veil<br>
+Starting at 18th level the Shadow gains the ability to conceal its presence using the darkness. Once per day the Shadow may spend 2 AP to become invisible for 1 minute. <br><br>
+Shadow's Wrath<br>
+Starting at 23rd level the Shadow gains the ability to uses the shadows to guide their attack. The Shadow makes an attack that lands a decisive strike on a 10 or higher and increases the decisive chance by 20. This attack deals 6x damage on a critical hit and 8x damage on a decisive strike. <br><br>
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+     Celestial Bow
+</div>
+<br>
+Celestial Marksman<br>
+Starting at 1st level a number of times per day equal to the Celestial Bow's wits score, they gain the ability to infuse their ranged weapons with celestial light. The Celestial Bow's ranged weapon deals an additional 1d6 holy damage. This damage increases by 1d6 at 5th, 10th, 15th, 20th, and 25th level.<br><br>
+Resolution<br>
+Starting at 3rd level the Celestial Bow can shoot a creature with its bow healing it 1d4 health. This healing increases by 1d4 for every 4 levels. <br><br>
+Slay the Wicked<br>
+Starting at 8th level the Celestial Bow gains the ability to smite the wicked. When the Celestial Bow attacks an evil creature it takes an additional 1 holy damage for every die rolled. <br><br>
+Sentinel<br>
+Starting at 13th level the Celestial Bow gains the ability to protect its allies. A number of times equal to the Celestial Bow's wits score per day, as a reaction it may increase a creature's AC by 3. <br><br>
+Banish<br>
+Starting at 18th level the Celestial Bow gains the ability to banish evil. Once per day the Celestial Bow may attempt to banish a creature to a demiplane. The creature must succeed on a Resistance (Mind) save or be banished for 1 minute. <br><br>
+Champion of Heaven<br>
+Starting at 23rd level the Celestial Bow gains the ability to create an aura of victory. For a number of rounds equal to the Celestial Bow's wits score all allies within 10 meters of them gain an additional 1d6 bonus to all checks and attack rolls. These rounds do not be need to be spent consecutively. <br><br>
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+     Rift Walker
+</div>
+<br>
+Time Novice<br>
+Starting at 1st level the Rift Walker gains the ability to manipulate time. The Rift Walker learns three minor Chronomancy spells and gains the ability to cast these spells three times per day. The same spell may be cast more than once but the total castings of these spells may not exceed three. <br><br>
+Echoing Shot<br>
+Starting at 3rd level, the Rift Walker fires an arrow that temporarily alters a creature' flow of time. A number of times equal the the Rift Walker's wits score, when it hits a creature with an attack it must succeed a Resistance (Mind) save or become slowed until the end of its next turn. <br><br>
+Flashback<br>
+Starting at 8th level the Rift Walker once per day as a reaction the shunts itself to a different point in time causing an attack to miss. <br><br>
+Temporal Momentum<br>
+Starting at 13th level the Rift Walker gains the ability to manipulate time. A number of times equal to its wits score the Rift Walker becomes hastened until the end of its turn. This ability uses no AP. <br><br>
+Halting Shot<br>
+Starting at 18th level the Rift Walker gains the ability to stop the flow of time on a creature. Once per day when the Rift Walker uses its Echoing Shot a it may attempt to Paralyze a creature instead of slowing it. <br><br>
+Eternity<br>
+Starting at 23rd level the Rift Walker gains mastery over time becoming immune to aging effects. In addition Once per day for 1 Minute, they once per round can force an attack roll that missed to hit, choose to succeed a check or save, or force a creature to reroll a successful attack or save. <br><br>
+
+
+
+    </div>
+    <div class="main-content">
+      <div style="text-align: center;">
+          <p style="font-weight: bold; text-decoration: underline;">Class Proficiencies</p>
+          <p>1 Melee Weapon</p>
+          <p>2 Ranged Weapon</p>
+          <p>Light Armor</p>
+          <p>Tinkering Toolkit</p>
+
+          <h3>Saves</h3>
+          Resistance (Mind) (Average)<br>
+          Resistance (Body) (Good)<br>
+          Evasion (Poor)<br>
+          <p></p>
+      </div>
+  </div>
+  
+ 
+
+
+
+      
+        
+    </div></div></div></div></div></div></div></div></div></div>
+</body>
+</html>

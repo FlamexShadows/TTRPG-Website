@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparks | Complete Spells - Organized by School and Rank</title>
+    <meta name="description" content="Every spell in Sparks of Dynasty, organized by school of magic and rank.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <style>
+        /* Sidebar + content sit side by side below the header */
+        .page-layout {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            box-sizing: border-box;
+            width: 250px;
+            flex-shrink: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            border-right: 2px solid #ff4136;
+            border-radius: 0 0 10px 0;
+        }
+
+        .sidebar h3 {
+            color: #ff4136;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #ff4136;
+            padding-bottom: 10px;
+        }
+
+        .school-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .school-nav li {
+            margin-bottom: 8px;
+        }
+
+        .school-nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            padding: 8px 12px;
+            display: block;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .school-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-left-color: #ff4136;
+        }
+
+        .school-nav a.active {
+            background-color: rgba(255, 65, 54, 0.2);
+            border-left-color: #ff4136;
+            color: #ff4136;
+        }
+
+        /* Main Content (overrides the centered-column layout from styles.css) */
+        .main-content {
+            display: block;
+            flex: 1;
+            min-width: 0;
+            margin: 0;
+            padding: 25px 30px;
+            max-width: none;
+        }
+
+        .spell-description-box {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            color: #f0f0f0;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .spell-description-box h3 {
+            color: #ff4136;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .spell-description-box strong {
+            color: #ff851b;
+            font-weight: bold;
+        }
+
+        /* School Grid Layout */
+        .schools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .school-section {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .school-section:hover {
+            border-color: rgba(255, 65, 54, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .school-title {
+            color: #ff4136;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ff4136;
+            padding-bottom: 8px;
+            text-align: center;
+        }
+
+        .rank-section {
+            margin-bottom: 20px;
+        }
+
+        .rank-title {
+            color: #ff851b;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-left: 4px solid #ff851b;
+            padding-left: 10px;
+            background-color: rgba(255, 133, 27, 0.1);
+            padding: 8px 10px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .spell-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+            margin-left: 15px;
+        }
+
+        .spell-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 6px 10px;
+            border-radius: 4px;
+            border-left: 2px solid rgba(255, 133, 27, 0.6);
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .spell-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateX(3px);
+        }
+
+        .spell-item a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+        }
+
+        .spell-item a:hover {
+            color: #ffffff;
+        }
+
+        .no-spells {
+            color: #888;
+            font-style: italic;
+            margin-left: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .schools-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Stack: school links become a wrapping strip above the content */
+            .page-layout {
+                display: block;
+            }
+
+            .sidebar {
+                position: static;
+                width: auto;
+                max-height: none;
+                padding: 10px 15px;
+                border-right: none;
+                border-bottom: 2px solid #ff4136;
+                border-radius: 0;
+            }
+
+            .sidebar h3 {
+                margin: 0 0 10px;
+                padding-bottom: 5px;
+            }
+
+            .school-nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+                justify-content: center;
+            }
+
+            .school-nav li {
+                margin-bottom: 0;
+            }
+
+            .school-nav a {
+                padding: 6px 10px;
+                border: 1px solid rgba(255, 65, 54, 0.4);
+                border-left: 1px solid rgba(255, 65, 54, 0.4);
+                font-size: 0.85em;
+            }
+
+            .main-content {
+                margin-left: 0;
+                margin-top: 0;
+                padding: 15px;
+                max-width: 100vw;
+            }
+
+            .schools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $("#header-placeholder").load("a-header.html", function (response, status, xhr) {
+                if (status == "error") {
+                    var msg = "Sorry but there was an error loading the header: ";
+                    console.error(msg + xhr.status + " " + xhr.statusText);
+                }
+            });
+
+            // Smooth scrolling for navigation links
+            $('.school-nav a').on('click', function (e) {
+                e.preventDefault();
+                var target = $(this).attr('href');
+                var $target = $(target);
+
+                if ($target.length) {
+                    $('html, body').animate({
+                        scrollTop: $target.offset().top - 20
+                    }, 800);
+
+                    // Update active state
+                    $('.school-nav a').removeClass('active');
+                    $(this).addClass('active');
+                }
+            });
+
+            // Highlight active section on scroll
+            $(window).on('scroll', function () {
+                var scrollTop = $(window).scrollTop();
+
+                $('.school-section').each(function () {
+                    var $section = $(this);
+                    var sectionTop = $section.offset().top - 150;
+                    var sectionBottom = sectionTop + $section.outerHeight();
+
+                    if (scrollTop >= sectionTop && scrollTop < sectionBottom) {
+                        var sectionId = $section.attr('id');
+                        $('.school-nav a').removeClass('active');
+                        $('.school-nav a[href="#' + sectionId + '"]').addClass('active');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="page-layout">
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <h3>Spell Schools</h3>
+        <ul class="school-nav">
+            <li><a href="#aeromancy">Aeromancy</a></li>
+            <li><a href="#arcanomancy">Arcanomancy</a></li>
+            <li><a href="#biomancy">Biomancy</a></li>
+            <li><a href="#chronomancy">Chronomancy</a></li>
+            <li><a href="#demonology">Demonology</a></li>
+            <li><a href="#enchantment">Enchantment</a></li>
+            <li><a href="#geomancy">Geomancy</a></li>
+            <li><a href="#heavenly">Heavenly</a></li>
+            <li><a href="#hydromancy">Hydromancy</a></li>
+            <li><a href="#legimancy">Legimancy</a></li>
+            <li><a href="#nature">Nature</a></li>
+            <li><a href="#necromancy">Necromancy</a></li>
+            <li><a href="#otherworldly">Otherworldly</a></li>
+            <li><a href="#pneumamancy">Pneumamancy</a></li>
+            <li><a href="#pyromancy">Pyromancy</a></li>
+            <li><a href="#tenemancy">Tenemancy</a></li>
+            <li><a href="#transmutation">Transmutation</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="spell-description-box">
+            <h3>Complete Spells Organized by School and Rank</h3>
+            <p>This page displays all spells organized by their magical school and spell rank. Spells are classified by
+                the amount of mana required to cast them:</p>
+            <ul>
+                <li><strong>Minor</strong> Basic spells that require minimal magical energy</li>
+                <li><strong>Adept</strong> Intermediate spells that require moderate magical skill</li>
+                <li><strong>Major</strong> Advanced spells that require significant magical power</li>
+                <li><strong>Grand</strong> Master-level spells that require exceptional magical ability</li>
+            </ul>
+            <p>The spell schools include: <strong>Aeromancy</strong>, <strong>Arcanomancy</strong>,
+                <strong>Biomancy</strong>, <strong>Chronomancy</strong>, <strong>Demonology</strong>,
+                <strong>Enchantment</strong>, <strong>Geomancy</strong>, <strong>Heavenly</strong>,
+                <strong>Hydromancy</strong>, <strong>Legimancy</strong>, <strong>Nature</strong>, <strong>Necromancy</strong>,
+                <strong>Otherworldly</strong>, <strong>Pneumamancy</strong>, <strong>Pyromancy</strong>,
+                <strong>Tenemancy</strong>, and <strong>Transmutation</strong>.</p>
+        </div>
+
+        <div class="schools-grid">
+            <!-- Aeromancy -->
+            <div class="school-section" id="aeromancy">
+                <div class="school-title">Aeromancy</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="air-bubble.html">Air Bubble</a></div>
+                        <div class="spell-item"><a href="gust.html">Gust</a></div>
+                        <div class="spell-item"><a href="lightning-bolt.html">Lightning Bolt</a></div>
+                        <div class="spell-item"><a href="zap.html">Zap</a></div>
+                        <div class="spell-item"><a href="shocking-touch.html">Shocking Touch</a></div>
+                        <div class="spell-item"><a href="neural-shock.html">Neural Shock</a></div>
+                        <div class="spell-item"><a href="lightning-talon.html">Lightning Talon</a></div>
+                        <div class="spell-item"><a href="static-cling.html">Static Cling</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="electric-pulse.html">Electric Pulse</a></div>
+                        <div class="spell-item"><a href="lightning-spear.html">Lightning Spear</a></div>
+                        <div class="spell-item"><a href="static-charge.html">Static Charge</a></div>
+                        <div class="spell-item"><a href="wall-of-wind.html">Wall of Wind</a></div>
+                        <div class="spell-item"><a href="thunderstorm.html">Thunderstorm</a></div>
+                        <div class="spell-item"><a href="wind-tunnel.html">Wind Tunnel</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="vacuum.html">Vacuum</a></div>
+                        <div class="spell-item"><a href="evasion.html">Evasion</a></div>
+                        <div class="spell-item"><a href="thunderclap-step.html">Thunderclap Step</a></div>
+                        <div class="spell-item"><a href="eye-of-the-storm.html">Eye of the Storm</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="mass-vacuum.html">Mass Vacuum</a></div>
+                        <div class="spell-item"><a href="endless-lightning.html">Endless Lightning</a></div>
+                        <div class="spell-item"><a href="tornado.html">Tornado</a></div>
+                        <div class="spell-item"><a href="stormcall.html">Stormcall</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Arcanomancy -->
+            <div class="school-section" id="arcanomancy">
+                <div class="school-title">Arcanomancy</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="armor-of-magic.html">Armor of Magic</a></div>
+                        <div class="spell-item"><a href="magic-sense.html">Magic Sense</a></div>
+                        <div class="spell-item"><a href="sleep.html">Sleep</a></div>
+                        <div class="spell-item"><a href="arcane-shield.html">Arcane Shield</a></div>
+                        <div class="spell-item"><a href="arcane-ward.html">Arcane Ward</a></div>
+                        <div class="spell-item"><a href="spectral-sword.html">Spectral Weapon</a></div>
+                        <div class="spell-item"><a href="arcane-bolts.html">Arcane Bolts</a></div>
+                        <div class="spell-item"><a href="ward-of-intellect.html">Ward of Intellect</a></div>
+                        <div class="spell-item"><a href="prismatic-ray.html">Prismatic Ray</a></div>
+                        <div class="spell-item"><a href="black-lance.html">Black Lance</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="identify.html">Identify</a></div>
+                        <div class="spell-item"><a href="banish.html">Banish</a></div>
+                        <div class="spell-item"><a href="bind-creature.html">Bind Creature</a></div>
+                        <div class="spell-item"><a href="still-mind.html">Still Mind</a></div>
+                        <div class="spell-item"><a href="telepathy.html">Telepathy</a></div>
+                        <div class="spell-item"><a href="summoners-circle.html">Summoner's Circle</a></div>
+                        <div class="spell-item"><a href="arcane-lattice.html">Arcane Lattice</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="finger-of-doom.html">Finger of Doom</a></div>
+                        <div class="spell-item"><a href="magic-dome.html">Magic Dome</a></div>
+                        <div class="spell-item"><a href="symbol-of-power.html">Symbol of Power</a></div>
+                        <div class="spell-item"><a href="spellbreaker-lance.html">Spellbreaker Lance</a></div>
+                        <div class="spell-item"><a href="mirror-cage.html">Mirror Cage</a></div>
+                        <div class="spell-item"><a href="glyph-of-recall.html">Glyph of Recall</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="gwenivenes-gambit.html">Gwenivene's Gambit</a></div>
+                        <div class="spell-item"><a href="upon-a-star.html">Upon A Star</a></div>
+                        <div class="spell-item"><a href="unravel.html">Unravel</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Biomancy -->
+            <div class="school-section" id="biomancy">
+                <div class="school-title">Biomancy</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="echolocation.html">Echolocation</a></div>
+                        <div class="spell-item"><a href="adaptive-camouflage.html">Adaptive Camouflage</a></div>
+                        <div class="spell-item"><a href="blindness.html">Blindness</a></div>
+                        <div class="spell-item"><a href="carapace-of-the-insect.html">Carapace of the Insect</a></div>
+                        <div class="spell-item"><a href="eyes-of-the-beast.html">Eyes of the Beast</a></div>
+                        <div class="spell-item"><a href="mutate.html">Mutate</a></div>
+                        <div class="spell-item"><a href="perfect-regeneration.html">Perfect Regeneration</a></div>
+                        <div class="spell-item"><a href="serpants-fangs.html">Serpent's Fangs</a></div>
+                        <div class="spell-item"><a href="venomous-sludge.html">Venomous Sludge</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="gift-of-the-hydra.html">Gift of the Hydra</a></div>
+                        <div class="spell-item"><a href="chitinous-plating.html">Chitinous Plating</a></div>
+                        <div class="spell-item"><a href="adrenal-surge.html">Adrenal Surge</a></div>
+                        <div class="spell-item"><a href="venom-glands.html">Venom Glands</a></div>
+                        <div class="spell-item"><a href="regrow-limb.html">Regrow Limb</a></div>
+                        <div class="spell-item"><a href="predators-senses.html">Predator's Senses</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="steal-genetic-sequence.html">Steal Genetic Sequence</a></div>
+                        <div class="spell-item"><a href="flesh-sculptor.html">Flesh Sculptor</a></div>
+                        <div class="spell-item"><a href="hivemind-spawn.html">Hivemind Spawn</a></div>
+                        <div class="spell-item"><a href="apex-evolution.html">Apex Evolution</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="final-evolution.html">Final Evolution</a></div>
+                        <div class="spell-item"><a href="genetic-memory.html">Genetic Memory</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chronomancy -->
+            <div class="school-section" id="chronomancy">
+                <div class="school-title">Chronomancy</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="continuity-error.html">Continuity Error</a></div>
+                        <div class="spell-item"><a href="slow.html">Slow</a></div>
+                        <div class="spell-item"><a href="speed.html">Speed</a></div>
+                        <div class="spell-item"><a href="moments-glance.html">Moment's Glance</a></div>
+                        <div class="spell-item"><a href="rust-and-dust.html">Rust and Dust</a></div>
+                        <div class="spell-item"><a href="echo-step.html">Echo Step</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="deja-vu.html">Deja Vu</a></div>
+                        <div class="spell-item"><a href="dimensional-lock.html">Dimensional Lock</a></div>
+                        <div class="spell-item"><a href="reciprocating-dimensions.html">Reciprocating Dimensions</a></div>
+                        <div class="spell-item"><a href="scrying.html">Scrying</a></div>
+                        <div class="spell-item"><a href="void-swap.html">Void Swap</a></div>
+                        <div class="spell-item"><a href="watch-history.html">Watch History</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="alter-gravity.html">Alter Gravity</a></div>
+                        <div class="spell-item"><a href="planar-rift.html">Planar Rift</a></div>
+                        <div class="spell-item"><a href="teleport.html">Teleport</a></div>
+                        <div class="spell-item"><a href="greater-planar-rift.html">Greater Planar Rift</a></div>
+                        <div class="spell-item"><a href="temporal-lock.html">Temporal Lock</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="infinity.html">Infinity</a></div>
+                        <div class="spell-item"><a href="omnipresence.html">Omnipresence</a></div>
+                        <div class="spell-item"><a href="foresight.html">Foresight</a></div>
+                        <div class="spell-item"><a href="rewind-creature.html">Rewind Creature</a></div>
+                        <div class="spell-item"><a href="time-loop.html">Time Loop</a></div>
+                        <div class="spell-item"><a href="demiplane.html">Demiplane</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demonology -->
+            <div class="school-section" id="demonology">
+                <div class="school-title">Demonology</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="curse.html">Curse</a></div>
+                        <div class="spell-item"><a href="spectral-sword-demonic.html">Spectral Sword Demonic</a></div>
+                        <div class="spell-item"><a href="lethargy-mark.html">Brand of Lethargy</a></div>
+                        <div class="spell-item"><a href="demonic-embodiment.html">Demonic Embodiment</a></div>
+                        <div class="spell-item"><a href="fiendish-beguile.html">Fiendish Beguile</a></div>
+                        <div class="spell-item"><a href="gut-of-lead.html">Gut of Lead</a></div>
+                        <div class="spell-item"><a href="liars-lash.html">Liar's Lash</a></div>
+                        <div class="spell-item"><a href="vile-ray.html">Vile Ray</a></div>
+                        <div class="spell-item"><a href="repurpose-vitality.html">Repurpose Vitality</a></div>
+                        <div class="spell-item"><a href="sphere-of-agony.html">Sphere of Agony</a></div>
+                        <div class="spell-item"><a href="unholy-burst.html">Unholy Burst</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="conjure-fiend.html">Conjure Fiend</a></div>
+                        <div class="spell-item"><a href="demonic-tether.html">Demonic Tether</a></div>
+                        <div class="spell-item"><a href="visions-of-the-mire.html">Visions of the Mire</a></div>
+                        <div class="spell-item"><a href="mark-of-the-pit.html">Mark of the Pit</a></div>
+                        <div class="spell-item"><a href="whispering-doubt.html">Whispering Doubt</a></div>
+                        <div class="spell-item"><a href="soul-bargain.html">Soul Bargain</a></div>
+                        <div class="spell-item"><a href="chains-of-sin.html">Chains of Sin</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="beautiful-world.html">Beautiful World</a></div>
+                        <div class="spell-item"><a href="enthralling-invitation.html">Enthralling Invitation</a></div>
+                        <div class="spell-item"><a href="price-of-pride.html">Price of Pride</a></div>
+                        <div class="spell-item"><a href="hellgate.html">Hellgate</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="cackling-end.html">Cackling End</a></div>
+                        <div class="spell-item"><a href="false-miracle.html">False Miracle</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enchantment -->
+            <div class="school-section" id="enchantment">
+                <div class="school-title">Enchantment</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="charm.html">Charm</a></div>
+                        <div class="spell-item"><a href="enhance-body.html">Enhance Body</a></div>
+                        <div class="spell-item"><a href="euphoria.html">Euphoria</a></div>
+                        <div class="spell-item"><a href="heighten-mind.html">Heighten Mind</a></div>
+                        <div class="spell-item"><a href="calm.html">Calm</a></div>
+                        <div class="spell-item"><a href="hypnosis.html">Hypnosis</a></div>
+                        <div class="spell-item"><a href="mental-acrobatics.html">Mental Acrobatics</a></div>
+                        <div class="spell-item"><a href="reframe-perspective.html">Reframe Perspective</a></div>
+                        <div class="spell-item"><a href="hags-eye.html">Hag's Eye</a></div>
+                        <div class="spell-item"><a href="phantom-orchestra.html">Phantom Orchestra</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="phantom-duplicates.html">Phantom Duplicates</a></div>
+                        <div class="spell-item"><a href="bravery.html">Bravery</a></div>
+                        <div class="spell-item"><a href="cowardice.html">Cowardice</a></div>
+                        <div class="spell-item"><a href="cloud-mind.html">Cloud Mind</a></div>
+                        <div class="spell-item"><a href="ignore.html">Ignore</a></div>
+                        <div class="spell-item"><a href="crowds-favor.html">Crowd's Favor</a></div>
+                        <div class="spell-item"><a href="marionette-strings.html">Marionette Strings</a></div>
+                        <div class="spell-item"><a href="waking-dream.html">Waking Dream</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="confession.html">Confession</a></div>
+                        <div class="spell-item"><a href="alter-memories.html">Alter Memories</a></div>
+                        <div class="spell-item"><a href="mass-beguile.html">Mass Beguile</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="devourer-of-hope.html">Devourer of Hope</a></div>
+                        <div class="spell-item"><a href="enslave.html">Enslave</a></div>
+                        <div class="spell-item"><a href="memory-architect.html">Memory Architect</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Geomancy -->
+            <div class="school-section" id="geomancy">
+                <div class="school-title">Geomancy</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="crystalize.html">Crystalize</a></div>
+                        <div class="spell-item"><a href="pocket-sand.html">Dancing Grains</a></div>
+                        <div class="spell-item"><a href="hurl-earth.html">Hurl Earth</a></div>
+                        <div class="spell-item"><a href="lance-of-tar.html">Lance of Tar</a></div>
+                        <div class="spell-item"><a href="loosen-earth.html">Loosen Earth</a></div>
+                        <div class="spell-item"><a href="mend-metal.html">Mend Metal</a></div>
+                        <div class="spell-item"><a href="mold-metal-ore.html">Mold Metal Ore</a></div>
+                        <div class="spell-item"><a href="reshape-land.html">Reshape Land</a></div>
+                        <div class="spell-item"><a href="sinkhole.html">Sinkhole</a></div>
+                        <div class="spell-item"><a href="siphon-venom.html">Siphon Venom</a></div>
+                        <div class="spell-item"><a href="isolated-tectonics.html">Isolated Tectonics</a></div>
+                        <div class="spell-item"><a href="sentinels-aegis.html">Sentinel's Aegis</a></div>
+                        <div class="spell-item"><a href="acid-cloud.html">Acid Cloud</a></div>
+                        <div class="spell-item"><a href="seismic-sense.html">Seismic Sense</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="armor-of-stone.html">Armor of Stone</a></div>
+                        <div class="spell-item"><a href="crush.html">Crush</a></div>
+                        <div class="spell-item"><a href="crystal-spikes.html">Crystal Spikes</a></div>
+                        <div class="spell-item"><a href="incarnate-of-shards.html">Incarnate of Shards</a></div>
+                        <div class="spell-item"><a href="magnetize.html">Magnetize</a></div>
+                        <div class="spell-item"><a href="oil-field.html">Oil Field</a></div>
+                        <div class="spell-item"><a href="iron-maiden.html">Iron Maiden</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="create-crystal-golem.html">Create Crystal Golem</a></div>
+                        <div class="spell-item"><a href="fault-line.html">Fault Line</a></div>
+                        <div class="spell-item"><a href="crystal-resonance.html">Crystal Resonance</a></div>
+                        <div class="spell-item"><a href="meteoric-spire.html">Meteoric Spire</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="earthquake.html">Earthquake</a></div>
+                        <div class="spell-item"><a href="reshape-earth.html">Reshape Earth</a></div>
+                        <div class="spell-item"><a href="magma-wake.html">Magma Wake</a></div>
+                        <div class="spell-item"><a href="continental-wrath.html">Continental Wrath</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Heavenly -->
+            <div class="school-section" id="heavenly">
+                <div class="school-title">Heavenly</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="celestial-shroud.html">Celestial Shroud</a></div>
+                        <div class="spell-item"><a href="divine-spectral-weapon.html">Spectral Sword Divine</a></div>
+                        <div class="spell-item"><a href="grace.html">Grace</a></div>
+                        <div class="spell-item"><a href="rejuvenating-light.html">Rejuvenating Light</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="beckon-angel.html">Beckon Angel</a></div>
+                        <div class="spell-item"><a href="blood-to-ichor.html">Blood to Ichor</a></div>
+                        <div class="spell-item"><a href="celestial-tongue.html">Celestial Tongue</a></div>
+                        <div class="spell-item"><a href="celestial-understanding.html">Celestial Understanding</a></div>
+                        <div class="spell-item"><a href="purge.html">Purge</a></div>
+                        <div class="spell-item"><a href="shield-of-light.html">Shield of Light</a></div>
+                        <div class="spell-item"><a href="lantern-of-vigil.html">Lantern of Vigil</a></div>
+                        <div class="spell-item"><a href="aegis-of-devotion.html">Aegis of Devotion</a></div>
+                        <div class="spell-item"><a href="censure.html">Censure</a></div>
+                        <div class="spell-item"><a href="mercys-touch.html">Mercy's Touch</a></div>
+                        <div class="spell-item"><a href="oath-of-the-shepherd.html">Oath of the Shepherd</a></div>
+                        <div class="spell-item"><a href="halo-of-returning.html">Halo of Returning</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="resurrection.html">Resurrection</a></div>
+                        <div class="spell-item"><a href="angels-grace.html">Angel's Grace</a></div>
+                        <div class="spell-item"><a href="celestial-linguistics.html">Celestial Linguistics</a></div>
+                        <div class="spell-item"><a href="choir-eternal.html">Choir Eternal</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="halos-eminence.html">Halo's Eminence</a></div>
+                        <div class="spell-item"><a href="pillars-of-ruin.html">Pillars of Ruin</a></div>
+                        <div class="spell-item"><a href="judgement-of-the-host.html">Judgement of the Host</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hydromancy -->
+            <div class="school-section" id="hydromancy">
+                <div class="school-title">Hydromancy</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="freeze-liquid.html">Freeze Liquid</a></div>
+                        <div class="spell-item"><a href="mending-waters.html">Mending Waters</a></div>
+                        <div class="spell-item"><a href="chilling-touch.html">Chilling Touch</a></div>
+                        <div class="spell-item"><a href="shape-ice.html">Shape Ice</a></div>
+                        <div class="spell-item"><a href="shards-of-ice.html">Shards of Ice</a></div>
+                        <div class="spell-item"><a href="water-tentacle.html">Water Tentacle</a></div>
+                        <div class="spell-item"><a href="protective-ice.html">Protective Ice</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="rain.html">Rain</a></div>
+                        <div class="spell-item"><a href="soothing-fog.html">Soothing Fog</a></div>
+                        <div class="spell-item"><a href="ice-spikes.html">Ice Spikes</a></div>
+                        <div class="spell-item"><a href="armor-of-ice.html">Armor of Ice</a></div>
+                        <div class="spell-item"><a href="shatter.html">Shatter</a></div>
+                        <div class="spell-item"><a href="clashing-waves.html">Dueling Waves</a></div>
+                        <div class="spell-item"><a href="marissas-blessing.html">Marissa's Blessing</a></div>
+                        <div class="spell-item"><a href="ice-wall.html">Ice Wall</a></div>
+                        <div class="spell-item"><a href="undertow.html">Undertow</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="create-ice-golem.html">Create Ice Golem</a></div>
+                        <div class="spell-item"><a href="glacial-tomb.html">Glacial Tomb</a></div>
+                        <div class="spell-item"><a href="riptide-serpent.html">Riptide Serpent</a></div>
+                        <div class="spell-item"><a href="pressure-of-the-deep.html">Pressure of the Deep</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="blizzard.html">Blizzard</a></div>
+                        <div class="spell-item"><a href="tsunami.html">Tsunami</a></div>
+                        <div class="spell-item"><a href="tomb-of-ice.html">Tomb of Ice</a></div>
+                        <div class="spell-item"><a href="wrath-of-the-tides.html">Wrath of the Tides</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legimancy -->
+            <div class="school-section" id="legimancy">
+                <div class="school-title">Legimancy</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="gag-order.html">Gag Order</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="oath.html">Oath</a></div>
+                        <div class="spell-item"><a href="confiscation.html">Confiscation</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="death-sentence.html">Death Sentence</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="no-spells">No spells yet</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nature -->
+            <div class="school-section" id="nature">
+                <div class="school-title">Nature</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="find-animals.html">Find Animals</a></div>
+                        <div class="spell-item"><a href="find-plants.html">Find Plants</a></div>
+                        <div class="spell-item"><a href="plant-growth.html">Plant Growth</a></div>
+                        <div class="spell-item"><a href="poison-splash.html">Poison Splash</a></div>
+                        <div class="spell-item"><a href="nature-lore.html">Nature Lore</a></div>
+                        <div class="spell-item"><a href="thorn-snare.html">Thorn Snare</a></div>
+                        <div class="spell-item"><a href="verdant-pulse.html">Verdant Pulse</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="binding-vine.html">Binding Vines</a></div>
+                        <div class="spell-item"><a href="cloud-scribe.html">Cloud Scribe</a></div>
+                        <div class="spell-item"><a href="envelop.html">Envelop</a></div>
+                        <div class="spell-item"><a href="poison-cloud.html">Poison Cloud</a></div>
+                        <div class="spell-item"><a href="call-of-the-wild.html">Call of the Wild</a></div>
+                        <div class="spell-item"><a href="bark-of-the-ancient.html">Bark of the Ancient</a></div>
+                        <div class="spell-item"><a href="pollen-daze.html">Pollen Daze</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="rebirth.html">Rebirth</a></div>
+                        <div class="spell-item"><a href="the-hunt.html">The Hunt</a></div>
+                        <div class="spell-item"><a href="heartwood-sanctum.html">Heartwood Sanctum</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="world-tree.html">World Tree</a></div>
+                        <div class="spell-item"><a href="worldroot-march.html">Worldroot March</a></div>
+                        <div class="spell-item"><a href="seasons-turning.html">Season's Turning</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Necromancy -->
+            <div class="school-section" id="necromancy">
+                <div class="school-title">Necromancy</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="false-life.html">False Life</a></div>
+                        <div class="spell-item"><a href="grasp-of-the-grave.html">Grasp of The Grave</a></div>
+                        <div class="spell-item"><a href="plague-cloud.html">Plague Cloud</a></div>
+                        <div class="spell-item"><a href="funeral-rites.html">Funeral Rites</a></div>
+                        <div class="spell-item"><a href="gaze-of-flesh.html">Gaze of Flesh</a></div>
+                        <div class="spell-item"><a href="necrotic-ray.html">Necrotic Ray</a></div>
+                        <div class="spell-item"><a href="sever-life.html">Sever Life</a></div>
+                        <div class="spell-item"><a href="deadmans-tale.html">Deadman's Tale</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="armor-of-bones.html">Armor of Bones</a></div>
+                        <div class="spell-item"><a href="dance-with-death.html">Dance with Death</a></div>
+                        <div class="spell-item"><a href="mimic-life.html">Mimic Life</a></div>
+                        <div class="spell-item"><a href="transfer-vitality.html">Transfer Vitality</a></div>
+                        <div class="spell-item"><a href="transport-through-decay.html">Transport through Decay</a></div>
+                        <div class="spell-item"><a href="grave-chill.html">Grave Chill</a></div>
+                        <div class="spell-item"><a href="merged-monstrosity.html">Merged Monstrosity</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="leech-positive-energy.html">Leech Positive Energy</a></div>
+                        <div class="spell-item"><a href="shroud-of-ghosts.html">Shroud of Ghosts</a></div>
+                        <div class="spell-item"><a href="banshee-cry.html">Banshee's Cry</a></div>
+                        <div class="spell-item"><a href="soul-harvest.html">Soul Harvest</a></div>
+                        <div class="spell-item"><a href="necrotic-bloom.html">Necrotic Bloom</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="gravewalk.html">Narolith's Touch</a></div>
+                        <div class="spell-item"><a href="pact-of-the-deathless.html">Pact of the Deathless</a></div>
+                        <div class="spell-item"><a href="silence-of-the-grave.html">Silence of the Grave</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Otherworldly -->
+            <div class="school-section" id="otherworldly">
+                <div class="school-title">Otherworldly</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="false-fortitude.html">False Fortitude</a></div>
+                        <div class="spell-item"><a href="false-mana.html">False Mana</a></div>
+                        <div class="spell-item"><a href="duplicate.html">Duplicate</a></div>
+                        <div class="spell-item"><a href="void-calling.html">Void Calling</a></div>
+                        <div class="spell-item"><a href="false-eyes.html">False Eyes</a></div>
+                        <div class="spell-item"><a href="disfigure.html">Disfigure</a></div>
+                        <div class="spell-item"><a href="pocket-stash.html">Pocket Stash</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="chaos-bolt.html">Chaos Bolt</a></div>
+                        <div class="spell-item"><a href="key-of-the-mind.html">Key of the Mind</a></div>
+                        <div class="spell-item"><a href="leeching-grasp.html">Leeching Grasp</a></div>
+                        <div class="spell-item"><a href="whispering-madness.html">Whispering Madness</a></div>
+                        <div class="spell-item"><a href="spatial-slash.html">Spatial Slash</a></div>
+                        <div class="spell-item"><a href="puncture.html">Puncture</a></div>
+                        <div class="spell-item"><a href="fold-space.html">Fold Space</a></div>
+                        <div class="spell-item"><a href="probability-flux.html">Probability Flux</a></div>
+                        <div class="spell-item"><a href="maze-of-elsewhere.html">Maze of Elsewhere</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="mirage.html">Mirage</a></div>
+                        <div class="spell-item"><a href="gates-of-the-abyss.html">Gates of The Abyss</a></div>
+                        <div class="spell-item"><a href="devour-magic.html">Devour Magic</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="rend-reality.html">Rend Reality</a></div>
+                        <div class="spell-item"><a href="anagisa.html">Anagisa</a></div>
+                        <div class="spell-item"><a href="rift-storm.html">Rift Storm</a></div>
+                        <div class="spell-item"><a href="door-to-anywhere.html">Door to Anywhere</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pneumamancy -->
+            <div class="school-section" id="pneumamancy">
+                <div class="school-title">Pneumamancy</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="essence-vampirism.html">Essence Vampirism</a></div>
+                        <div class="spell-item"><a href="sunder.html">Sunder</a></div>
+                        <div class="spell-item"><a href="soul-sight.html">Soul Sight</a></div>
+                        <div class="spell-item"><a href="breath-of-vigor.html">Breath of Vigor</a></div>
+                        <div class="spell-item"><a href="spirit-nudge.html">Spirit Nudge</a></div>
+                        <div class="spell-item"><a href="twinned-souls.html">Twinned Souls</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="spectral-graveyard.html">Spectral Graveyard</a></div>
+                        <div class="spell-item"><a href="disparate.html">Disparate</a></div>
+                        <div class="spell-item"><a href="projection.html">Projection</a></div>
+                        <div class="spell-item"><a href="essence-lash.html">Essence Lash</a></div>
+                        <div class="spell-item"><a href="spirit-walk.html">Spirit Walk</a></div>
+                        <div class="spell-item"><a href="mend-the-veil.html">Mend the Veil</a></div>
+                        <div class="spell-item"><a href="soul-brand.html">Soul Brand</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="imprison-essence.html">Imprison Essence</a></div>
+                        <div class="spell-item"><a href="rejuvenation.html">Rejuvenation</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="ruination.html">Ruination</a></div>
+                        <div class="spell-item"><a href="genesis.html">Genesis</a></div>
+                        <div class="spell-item"><a href="transmigration.html">Transmigration</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pyromancy -->
+            <div class="school-section" id="pyromancy">
+                <div class="school-title">Pyromancy</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="firework.html">Firework</a></div>
+                        <div class="spell-item"><a href="ignite.html">Ignite</a></div>
+                        <div class="spell-item"><a href="heat-object.html">Heat Object</a></div>
+                        <div class="spell-item"><a href="hurl-fire.html">Hurl Fire</a></div>
+                        <div class="spell-item"><a href="smoke-screen.html">Smoke Screen</a></div>
+                        <div class="spell-item"><a href="finger-flame.html">Finger Flame</a></div>
+                        <div class="spell-item"><a href="control-flame.html">Control Flame</a></div>
+                        <div class="spell-item"><a href="embers-of-reflection.html">Embers of Reflection</a></div>
+                        <div class="spell-item"><a href="cinder-snap.html">Cinder Snap</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="cauterize-wounds.html">Cauterize Wounds</a></div>
+                        <div class="spell-item"><a href="columns-of-fire.html">Columns of Fire</a></div>
+                        <div class="spell-item"><a href="fireball.html">Fireball</a></div>
+                        <div class="spell-item"><a href="flame-shroud.html">Flame Shroud</a></div>
+                        <div class="spell-item"><a href="whip-of-flame.html">Whip of Flame</a></div>
+                        <div class="spell-item"><a href="flame-wave.html">Flame Wave</a></div>
+                        <div class="spell-item"><a href="explosion.html">Explosion</a></div>
+                        <div class="spell-item"><a href="ashen-shroud.html">Ashen Shroud</a></div>
+                        <div class="spell-item"><a href="flame-web.html">Flame Web</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="blinding-flash.html">Blinding Flash</a></div>
+                        <div class="spell-item"><a href="flaming-weapon.html">Flaming Weapon</a></div>
+                        <div class="spell-item"><a href="create-magma-golem.html">Create Magma Golem</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="flames-of-the-phoenix.html">Flames of the Phoenix</a></div>
+                        <div class="spell-item"><a href="heatwave.html">Heatwave</a></div>
+                        <div class="spell-item"><a href="catastrophe.html">Catastrophe</a></div>
+                        <div class="spell-item"><a href="phoenix-heart.html">Phoenix Heart</a></div>
+                        <div class="spell-item"><a href="caldera.html">Caldera</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tenemancy -->
+            <div class="school-section" id="tenemancy">
+                <div class="school-title">Tenemancy</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="dimming.html">Dimming</a></div>
+                        <div class="spell-item"><a href="paralysis.html">Pin Shadow</a></div>
+                        <div class="spell-item"><a href="umbral-grasp.html">Umbral Grasp</a></div>
+                        <div class="spell-item"><a href="umbral-servant.html">Umbral Servant</a></div>
+                        <div class="spell-item"><a href="gloom-veil.html">Gloom Veil</a></div>
+                        <div class="spell-item"><a href="dark-whisper.html">Dark Whisper</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="shadow-leap.html">Shadow Leap</a></div>
+                        <div class="spell-item"><a href="silencing-darkness.html">Silencing Darkness</a></div>
+                        <div class="spell-item"><a href="umbral-tether.html">Umbral Tether</a></div>
+                        <div class="spell-item"><a href="umbral-hand.html">Umbral Hand</a></div>
+                        <div class="spell-item"><a href="nights-mantle.html">Night's Mantle</a></div>
+                        <div class="spell-item"><a href="absolute-darkness.html">Absolute Darkness</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="banishment.html">Banishment</a></div>
+                        <div class="spell-item"><a href="shadow-champion.html">Shadow Champion</a></div>
+                        <div class="spell-item"><a href="eclipse.html">Eclipse</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="kumulipo.html">Kumulipo</a></div>
+                        <div class="spell-item"><a href="kingdom-of-shadow.html">Kingdom of Shadow</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transmutation -->
+            <div class="school-section" id="transmutation">
+                <div class="school-title">Transmutation</div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Minor</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="conduction.html">Conduction</a></div>
+                        <div class="spell-item"><a href="contamination.html">Contamination</a></div>
+                        <div class="spell-item"><a href="transmute-material.html">Transmute Material</a></div>
+                        <div class="spell-item"><a href="tyrants-hand.html">Tyrant's Hand</a></div>
+                        <div class="spell-item"><a href="warding-wine.html">Warding Wine</a></div>
+                        <div class="spell-item"><a href="razor-talon.html">Razor Talon</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Adept</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="harness-water.html">Harness Water</a></div>
+                        <div class="spell-item"><a href="condense.html">Condense</a></div>
+                        <div class="spell-item"><a href="crown-of-honey.html">Crown of Honey</a></div>
+                        <div class="spell-item"><a href="quicksilver-body.html">Quicksilver Body</a></div>
+                        <div class="spell-item"><a href="leaden-bones.html">Leaden Bones</a></div>
+                        <div class="spell-item"><a href="perfect-edge.html">Perfect Edge</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Major</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="polymorph.html">Polymorph</a></div>
+                        <div class="spell-item"><a href="swarm-of-insects.html">Swarm of Insects</a></div>
+                        <div class="spell-item"><a href="create-material.html">Create Material</a></div>
+                        <div class="spell-item"><a href="greater-transmute-material.html">Greater Transmute Material</a></div>
+                    </div>
+                </div>
+
+                <div class="rank-section">
+                    <div class="rank-title">Grand</div>
+                    <div class="spell-list">
+                        <div class="spell-item"><a href="ascendant-element.html">Ascendant Element</a></div>
+                        <div class="spell-item"><a href="greater-create-material.html">Greater Create Material</a></div>
+                        <div class="spell-item"><a href="philosophers-decree.html">Philosopher's Decree</a></div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- /.schools-grid -->
+    </div> <!-- /.main-content -->
+    </div> <!-- /.page-layout -->
+</body>
+
+</html>

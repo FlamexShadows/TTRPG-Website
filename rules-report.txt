@@ -1,0 +1,139 @@
+Sparks rules check, November 03, 2026 22:17
+Docx: Sparks Basic Rules.docx
+
+Pages built from the docx: 12
+Files changed on the first run: 85
+   Webpages/common-terms.html
+   Webpages/combat.html
+   Webpages/conditions.html
+   Webpages/creature-types.html
+   Webpages/languages.html
+   Webpages/leveling.html
+   Webpages/magic-items.html
+   Webpages/maneuvers-and-spells.html
+   Webpages/sheet-formulas.html
+   Webpages/skills.html
+   Webpages/statistics.html
+   Webpages/race.html
+   Webpages/a-header.html
+   Webpages/ascendant-element.html
+   Webpages/blinding-flash.html
+   Webpages/blinding-strike.html
+   Webpages/blindness.html
+   Webpages/bouncing-shield.html
+   Webpages/cackling-end.html
+   Webpages/calm.html
+   Webpages/conjure-fiend.html
+   Webpages/cowardice.html
+   Webpages/create-crystal-golem.html
+   Webpages/create-ice-golem.html
+   Webpages/create-magma-golem.html
+   Webpages/deja-vu.html
+   Webpages/devourer-of-hope.html
+   Webpages/enslave.html
+   Webpages/eyes-of-the-beast.html
+   Webpages/finger-of-doom.html
+   Webpages/flame-wave.html
+   Webpages/flame-web.html
+   Webpages/foresight.html
+   Webpages/genetic-memory.html
+   Webpages/grove-keeper.html
+   Webpages/halos-eminence.html
+   Webpages/hunter.html
+   Webpages/hurl-fire.html
+   Webpages/hypnosis.html
+   Webpages/key-of-the-mind.html
+   Webpages/light-armor-master.html
+   Webpages/lightning-spear.html
+   Webpages/lightning-talon.html
+   Webpages/mage.html
+   Webpages/magic-traits.html
+   Webpages/martial-maneuver.html
+   Webpages/maze-of-elsewhere.html
+   Webpages/mental-acrobatics.html
+   Webpages/oarigan.html
+   Webpages/pact-keeper.html
+   Webpages/phantom.html
+   Webpages/phasos.html
+   Webpages/pillars-of-ruin.html
+   Webpages/pocket-sand.html
+   Webpages/priest.html
+   Webpages/projection.html
+   Webpages/reactive-shot.html
+   Webpages/riptide-serpent.html
+   Webpages/scrying.html
+   Webpages/shocking-touch.html
+   Webpages/sinkhole.html
+   Webpages/skyfall.html
+   Webpages/sonic-boom.html
+   Webpages/speed.html
+   Webpages/spells-complete.html
+   Webpages/static-charge.html
+   Webpages/static-cling.html
+   Webpages/stormcall.html
+   Webpages/terrifying.html
+   Webpages/thunderclap-step.html
+   Webpages/thunderstorm.html
+   Webpages/time-loop.html
+   Webpages/transport-through-decay.html
+   Webpages/trickshot.html
+   Webpages/tsunami.html
+   Webpages/undertow.html
+   Webpages/vacuum.html
+   Webpages/venomous-sludge.html
+   Webpages/ward-of-intellect.html
+   Webpages/warrior.html
+   Webpages/wrath-of-the-tides.html
+   Webpages/zap.html
+   generate_spells.py
+   Webpages/character-sheet-data.js
+   Webpages/shops-data.js
+
+Wording fixed to match the Basic Rules:
+   61 x  Resistance (Mind) check -> Resistance (Mind) save
+   42 x  Resistance Mind -> Resistance (Mind)
+   35 x  Resistance (Body) check -> Resistance (Body) save
+   26 x  Resistance Body -> Resistance (Body)
+   21 x  Evasion check -> Evasion save
+   14 x  evasion  -> Evasion 
+   12 x  Evasion checks -> Evasion saves
+   10 x  lightning damage -> air damage
+   9 x  darksight -> Dark Sight
+   8 x  saving throw -> save
+   8 x  Resistance (Physical) -> Resistance (Body)
+   6 x  saving throws -> saves
+   6 x  Marrisa -> Marissa
+   6 x  water damage -> bludgeoning damage
+   5 x  blinded -> blind
+   5 x  frightened -> fearful
+   5 x  Dexterity -> Finesse
+   4 x  hasted -> hastened
+   3 x  Resistance (Mental) -> Resistance (Mind)
+   3 x  Resistance (Mind) Checks -> Resistance (Mind) saves
+   3 x  darkvision -> Dark Sight
+   3 x  Resistance (Mind) checks -> Resistance (Mind) saves
+   2 x  5 feet -> 1.5 meters
+   2 x  perception checks -> Sense Environment checks
+   2 x  Resistance physical -> Resistance (Body)
+   2 x  dexterity -> Finesse
+   2 x  resistance mind -> Resistance (Mind)
+   2 x  1 mile -> 1.6 kilometers
+   2 x  Resistance (Body) checks -> Resistance (Body) saves
+   1 x  resistance (Mind) -> Resistance (Mind)
+   1 x  Darksight -> Dark Sight
+   1 x  60ft -> 18 meters
+   1 x  Resistance (Mind) Check -> Resistance (Mind) save
+   1 x  supernatural vision -> Supernatural Vision
+   1 x  thunder damage -> air damage
+   1 x  deafened -> deaf
+   1 x  Perception checks -> Sense Environment checks
+   1 x  True vision -> True Vision
+   1 x  witch Sight -> Witch Sight
+   1 x  10 foot -> 3 meter
+   1 x  resistance Physical -> Resistance (Body)
+
+Still out of line with the Basic Rules (fix the page, or add the term to the docx):
+   spell school "Biomancy" is not in the Spells chapter list: 21 page(s): adaptive-camouflage.html, adrenal-surge.html, apex-evolution.html, blindness.html, carapace-of-the-insect.html, chitinous-plating.html, echolocation.html, eyes-of-the-beast.html, final-evolution.html, flesh-sculptor.html, genetic-memory.html, gift-of-the-hydra.html ...
+   spell school "Legimancy" is not in the Spells chapter list: 4 page(s): confiscation.html, death-sentence.html, gag-order.html, oath.html
+   spell school "Pneumamancy" is not in the Spells chapter list: 18 page(s): breath-of-vigor.html, disparate.html, essence-lash.html, essence-vampirism.html, genesis.html, imprison-essence.html, mend-the-veil.html, projection.html, rejuvenation.html, ruination.html, soul-brand.html, soul-sight.html ...
+   spell school "Tenemancy" is not in the Spells chapter list: 17 page(s): absolute-darkness.html, banishment.html, dark-whisper.html, dimming.html, eclipse.html, gloom-veil.html, kingdom-of-shadow.html, kumulipo.html, nights-mantle.html, paralysis.html, shadow-champion.html, shadow-leap.html ...

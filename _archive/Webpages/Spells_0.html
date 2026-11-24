@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sparks | Spells</title>
+  <link rel="stylesheet" type="text/css" href="styles.css"/>
+  <style>
+    body {
+      font-family: sans-serif; /* Added a default sans-serif font for better readability */
+    }
+    header {
+      width: 100%;
+    }
+    .main-content {
+      text-align: left;
+      position: absolute;
+      left: 0;
+      width: 100%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      background-color: rgba(255, 255, 255, 0.5);
+      color: white;
+      vertical-align: top;
+    }
+    th {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+    td a {
+      display: block;
+      padding: 5px 2px;
+      color: #ADD8E6;
+      text-decoration: none;
+    }
+    td a:hover {
+      text-decoration: underline;
+      color: #E0FFFF;
+    }
+
+    /* Styles for the spell description box */
+    .spell-description-box {
+        margin-top: 100px;
+        background-color: rgba(0,0,0,0.7); /* Slightly darker for better text contrast */
+        border-radius: 10px;
+        padding: 25px; /* Increased padding */
+        color: #f0f0f0; /* Slightly off-white for easier reading */
+        margin-bottom: 30px; /* Increased space before the table */
+        line-height: 1.6; /* Improved line spacing */
+        font-size: 0.95em; /* Adjusted base font size for the box */
+    }
+    .spell-description-box h3 {
+        color: #FFA07A; /* Light Salmon for main heading */
+        margin-top: 0;
+        margin-bottom: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+        padding-bottom: 10px;
+        font-size: 1.4em;
+        font-weight: bold;
+    }
+    .spell-description-box h4 {
+        color: #FFD700; /* Gold for sub-heading */
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+    .spell-description-box p {
+        margin-bottom: 15px; /* Space between paragraphs */
+    }
+    .spell-description-box strong {
+        color: #B0E0E6; /* Powder Blue for emphasized terms */
+        font-weight: bold;
+    }
+    .spell-description-box ul {
+        margin-left: 20px; /* Indent lists */
+        margin-bottom: 15px;
+        list-style-type: disc; /* Standard disc bullets */
+    }
+    .spell-description-box ul ul { /* For nested list of durations */
+        list-style-type: circle; /* Circle bullets for sub-list */
+        margin-top: 8px; /* Space before nested list */
+        margin-bottom: 8px;
+    }
+    .spell-description-box li {
+        margin-bottom: 6px; /* Space between list items */
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+  $(function(){
+    $("header").load("A-Header.html", function(response, status, xhr) {
+      if (status == "error") {
+        var msg = "Sorry but there was an error loading the header: ";
+        console.error(msg + xhr.status + " " + xhr.statusText);
+      }
+    });
+  });
+  </script>
+</head>
+<body>
+  <header>
+    </header>
+  <div class="main-content">
+    <div class="spell-description-box">
+        <h3>Understanding Spells</h3>
+        <p>Spells are the result of a creature utilizing its source as mana, transforming that energy into magical effects. Spells follow many different trees, including: <strong>Arcanomancy</strong>, <strong>Heavenly</strong>, <strong>Otherworldly</strong>, <strong>Nature</strong>, <strong>Chronesis</strong>, <strong>Demonology</strong>, <strong>Enchantment</strong>, <strong>Necromancy</strong>, <strong>Transmutation</strong>, <strong>Hydrokinesis</strong>, <strong>Pyrokinesis</strong>, <strong>Geokinesis</strong>, and <strong>Aeromancy</strong>.</p>
+        <p>Spells are classified by the amount of mana required to cast them. These classifications are: <strong>Minor</strong>, <strong>Adept</strong>, <strong>Major</strong>, <strong>Grand</strong>, and <strong>Divine</strong>. Mortals are strictly forbidden by Lemara from casting <strong>Divine</strong> spells; only the divine are permitted to wield such power.</p>
+        <p>Access to certain magic is restricted. While anyone can cast spells from <strong>Necromancy</strong>, <strong>Transmutation</strong>, <strong>Hydrokinesis</strong>, <strong>Pyrokinesis</strong>, <strong>Geokinesis</strong>, and <strong>Aeromancy</strong>, other schools such as <strong>Heavenly</strong>, <strong>Demonology</strong>, <strong>Arcanomancy</strong>, <strong>Nature</strong>, <strong>Otherworldly</strong>, and <strong>Enchantment</strong> magic are exceptionally rare. These cannot be accessed unless the knowledge or power to cast them is granted to a creature through specific features or means.</p>
+
+        <h4>Upcasting Spells</h4>
+        <p>Magic is volatile, and spells can be empowered by channeling additional mana into them. The effects of upcasting spells are geometric; for instance, a spell upcasted from <strong>Minor</strong> to <strong>Grand</strong> is 16 times more potent. A creature must possess the ability to cast spells of the desired tier to successfully upcast a spell to that tier.</p>
+        <p>When a spell is upcast, and it doesn't have a specific upcast effect described, you can choose one of the following general enhancements (note: doubling spell effects are geometric):</p>
+        <ul>
+            <li>Double Dice rolled</li>
+            <li>Double the range</li>
+            <li>Add a caster modifier (if not already included)</li>
+            <li>Increase Duration, as follows:
+                <ul>
+                    <li>1 Minute &rarr; 10 Minutes</li>
+                    <li>10 Minutes &rarr; 1 Hour</li>
+                    <li>1 Hour &rarr; 6 Hours</li>
+                    <li>6 Hours &rarr; 1 Day</li>
+                    <li>1 Day &rarr; 1 Week</li>
+                    <li>1 Week &rarr; 1 Month</li>
+                    <li>1 Month &rarr; 1 Year</li>
+                    <li>1 Year &rarr; Permanent</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <table>
+        <tr>
+            <th>Pneumamancy</th>
+            <th>Biomancy</th>
+            <th>Tenemancy</th>
+            <th>Arcanomancy</th>
+            <th>Heavenly</th>
+            <th>Otherworldly</th>
+            <th>Nature</th>
+            <th>Chronomancy</th>
+        </tr>
+        <tr>
+            <td>
+                <a href="sunder.html">Sunder</a>
+                <a href="disparate.html">Disparate</a>
+                <a href="imprison essence.html">Imprison Essence</a>
+                <a href="ruination.html">Ruination</a>
+                <a href="essence vampirism.html">Essence Vampirism</a>
+                <a href="spectral graveyard.html">Spectral Graveyard</a>
+                <a href="rejuvenation.html">Rejuvenation</a>
+                <a href="genesis.html">Genesis</a>
+                <a href="projection.html">Projection</a>
+            </td>
+            <td>
+                <a href="mutate.html">Mutate</a>
+                <a href="gift of the hydra.html">Gift of the Hydra</a>
+                <a href="echolocation.html">Echolocation</a>
+                <a href="Adaptive Camouflage.html">Adaptive Camouflage</a>
+                <a href="Eyes of the Beast.html">Eyes of the Beast</a>
+                <a href="Carapace of the Insect.html">Carapace of the Insect</a>
+                <a href="Serpant's Fangs.html">Serpent's Fangs</a>
+                <a href="Venomous Sludge.html">Venomous Sludge</a>
+                <a href="Perfect Regeneration.html">Perfect Regeneration</a>
+                <a href="Steal Genetic Sequence.html">Steal Genetic Sequence</a>
+                <a href="Final Evolution.html">Final Evolution</a>
+                <a href="blindness.html">Blindness</a>
+            </td>
+            <td>
+                <a href="dimming.html">Dimming</a>
+                <a href="umbral tether.html">Umbral Tether</a>
+                <a href="banishment.html">Banishment</a>
+                <a href="kumulipo.html">Kumulipo</a>
+                <a href="paralysis.html">Paralysis</a>
+                <a href="absolute darkness.html">Absolute Darkness</a>
+                <a href="shadow champion.html">Shadow Champion</a>
+                <a href="umbral servant.html">Umbral Servant</a>
+                <a href="shadow leap.html">Shadow Leap</a>
+                <a href="umbral grasp.html">Umbral Grasp</a>
+                <a href="silencing darkness.html">Silencing Darkness</a>
+            </td>
+            <td>
+                <a href="magic sense.html">Magic Sense</a>
+                <a href="identify.html">Identify</a>
+                <a href="Arcane Bolts.html">Arcane Bolts</a>
+                <a href="finger of doom.html">Finger of Doom</a>
+                <a href="gwenivene's gambit.html">Gwenivene's Gambit</a>
+                <a href="sleep.html">Sleep</a>
+                <a href="telepathy.html">Telepathy</a>
+                <a href="symbol of power.html">Symbol of Power</a>
+                <a href="upon a star.html">Upon a Star</a>
+                <a href="spectral sword.html">Spectral Weapon</a>
+                <a href="banish.html">Banish</a>
+                <a href="still mind.html">Stillness of The Mind</a>
+                <a href="armor of magic.html">Armor of Magic</a>
+                <a href="summoner's circle.html">Summoner's Circle</a>
+                <a href="magic dome.html">Magic Dome</a>
+                <a href="bind creature.html">Bind Creature</a>
+                <a href="arcane ward.html">Arcane Ward</a>
+                <a href="arcane shield.html">Arcane Shield</a>
+            </td>
+            <td>
+                <a href="divine spectral weapon.html">Spectral Sword Divine</a>
+                <a href="grace.html">Grace</a>
+                <a href="beckon angel.html">Beckon Angel</a>
+                <a href="angel's grace.html">Angel's Grace</a>
+                <a href="halo's eminence.html">Halo's Eminence</a>
+                <a href="celestial shroud.html">Celestial Shroud</a>
+                <a href="celestial tongue.html">Celestial Tongue</a>
+                <a href="resurrection.html">Resurrection</a>
+                <a href="pillars of ruin.html">Pillars of Ruin</a>
+                <a href="rejuvenating light.html">Rejuvenating Light</a>
+                <a href="celestial understanding.html">Celestial Understanding</a>
+                <a href="celestial linguistics.html">Celestial Linguistics</a>
+                <a href="blood-to-ichor.html">Blood to Ichor</a>
+                <a href="purge.html">Purge</a>
+                <a href="shield of light.html">Shield of Light</a>
+            </td>
+            <td>
+                <a href="void calling.html">Void Calling</a>
+                <a href="key of the mind.html">Key of the Mind</a>
+                <a href="mirage.html">Mirage</a>
+                <a href="rend reality.html">Rend Reality</a>
+                <a href="disfigure.html">Disfigure</a>
+                <a href="chaos-bolt.html">Chaos Bolt</a>
+                <a href="gates of the abyss.html">Gates of the Abyss</a>
+                <a href="anagisa.html">Anagisa</a>
+                <a href="false eyes.html">False Eyes</a>
+                <a href="leeching grasp.html">Leeching Grasp</a>
+                <a href="devour-magic.html">Devour Magic</a>
+                <a href="false mana.html">False Mana</a>
+                <a href="whispering madness.html">Whispering Madness</a>
+                <a href="duplicate.html">Duplicate</a>
+                <a href="false fortitude.html">False Fortitude</a>
+            </td>
+            <td>
+                <a href="plant growth.html">Plant Growth</a>
+                <a href="binding vine.html">Binding Vines</a>
+                <a href="the hunt.html">The Hunt</a>
+                <a href="world-tree.html">World Tree</a>
+                <a href="poison splash.html">Poison Splash</a>
+                <a href="healing sap.html">Healing Sap</a>
+                <a href="cloud scribe.html">Cloud Scribe</a>
+                <a href="find-animals.html">Find Animals</a>
+                <a href="poison cloud.html">Poison Cloud</a>
+                <a href="rebirth.html">Rebirth</a>
+                <a href="find-plants.html">Find Plants</a>
+                <a href="envelop.html">Envelop</a>
+                <a href="nature-lore.html">Nature Lore</a>
+            
+            </td>
+            <td>
+                <a href="slow.html">Slow</a>
+                <a href="void swap.html">Void Swap</a>
+                <a href="deja vu.html">Deja Vu</a>
+                <a href="foresight.html">Foresight</a>
+                <a href="speed.html">Speed</a>
+                <a href="reciprocating dimensions.html">Reciprocating Dimensions</a>
+                <a href="teleport.html">Teleport</a>
+                <a href="rewind creature.html">Rewind Creature</a>
+                <a href="continuity error.html">Continuity Error</a>
+                <a href="scrying.html">Scrying</a>
+                <a href="alter gravity.html">Alter Gravity</a>
+                <a href="time loop.html">Time Loop</a>
+                <a href="watch-history.html">Watch History</a>
+                <a href="planar-rift.html">Planar Rift</a>
+                <a href="demiplane.html">Demiplane</a>
+                <a href="dimensional lock.html">Dimensional Lock</a>
+                <a href="omnipresence.html">Omnipresence</a>
+                <a href="greater planar rift.html">Greater Planar Rift</a>
+                <a href="Infinity.html">Infinity</a>
+            </td>
+        </tr>
+        <tr>
+            <th>Demonology</th>
+            <th>Enchantment</th>
+            <th>Necromancy</th>
+            <th>Transmutation</th>
+            <th>Hydromancy</th>
+            <th>Pyromancy</th>
+            <th>Geomancy</th>
+            <th>Aeromancy</th>
+        </tr>
+        <tr>
+            <td>
+                <a href="spectral sword demonic.html">Spectral Sword Demonic</a>
+                <a href="demonic-tether.html">Demonic Tether</a>
+                <a href="Liar's Lash.html">Liar's Lash</a>
+                <a href="enthralling invitation.html">Enthralling Invitation</a>
+                <a href="Gut of Lead.html">Gut of Lead</a>
+                <a href="cackling end.html">Cackling End</a>
+                <a href="Unholy Burst.html">Unholy Burst</a>
+                <a href="lethargy mark.html">Brand of Lethargy</a>
+                <a href="sphere of agony.html">Sphere of Agony</a>
+                <a href="Repurpose Vitality.html">Repurpose Vitality</a>
+                <a href="Vile Ray.html">Ray of the Vile</a>
+                <a href="False Miracle.html">False Miracle</a>
+                <a href="Conjure Fiend.html">Conjure Fiend</a>
+                <a href="Demonic Embodiment.html">Demonic Embodiment</a>
+                <a href="curse.html">Curse</a>
+                <a href="visions of the mire.html">Visions of the Mire</a>
+                <a href="beautiful world.html">Beautiful World</a>
+                <a href="fiendish-beguile.html">Fiendish Beguile</a>
+            </td>
+            <td>
+                <a href="enhance body.html">Enhance Body</a>
+                <a href="cloud mind.html">Cloud Mind</a>
+                <a href="charm.html">Charm</a>
+                <a href="hypnosis.html">Hypnosis</a>
+                <a href="alter memories.html">Alter Memories</a>
+                <a href="devourer of hope.html">Devourer of Hope</a>
+                <a href="reframe perspective.html">Reframe Perspective</a>
+                <a href="bravery.html">Bravery</a>
+                <a href="confession.html">Confession</a>
+                <a href="enslave.html">Enslave</a>
+                <a href="calm.html">Calm</a>
+                <a href="cowardice.html">Cowardice</a>
+                <a href="heighten mind.html">Heighten Mind</a>
+                <a href="ignore.html">Ignore</a>
+                <a href="euphoria.html">Euphoria</a>
+                <a href="mental acrobatics.html">Mental Acrobatics</a>
+            </td>
+            <td>
+                <a href="false life.html">False Life</a>
+                <a href="mimic life.html">Mimic Life</a>
+                <a href="banshee cry.html">Banshee's Cry</a>
+                <a href="necrotic ray.html">Necrotic Ray</a>
+                <a href="leech positive energy.html">Leech Positive Energy</a>
+                <a href="gravewalk.html">Grave Walk</a>
+                <a href="grasp of the grave.html">Grasp of the Grave</a>
+                <a href="armor of bones.html">Armor of Bones</a>
+                <a href="shroud of ghosts.html">Shroud of Ghosts</a>
+                <a href="funeral rites.html">Funeral Rites</a>
+                <a href="transfer vitality.html">Transfer Vitality</a>
+                <a href="gaze of flesh.html">Gaze of Flesh</a>
+                <a href="transport through decay.html">Transport Through Decay</a>
+                <a href="dance with death.html">Dance with Death</a>
+                <a href="Sever Life.html">Sever Life</a>
+                <a href="Plague Cloud.html">Plague Cloud</a>
+            </td>
+            <td>
+                <a href="transmute material.html">Transmute Material</a>
+                <a href="harness water.html">Harness Water</a>
+                <a href="create material.html">Create Material</a>
+                <a href="greater create material.html">Greater Create Material</a>
+                <a href="tyrant's hand.html">Tyrant's Hand</a>
+                <a href="conduction.html">Conduction</a>
+                <a href="condense.html">Condense</a>
+                <a href="polymorph.html">Polymorph</a>
+                <a href="ascendant-element.html">Ascendant Element</a>
+                <a href="contamination.html">Contamination</a>
+                <a href="crown of honey.html">Crown of Honey</a>
+                <a href="swarm of insects.html">Swarm of Insects</a>
+                <a href="warding wine.html">Warding Wine</a>
+                <a href="greater transmute material.html">Greater Transmute Material</a>
+                <a href="razor talon.html">Razor Talon</a>
+            </td>
+            <td>
+                <a href="shape ice.html">Shape Ice</a>
+                <a href="ice wall.html">Ice Wall</a>
+                <a href="armor of ice.html">Armor of Ice</a>
+                <a href="blizzard.html">Blizzard</a>
+                <a href="chilling touch.html">Chilling Touch</a>
+                <a href="ice spikes.html">Ice Spikes</a>
+                <a href="mending waters.html">Mending Waters</a>
+                <a href="tomb of ice.html">Tomb of Ice</a>
+                <a href="shards of ice.html">Shards of Ice</a>
+                <a href="rain.html">Rain</a>
+                <a href="create ice golem.html">Create Ice Golem</a>
+                <a href="tsunami.html">Tsunami</a>
+                <a href="freeze liquid.html">Freeze Liquid</a>
+                <a href="soothing fog.html">Soothing Fog</a>
+                <a href="shatter.html">Shatter</a>
+                <a href="water tentacle.html">Water Tentacle</a>
+                <a href="clashing waves.html">Dueling Waves</a>
+            </td>
+            <td>
+                <a href="heat object.html">Heat Object</a>
+                <a href="whip of flame.html">Whip of Flame</a>
+                <a href="blinding flash.html">Blinding Flash</a>
+                <a href="heatwave.html">Heatwave</a>
+                <a href="smoke screen.html">Smoke Screen</a>
+                <a href="firework.html">Firework</a>
+                <a href="flaming weapon.html">Flaming Weapon</a>
+                <a href="catastrophe.html">Catastrophe</a>
+                <a href="ignite.html">Ignite</a>
+                <a href="create magma golem.html">Create Magma Golem</a>
+                <a href="flames of the phoenix.html">Flames of the Phoenix</a>
+                <a href="hurl fire.html">Hurl Fire</a>
+                <a href="Fireball.html">Fireball</a>
+                <a href="columns of fire.html">Columns of Fire</a>
+                <a href="finger flame.html">Finger Flame</a>
+                <a href="embers of reflection.html">Ember's of Reflection</a>
+                <a href="cauterize wounds.html">Cauterize Wounds</a>
+                <a href="flame shroud.html">Flame Shroud</a>
+                <a href="flame web.html">Flame Web</a>
+                <a href="Control Flame.html">Control Fire</a>
+            </td>
+            <td>
+                <a href="sinkhole.html">Sinkhole</a>
+                <a href="pocket sand.html">Dancing Grains</a>
+                <a href="Isolated Tectonics.html">Isolated Tectonics</a>
+                <a href="magnetize.html">Magnetize</a>
+                <a href="crystal spikes.html">Crystal Spikes</a>
+                <a href="earthquake.html">Earthquake</a>
+                <a href="loosen earth.html">Loosen Earth</a>
+                <a href="armor of stone.html">Armor of Stone</a>
+                <a href="create crystal golem.html">Create Crystal Golem</a>
+                <a href="reshape earth.html">Reshape Earth</a>
+                <a href="reshape land.html">Reshape Land</a>
+                <a href="crystalize.html">Crystalize</a>
+                <a href="oil field.html">Oil Field</a>
+                <a href="mold metal ore.html">Mold Metal Ore</a>
+                <a href="crush.html">Crush</a>
+                <a href="hurl earth.html">Hurl Earth</a>
+                <a href="incarnate of shards.html">Incarnate of Shards</a>
+                <a href="mend metal.html">Mend Metal</a>
+                <a href="siphon venom.html">Siphon Venom</a>
+                <a href="lance of tar.html">Lance of Tar</a>
+                <a href="Sentinel's Aegis.html">Sentinel's Aegis</a>
+            </td>
+            <td>
+                <a href="Zap.html">Zap</a>
+                <a href="shocking touch.html">Shocking Touch</a>
+                <a href="thunderstorm.html">Thunderstorm</a>
+                <a href="vacuum.html">Vacuum</a>
+                <a href="mass vacuum.html">Mass Vacuum</a>
+                <a href="lightning bolt.html">Lightning Bolt</a>
+                <a href="wall of wind.html">Wall of Wind</a>
+                <a href="electric pulse.html">Electric Pulse</a>
+                <a href="tornado.html">Tornado</a>
+                <a href="gust.html">Gust</a>
+                <a href="static charge.html">Static Charge</a>
+                <a href="evasion.html">Evasion</a>
+                <a href="endless lightning.html">Endless Lightning</a>
+                <a href="air bubble.html">Air Bubble</a>
+                <a href="lightning talon.html">Lightning Talon</a>
+            </td>
+        </tr>
+    </table>
+  </div>
+</body>
+</html>

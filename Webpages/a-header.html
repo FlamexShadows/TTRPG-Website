@@ -1,0 +1,91 @@
+<header id="main-header" class="book-header">
+    <div class="book-title-container">
+        <h1 class="book-title">
+            <a href="index.html">
+                <span class="title-fleuron-left">❧</span>
+                <span class="title-text">Sparks of Dynasty</span>
+                <span class="title-fleuron-right">☙</span>
+            </a>
+        </h1>
+        <span class="book-subtitle">A Fantasy Tabletop Role-Playing Tome</span>
+    </div>
+    <nav class="book-nav" aria-label="Book Chapters Navigation">
+        <div class="dropdown book-tab tab-rules">
+            <span class="tab-marker" tabindex="0" role="button" aria-haspopup="true">
+                <span class="tab-crease"></span>
+                <span class="tab-label">Basic Rules</span>
+                <span class="tab-fold-edge"></span>
+            </span>
+            <div class="dropdown-content parchment-scroll">
+                <div class="dropdown-header">Chapter I: Core Rules</div>
+                <!-- RULES-NAV:START (built by update_rules.py) -->
+                <a href="common-terms.html">Common Terms</a>
+                <a href="combat.html">Quick Combat Rules</a>
+                <a href="conditions.html">Conditions</a>
+                <a href="creature-types.html">Creature Types</a>
+                <a href="languages.html">Languages</a>
+                <a href="leveling.html">Leveling</a>
+                <a href="magic-items.html">Magic Items</a>
+                <a href="maneuvers-and-spells.html">Maneuvers and Spells</a>
+                <a href="sheet-formulas.html">Sheet Formulas</a>
+                <a href="skills.html">Skills</a>
+                <a href="statistics.html">Statistics</a>
+                <!-- RULES-NAV:END -->
+            </div>
+        </div>
+        <div class="dropdown book-tab tab-creation">
+            <span class="tab-marker" tabindex="0" role="button" aria-haspopup="true">
+                <span class="tab-crease"></span>
+                <span class="tab-label">Character Creation</span>
+                <span class="tab-fold-edge"></span>
+            </span>
+            <div class="dropdown-content parchment-scroll">
+                <div class="dropdown-header">Chapter II: Adventurer's Codex</div>
+                <a href="backstory.html">Backstory</a>
+                <a href="classes.html">Classes</a>
+                <a href="martial-maneuver.html">Martial Maneuvers</a>
+                <a href="character-sheet.html">Character Sheet</a>
+                <a href="feats.html">Feats</a>
+                <a href="spells-complete.html">Spells</a>
+                <a href="stat-generation.html">Stat Generation</a>
+                <a href="race.html">Races</a>
+            </div>
+        </div>
+        <div class="dropdown book-tab tab-misc">
+            <span class="tab-marker" tabindex="0" role="button" aria-haspopup="true">
+                <span class="tab-crease"></span>
+                <span class="tab-label">Miscellaneous</span>
+                <span class="tab-fold-edge"></span>
+            </span>
+            <div class="dropdown-content parchment-scroll">
+                <div class="dropdown-header">Chapter III: Compendium</div>
+                <a href="shops.html">Shops</a>
+                <a href="magic-traits.html">Magic Traits</a>
+                <a href="veils.html">Veils</a>
+            </div>
+        </div>
+    </nav>
+</header>
+<script>
+    (function(){
+        var header = document.getElementById('main-header');
+        if (!header) return;
+        header.querySelectorAll('.dropdown .tab-marker').forEach(function(marker){
+            marker.addEventListener('click', function(e){
+                e.stopPropagation();
+                var parent = marker.closest('.dropdown');
+                header.querySelectorAll('.dropdown').forEach(function(d){
+                    if(d !== parent) d.classList.remove('active');
+                });
+                parent.classList.toggle('active');
+            });
+        });
+        document.addEventListener('click', function(e){
+            if(!e.target.closest('.dropdown')){
+                header.querySelectorAll('.dropdown.active').forEach(function(d){
+                    d.classList.remove('active');
+                });
+            }
+        });
+    })();
+</script>

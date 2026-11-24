@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sparks | Priest</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+        <link rel="stylesheet"
+        type="text/css" 
+        href="styles.css"/>
+
+        <style>
+            header {
+                width: 100%;
+            }
+
+            #centered-text-middle {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    position: absolute;
+    left: 50%;
+}
+
+#centered-text {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    
+  
+}
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+    $(function(){
+      $("#header-placeholder").load("a-header.html"); 
+    });
+    </script>
+    
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <div style="margin-top: 100px; color: white;">
+            <div class="main-content">
+                <div class="content-panel">
+
+                    <div class="section-title">
+                        Class Chart
+                        </div>
+                        <br><br>
+                    <table class="class-table">
+                        <tr>
+                          <th>Level</th>
+                          <th>Class Bonus Statistics</th>
+                          <th>Class Features</th>
+                          <th>Skill Progression</th>
+                          <th>Mana</th>
+                          <th>Spell Slots</th>
+                          <th>Hit Points</th>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>+2 Wits, +1 Intelligence</td>
+                          <td>Divine Order</td>
+                          <td>6 Levels</td>
+                          <td>4</td>
+                          <td>4</td>
+                          <td>1d4</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>+2 Wits, +2 Intelligence</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>8</td>
+                          <td>4</td>
+                          <td>2d4</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>+3 Wits, +2 Intelligence</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>12</td>
+                          <td>4</td>
+                          <td>3d4</td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>+4 Wits, +2 Intelligence</td>
+                          <td>-</td>
+                          <td>8 Levels</td>
+                          <td>16</td>
+                          <td>6</td>
+                          <td>4d4</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>+5 Wits, +3 Intelligence</td>
+                            <td>Healing Palms</td>
+                            <td>-</td>
+                            <td>20</td>
+                            <td>6</td>
+                            <td>5d4</td>
+                          </tr>
+                          <tr>
+                            <td>6</td>
+                            <td>+6 Wits, +3 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>24</td>
+                            <td>6</td>
+                            <td>6d4</td>
+                          </tr>
+                          <tr>
+                            <td>7</td>
+                            <td>+6 Wits, +4 Intelligence</td>
+                            <td>-</td>
+                            <td>10 Levels</td>
+                            <td>28</td>
+                            <td>8</td>
+                            <td>7d4</td>
+                          </tr>
+                          <tr>
+                            <td>8</td>
+                            <td>+7 Wits, +4 Intelligence</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>32</td>
+                            <td>8</td>
+                            <td>8d4</td>
+                          </tr>
+                          <tr>
+                            <td>9</td>
+                            <td>+8 Wits, +4 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>36</td>
+                            <td>8</td>
+                            <td>9d4</td>
+                          </tr>
+                          <tr>
+                            <td>10</td>
+                            <td>+10 Wits, +5 Intelligence</td>
+                            <td>Radiant Idol</td>
+                            <td>12 Levels</td>
+                            <td>40</td>
+                            <td>8</td>
+                            <td>10d4</td>
+                          </tr>
+                          <tr>
+                            <td>11</td>
+                            <td>+12 Wits, +5 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>44</td>
+                            <td>8</td>
+                            <td>11d4</td>
+                          </tr>
+                          <tr>
+                            <td>12</td>
+                            <td>+12 Wits, +7 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>48</td>
+                            <td>10</td>
+                            <td>12d4</td>
+                          </tr>
+                          <tr>
+                            <td>13</td>
+                            <td>+14 Wits, +7 Intelligence</td>
+                            <td>Subclass Feature</td>
+                            <td>14 Levels</td>
+                            <td>52</td>
+                            <td>10</td>
+                            <td>13d4</td>
+                          </tr>
+                          <tr>
+                            <td>14</td>
+                            <td>+16 Wits, +7 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>56</td>
+                            <td>10</td>
+                            <td>14d4</td>
+                          </tr>
+                          <tr>
+                            <td>15</td>
+                            <td>+19 Wits, +10 Intelligence</td>
+                            <td>Trance of Mercy</td>
+                            <td>-</td>
+                            <td>60</td>
+                            <td>12</td>
+                            <td>15d4</td>
+                          </tr>
+                          <tr>
+                            <td>16</td>
+                            <td>+22 Wits, +10 Intelligence</td>
+                            <td>-</td>
+                            <td>16 Levels</td>
+                            <td>64</td>
+                            <td>12</td>
+                            <td>16d4</td>
+                          </tr>
+                          <tr>
+                            <td>17</td>
+                            <td>+22 Wits, +13 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>68</td>
+                            <td>12</td>
+                            <td>17d4</td>
+                          </tr>
+                          <tr>
+                            <td>18</td>
+                            <td>+25 Wits, +13 Intelligence</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>72</td>
+                            <td>12</td>
+                            <td>18d4</td>
+                          </tr>
+                    
+                          <tr>
+                            <td>19</td>
+                            <td>+28 Wits, +13 Intelligence</td>
+                            <td>-</td>
+                            <td>18 Levels</td>
+                            <td>76</td>
+                            <td>12</td>
+                            <td>19d4</td>
+                          </tr>
+                          <tr>
+                            <td>20</td>
+                            <td>+32 Wits, +17 Intelligence</td>
+                            <td>Protection of the Gods</td>
+                            <td>-</td>
+                            <td>80</td>
+                            <td>14</td>
+                            <td>20d4</td>
+                          </tr>
+                          <tr>
+                            <td>21</td>
+                            <td>+36 Wits, +17 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>84</td>
+                            <td>16</td>
+                            <td>21d4</td>
+                          </tr>
+                          <tr>
+                            <td>22</td>
+                            <td>+36 Wits, +21 Intelligence</td>
+                            <td>-</td>
+                            <td>20 Levels</td>
+                            <td>88</td>
+                            <td>16</td>
+                            <td>22d4</td>
+                          </tr>
+                          <tr>
+                            <td>23</td>
+                            <td>+40 Wits, +21 Intelligence</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>92</td>
+                            <td>16</td>
+                            <td>23d4</td>
+                          </tr>
+                          <tr>
+                            <td>24</td>
+                            <td>+44 Wits, +21 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>96</td>
+                            <td>16</td>
+                            <td>24d4</td>
+                          </tr>
+                          <tr>
+                            <td>25</td>
+                            <td>+49 Wits, +26 Intelligence</td>
+                            <td>Divine Idol</td>
+                            <td>22 Levels</td>
+                            <td>100</td>
+                            <td>16</td>
+                            <td>25d4</td>
+                          </tr>
+                        </table>
+        
+        <br> <br>
+                        <div class="section-title">
+                            Class Features
+                </div>
+                <div style="color: white; text-align: left;">
+                  <div id="centered-2">
+                  </div>
+        <br><br>
+        Divine Order<br>
+Starting at 1st level a Priest is dedicates themselves to faith. They are entrusted as an advocate granting them a position in the church as they gain access to powers bestowed upon them. The priest gains access to one magic school that follows the deities' alignment they follow <br><br>
+
+In addition they may use their wits  for knowledge divine and demonic checks. <br><br>
+
+Good<br>
+Heavenly Spells<br><br> 
+
+Neutral<br>
+Choice<br><br>
+
+Evil<br>
+Demonology Spells<br><br>
+
+In addition, the priest gains the ability to recite a prayer offering protection to those around them. Whenever the priest finishes a partial rest they may choose a number of allies equal to their Wits modifier and restore a bonus physical or magical armor equal to double their level. <br><br>        
+        Healing Palms <br>
+        Starting at 5th level the priest is granted a healing pool equal to 5 times their level + their Wits modifier. For 2 AP a priest may bestow any number of health from this pool upon a target within 1 meter of themselves. This pool resets upon a full rest. <br><br>      
+        Radiant Idol <br>
+        Starting at 10th level the Priest gains the ability to roll for critical and decisive strikes on spells and non weapon magical items. Spells and magic items with a save can only land critical hits. <br>  <br>     
+        Trance of Guidance <br>
+        Starting at 15th level the Priest gains the ability to enter a trance of tranquility. Once per day, the Priest makes contact with an entity directly under the influence of their deity by performing a 1-hour ritual. The entity gives guidance based on a series of questions they present to the Priest. To determine the results the Priest must roll Knowledge (Divine). Any bonus granted by this feature lasts for no longer than 1 hour. <br><br>
+
+1-10 Nothing of Use <br>
+11-20 Minor Information<br>
+21-30 Major Information<br>
+31+ Major Information +10 Bonus to Intelligence. <br><br>
+        Protection of the Gods <br>
+        Starting at 20th level a Priest is always under the effects of the Celestial Shroud spell. In addition, whenever the Priest heals an ally the target regains extra hit points equal to the Priest's Intelligence modifier. <br><br>
+        Divine Idol <br>
+        Starting at 25th level the Priest is granted the ability to impose the will of their deity on others. For 20 Mana the Priest creates 3 motes that float around their head. While the priest has at least one of these motes hover over their head they gain a +5 to all statistics. A mote can be launched at a target of the Priest's choice using the priest's spell attack bonus. Upon a hit, the target takes 10d6+Wits modifier holy damage. The motes expire after 1 hour. <br><br>
+    <br><br>
+
+  </div>
+
+  <div class="section-title">
+    Subclasses
+</div>
+<div style="color: black; text-align: left;">
+<div class="subsection-title">
+  <h3>Heavenly Seer</h3>
+    </div>
+    <br>
+    Sermon of Faith<br>
+    Starting at 3rd level a Heavenly Seer Priest gains the ability to restore allies beyond their normal capacity though a sermon of their deity. Upon completing a partial rest the Priest and their allies that listened to the sermon gain True Armor equal to the Priests level. <br><br>
+
+    Expel Source <br>
+    Starting at 8th level The Heavenly Seer gains the ability to bestow greater fortune on their allies. For 2 AP a Heavenly Seer may choose to end one effect or spell of their choice on a creature for 10 points of their Healing Palms. The Heavenly seer rolls a Knowledge (Arcana) check against the DC of the effect. <br><br>
+
+    Tier 1 Magic <br>
+    10<br><br>
+    
+    Tier 2 Magic<br>
+    20<br><br>
+    
+    Tier 3 Magic<br>
+    35<br><br>
+    
+    Tier 4 Magic<br>
+    45<br><br>
+    
+    Monster Effects<br>
+    10+Double Threat rating <br> <br>
+
+        
+        Touch of Mercy <br>
+        Starting at 13th level, once per day The Heavenly Seer touches the body of a creature contacting the soul of any good-aligned creature so long as it is not destroyed, trapped, or otherwise unable to receive the message. The Heavenly Seer may resurrect the creature as long as it upon revival the creature is able to survive. This resurrection nullifies all diseases and poisons in a target. <br><br>
+
+         Heavenly Resistance <br>
+         Starting at 18th level The Heavenly Seer grants a + 2 bonus to themselves and all allies Resistance (Mind) and Resistance (Body) within 10 meters of themselves. <br><br>
+
+        Well of Life <br>
+        Starting at 23rd level The Heavenly Seer's pool of life doubles. In addition, when the Heavenly Seer heals a creature it restores magical armor equal to the amount of health healed. <br><br>
+
+<div style="color: black; text-align: left;">
+      <div class="subsection-title">
+        <h3>The Blasphemous</h3>
+    </div>
+    <br>
+Blasphemy <br>
+Starting at 3rd level the Blasphemous misspeaks of a deities teachings and tenants intentionally or unintentionally. The Blasphemous may spend 1 AP 5 Mana and deliver a speech to all onlookers. Any creature that can understand the speech of the Blasphemous within 20 meters must succeed on a Resistance (Mind) save or take Psychic damage equal to the Blasphemous' s level. <br><br>
+Venomous Words <br>
+Starting at 8th level the Blasphemous adds half their level in psychic damage to all spells they cast that require words of power. This damage can only be applied once per spell. <br><br>
+Contradicting Speech <br>
+Starting at 13th level The Blasphemous words begin to manifest into reality. They gain the curses or miracles of the opposite alignment. The Blasphemous priest gains access to the Divine Favor of the opposite alignment of their deity. Neutral deities grant the option not selected by the priest. <br><br>
+False Hope <br>
+Starting at 18th level the Blasphemous's sermons inspire those who hear them. When the Blasphemous gives a speech it may choose to inspire creatures that believe its sermon. Creatures become inspired for 1 day. After the day the creatures become are filled with existential hopeless for 1 week. If a creature listens to the speech again and becomes motivated the hopelessness instead lasts 1 month. Inspiring  or motivating a creature who became hopeless from this feature does not remove the hopelessness. <br><br>
+Against all Odds <br>
+Starting at 23rd level the Blasphemous gains 5 levels in Knowledge (Spiritual). The deity also grants them Knowledge (Divine) for good aligned deities or Knowledge (Demonic) evil aligned deities as the blasphemous learns more about the religion they are supposed to know. <br><br>
+
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>Faith Channeler</h3>  
+</div>
+<br>
+Divine Flame<br>
+    Starting at 3rd level the Faith Channeler can turn their healing palms into a bright flame of holy energy. The Faith Channeler can toss this flame at a creature using their magic attack roll. On a successful hit the creature takes 1d8 holy damage if the priest is good or neutral, or 1d8 unholy damage if the priest is evil. If the creature struck is the opposite alignment of their Divine Order they take 50% more damage.
+    <br><br>
+    Faith's Protection <br>
+    Starting at 8th level the Faith Channeler becomes a walking holy ground. The Faith Channeler and all allies in 5 meters of them have the cursed condition suppressed. When a creature exits the range of the aura it returns as normal.
+    <br><br>
+    Divine Buffer <br>
+    Starting at 13th level the Faith Channeler regains 5 health at the start of each of their turns so long as they have at least 1 health.
+    <br><br>
+    Second Chance <br>
+    Starting at 18th level as a reaction, The Faith Channeler can spend 10 points from their Healing Palms to have an ally they can see fail within 10 meters reroll a failed save potentially turning it into a success.
+    <br><br>
+    Avatar of Faith <br>
+    Starting at 23rd level for 6 AP The Faith Channeler gains immunity to poison, holy and unholy damage.
+
+
+
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>Paragon</h3>
+</div>
+<br>
+Virtues (Minor) <br>
+Starting at 3rd level the Paragon chooses one of the following virtues to follow. Following this virtues grants them bonuses. Breaking a virtue loses any of its effects and requires 12 hours of prayer for repentance to gain its effects back.
+<br>
+Celibacy<br>
+The Paragon decides to show their faith by refraining from love and sex. Choosing to be Celibate grants the Paragon a +1 bonus to Resistance (Mind) saves. This bonus increases by +1 every 3 levels.<br>
+Honesty <br>
+The Paragon decides to display their faith by never telling a lie or deception. The Priest gains a 1 skill level in persuasion. This bonus increases by +1 every 3 levels.<br>
+Diet<br>
+The Paragon displays faith through avoiding a certain foods and having a day long fast once every month. The Paragon following dietary restrictions gains a +1 bonus to Resistance (Body).<br>
+Study <br>
+The Paragon spends hours reading and remembering the sacred text of their deity. They must spend at least 1 hour a day reading their scripture. The Paragon following study gains a +1 to Knowledge Divine and Demonic checks.
+<br><br>
+
+Pursuit of Perfection<br>
+Starting at 8th level the Paragon's pursuit of perfection inspires those healed by them. Any creature healed by the Paragon's healing palms gains a +2 bonus to its AC until the end of the targets next turn.
+<br><br>
+
+Virtues (Advanced)<br>
+Starting at 13th level the Paragon chooses one of the following virtues to follow. Following these virtues grants them bonuses. Breaking a virtue loses any of its effects and requires 12 hours of prayer for repentance to gain its effects back.<br>
+Forgiveness<br>
+The Paragon cannot hold hatred or punish those who are willing to change. Paragons that follow this path are immune to the Charmed condition. <br>
+Humility <br>
+The Paragon must remain humble and cannot boast about deeds they have done. Paragons that follow this path are immune to the Hopeless condition. <br>
+Silence<br>
+The Paragon is limited in speech only speaking when it is of upmost importance. Paragons that follow this path are immune to the Silenced condition.<br>
+Loyalty <br>
+The Paragon questions no orders or rules from their deity or their sacred text. Paragons that follow this path are immune to the Possessed condition.<br>
+<br><br>
+
+Perfect Follower<br>
+Starting at 18th level the Paragon regains all uses of Healing Palms on a partial rest.
+<br><br>
+
+Virtues (Pinnacle)<br>
+Starting at 23rd level the Paragon chooses one of the following virtues to follow. Following these virtues grants them bonuses. Breaking a virtue loses any of its effects and requires 12 hours of prayer for repentance to gain its effects back. <br>
+Blind Faith <br>
+The Paragon gives their eyes to their deity trusting them to grant them sight. The Paragon is granted 15 meters of True Vision.<br>
+Leap of Faith <br>
+The Paragon trust their deity to protect them from death. The Paragon sprouts a pair a wings granting them a fly speed of 10. <br>
+Ultimate Charity<br>
+The Paragon gives away all their possessions trusting their deity to give them what what is required in their time of need. All magical items the Paragon owns are now tied to their holy symbol surrendering them to their church. Once per day the Paragon can choose to succeed on a check.
+
+
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>Crusader</h3>
+</div>
+<br>
+Trained Armor<br>
+Starting at 3rd level the Crusader gains medium armor, shield, and 1 skilled weapon proficiency. <br><br>
+Cleanse Evil<br>
+Starting at 8th level when the Crusader casts a spell that deals holy or unholy damage, they deal an additional 1 damage per die rolled.<br><br>
+Bastion<br>
+Starting at 13th level the Crusader gains proficiency in Heavy Armor.<br><br>
+Efficient Crusader<br>
+Starting at 18th level the Crusader selects a favored spell from their divine order. The spell can be cast once per day without using mana. <br><br>
+Divine Calling <br>
+Starting at 23rd level, for 2 AP the Crusader can rally allies a number of rounds equal to their wits modifier. All creatures while the crusader rallies their allies gains 1d8 holy damage on all attacks, resistance 5 to all damage, and gain a +2 bonus to all saves.
+
+
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>Martyr</h3>
+</div>
+<br>
+Greater Good<br>
+Starting at 3rd level the Martyr can choose to take an attack target at a creature within 1 meter of themselves. The Martyr gains resistance 5 to the damage of the triggering attack.<br><br>
+Good Health<br>
+Starting at 8th level the Martyr gives a +4 bonus to saves to resist disease and the nauseated condition. <br><br>
+Yield to None<br>
+Starting at 13th level for 2 AP, the Martyr can motivate up to five creatures of their choice within 15 meters of themselves that can hear them. <br><br>
+Harm Conduit<br>
+Starting at 18th level the Martyr's greater good can now protect creatures within 10 meters and the damage resistance increases to 20. If this reduces the damage to 0 the Martyr gains a +1 bonus to all saves for the next minute.<br><br>
+Protect the Innocent<br>
+Starting at 23rd level, if the Martyr dies all allies within 10 meters of the Martyr gain 100 health, a +4 bonus to all checks and saves and resistance 5 to all damage. A Martyr can be resurrected at half the material components with a cost. <br><br>
+
+    </div>
+
+    <div class="main-content">
+      <div style="text-align: center;">
+          <p style="font-weight: bold; text-decoration: underline;">Class Proficiencies</p>
+        <p>Medicine Kit </p>
+        <p>Light Armor </p>
+
+        <h3>Saves</h3>
+          Resistance (Mind) (Average)<br>
+          Resistance (Body) (Average)<br>
+          Evasion (Average)<br>
+          <p></p>
+    
+      </div>
+  </div>
+        
+    </div></div></div></div></div></div></div></div></div>
+</body>
+</html>

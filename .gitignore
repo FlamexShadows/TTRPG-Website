@@ -1,0 +1,22 @@
+# Python caches
+__pycache__/
+*.pyc
+
+# Settings that belong to this computer only
+.claude/settings.local.json
+Webpages/.vscode/
+
+# Compiled programs. Rebuild them from the .cpp files.
+*.exe
+
+# Office lock files, Windows and OneDrive clutter
+~$*
+Thumbs.db
+desktop.ini
+*.tmp
+
+# Remove the # in front of a line to keep that file off GitHub,
+# for example if you make the repository public.
+# Sparks Basic Rules.docx
+# Sparks (New).xlsx
+# Shops.xlsx

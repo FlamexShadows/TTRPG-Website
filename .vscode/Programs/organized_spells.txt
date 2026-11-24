@@ -1,0 +1,648 @@
+﻿Organized Spells by School and Level:
+==================================================
+
+Aeromancy:
+---------
+
+  Minor:
+    - Air Bubble
+    - Air Bubble
+    - Alter Memories
+    - Alter Memories
+    - Armor of Bones
+    - Armor of Bones
+    - Armor of Ice
+    - Armor of Ice
+    - Armor of Stone
+    - Armor of Stone
+    - Beautiful World
+    - Beautiful World
+    - Blinding Flash
+    - Blinding Flash
+    - Blizzard
+    - Blizzard
+    - Bravery
+    - Bravery
+    - Cackling End
+    - Cackling End
+    - Calm
+    - Calm
+    - Catastrophe
+    - Catastrophe
+    - Cauterize Wounds
+    - Cauterize Wounds
+    - Charm
+    - Chilling Touch
+    - Chilling Touch
+    - Cloud Mind
+    - Cloud Mind
+    - Columns of Fire
+    - Columns of Fire
+    - Condense
+    - Condense
+    - Conduction
+    - Conduction
+    - Confession
+    - Confession
+    - Conjure Fiend
+    - Contamination
+    - Contamination
+    - Cowardice
+    - Cowardice
+    - Create Crystal Golem
+    - Create Ice Golem
+    - Create Magma Golem
+    - Create Material
+    - Create Material
+    - Crown of Honey
+    - Crown of Honey
+    - Crush
+    - Crush
+    - Crystal Spikes
+    - Crystal Spikes
+    - Crystalize
+    - Crystalize
+    - Curse
+    - Curse
+    - Dance with Death
+    - Dance with Death
+    - Demonic Embodiment
+    - Devourer of Hope
+    - Devourer of Hope
+    - Earthquake
+    - Earthquake
+    - Electric Pulse
+    - Electric Pulse
+    - Embers of Reflection
+    - Embers of Reflection
+    - Endless Lightning
+    - Endless Lightning
+    - Enhance Body
+    - Enhance Body
+    - Enslave
+    - Enslave
+    - Enthralling Invitation
+    - Enthralling Invitation
+    - Euphoria
+    - Euphoria
+    - Evasion
+    - Evasion
+    - False Life
+    - False Life
+    - False Miracle
+    - Finger Flame
+    - Fireball
+    - Firework
+    - Firework
+    - Flame Shroud
+    - Flame Shroud
+    - Flame Web
+    - Flame Web
+    - Flames of the Phoenix
+    - Flames of the Phoenix
+    - Flaming Weapon
+    - Flaming Weapon
+    - Freeze Liquid
+    - Freeze Liquid
+    - Funeral Rites
+    - Funeral Rites
+    - Gaze of Flesh
+    - Gaze of Flesh
+    - Grasp of The Grave
+    - Grasp of The Grave
+    - Greater Create Material
+    - Greater Create Material
+    - Greater Transmute Material
+    - Greater Transmute Material
+    - Gust
+    - Gust
+    - Gut of Lead
+    - Harness Water
+    - Harness Water
+    - Heat Object
+    - Heat Object
+    - Heatwave
+    - Heatwave
+    - Heighten Mind
+    - Heighten Mind
+    - Hurl Earth
+    - Hurl Earth
+    - Hurl Fire
+    - Hurl Fire
+    - Hypnosis
+    - Ice Spikes
+    - Ice Spikes
+    - Ice Wall
+    - Ice Wall
+    - Ignite
+    - Ignite
+    - Ignore
+    - Ignore
+    - Incarnate of Shards
+    - Incarnate of Shards
+    - Isolated Tectonics
+    - Lance of Tar
+    - Lance of Tar
+    - Leech Positive Energy
+    - Leech Positive Energy
+    - Liar's Lash
+    - Lightning Bolt
+    - Lightning Talon
+    - Lightning Talon
+    - Loosen Earth
+    - Loosen Earth
+    - Magnetize
+    - Magnetize
+    - Mass Vacuum
+    - Mass Vacuum
+    - Mend Metal
+    - Mend Metal
+    - Mending Waters
+    - Mending Waters
+    - Mental Acrobatics
+    - Mental Acrobatics
+    - Mimic Life
+    - Mold Metal Ore
+    - Mold Metal Ore
+    - Oil Field
+    - Oil Field
+    - Plague Cloud
+    - Plague Cloud
+    - Polymorph
+    - Polymorph
+    - Rain
+    - Rain
+    - Ray of the Vile
+    - Reframe Perspective
+    - Reframe Perspective
+    - Repurpose Vitality
+    - Reshape Earth
+    - Reshape Earth
+    - Reshape Land
+    - Reshape Land
+    - Shape Ice
+    - Shape Ice
+    - Shards of Ice
+    - Shards of Ice
+    - Shatter
+    - Shatter
+    - Shocking Touch
+    - Shocking Touch
+    - Shroud of Ghosts
+    - Shroud of Ghosts
+    - Sinkhole
+    - Sinkhole
+    - Siphon Venom
+    - Siphon Venom
+    - Smoke Screen
+    - Smoke Screen
+    - Soothing Fog
+    - Soothing Fog
+    - Sphere of Agony
+    - Static Charge
+    - Static Charge
+    - Swarm of Insects
+    - Swarm of Insects
+    - Thunderstorm
+    - Tomb of Ice
+    - Tomb of Ice
+    - Tornado
+    - Tornado
+    - Transfer Vitality
+    - Transfer Vitality
+    - Transfer Vitality
+    - Transmute Material
+    - Transmute Material
+    - Transport through Decay
+    - Transport through Decay
+    - Tsunami
+    - Tsunami
+    - Tyrant's Hand
+    - Unholy Burst
+    - Vacuum
+    - Vacuum
+    - Visions of the Mire
+    - Visions of the Mire
+    - Wall of Wind
+    - Wall of Wind
+    - Warding Wine
+    - Warding Wine
+    - Water Tentacle
+    - Water Tentacle
+    - Whip of Flame
+    - Whip of Flame
+    - Zap
+
+Chronomancy:
+-----------
+
+  Minor:
+    - Absolute Darkness
+    - Absolute Darkness
+    - Adaptive Camouflage
+    - Alter Gravity
+    - Anagisa
+    - Anagisa
+    - Angel's Grace
+    - Angel's Grace
+    - Arcane Bolt
+    - Arcane Bolt
+    - Arcane Shield
+    - Arcane Ward
+    - Armor of Magic
+    - Armor of Magic
+    - Banish
+    - Banish
+    - Banishment
+    - Banishment
+    - Beckon Angel
+    - Bind Creature
+    - Bind Creature
+    - Binding Vine
+    - Binding Vine
+    - Blind
+    - Blind
+    - Blindness
+    - Carapace of the Insect
+    - Celestial Linguistics
+    - Celestial Linguistics
+    - Celestial Shroud
+    - Celestial Shroud
+    - Celestial Tongue
+    - Celestial Tongue
+    - Celestial Understanding
+    - Celestial Understanding
+    - Cloud Scribe
+    - Cloud Scribe
+    - Continuity Error
+    - Continuity Error
+    - Deja Vu
+    - Deja Vu
+    - Demiplane
+    - Dimensional Lock
+    - Dimensional Lock
+    - Dimming
+    - Dimming
+    - Disparate
+    - Disparate
+    - Divine Spectral Weapon
+    - Duplicate
+    - Duplicate
+    - Echolocation
+    - Echolocation
+    - Envelop
+    - Envelop
+    - Essence Vampirism
+    - Essence Vampirism
+    - Eyes of the Beast
+    - False Eyes
+    - False Eyes
+    - False Fortitude
+    - False Fortitude
+    - False Mana
+    - False Mana
+    - Final Evolution
+    - Finger of Doom
+    - Finger of Doom
+    - Foresight
+    - Foresight
+    - Gates of The Abyss
+    - Gates of The Abyss
+    - Genesis
+    - Genesis
+    - Gift of the Hydra
+    - Gift of the Hydra
+    - Grace
+    - Greater Planar Rift
+    - Greater Planar Rift
+    - Gwenivene's Gambit
+    - Gwenivene's Gambit
+    - Halo's Eminence
+    - Halo's Eminence
+    - Identify
+    - Identify
+    - Imprison Essence
+    - Infinity
+    - Key of the Mind
+    - Key of the Mind
+    - Kumulipo
+    - Kumulipo
+    - Leeching Grasp
+    - Leeching Grasp
+    - Linguistic
+    - Lore
+    - Magic Dome
+    - Magic Sense
+    - Mirage
+    - Mirage
+    - Mutate
+    - Mutate
+    - Omnipresence
+    - Omnipresence
+    - Paralysis
+    - Paralysis
+    - Perfect Regeneration
+    - Pillars of Ruin
+    - Pillars of Ruin
+    - Planar Rift
+    - Plant Growth
+    - Plant Growth
+    - Poison Cloud
+    - Poison Cloud
+    - Poison Splash
+    - Poison Splash
+    - Projection
+    - Projection
+    - Purge
+    - Purge
+    - Rebirth
+    - Rebirth
+    - Reciprocating Dimensions
+    - Reciprocating Dimensions
+    - Rejuvenating Light
+    - Rejuvenating Light
+    - Rejuvenation
+    - Rejuvenation
+    - Rend Reality
+    - Rend Reality
+    - Resurrection
+    - Resurrection
+    - Rewind Creature
+    - Rewind Creature
+    - Ruination
+    - Ruination
+    - Scrying
+    - Shadow Champion
+    - Shadow Champion
+    - Shadow Leap
+    - Shadow Leap
+    - Shield of Light
+    - Shield of Light
+    - Silencing Darkness
+    - Silencing Darkness
+    - Sleep
+    - Sleep
+    - Slow
+    - Slow
+    - Spectral Graveyard
+    - Spectral Graveyard
+    - Spectral Sword
+    - Spectral Weapon
+    - Speed
+    - Speed
+    - Steal Genetic Sequence
+    - Stillness of The Mind
+    - Stillness of The Mind
+    - Summoner's Circle
+    - Summoner's Circle
+    - Sunder
+    - Sunder
+    - Symbol of Power
+    - Symbol of Power
+    - Telepathy
+    - Telepathy
+    - Telepathy
+    - Teleport
+    - Tether
+    - Tether
+    - The Hunt
+    - The Hunt
+    - Time Loop
+    - Umbral Grasp
+    - Umbral Grasp
+    - Umbral Servant
+    - Umbral Servant
+    - Umbral Tether
+    - Umbral Tether
+    - Upon A Star
+    - Upon A Star
+    - Venomous Sludge
+    - Void Calling
+    - Void Calling
+    - Void Swap
+    - Void Swap
+    - Whispering Madness
+    - Whispering Madness
+
+Unknown:
+-------
+
+  Minor:
+    - Ability Improvement
+    - Acrobatic Assault
+    - Adamantine Body
+    - Age of Reclamation
+    - Alchemical Weapon
+    - All In
+    - Alter Weapon
+    - Amazing Leap
+    - Amazing Leap
+    - Ambusher
+    - Angel Gifted
+    - Annul Maneuver
+    - Arendell
+    - Ascendant Element
+    - Assassins Escape
+    - Backstory
+    - Banshee's Cry
+    - Barbed Arrow
+    - Battle Stomp
+    - Belfast
+    - Bhaalnuva's Gambit
+    - Bhera
+    - Black Market
+    - Blood to Ichor
+    - Blood to Ichor
+    - Brand of Lethargy
+    - Brenchisca
+    - Bull Rush
+    - Buoyant Blade
+    - Cescylla
+    - Chef
+    - Church
+    - Classes
+    - Clouds Pet Shop
+    - Combat
+    - Combat Ready
+    - Common Terms
+    - Control Fire
+    - Conviction
+    - Coordinated Assault
+    - Corroding Blade
+    - Corrupt Weapon
+    - Coup De Grace
+    - Coward's Executioner
+    - Creature Types
+    - Crippling Strike
+    - Cunning Tactics
+    - Dancing Blades
+    - Dancing Grains
+    - Deadly Fists
+    - Deadly Magic
+    - Debilitation
+    - Decisive Striker
+    - Defensive Opportunist
+    - Deflect
+    - Deities
+    - Demonic Spectral Weapon
+    - Demonic Tether
+    - Destroy Armor
+    - Dirty Tactics
+    - Disciplined
+    - Disruptive
+    - Divine Spectral Sword
+    - Dragon Gifted
+    - Dueling Waves
+    - Electric Blade
+    - Elemental-Affinity
+    - Elesnia
+    - Endurance
+    - Enfeebling Strikes
+    - Evasive
+    - Exotic Movement
+    - Extend Spell
+    - Eye of the Eagle
+    - Far Spell
+    - Fargith
+    - Fast Hands
+    - Feats
+    - Fibris
+    - Fiend Gifted
+    - Fiendish Beguile
+    - Find Animals
+    - Firearm Specialist
+    - Flicker Step
+    - Focused Palm
+    - Frostbite Fang
+    - General Store
+    - Grand Elixirs
+    - Grappling Ammunition
+    - Greater Alter Weapon
+    - Greater Combat Ready
+    - Greater Endurance
+    - Greater Mana Pooling
+    - Grove Keeper
+    - Healing Touch
+    - Healing Touch
+    - Heavy Armor Master
+    - Heavy Armor Training
+    - Hero Within
+    - Hero's Rally
+    - Hunter
+    - Impale
+    - In Time
+    - Iron Body
+    - Kelria
+    - Languages
+    - Legend Within
+    - Lemara
+    - Lesser Alter Weapon
+    - Leveling
+    - Light Armor Master
+    - Light Armor Training
+    - Light Footwork
+    - Lightning Ball
+    - Lightning Spear
+    - Mage
+    - Magic Durability
+    - Magic Items
+    - Magic Traits
+    - Magic Wall
+    - Magical Knowledge
+    - Mana Pooling
+    - Manual Mastery
+    - Marionettes Market
+    - Marissa
+    - Mark of Retribution
+    - Medium Armor Master
+    - Medium Armor Training
+    - Mind Edge
+    - Mocking Strike
+    - Momentum
+    - Muscle Memory
+    - Name: Chaos Bolt
+    - Name: Devour Magic
+    - Name: Disfigure
+    - Name: Find Plants
+    - Name: Nature Lore
+    - Name: Necrotic Ray
+    - Name: World Tree
+    - Narolith
+    - Narolith's Touch
+    - Nova Strados
+    - Oana
+    - Oarigan
+    - Oarin
+    - One Handed Expertise
+    - Opportune Magic
+    - Osmos
+    - Overhead Cleave
+    - Overwhelm
+    - Pact Keeper
+    - Paralysis Points
+    - Pavar
+    - Phantom
+    - Phantom Steps
+    - Phasos
+    - Physical Durability
+    - Piercing Shots
+    - Polearm Expertise
+    - Polearm Mastery
+    - Polith
+    - Potent Casting
+    - Potion Glutton
+    - Powerful Spell
+    - Priest
+    - Quick Reflexes
+    - Races
+    - Reactive Shot
+    - Reflexive Riposte
+    - Rejuvenating Ki
+    - Reliable Spell
+    - Repulse
+    - Resistant
+    - Ruthless
+    - Sacrificial Lamb
+    - Sapping Blade
+    - Scroll Mastery
+    - Sentinel’s Aegis
+    - Serpent's Fangs
+    - Serpents Form
+    - Services
+    - Setthos
+    - Shield Bash
+    - Shield Throw
+    - Shops
+    - Skillful
+    - Skyfall
+    - Sol Inos
+    - Sonic Boom
+    - Source Aegis
+    - Source Barrier
+    - Source Sanctuary
+    - Spell Breaker
+    - Spell Specialization
+    - Spirit Gifted
+    - Stat Generation
+    - Statistics
+    - Stats
+    - Steel to Rubber
+    - Stunning Blow
+    - Telekinesis
+    - Terrifying
+    - The Great Purge
+    - The Inheritance
+    - Thousand Cuts
+    - Touch of Death
+    - Tracker
+    - Trembling Rage
+    - Trickshot
+    - Tripping Strike
+    - True Durability
+    - Uncanny Speed
+    - Vampiric Blade
+    - Vanish
+    - Warrior
+    - Watch History
+    - Whirlwind
+

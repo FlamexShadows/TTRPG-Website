@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sparks | Grove Keeper</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+        <link rel="stylesheet"
+        type="text/css" 
+        href="styles.css"/>
+
+        <style>
+            header {
+                width: 100%;
+            }
+
+            #centered-text-middle {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    position: absolute;
+    left: 50%;
+}
+
+#centered-text {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    
+  
+}
+
+
+
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+    $(function(){
+      $("#header-placeholder").load("a-header.html"); 
+    });
+    </script>
+    
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <div style="margin-top: 100px; color: white;">
+            <div class="main-content">
+                <div class="content-panel">
+
+                    <div class="section-title">
+                        Class Chart
+                        </div>
+                        <br><br>
+                    <table class="class-table">
+                        <tr>
+                          <th>Level</th>
+                          <th>Class Bonus Statistics</th>
+                          <th>Class Features</th>
+                          <th>Skill Progression</th>
+                          <th>Mana</th>
+                          <th>Spell Slots</th>
+                          <th>Hit Points</th>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>+2 Intelligence, +1 Wits</td>
+                          <td>Advocate of Nature & Subclass Feature</td>
+                          <td>2 Levels</td>
+                          <td>3</td>
+                          <td>4</td>
+                          <td>1d8</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>+2 Intelligence, +2 Wits</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>6</td>
+                          <td>4</td>
+                          <td>2d8</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>+3 Intelligence, +2 Wits</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>9</td>
+                          <td>4</td>
+                          <td>3d8</td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>+4 Intelligence, +2 Wits</td>
+                          <td>-</td>
+                          <td>4 Levels</td>
+                          <td>12</td>
+                          <td>6</td>
+                          <td>4d8</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>+5 Intelligence, +3 Wits</td>
+                            <td>Touch of Regression</td>
+                            <td>-</td>
+                            <td>15</td>
+                            <td>6</td>
+                            <td>5d8</td>
+                          </tr>
+                          <tr>
+                            <td>6</td>
+                            <td>+6 Intelligence, +3 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>18</td>
+                            <td>6</td>
+                            <td>6d8</td>
+                          </tr>
+                          <tr>
+                            <td>7</td>
+                            <td>+6 Intelligence, +4 Wits</td>
+                            <td>-</td>
+                            <td>6 Levels</td>
+                            <td>21</td>
+                            <td>8</td>
+                            <td>7d8</td>
+                          </tr>
+                          <tr>
+                            <td>8</td>
+                            <td>+7 Intelligence, +4 Wits</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>24</td>
+                            <td>8</td>
+                            <td>8d8</td>
+                          </tr>
+                          <tr>
+                            <td>9</td>
+                            <td>+8 Intelligence, +4 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>27</td>
+                            <td>8</td>
+                            <td>9d8</td>
+                          </tr>
+                          <tr>
+                            <td>10</td>
+                            <td>+10 Intelligence, +5 Wits</td>
+                            <td>Overgrowth</td>
+                            <td>8 Levels</td>
+                            <td>30</td>
+                            <td>8</td>
+                            <td>10d8</td>
+                          </tr>
+                          <tr>
+                            <td>11</td>
+                            <td>+12 Intelligence, +5 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>33</td>
+                            <td>8</td>
+                            <td>11d8</td>
+                          </tr>
+                          <tr>
+                            <td>12</td>
+                            <td>+12 Intelligence, +7 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>36</td>
+                            <td>10</td>
+                            <td>12d8</td>
+                          </tr>
+                          <tr>
+                            <td>13</td>
+                            <td>+14 Intelligence, +7 Wits</td>
+                            <td>Subclass Feature</td>
+                            <td>10 Levels</td>
+                            <td>39</td>
+                            <td>10</td>
+                            <td>13d8</td>
+                          </tr>
+                          <tr>
+                            <td>14</td>
+                            <td>+16 Intelligence, +7 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>42</td>
+                            <td>10</td>
+                            <td>14d8</td>
+                          </tr>
+                          <tr>
+                            <td>15</td>
+                            <td>+19 Intelligence, +10 Wits</td>
+                            <td>Grove Warden</td>
+                            <td>-</td>
+                            <td>45</td>
+                            <td>12</td>
+                            <td>15d8</td>
+                          </tr>
+                          <tr>
+                            <td>16</td>
+                            <td>+22 Intelligence, +10 Wits</td>
+                            <td>-</td>
+                            <td>12 Levels</td>
+                            <td>48</td>
+                            <td>12</td>
+                            <td>16d8</td>
+                          </tr>
+                          <tr>
+                            <td>17</td>
+                            <td>+22 Intelligence, +13 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>51</td>
+                            <td>12</td>
+                            <td>17d8</td>
+                          </tr>
+                          <tr>
+                            <td>18</td>
+                            <td>+25 Intelligence, +13 Wits</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>54</td>
+                            <td>12</td>
+                            <td>18d8</td>
+                          </tr>
+                    
+                          <tr>
+                            <td>19</td>
+                            <td>+28 Intelligence, +13 Wits</td>
+                            <td>-</td>
+                            <td>14 Levels</td>
+                            <td>57</td>
+                            <td>12</td>
+                            <td>19d8</td>
+                          </tr>
+                          <tr>
+                            <td>20</td>
+                            <td>+32 Intelligence, +17 Wits</td>
+                            <td>Wrath of Nature</td>
+                            <td>-</td>
+                            <td>60</td>
+                            <td>14</td>
+                            <td>20d8</td>
+                          </tr>
+                          <tr>
+                            <td>21</td>
+                            <td>+36 Intelligence, +17 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>63</td>
+                            <td>16</td>
+                            <td>21d8</td>
+                          </tr>
+                          <tr>
+                            <td>22</td>
+                            <td>+36 Intelligence, +21 Wits</td>
+                            <td>-</td>
+                            <td>16 Levels</td>
+                            <td>66</td>
+                            <td>16</td>
+                            <td>22d8</td>
+                          </tr>
+                          <tr>
+                            <td>23</td>
+                            <td>+40 Intelligence, +21 Wits</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>69</td>
+                            <td>16</td>
+                            <td>23d8</td>
+                          </tr>
+                          <tr>
+                            <td>24</td>
+                            <td>+44 Intelligence, +21 Wits</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>72</td>
+                            <td>16</td>
+                            <td>24d8</td>
+                          </tr>
+                          <tr>
+                            <td>25</td>
+                            <td>+49 Intelligence, +26 Wits</td>
+                            <td>Sanctity of The Grove</td>
+                            <td>18 Levels</td>
+                            <td>75</td>
+                            <td>16</td>
+                            <td>25d8</td>
+                          </tr>
+                        </table>
+        
+        <br> <br>
+                        <div class="section-title">
+                            Class Features
+                </div>
+                <div style="color: white; text-align: left;">
+                  <div id="centered-2">
+                  </div>
+        <br><br>
+        Advocate of Nature<br>
+        Starting at first level Grove Keepers gain the ability to enter the "Dream of Nature". While in this meditative state, the Grove Keepers enter a dream-like state allowing them able communicate with plants and beasts in nature. Magical beasts or beasts that know a language are not applicable to this feature. Grove Keepers also gain access to Nature Spells. <br><br>
+        Touch of Regression <br>
+        As a Grove Keeper's connection to nature deepens they gain the ability to restore objects to the state nature intended. 
+        Using 4 AP and 5 Mana the Grove Keeper may touch a nonmagical refined object and return it to its natural resources. 
+        A sword or armor made of steel will return to iron and coal. This rapid reversion causes any object less than 5 feet wide or long to lose its form crumbling to a fine powder of its raw materials. 
+        If an object is larger than 1 meter the Grove Keeper always pulls the safer material into their hand if they choose to hold any. 
+        A creature carrying or wearing the targeted object may attempt to avoid this effect by rolling an evasion check contested against the Grove Keeper's unarmed attack roll. <br><br>
+        Overgrowth <br>
+        A growth of wildlife begins to grow on the Grove Keeper as nature bestows its roots into its vessel. 
+        This growth makes the Grove Keeper gain +10 poison resistance and increases their AC by 5. 
+        The growth acts as natural camouflage and the Grove Keeper gains a +10 bonus to stealth checks. <br><br>
+        Grove Warden <br>
+        The Grove Keeper harnesses borrowed power from the spirits of the grove. 
+        For 2 AP the Grove Keeper grants immunity to the charmed condition to any creature within 1 meter of themselves. <br><br>
+        Wrath of Nature <br>
+        The Grove Keeper is now seen as the embodiment of nature. 
+        They gain 2 levels in nature and survival skills. 
+        Whenever they cast a spell or melee attack that deals earth damage they add 2 damage for each die rolled and treat earth resistance as if it were 10 lower. <br><br>
+        Sanctity of the Grove <br>
+        Whenever they Grove Keeper gains +10 resistance to all damage, gain +50 maximum hit points, and may spend 2 action points to regain 20 hit points. <br><br>
+        
+    <br><br>
+
+  </div>
+
+  <div class="section-title">
+    Subclasses
+</div>
+<div style="color: white; text-align: left;">
+<div class="subsection-title">
+  <h3>Shifter</h3>
+    </div>
+    <br>
+    Animal Forms<br>
+    Starting at 1st level twice per rest the Grove Keeper may spend 2 AP you gain the ability to take the forms of lesser nonmagical animals found in nature for 1 hour. They may assume the form of any beast of Threat Rating 1. While shifted they lose the ability to cast spells that require sigils to cast unless the new form is capable of performing hand gestures. They retain their health, racial, and class features while shifting and gaining the abilities of the new form. All equipment worn and carried is dropped at the location they shift. While the new form may be able to carry the equipment it is incapable of using them. If reduced to 0 hit points or slain while shifted the Grove Keeper reverts to its original form. <br><br>
+    Arcane Forms <br>
+    Starting at 8th level the Grove Keeper focuses its mind sharpening their shifting. Starting at 8th level the Threat Rating of shifting increases to 3. In addition, while shifted they may spend an additional 2 AP  while casting a spell to perform arcane sigils if the new form is incapable of doing so. <br><br>
+    Hybrid Forms <br>
+    Starting at 13th level the Grove Keeper gains the ability to modify the form between itself and the animal they shift into allowing them to become bipedal and have human hands. While shifted they are now capable of using equipment as if not shifted. <br><br>
+    Duality of the Body <br>
+    Starting at 18th level the Grove Keeper begins to master the art of shifting. The threat rating of shifting increases to 8 and they can now choose 2 animals to shift into gaining the abilities of both animals simultaneously. <br><br>
+    Supernatural Forms <br>
+    At level 23 the Grove Keeper masters the art of shifting into creatures. They may now choose magical beasts and the threat rating increases to 10. In addition, they no longer have a maximum duration on the time to maintain a shifted form. <br><br>
+
+<div style="color: white; text-align: left;">
+      <div class="subsection-title">
+        <h3>Decay</h3>
+    </div>
+    <br>
+Decrepit Touch <br>
+Starting at 1st level the Grove Keeper gains the ability to cause decay to one creature they touch. The Grove Keeper makes a melee attack roll against one creature it can see within 1 meter of itself. On a successful hit, the creature takes 2d6+ Intelligence Modifier physical damage. A creature with no physical armor struck by this attack must roll a fortitude save against the Grove Keepers spell DC or lose 2 AP on its next turn. <br><br>
+Plague Master <br>
+Starting at 8th level the Grove Keeper gains the ability to spread and cleanse disease in its surroundings. Spending 1 AP it may absorb the poisoned and diseased condition from creatures and covered tiles within 10 meters of itself. For each tile and creature cleansed, they may add a d6 poison damage to each attack or spell for the turn. <br><br>
+Festering Growth <br>
+Starting at 13th level the Grove Keeper may spend 4 AP and 20 mana to create a noxious spore cloud in a 15-meter cube centered around it. Any creature that starts, enters, or ends its turn in this cloud takes 8d6+ Intelligence Modifier poison damage. A creature that takes this damage and has no magical armor is poisoned until it leaves the cloud. The cloud lasts for 1 round. <br><br>
+Horrific Decay <br>
+Starting at 18th level whenever the Grove Keeper casts a spell or performs a melee attacks that deals poison damage it made add 2 damage for each die rolled and treat poison resistance as if it were 10 lower. In addition, the Grove Keepers poison resistance increases by 10. <br><br>
+Master of Decay <br>
+Starting at 23rd level the Grove Keeper imposes decay with ease. All actions that deal poison damage or apply disease cost 1 AP less to a minimum of 1 AP. <br><br>
+
+<div style="color: white; text-align: left;">
+    <div class="subsection-title">
+      <h3>Shepherd</h3>
+  </div>
+  <br>
+One with Nature <br>
+Starting at 1st level a shepherd Grove Keeper uses its Intelligence for all Animal Handle checks and gains levels in animal handling equal to its level. <br><br>
+Animal Companion <br>
+Starting at 1st level the spirits that follow the shepherd gain the ability to convince the animals it speaks with. The Grove Keeper may choose an animal companion that aids them in day-to-day tasks. While in combat the companion acts in initiative at the end of each of the Grove Warden's turns. You may choose from one of the following options, Avian, Aquatic, Terrestrial, Subterrestrial
+<br><br>
+
+Animal Companion<br>
+Creature type: Beast<br>
+Size:<br>
+Avion: Small<br>
+Aquatic: Medium<br>
+Terrestrial: Medium<br>
+Subterranean: Medium<br><br>
+
+Physical Armor: <br>
+Terrestrial: 30<br>
+Aquatic: 20<br>
+Subterrestrial: 40<br>
+Avion: 10<br><br>
+
+Magic Armor <br>
+Terrestrial: 30<br>
+Aquatic: 40<br>
+Subterrestrial: 20<br>
+Avion: 10<br><br>
+
+Armor Class: <br>
+Terrestrial: 15<br>
+Aquatic: 15<br>
+Subterrestrial: 17<br>
+Avion: 20<br><br>
+
+Hit Points: <br>
+Terrestrial: 15<br>
+Aquatic: 20<br>
+Subterrestrial: 25<br>
+Avion: 5<br><br>
+
+Alignment: N/A<br>
+Threat Rating: N/A<br>
+Languages: None<br>
+Speed: 
+Terrestrial: 5<br>
+Aquatic: 2 Walk, 5 Swim<br>
+Subterrestrial: 3 Walk, 3 Dig<br>
+Avion: 2 Walk, 10 Fly<br><br>
+
+Resistance: <br>
+Immunities: None<br><br>
+
+Strength
+Terrestrial: 15<br>
+Aquatic: 12<br>
+Subterrestrial: 18<br>
+Avion: 4<br><br>
+
+Finesse
+Terrestrial: 15<br>
+Aquatic: 12<br>
+Subterrestrial: 4<br>
+Avion: 18<br><br>
+
+Fortitude<br>
+Terrestrial: 12<br>
+Aquatic: 10<br>
+Subterrestrial: 14<br>
+Avion: 6<br><br>
+
+Intelligence: 3<br>
+Wits: 13<br>
+Charisma: 8<br><br>
+
+Actions<br>
+Max AP: 4<br><br>
+
+Bite<br>
+Attack Bonus: Strength/Dex<br>
+Attack Damage: 1d6+Strength/Dex<br><br>
+
+Borrowed Sight<br>
+Starting at 8th level the Grove Keeper gains the ability to see through the animals in its surroundings. When the Shepard enters its Dream of Nature it can choose an animal within range and see and hear through its eyes and ears. The Grove Keeper uses their own Sense environment or the Animals whichever is higher.<br><br>
+Beast Speech<br>
+Starting at 13th level the shepherd Grove Keeper gains help from the spirits in translating language. The Grove Keeper gains the ability to speak with all beasts and magical beasts. When speaking to an animal they are treated as friends and if aggressive must roll a Resistance (Mind) check against the Grove Wardens Magic Potency DC at the start of each of its turns when it attacks them. On a failure, the creature must pick a new target to attack within range or lose the attack.<br><br>
+Tree Stride<br>
+Starting at 18th level a Shepherd Grove Keeper gains the ability to travel between the trees. When the Grove Keeper is within 5 meters of any tree they may enter it. While inside the tree they may not be targeted by any attacks or spells and may choose to be transported to any tree within 1 Kilometer of the tree they are inside. The Grove Warden is supernaturally aware of all trees present within the radius unless magic or some other effect prevents telepathy or teleportation affects the tree they are inside or with to transport to. If the tree they are inside is destroyed they take 10d12 magic damage and are shunted to the nearest unoccupied space.<br><br>
+Leader of the Pack<br>
+Starting at 23rd level any beast or magical beast or beast that attacks the shepherd that’s threat rating is less than or equal to its Grove Keeper levels automatically fails its Resistance (Mind) check to attack the shepherd. <br><br>
+</div>
+<div style="color: white; text-align: left;">
+  <div class="subsection-title">
+    <h3>Nature's Sentinel</h3>
+    <br>
+      </div>
+     Guardian's Destiny<br>
+     Starting at 1st level the Nature's Sentinel gains proficiency in medium armor and skilled weapons<br><br>
+     Nature Ward <br>
+     Starting at 8th level the Nature's Sentinel gains the ability to mark itself as a protector of nature. For a number of rounds equal to the Nature Sentinel's wits all creatures within 10 meters must succeed a Overpower check or become pinned as vines hold the creature in place. A pinned creature takes 2d6 true damage at the start of each of its turns. A pinned creature may repeat its save at the start of each of their turns. <br><br>
+     Lullaby <br>
+    Starting at 13th level the Nature's Sentinel once per day can lace their words with enchantment magic to sing a lullaby that effects all living creatures. Any creature that isn't a Golem, Undead, Outsider, or Elemental that can hear the Nature Sentinel sing must succeed on a Resistance Mind check or fall unconscious for 10 minutes. A creature wakes up when it takes damage or is shaken awake. <br><br>
+    Monkey's Paw <br>
+    Starting at 18th level the Nature's Sentinel can imbue a creature with bad luck a number of times per day equal to its wits modifier. Whenever a creature within 10 meters of the Nature's Sentinel makes a check or save they can choose to make them roll twice and take the lower result. This must be used before the outcome is determined. <br><br>
+    Mist of the Grove <br>
+    Starting at 23rd level the Nature's Sentinel gains the ability to create a mist that covers the battlefield. Once per day, the Nature's Sentinel creates a 20-meter cube of mist that obscures all vision. Any creature that starts, enters, or ends its turn in the mist takes 8d6+ Intelligence Modifier earth damage and is blind. The mist lasts for 1 round. <br><br>
+
+      <br>
+
+      <div style="color: white; text-align: left;">
+        <div class="subsection-title">
+          <h3>Spirit Channeler</h3>
+            <br>
+            </div>
+            Spirit Speaker<br>
+            Starting at 1st level the Spirit Channeler learns Spiritual and gains levels in Knowledge Spirital equal to their level.<br><br>
+            Spirit Guide <br>
+            Starting at 8th level once per day, the Spirit Channeler gains the ability to summon a lesser spirit to guide them. 
+            The spirit is one of the following options. 
+            <br> Bakeneko: A cat spirit that grants the Spirit Channeler +5 to stealth checks. 
+            <br> Kitsune: A fox spirit that grants the Spirit Channeler +5 to deception checks.
+            <br> Tanuki: A raccoon dog spirit that grants the Spirit Channeler +5 to persuasion checks.
+            <br> Tengu: A crow spirit that grants the Spirit Channeler +5 to perception checks.
+            <br> 
+            The spirit can communicate with the Spirit Channeler telepathically and can be summoned for 1 hour. 
+            <br><br>
+            Spirit Walk <br>
+            Starting at 13th level the Spirit Channeler gains the ability to weaken the border between the spirit world and themselves. 
+            A number of times per day equal to their wits modifier, the Spirit Channeler may order the spirits in the surrounding area to attack a creature within 15 meters of themselves. The target must succeed on a Resistance (Mind) check or take 8d4+ Intelligence Modifier psychic damage. <br><br>
+            Medium <br>
+            Starting at 18th level the Spirit Channeler merges with a lesser spirit. The Spirit Channeler selects a lesser spirit and its bonus is doubled and permanent. <br><br>
+            Spirit Guide <br>
+            Starting at 23rd level the Spirit Channeler gains the ability to summon a greater spirit to guide them when using spirit guide. <br>
+            Yuki Onna: A spirit of an ice woman that grants the Spirit Channeler the ability ot cast one grand Hydromancy spell per day.<br>
+            Shinigami: A spirit of a death that grants the Spirit Channeler the ability to cast one grand Necromancy spell per day.<br>
+            Oni: A spirit symbolic of war that when summoned targets all creatures within 10 meters of the Spirit Channeler and deals 15d12+ Intelligence Modifier psychic damage. <br><br>
+
+
+  <div style="color: white; text-align: left;">
+        <div class="subsection-title">
+          <h3>Old Guard</h3>
+            <br>
+            </div>
+            Totem Caller<br>
+            Starting at 1st level the Old Guard creates a wooden totem representing various aspects of nature. <br>
+            Beast: The Old Guard gains +2 to attack rolls and gains a natural weapon with the Cleave property that uses intelligence for attack and damage rolls that they are proficient in. <br>
+            Tree: The Old Guard gains +2 to Resistance Body and Resistance Mind checks and gains resistance 5 to all damage.
+            Water: The Old Guard gains a +2 to Evasion checks and when subjected to an effect that allows half damage on a success they take no damage instead.<br>
+            Wind: The Old Guard gains a +4 to Initiative and Evasion checks and has their movement speed increased by 4.<br><br>
+            Defender of the Wild <br>
+            Starting at 8th level the Old Guard become more in tune with nature and can create a second totem. <br><br>
+            Totem Investment <br>
+            Starting at 13th level the Totem Caller can create an improved totem.
+            Magical Beast: The Old Guard gains physical armor equal to half of their magical armor. <br>
+            Great Tree: The Old Guard gains resistance 10 to all damage and gains 10 hit points at the start of each of their turns as long as they are above 0 health and their AP maximum is above 0. <br>
+            River: The Old Guard no longer needs to roll Evasion checks to avoid opportunity attacks when leaving a hostile creatures melee range. <br>
+            Gale: When the The Old Guard rolls Initiative and Evasion checks the die roll is treated as a 10 if its lower. <br><br>
+            Shaman of the Seasons<br>
+            Starting at 18th level the Old Guard gains the ability to change their totem to match a season granting the following benefits. 
+            Winter: The Old Guard becomes immune to cold damage and gains levels in Endurance equal to their level.<br>
+            Autumn: The Old guard becomes immune to air damage and gains levels in Traverse Finesse equal to their level.<br>
+            Summer: The Old Guard becomes immune to fire damage and gains levels in Intimidate Charisma equal to their level.<br>
+            Spring: The Old Guard becomes immune to earth damage and gains levels in Knowledge Medical equal to their level.<br><br>
+            Solstice<br>
+            Starting at 23rd level the Old Guard can change the totems they have at the end of each full rest. 
+            <br>
+           <br>
+
+           <div style="color: white; text-align: left;">
+            <div class="subsection-title">
+              <h3>Cosmic Conduit</h3>
+              <br>
+                </div>
+                Stars Align<br>
+                Starting at 1st level the Cosmic Conduit can alter fate by harnessing cosmic energy. A number of times equal to their wits modifier per day the Cosmic Conduit can add 1d6 that failed potentially turning it into a success.<br><br>
+                Celestial Body <br>
+                Starting at 8th level the Cosmic Conduit gains the ability to channel cosmic energy into their spells. The Cosmic Conduit gains a pool of Cosmic Energy equal to their level. The Cosmic Conduit can spend a number of points equal to the tier of the spell being cast to increase any random numeric values by 50%. <br><br>
+                Starlight <br>  
+                Starting at 13th level the Cosmic Conduit gains the ability to create a 10-meter cube of starlight. Any creature that starts, enters, or ends its turn in the starlight takes 8d6+ Intelligence Modifier holy damage and must succeed a Resistance Body check or become blind until the end of its next turn. The starlight lasts for 1 round. <br><br>
+                Astral Form <br>
+                Starting at 18th level the Cosmic Conduit gains the ability to merge themselves with the cosmos. Once per day, they can take the appearance of space their body appearing as a black void filled with nebulas, stars, planets and other celestial bodies. While in this form the Cosmic Conduit can move through creatures and objects at half speed. The Cosmic Conduit can maintain this form for a number of rounds equal to their wits modifier. <br><br>
+                Starburst <br>
+                Starting at 23rd level the Cosmic Conduit gains the ability to create a ray of concentrated starlight. Once per day, the Cosmic Conduit targets a creature within 20 meters and deals 20d10 holy damage. This beam then leaps to 5 other creatures so long as the next creature is within 10 meters of the last target. A creature reduced to 0 health by this attack is slain and leaves no physical remains as they explode leaving behind a cloud of star dust. <br><br>
+               
+
+               
+    </div>
+
+    <div class="main-content">
+      <div style="text-align: center;">
+          <p style="font-weight: bold; text-decoration: underline;">Class Proficiencies</p>
+          <p>1 Melee Weapon</p>
+          <p>Light and Medium Shields</p>
+          <p>Light and Medium Armor</p>
+
+
+          <h3>Saves</h3>
+          Resistance Mind (Good)<br>
+          Resistance Body (Average)<br>
+          Evasion (Poor)<br>
+          <p></p>
+      </div>
+  </div>
+  
+  
+        
+    </div></div></div></div></div></div></div></div></div>
+</body>
+</html>

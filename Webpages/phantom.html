@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sparks | Phantom</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+        <link rel="stylesheet"
+        type="text/css" 
+        href="styles.css"/>
+
+        <style>
+            header {
+                width: 100%;
+            }
+
+            #centered-text-middle {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    position: absolute;
+    left: 50%;
+}
+
+#centered-text {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    
+  
+}
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+    $(function(){
+      $("#header-placeholder").load("a-header.html"); 
+    });
+    </script>
+    
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <div style="margin-top: 100px; color: white;">
+            <div class="main-content">
+                <div class="content-panel">
+                  <div class="section-title">
+                    Class Features
+        </div>
+              
+                        <br><br>
+                    <table class="class-table">
+                        <tr>
+                          <th>Level</th>
+                          <th>Class Bonus Statistics</th>
+                          <th>Class Features</th>
+                          <th>Skill Progression</th>
+                          <th>Stamina</th>
+                          <th>Maneuver Slots</th>
+                          <th>Hit Points</th>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>+2 Finesse, +1 Charisma</td>
+                          <td>Shadow Sigil & Subclass Feature</td>
+                          <td>3 Levels</td>
+                          <td>2</td>
+                          <td>4</td>
+                          <td>1d6</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>+2 Finesse, +2 Charisma</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>4</td>
+                          <td>4</td>
+                          <td>2d6</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>+3 Finesse, +2 Charisma</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>6</td>
+                          <td>4</td>
+                          <td>3d6</td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>+4 Finesse, +2 Charisma</td>
+                          <td>-</td>
+                          <td>6 Levels</td>
+                          <td>8</td>
+                          <td>6</td>
+                          <td>4d6</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>+5 Finesse, +3 Charisma</td>
+                            <td>Deathly Blades</td>
+                            <td>-</td>
+                            <td>10</td>
+                            <td>6</td>
+                            <td>5d6</td>
+                          </tr>
+                          <tr>
+                            <td>6</td>
+                            <td>+6 Finesse, +3 Charisma</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>12</td>
+                            <td>6</td>
+                            <td>6d6</td>
+                          </tr>
+                          <tr>
+                            <td>7</td>
+                            <td>+6 Finesse, +4 Charisma</td>
+                            <td>-</td>
+                            <td>9 Levels</td>
+                            <td>14</td>
+                            <td>6</td>
+                            <td>7d6</td>
+                          </tr>
+                          <tr>
+                            <td>8</td>
+                            <td>+7 Finesse, +4 Charisma</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>16</td>
+                            <td>8</td>
+                            <td>8d6</td>
+                          </tr>
+                          <tr>
+                            <td>9</td>
+                            <td>+8 Finesse, +4 Charisma</td>
+                            <td>Extra Feat</td>
+                            <td>-</td>
+                            <td>18</td>
+                            <td>8</td>
+                            <td>9d6</td>
+                          </tr>
+                          <tr>
+                            <td>10</td>
+                            <td>+10 Finesse, +5 Charisma</td>
+                            <td>Cloak of Shadow</td>
+                            <td>12 Levels</td>
+                            <td>20</td>
+                            <td>8</td>
+                            <td>10d6</td>
+                          </tr>
+                          <tr>
+                            <td>11</td>
+                            <td>+12 Finesse, +5 Charisma</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>22</td>
+                            <td>8</td>
+                            <td>11d6</td>
+                          </tr>
+                          <tr>
+                            <td>12</td>
+                            <td>+12 Finesse, +7 Charisma</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>24</td>
+                            <td>10</td>
+                            <td>12d6</td>
+                          </tr>
+                          <tr>
+                            <td>13</td>
+                            <td>+14 Finesse, +7 Charisma</td>
+                            <td>Subclass Feature</td>
+                            <td>15 Levels</td>
+                            <td>26</td>
+                            <td>10</td>
+                            <td>13d6</td>
+                          </tr>
+                          <tr>
+                            <td>14</td>
+                            <td>+16 Finesse, +7 Charisma</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>28</td>
+                            <td>10</td>
+                            <td>14d6</td>
+                          </tr>
+                          <tr>
+                            <td>15</td>
+                            <td>+19 Finesse, +10 Charisma</td>
+                            <td>Precise Puncture</td>
+                            <td>-</td>
+                            <td>30</td>
+                            <td>12</td>
+                            <td>15d6</td>
+                          </tr>
+                          <tr>
+                            <td>16</td>
+                            <td>+22 Finesse, +10 Charisma</td>
+                            <td>-</td>
+                            <td>18 Levels</td>
+                            <td>32</td>
+                            <td>12</td>
+                            <td>16d6</td>
+                          </tr>
+                          <tr>
+                            <td>17</td>
+                            <td>+22 Finesse, +13 Charisma</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>34</td>
+                            <td>12</td>
+                            <td>17d6</td>
+                          </tr>
+                          <tr>
+                            <td>18</td>
+                            <td>+25 Finesse, +13 Charisma</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>36</td>
+                            <td>12</td>
+                            <td>18d6</td>
+                          </tr>
+                    
+                          <tr>
+                            <td>19</td>
+                            <td>+28 Finesse, +13 Charisma</td>
+                            <td>-</td>
+                            <td>21 Levels</td>
+                            <td>38</td>
+                            <td>12</td>
+                            <td>19d6</td>
+                          </tr>
+                          <tr>
+                            <td>20</td>
+                            <td>+32 Finesse, +17 Charisma</td>
+                            <td>Trained Instincts</td>
+                            <td>-</td>
+                            <td>40</td>
+                            <td>12</td>
+                            <td>20d6</td>
+                          </tr>
+                          <tr>
+                            <td>21</td>
+                            <td>+36 Finesse, +17 Charisma</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>42</td>
+                            <td>14</td>
+                            <td>21d6</td>
+                          </tr>
+                          <tr>
+                            <td>22</td>
+                            <td>+36 Finesse, +21 Charisma</td>
+                            <td>-</td>
+                            <td>24 Levels</td>
+                            <td>44</td>
+                            <td>14</td>
+                            <td>22d6</td>
+                          </tr>
+                          <tr>
+                            <td>23</td>
+                            <td>+40 Finesse, +21 Charisma</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>46</td>
+                            <td>14</td>
+                            <td>23d6</td>
+                          </tr>
+                          <tr>
+                            <td>24</td>
+                            <td>+44 Finesse, +21 Charisma</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>48</td>
+                            <td>14</td>
+                            <td>24d6</td>
+                          </tr>
+                          <tr>
+                            <td>25</td>
+                            <td>+49 Finesse, +26 Charisma</td>
+                            <td>Creeping Death</td>
+                            <td>27 Levels</td>
+                            <td>50</td>
+                            <td>14</td>
+                            <td>25d6</td>
+                          </tr>
+                        </table>
+        
+        <br> <br>
+        <div class="section-title">
+          Class Features
+  </div>
+  <div style="color: white; text-align: left;">
+      <div id="centered-text-2">
+          Shadow Sigil
+      </div>
+      Stating at 1st level a Phantom gains a sigil as a sign of loyalty to an organization or faction that they have connections with. When presented to a faction agent the creature can gain one of the following benefits.<br><br>
+
+      Criminal Underworld <br>
+      % off all black market purchases equal to double the Phantoms Level <br><br>
+      
+      Seal of Order <br>
+      The Phantom is given a safe environment for sleep by its organization. In addition, the phantom is granted a % bonus of gold equal to equal to their level from their faction. <br><br>
+      
+      Freelancer/Diplomat<br>
+      The Phantom gains a bonus to all charisma skills equal to half their Phantom level rounded down (Minimum +1) <br> <br>
+      
+      In addition to the shadow sigil, Phantoms learn a special language that makes it easier for them to learn information about a certain area. Language is called "Code" and only phantoms know it. <br><br>               
+                       
+      Deathly Blades <br>
+      Starting at 5th level all attacks made by a Phantom ignore 10 resistance.<br><br>
+        
+        Cloak of Shadow <br>
+        Starting at 10th level a Phantom gains the ability to spend 6 AP and become invisible for 1 minute. <br><br>
+
+        Precise Puncture <br>
+        Starting at 15th level a Phantom gains the ability to puncture a target with deadly accuracy. For 10 stamina the phantom strikes a target with weapon that deals physical damage. On a hit the target takes 5d6 true damage and the target takes 10 points of true damage for every meter it walks, burrows or flies until the end of its next turn. <br><br>
+
+        Trained Instincts <br>
+        Starting at 20th level a Phantom gains the ability to spot traps and lies easier. The Phantom gains a +5 to all Intuition contests against Deception and a +5 to Sense Environment to find hidden objects or traps. <br><br>
+
+        Creeping Death <br>
+        Starting at 25th level a Phantom gains an additional 5 damage die-on attacks made with light or ranged weapons. <br><br>
+       <br><br>
+</div>
+
+    <div class="section-title">
+      Subclasses
+</div>
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>Thief</h3>
+    </div>
+    <br>
+    Practiced Hand<br>
+    Starting at 1st level a Thief phantom gains levels in the sleight of hand and sneak skills equal to their thief level. <br><br>
+    Magic Adept <br>
+    Starting at 3rd level a Thief Phantom gains the ability to use all magic items in their possession that require the mana for stamina instead. <br><br>    
+    Fast Footwork <br>
+    Starting at 8th level the movement speed of a Thief Phantom increases by 1 meter. This bonus increases by +1 at levels 12, 16, 20, and 24. <br><br>
+    Adept Handiwork <br>
+    Starting at 13th level the Thief Phantom gains the ability to use consumables, and activate equipment and magic items for 1 AP less (Minimum of 1). <br><br>
+    Acute Senses <br>
+    Starting at 18th level the Thief Phantom gains the ability to dodge effects with ease. When subjected to an evasion or overpower checks the phantom is only displaced or damaged half as much. <br><br>
+    Elusive <br>
+    Staring at 23rd level a Thief Phantom is Elusive physically and vocally. The Phantom gains levels in Deception and Evasion saves equal to their level. These skills stack with the freelancer/diplomat levels. <br><br>
+<div style="color: black; text-align: left;">
+      <div class="subsection-title">
+        <h3>Architect</h3>
+    </div>
+    <br>
+Inquisitive <br>
+Starting at 1st level the Architect gains a +5 bonus to intuition checks. <br><br>
+Tactician <br>
+Starting at 3rd level an Architect Phantom gains the ability to plan ahead. When initiative is rolled the Architect may rearrange the placement of allies in the initiative with each others scores.<br><br>
+Leadership <br>
+Starting at 8th level the architect grants a bonus to attack rolls and skill checks to themselves and allies they help or when helped equal to half their level. In addition, the architect may reroll any teamwork check they make twice and take the higher roll. <br><br>
+Connections <br>
+Starting at 13th level an Architect Phantom may select another Shadow Sigil. In addition when the Phantom rolls initiative the help action now costs 1 AP. <br><br>
+Multitasker <br>
+Starting at 18th level once per turn when the Architect Phantom uses the help Action they may attack once themselves. This feature is not subjected to effects or features that grant extra attacks. <br><br>
+Formation Expert <br>
+Starting at 23rd level when the Architect Phantom spends 20 stamina coordinating a deadly assault on a creature. Until the start of the phantom's next turn the Phantom and its allies' attacks deal an additional 5d4 true damage to the selected target. <br><br>
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>Assassin</h3>
+</div>
+<br>
+Ambush <br>
+Starting at 1st level an Assassin's critical range increases by 20 when unseen by a creature they attack. <br><br>
+Silent Shadow <br>
+Starting at 3rd level an Assassin learns to hide their movement. When the Assassin moves their movement makes no sound. <br><br>
+Disguise Master <br>
+Starting at 8th level an Assassin gains the ability to change their appearance. The Assassin may change their face to an alternate one they have made. Doing so can be done so swiftly it costs no AP. An Assassin only has one alternate face they can use. <br><br>
+Killing Intent <br>
+Starting at 13th level an Assassin gains the ability to exude a killing intent. When the Assassin uses this ability it chooses a creature within 15 meters it can see. The target must succeed on a Resistance (Mind) save or become fearful of the Assassin. <br><br>
+Silent Death <br>
+Starting at 18th level an Assassin learns to prevent a creature from making noise. When the Assassin makes a successful attack the target must succeed on a Resistance (Body) save or become silenced for 1 minute. <br><br>
+Vital Sense <br>
+Starting at 23rd level an Assassin gains the ability to tell when a creature is to die. When the assassin hits a creature they learn the current health of the creature as it is not an outsider, undead, or golem. <br><br>
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>Pirate</h3>
+</div>
+<br>
+Pirate's Proficiency <br>
+Starting at 1st level a Pirate gains proficiency in firearms and seaships. <br><br>
+Swashbuckler <br>
+Starting at 3rd level a Pirate no longer suffers penalties with ranged attacks when a creature is within melee range. <br><br>
+Sailor's Balance <br>
+Starting at 8th level a Pirate gains levels in Balance and Traverse Finesse equal to their level. <br><br>
+Iron Liver <br>
+Starting at 13th level a Pirate gains the ability to drink any liquid without being poisoned. In addition, the Pirate gains a +5 bonus to all resistance checks against poison. <br><br>
+Drunkard's Luck <br>
+Starting at 18th level a Pirate gains the ability to reroll any attack roll or check that they make. This feature can only be used once per combat. <br><br>
+Dirty Fighter <br>
+The Pirate gains the Dirty Tactics Maneuver and can use it without spending stamina. <br><br>
+
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>Charlatan</h3>
+</div>
+<br>
+Confidence <br>
+Starting at 1st level a Charlatan gains a +5 bonus to all Deception checks. <br><br>
+Distraction <br>
+Starting at 3rd level a Charlatan gains the ability to create a distraction to create a better opportunity to strike. When the Charlatan makes an attack on a creature that can understand them, they can roll deception against the targets intuition. On a successful check the Charlatan gains a bonus on the attack roll equal to the difference in the results. The Charlatan may use this ability once per turn. <br><br>
+Snake Oil Salesman <br>
+Starting at 8th level a Charlatan gains the ability to sell items for 50% more than their value. <br><br>
+Con Artist <br>
+Starting at 13th level a Charlatan gains the ability to create an illusion of a small object or creature. Any creature that interacts with the illusion must succeed on a Intuition check or fall under the effects of the <a href="mental-acrobatics.html">Mental Acrobatics</a> spell. <br><br>
+Vanishing Act <br>
+Starting at 18th level a Charlatan gains the ability to disappear from sight. A number of times equal to their charisma modifier, the charlatan can teleport to a space within 10 meters. <br><br>
+Rewrite Incident <br>
+Starting at 23rd level a Charlatan gains the ability to rewrite an event that has happened in another creature's mind. Once per day the Charlatan can force a creature to succeed a Resistance (Mind) save or fall under the effects of the Alter Memory spell. <br><br>
+
+
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>Honeypot</h3>
+</div>
+<br>
+Alluring Words <br>
+Starting at 1st level a Honeypot gains a +5 bonus to all Allure checks. <br><br>
+Siren's Tongue <br>
+Starting at 3rd level a Honeypot gains the ability to charm a creature thats not hostile and can understand them. The Honeypot can use this ability a number of times equal to their charisma modifier. The target must succeed on a Resistance (Mind) save or be charmed for 1 hour. <br><br>
+Master Ambusher <br>
+Starting at 8th level a Honeypot gains the ability to set up an ambush on a creature. A creature that is charmed by the Honeypot is stunned when the honeypot or any creatures they consider an ally attacks the creature. This ability does not function on creatures hostile to the Honeypot. <br><br>
+Master of Speech <br>
+Starting at 13th level a Honeypot gains the ability to speak any language. In addition the Honeypot can attempt to temporarily dominate a creature it has charmed. The target must succeed on Resistance (Mind) save or become dominated by the Honeypot for 1 minute. After this minute ends the creature knows it was charmed.<br><br>
+Disarming Beauty <br>
+Starting at 18th level a Honeypot any creature that attempts the harm the only the Honeypot that can be attracted to them must succeed on a Resistance (Mind) save or be forced to select a new target or waste the attack, maneuver, spell or ability. <br><br>
+Web of Lies <br>
+Starting at 23rd level a Honeypot can choose to succeed on a failed Charisma check, force a creature to reroll against its siren's tongue or disarming beauty. A Honeypot can only use this ability once per roll. The Honeypot can use this ability a number of times equal to their charisma modifier.  <br><br>
+
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>Ninja</h3>
+</div>
+<br>
+Shinobi <br>
+Starting at 1st level a Ninja deals an additional 1d6 true damage to creatures who are unaware of it. This damage increases by 1d6 for every 3 levels they possess.<br><br>
+Shadow Stealth <br>
+Starting at 3rd level a Ninja gains the ability to hide in plain sight when in Dim Light or Darkness. <br><br>
+Ninja's Agility <br>
+Starting at 8th level when a Ninja makes an attack they can attempt a sneak check once per turn. <br><br>
+Ninja's Reflexes <br>
+Starting at 13th level a Ninja gains the ability to dodge attacks with ease. When a Ninja is hit by an attack roll they can use 5 stamina to take half damage instead. <br><br>
+Ninja's Precision <br>
+Starting at 18th level all weapons a Ninja uses gain a level of deadly and the hidden property. <br><br>
+Afterimages <br>
+Starting at 23rd level a Ninja gains the ability to create an afterimage of itself. When the ninja lands a critical or decisive strike they can roll an extra attack for no AP. <br><br>
+
+</div>
+
+    </div>
+    <div class="main-content">
+      <div style="text-align: center;">
+          <p style="font-weight: bold; text-decoration: underline;">Class Proficiencies</p>
+          <p>1 Light Melee or Ranged Weapon</p>
+          <p>2 Tools of Choice</p>
+          <p>Light Armor</p>
+          <p>Lockpicking Tools</p>
+
+          <h3>Saves</h3>
+          Resistance (Mind) (Average)<br>
+          Resistance (Body) (Poor)<br>
+          Evasion (Good)<br>
+          <p></p>
+      </div>
+  </div>
+  
+        
+    </div></div></div></div></div></div></div></div></div>
+</body>
+</html>

@@ -1,0 +1,492 @@
+﻿Organized Spells by School and Level:
+==================================================
+
+Aeromancy:
+---------
+
+  Minor:
+    - Air Bubble
+    - Air Bubble
+    - Electric Pulse
+    - Electric Pulse
+    - Endless Lightning
+    - Endless Lightning
+    - Evasion
+    - Evasion
+    - Gust
+    - Gust
+    - Lightning Bolt
+    - Lightning Talon
+    - Lightning Talon
+    - Mass Vacuum
+    - Mass Vacuum
+    - Shocking Touch
+    - Shocking Touch
+    - Static Charge
+    - Static Charge
+    - Thunderstorm
+    - Tornado
+    - Tornado
+    - Vacuum
+    - Vacuum
+    - Wall of Wind
+    - Wall of Wind
+    - Zap
+
+Arcanomancy:
+-----------
+
+  Minor:
+    - Arcane Shield
+    - Arcane Ward
+    - Armor of Magic
+    - Armor of Magic
+    - Banish
+    - Banish
+    - Bind Creature
+    - Bind Creature
+    - Finger of Doom
+    - Finger of Doom
+    - Gwenivene's Gambit
+    - Gwenivene's Gambit
+    - Identify
+    - Identify
+    - Magic Dome
+    - Magic Sense
+    - Sleep
+    - Sleep
+    - Spectral Weapon
+    - Stillness of The Mind
+    - Stillness of The Mind
+    - Summoner's Circle
+    - Summoner's Circle
+    - Symbol of Power
+    - Symbol of Power
+    - Telepathy
+    - Telepathy
+    - Telepathy
+    - Upon A Star
+    - Upon A Star
+
+Biomancy:
+--------
+
+  Minor:
+    - Adaptive Camouflage
+    - Blindness
+    - Carapace of the Insect
+    - Echolocation
+    - Echolocation
+    - Eyes of the Beast
+    - Final Evolution
+    - Gift of the Hydra
+    - Gift of the Hydra
+    - Mutate
+    - Mutate
+    - Perfect Regeneration
+    - Serpent's Fangs
+    - Steal Genetic Sequence
+    - Venomous Sludge
+
+Chronomancy:
+-----------
+
+  Minor:
+    - Alter Gravity
+    - Continuity Error
+    - Continuity Error
+    - Deja Vu
+    - Deja Vu
+    - Demiplane
+    - Dimensional Lock
+    - Dimensional Lock
+    - Foresight
+    - Foresight
+    - Greater Planar Rift
+    - Greater Planar Rift
+    - Infinity
+    - Omnipresence
+    - Omnipresence
+    - Planar Rift
+    - Reciprocating Dimensions
+    - Reciprocating Dimensions
+    - Rewind Creature
+    - Rewind Creature
+    - Scrying
+    - Slow
+    - Slow
+    - Speed
+    - Speed
+    - Teleport
+    - Time Loop
+    - Void Swap
+    - Void Swap
+    - Watch History
+
+Demonology:
+----------
+
+  Minor:
+    - Beautiful World
+    - Beautiful World
+    - Cackling End
+    - Cackling End
+    - Conjure Fiend
+    - Curse
+    - Curse
+    - Demonic Embodiment
+    - Demonic Tether
+    - Enthralling Invitation
+    - Enthralling Invitation
+    - False Miracle
+    - Fiendish Beguile
+    - Gut of Lead
+    - Liar's Lash
+    - Ray of the Vile
+    - Repurpose Vitality
+    - Sphere of Agony
+    - Unholy Burst
+    - Visions of the Mire
+    - Visions of the Mire
+
+Enchantment:
+-----------
+
+  Minor:
+    - Bravery
+    - Bravery
+    - Calm
+    - Calm
+    - Charm
+    - Cloud Mind
+    - Cloud Mind
+    - Confession
+    - Confession
+    - Cowardice
+    - Cowardice
+    - Devourer of Hope
+    - Devourer of Hope
+    - Enhance Body
+    - Enhance Body
+    - Enslave
+    - Enslave
+    - Euphoria
+    - Euphoria
+    - Heighten Mind
+    - Heighten Mind
+    - Hypnosis
+    - Ignore
+    - Ignore
+    - Mental Acrobatics
+    - Mental Acrobatics
+    - Reframe Perspective
+    - Reframe Perspective
+
+Geomancy:
+--------
+
+  Minor:
+    - Armor of Stone
+    - Armor of Stone
+    - Create Crystal Golem
+    - Crush
+    - Crush
+    - Crystal Spikes
+    - Crystal Spikes
+    - Crystalize
+    - Crystalize
+    - Dancing Grains
+    - Earthquake
+    - Earthquake
+    - Hurl Earth
+    - Hurl Earth
+    - Incarnate of Shards
+    - Incarnate of Shards
+    - Isolated Tectonics
+    - Lance of Tar
+    - Lance of Tar
+    - Loosen Earth
+    - Loosen Earth
+    - Magnetize
+    - Magnetize
+    - Mend Metal
+    - Mend Metal
+    - Mold Metal Ore
+    - Mold Metal Ore
+    - Oil Field
+    - Oil Field
+    - Reshape Earth
+    - Reshape Earth
+    - Reshape Land
+    - Reshape Land
+    - Sinkhole
+    - Sinkhole
+    - Siphon Venom
+    - Siphon Venom
+
+Heavenly:
+--------
+
+  Minor:
+    - Angel's Grace
+    - Angel's Grace
+    - Beckon Angel
+    - Blood to Ichor
+    - Blood to Ichor
+    - Celestial Linguistics
+    - Celestial Linguistics
+    - Celestial Shroud
+    - Celestial Shroud
+    - Celestial Tongue
+    - Celestial Tongue
+    - Celestial Understanding
+    - Celestial Understanding
+    - Grace
+    - Halo's Eminence
+    - Halo's Eminence
+    - Pillars of Ruin
+    - Pillars of Ruin
+    - Purge
+    - Purge
+    - Rejuvenating Light
+    - Rejuvenating Light
+    - Resurrection
+    - Resurrection
+    - Shield of Light
+    - Shield of Light
+
+Hydromancy:
+----------
+
+  Minor:
+    - Armor of Ice
+    - Armor of Ice
+    - Blizzard
+    - Blizzard
+    - Chilling Touch
+    - Chilling Touch
+    - Create Ice Golem
+    - Dueling Waves
+    - Freeze Liquid
+    - Freeze Liquid
+    - Ice Spikes
+    - Ice Spikes
+    - Ice Wall
+    - Ice Wall
+    - Mending Waters
+    - Mending Waters
+    - Rain
+    - Rain
+    - Shape Ice
+    - Shape Ice
+    - Shards of Ice
+    - Shards of Ice
+    - Shatter
+    - Shatter
+    - Soothing Fog
+    - Soothing Fog
+    - Tomb of Ice
+    - Tomb of Ice
+    - Tsunami
+    - Tsunami
+    - Water Tentacle
+    - Water Tentacle
+
+Nature:
+------
+
+  Minor:
+    - Cloud Scribe
+    - Cloud Scribe
+    - Envelop
+    - Envelop
+    - Find Animals
+    - Plant Growth
+    - Plant Growth
+    - Poison Cloud
+    - Poison Cloud
+    - Poison Splash
+    - Poison Splash
+    - Rebirth
+    - Rebirth
+    - The Hunt
+    - The Hunt
+
+Necromancy:
+----------
+
+  Minor:
+    - Armor of Bones
+    - Armor of Bones
+    - Banshee's Cry
+    - Dance with Death
+    - Dance with Death
+    - False Life
+    - False Life
+    - Funeral Rites
+    - Funeral Rites
+    - Gaze of Flesh
+    - Gaze of Flesh
+    - Grasp of The Grave
+    - Grasp of The Grave
+    - Leech Positive Energy
+    - Leech Positive Energy
+    - Mimic Life
+    - Plague Cloud
+    - Plague Cloud
+    - Shroud of Ghosts
+    - Shroud of Ghosts
+    - Transfer Vitality
+    - Transfer Vitality
+    - Transfer Vitality
+    - Transport through Decay
+    - Transport through Decay
+
+Otherworldly:
+------------
+
+  Minor:
+    - Anagisa
+    - Anagisa
+    - Duplicate
+    - Duplicate
+    - False Eyes
+    - False Eyes
+    - False Fortitude
+    - False Fortitude
+    - False Mana
+    - False Mana
+    - Gates of The Abyss
+    - Gates of The Abyss
+    - Key of the Mind
+    - Key of the Mind
+    - Leeching Grasp
+    - Leeching Grasp
+    - Mirage
+    - Mirage
+    - Rend Reality
+    - Rend Reality
+    - Void Calling
+    - Void Calling
+    - Whispering Madness
+    - Whispering Madness
+
+Pneumamancy:
+-----------
+
+  Minor:
+    - Disparate
+    - Disparate
+    - Essence Vampirism
+    - Essence Vampirism
+    - Genesis
+    - Genesis
+    - Imprison Essence
+    - Projection
+    - Projection
+    - Rejuvenation
+    - Rejuvenation
+    - Ruination
+    - Ruination
+    - Spectral Graveyard
+    - Spectral Graveyard
+    - Sunder
+    - Sunder
+
+Pyromancy:
+---------
+
+  Minor:
+    - Blinding Flash
+    - Blinding Flash
+    - Catastrophe
+    - Catastrophe
+    - Cauterize Wounds
+    - Cauterize Wounds
+    - Columns of Fire
+    - Columns of Fire
+    - Control Fire
+    - Create Magma Golem
+    - Finger Flame
+    - Fireball
+    - Firework
+    - Firework
+    - Flame Shroud
+    - Flame Shroud
+    - Flame Web
+    - Flame Web
+    - Flames of the Phoenix
+    - Flames of the Phoenix
+    - Flaming Weapon
+    - Flaming Weapon
+    - Heat Object
+    - Heat Object
+    - Heatwave
+    - Heatwave
+    - Hurl Fire
+    - Hurl Fire
+    - Ignite
+    - Ignite
+    - Smoke Screen
+    - Smoke Screen
+    - Whip of Flame
+    - Whip of Flame
+
+Tenemancy:
+---------
+
+  Minor:
+    - Absolute Darkness
+    - Absolute Darkness
+    - Banishment
+    - Banishment
+    - Dimming
+    - Dimming
+    - Kumulipo
+    - Kumulipo
+    - Paralysis
+    - Paralysis
+    - Shadow Champion
+    - Shadow Champion
+    - Shadow Leap
+    - Shadow Leap
+    - Silencing Darkness
+    - Silencing Darkness
+    - Umbral Grasp
+    - Umbral Grasp
+    - Umbral Servant
+    - Umbral Servant
+    - Umbral Tether
+    - Umbral Tether
+
+Transmutation:
+-------------
+
+  Minor:
+    - Ascendant Element
+    - Condense
+    - Condense
+    - Conduction
+    - Conduction
+    - Contamination
+    - Contamination
+    - Create Material
+    - Create Material
+    - Crown of Honey
+    - Crown of Honey
+    - Greater Create Material
+    - Greater Create Material
+    - Greater Transmute Material
+    - Greater Transmute Material
+    - Harness Water
+    - Harness Water
+    - Polymorph
+    - Polymorph
+    - Swarm of Insects
+    - Swarm of Insects
+    - Transmute Material
+    - Transmute Material
+    - Tyrant's Hand
+    - Warding Wine
+    - Warding Wine
+

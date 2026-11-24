@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Sheet — Sparks of Dynasty</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="description" content="Interactive character sheet for the Sparks of Dynasty tabletop RPG.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="character-sheet.css">
+</head>
+<body class="character-sheet-page">
+
+<!-- Header (loaded from shared header) -->
+<div id="header-placeholder"></div>
+
+<div class="sheet-container">
+
+    <!-- Title Bar -->
+    <div class="sheet-title-bar">
+        <h1>⚔ Character Sheet ⚔</h1>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="sheet-actions">
+        <button class="btn btn-primary" onclick="saveSheet()" id="btn-save">💾 Save</button>
+        <button class="btn" onclick="exportSheet()" id="btn-export">📥 Export JSON</button>
+        <button class="btn" onclick="document.getElementById('import-file').click()" id="btn-import">📤 Import JSON</button>
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importSheet(event)">
+        <button class="btn btn-danger" onclick="clearSheet()" id="btn-clear">🗑 New Sheet</button>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="sheet-tabs" id="sheet-tabs">
+        <div class="sheet-tab active" data-tab="tab-info">Character Info</div>
+        <div class="sheet-tab" data-tab="tab-skills">Skills & Tools</div>
+        <div class="sheet-tab" data-tab="tab-combat">Combat</div>
+        <div class="sheet-tab" data-tab="tab-spells">Spells & Maneuvers</div>
+        <div class="sheet-tab" data-tab="tab-equipment">Equipment</div>
+        <div class="sheet-tab" data-tab="tab-modifiers">Modifiers & Features</div>
+    </div>
+
+    <!-- ==================== TAB 1: CHARACTER INFO ==================== -->
+    <div class="tab-content active" id="tab-info">
+
+        <!-- Identity Panel -->
+        <div class="panel" id="panel-identity">
+            <div class="panel-inner"></div>
+            <div class="panel-header"><span class="icon">📜</span> Identity</div>
+            <div class="two-col">
+                <div>
+                    <div class="field-group">
+                        <label class="field-label">Name</label>
+                        <input class="field-input" type="text" id="char-name" placeholder="Character Name" data-save="charName">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Race</label>
+                        <select class="field-select" id="char-race" data-save="charRace">
+                            <option value="">— Select Race —</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Alignment</label>
+                        <input class="field-input" type="text" id="char-alignment" placeholder="e.g. Chaotic Neutral" data-save="charAlignment">
+                    </div>
+                </div>
+                <div>
+                    <div class="field-group">
+                        <label class="field-label">Class 1</label>
+                        <select class="field-select" id="char-class1" data-save="charClass1">
+                            <option value="">— Select Class —</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Class 1 Lvl</label>
+                        <input class="field-input small" type="number" id="char-class1-level" value="1" min="1" max="25" data-save="charClass1Level">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Class 2</label>
+                        <select class="field-select" id="char-class2" data-save="charClass2">
+                            <option value="">— None —</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Class 2 Lvl</label>
+                        <input class="field-input small" type="number" id="char-class2-level" value="1" min="1" max="25" data-save="charClass2Level">
+                    </div>
+                </div>
+            </div>
+            <div class="two-col" style="margin-top:10px">
+                <div class="field-group">
+                    <label class="field-label">Subclass 1</label>
+                    <input class="field-input" type="text" id="char-subclass1" placeholder="Subclass" data-save="charSubclass1">
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Subclass 2</label>
+                    <input class="field-input" type="text" id="char-subclass2" placeholder="Subclass" data-save="charSubclass2">
+                </div>
+            </div>
+            <div class="three-col" style="margin-top:10px">
+                <div class="field-group">
+                    <label class="field-label">Total Level</label>
+                    <input class="field-input small" type="text" id="char-total-level" value="1" readonly>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Experience</label>
+                    <input class="field-input small" type="number" id="char-xp" value="0" min="0" data-save="charXP">
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Gold</label>
+                    <input class="field-input small" type="number" id="char-gold" value="0" min="0" data-save="charGold">
+                </div>
+            </div>
+        </div>
+
+        <!-- Racial Info -->
+        <div class="panel" id="panel-race-info" style="display:none">
+            <div class="panel-inner"></div>
+            <div class="panel-header"><span class="icon">🧬</span> Racial Traits</div>
+            <div id="race-info-content" style="font-size:0.9em; line-height:1.6; color:var(--text-secondary);"></div>
+        </div>
+
+        <!-- Statistics Panel -->
+        <div class="panel" id="panel-stats">
+            <div class="panel-inner"></div>
+            <div class="panel-header"><span class="icon">📊</span> Statistics</div>
+            <div style="overflow-x:auto">
+            <table class="stat-table" id="stat-table">
+                <thead>
+                    <tr>
+                        <th>Statistic</th>
+                        <th>Base</th>
+                        <th>Primary</th>
+                        <th>Secondary</th>
+                        <th>Leveling</th>
+                        <th>Permanent</th>
+                        <th>Temporary</th>
+                        <th>Drain</th>
+                        <th>Total</th>
+                        <th>Modifier</th>
+                    </tr>
+                </thead>
+                <tbody id="stat-body">
+                    <!-- Rows generated by JS -->
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <!-- Reference Art -->
+        <div class="panel">
+            <div class="panel-inner"></div>
+            <div class="panel-header"><span class="icon">🎨</span> Reference Art / Notes</div>
+            <textarea class="features-textarea" id="char-notes" placeholder="Paste character description, notes, or backstory here..." data-save="charNotes"></textarea>
+        </div>
+    </div>
+
+    <!-- ==================== TAB 2: SKILLS & TOOLS ==================== -->
+    <div class="tab-content" id="tab-skills">
+        <div class="two-col">
+            <div class="panel" id="panel-skills">
+                <div class="panel-inner"></div>
+                <div class="panel-header"><span class="icon">🎯</span> Skills</div>
+                <div class="skill-row" style="border-bottom:1px solid rgba(139,69,19,0.4); padding-bottom:8px; margin-bottom:4px;">
+                    <div class="skill-header">Skill</div>
+                    <div class="skill-header" style="text-align:center">Level</div>
+                    <div class="skill-header" style="text-align:center">Stat Bonus</div>
+                    <div class="skill-header" style="text-align:center">Modifier</div>
+                </div>
+                <div id="skills-list">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <div class="panel" id="panel-tools">
+                <div class="panel-inner"></div>
+                <div class="panel-header"><span class="icon">🔧</span> Tool Proficiencies</div>
+                <div class="skill-row" style="border-bottom:1px solid rgba(139,69,19,0.4); padding-bottom:8px; margin-bottom:4px;">
+                    <div class="skill-header">Tool</div>
+                    <div class="skill-header" style="text-align:center">Level</div>
+                    <div class="skill-header" style="text-align:center">Stat Bonus</div>
+                    <div class="skill-header" style="text-align:center">Modifier</div>
+                </div>
+                <div id="tools-list">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB 3: COMBAT ==================== -->
+    <div class="tab-content" id="tab-combat">
+
+        <!-- Core Combat Stats -->
+        <div class="panel">
+            <div class="panel-inner"></div>
+            <div class="panel-header"><span class="icon">🛡</span> Defense & Resources</div>
+            <div class="three-col">
+                <div>
+                    <div class="field-group">
+                        <label class="field-label">Armor Class</label>
+                        <input class="field-input small" type="text" id="combat-ac" value="0" readonly>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Speed</label>
+                        <input class="field-input small" type="text" id="combat-speed" data-save="combatSpeed" placeholder="5">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Initiative</label>
+                        <input class="field-input small" type="text" id="combat-initiative" value="-4" readonly>
+                    </div>
+                </div>
+                <div>
+                    <div class="field-group">
+                        <label class="field-label">Crit/Decisive</label>
+                        <input class="field-input small" type="text" id="combat-crit" value="0" readonly>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Phys. Armor</label>
+                        <input class="field-input small" type="number" id="combat-phys-armor" value="0" data-save="combatPhysArmor">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Magic Armor</label>
+                        <input class="field-input small" type="number" id="combat-magic-armor" value="0" data-save="combatMagicArmor">
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">True Armor</label>
+                        <input class="field-input small" type="number" id="combat-true-armor" value="0" data-save="combatTrueArmor">
+                    </div>
+                </div>
+                <div>
+                    <!-- Health -->
+                    <div class="resource-bar-container">
+                        <div class="resource-bar-label">
+                            <span style="color:var(--hp-green)">❤ Health</span>
+                            <span><input class="field-input small" type="number" id="combat-hp-current" value="0" data-save="combatHPCurrent" style="width:50px; display:inline-block;"> / <span id="combat-hp-max">0</span></span>
+                        </div>
+                        <div class="resource-bar"><div class="resource-bar-fill hp" id="hp-bar" style="width:100%"></div></div>
+                    </div>
+                    <!-- Mana -->
+                    <div class="resource-bar-container" style="margin-top:12px">
+                        <div class="resource-bar-label">
+                            <span style="color:var(--mana-blue)">✦ Mana</span>
+                            <span><input class="field-input small" type="number" id="combat-mana-current" value="0" data-save="combatManaCurrent" style="width:50px; display:inline-block;"> / <span id="combat-mana-max">0</span></span>
+                        </div>
+                        <div class="resource-bar"><div class="resource-bar-fill mana" id="mana-bar" style="width:100%"></div></div>
+                    </div>
+                    <!-- Stamina -->
+                    <div class="resource-bar-container" style="margin-top:12px">
+                        <div class="resource-bar-label">
+                            <span style="color:var(--stamina-orange)">⚡ Stamina</span>
+                            <span><input class="field-input small" type="number" id="combat-stamina-current" value="0" data-save="combatStaminaCurrent" style="width:50px; display:inline-block;"> / <span id="combat-stamina-max">0</span></span>
+                        </div>
+                        <div class="resource-bar"><div class="resource-bar-fill stamina" id="stamina-bar" style="width:100%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="panel-divider">
+
+            <!-- Resistances -->
+            <div class="three-col">
+                <div class="field-group">
+                    <label class="field-label">Resist (Mind)</label>
+                    <input class="field-input small" type="text" id="combat-resist-mind" value="-4" readonly>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Resist (Body)</label>
+                    <input class="field-input small" type="text" id="combat-resist-body" value="-4" readonly>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Evasion</label>
+                    <input class="field-input small" type="text" id="combat-evasion" value="-4" readonly>
+                </div>
+            </div>
+        </div>
+
+        <!-- Armor & Shield -->
+        <div class="panel">
+            <div class="panel-inner"></div>
+            <div class="panel-header"><span class="icon">🪖</span> Armor & Shield</div>
+            <div class="two-col">
+                <div>
+                    <div class="field-group">
+                        <label class="field-label">Armor</label>
+                        <select class="field-select" id="combat-armor" data-save="combatArmor">
+                            <option value="">— None —</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">AC</label>
+                        <input class="field-input small" type="text" id="armor-ac-value" value="0" readonly>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Armor Penalty</label>
+                        <input class="field-input small" type="text" id="armor-penalty" value="0" readonly>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Finesse Bonus</label>
+                        <input class="field-input small" type="text" id="armor-finesse" value="0" readonly>
+                    </div>
+                </div>
+                <div>
+                    <div class="field-group">
+                        <label class="field-label">Shield</label>
+                        <select class="field-select" id="combat-shield" data-save="combatShield">
+                            <option value="">— None —</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Shield AC</label>
+                        <input class="field-input small" type="text" id="shield-ac-value" value="0" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weapons -->
+        <div class="panel">
+            <div class="panel-inner"></div>
+            <div class="panel-header"><span class="icon">⚔</span> Weapons</div>
+            <div class="combat-grid" id="weapons-container">
+                <!-- 4 Weapon cards generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB 4: SPELLS & MANEUVERS ==================== -->
+    <div class="tab-content" id="tab-spells">
+        <div class="two-col">
+            <!-- Spells Column -->
+            <div>
+                <div class="panel">
+                    <div class="panel-inner"></div>
+                    <div class="panel-header"><span class="icon">✨</span> Spells</div>
+
+                    <div class="three-col" style="margin-bottom:14px">
+                        <div class="field-group">
+                            <label class="field-label">Spell DC 1</label>
+                            <input class="field-input small" type="text" id="spell-dc1" value="0" readonly>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Spell Atk 1</label>
+                            <input class="field-input small" type="text" id="spell-atk1" value="0" readonly>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Avail. Mana</label>
+                            <input class="field-input small" type="text" id="spell-mana-avail" value="0" readonly>
+                        </div>
+                    </div>
+                    <div class="two-col" style="margin-bottom:14px">
+                        <div class="field-group">
+                            <label class="field-label">Spell DC 2</label>
+                            <input class="field-input small" type="text" id="spell-dc2" value="0" readonly>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Spell Atk 2</label>
+                            <input class="field-input small" type="text" id="spell-atk2" value="0" readonly>
+                        </div>
+                    </div>
+
+                    <div id="spell-tiers">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Maneuvers Column -->
+            <div>
+                <div class="panel">
+                    <div class="panel-inner"></div>
+                    <div class="panel-header"><span class="icon">💥</span> Martial Maneuvers</div>
+
+                    <div class="three-col" style="margin-bottom:14px">
+                        <div class="field-group">
+                            <label class="field-label">DC 1</label>
+                            <input class="field-input small" type="text" id="maneuver-dc1" value="0" readonly>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Atk Mod 1</label>
+                            <input class="field-input small" type="text" id="maneuver-atk1" value="0" readonly>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Avail. Stamina</label>
+                            <input class="field-input small" type="text" id="maneuver-stamina-avail" value="0" readonly>
+                        </div>
+                    </div>
+                    <div class="two-col" style="margin-bottom:14px">
+                        <div class="field-group">
+                            <label class="field-label">DC 2</label>
+                            <input class="field-input small" type="text" id="maneuver-dc2" value="0" readonly>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Atk Mod 2</label>
+                            <input class="field-input small" type="text" id="maneuver-atk2" value="0" readonly>
+                        </div>
+                    </div>
+
+                    <div id="maneuver-tiers">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB 5: EQUIPMENT ==================== -->
+    <div class="tab-content" id="tab-equipment">
+        <div class="two-col">
+            <div class="panel">
+                <div class="panel-inner"></div>
+                <div class="panel-header"><span class="icon">💍</span> Magic Rings</div>
+                <div id="rings-list">
+                    <!-- 10 ring slots generated by JS -->
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-inner"></div>
+                <div class="panel-header"><span class="icon">👤</span> Body Equipment</div>
+                <div class="equip-grid" id="body-equip-list">
+                    <!-- Body slots generated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB 6: MODIFIERS & FEATURES ==================== -->
+    <div class="tab-content" id="tab-modifiers">
+        <div class="two-col">
+            <div class="panel">
+                <div class="panel-inner"></div>
+                <div class="panel-header"><span class="icon">⚙</span> Cell Modifiers</div>
+                <div class="modifier-grid" id="modifiers-grid">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-inner"></div>
+                <div class="panel-header"><span class="icon">⭐</span> Features & Abilities</div>
+                <textarea class="features-textarea" id="features-text" placeholder="List your features, racial abilities, class abilities, feats, etc..." data-save="featuresText" style="min-height:500px"></textarea>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /.sheet-container -->
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Scripts -->
+<script src="character-sheet.js"></script>
+<script>
+    // Load shared header
+    fetch('a-header.html')
+        .then(r => r.text())
+        .then(html => { document.getElementById('header-placeholder').innerHTML = html; })
+        .catch(() => {});
+</script>
+</body>
+</html>

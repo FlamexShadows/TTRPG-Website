@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparks | Conditions</title>
+    <meta name="description" content="All conditions and status effects in Sparks of Dynasty with their rules and mechanics.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $("#header-placeholder").load("a-header.html"); 
+        });
+    </script>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <div class="main-content">
+        <div class="content-panel">
+            <h2>Conditions</h2>
+            <p class="conditions-header-desc">
+                Conditions are status effects and afflictions that modify a creature's capabilities, defenses, or actions in combat. Unless otherwise stated, conditions persist until removed by a specific recovery check, ability, or duration expiration.
+            </p>
+
+            <div class="condition-search-container">
+                <input type="text" id="conditionSearch" class="condition-search-input" placeholder="Search conditions (e.g. Bleeding, Blind, Freezing, Dying)..." aria-label="Search conditions">
+            </div>
+
+            <div class="conditions-quick-index">
+                <a href="#bleeding">Bleeding</a>
+                <a href="#blind">Blind</a>
+                <a href="#burning">Burning</a>
+                <a href="#charmed">Charmed</a>
+                <a href="#corroding">Corroding</a>
+                <a href="#crippled">Crippled</a>
+                <a href="#cursed">Cursed</a>
+                <a href="#deaf">Deaf</a>
+                <a href="#diseased">Diseased</a>
+                <a href="#dominated">Dominated</a>
+                <a href="#draining">Draining</a>
+                <a href="#dying">Dying</a>
+                <a href="#exhausted">Exhausted</a>
+                <a href="#fearful">Fearful</a>
+                <a href="#freezing">Freezing</a>
+                <a href="#grappling">Grappling</a>
+                <a href="#hastened">Hastened</a>
+                <a href="#hopeless">Hopeless</a>
+                <a href="#inspired">Inspired</a>
+                <a href="#invisible">Invisible</a>
+                <a href="#knocked-down">Knocked Down</a>
+                <a href="#motivated">Motivated</a>
+                <a href="#nauseated">Nauseated</a>
+                <a href="#paralyzed">Paralyzed</a>
+                <a href="#petrified">Petrified</a>
+                <a href="#pinned">Pinned</a>
+                <a href="#poisoned">Poisoned</a>
+                <a href="#possessed">Possessed</a>
+                <a href="#severed">Severed</a>
+                <a href="#shocked">Shocked</a>
+                <a href="#shoved">Shoved</a>
+                <a href="#silenced">Silenced</a>
+                <a href="#slowed">Slowed</a>
+                <a href="#stunned">Stunned</a>
+                <a href="#tired">Tired</a>
+                <a href="#unaware">Unaware</a>
+                <a href="#unconscious">Unconscious</a>
+            </div>
+
+            <div class="conditions-list">
+                <div class="condition" id="bleeding">
+                    <h3>Bleeding</h3>
+                    <p>While bleeding, a creature loses 1 health at the start of each of its turns.</p>
+                </div>
+                <div class="condition" id="blind">
+                    <h3>Blind</h3>
+                    <p>A blinded creature misses many attacks. Whenever a blind creature rolls an attack, it must roll a Percentile die. On a 50 or higher, the attack automatically misses. In addition, the blind creature is automatically Unaware of all things that rely on sight to perceive unless previously aware of it. Attacks made against a blind creature gain advantage on attack rolls. Blind creatures gain disadvantage on evasion checks.</p>
+                </div>
+                <div class="condition" id="burning">
+                    <h3>Burning</h3>
+                    <p>Any creature that is burning has its resistance to fire lowered by 20 and its resistance to cold raised by 20. Any creature that is burning and is not immune or resistant to fire damage becomes vulnerable to fire damage and takes 2d6 fire damage at the start of each of its turns. Any creature that is burning that gains the freezing condition cancels both.</p>
+                </div>
+                <div class="condition" id="charmed">
+                    <h3>Charmed</h3>
+                    <p>A creature becomes under the influence of another. While charmed, the charmer gains a +10 to all Charisma-based checks made with the charmed creature. While charmed, creatures may be convinced to perform actions that they would not perform under the influence of a charm. Charmed creatures will not perform actions that they perceive as directly harmful to themselves.</p>
+                </div>
+                <div class="condition" id="corroding">
+                    <h3>Corroding</h3>
+                    <p>While corroding, a creature loses half of its current physical armor at the start of each of its turns.</p>
+                </div>
+                <div class="condition" id="crippled">
+                    <h3>Crippled</h3>
+                    <p>A target has taken devastating damage, leaving it incapable of moving. A crippled creature is Pinned and is incapable of using features and spells that allow or require movement. A crippled creature may still be moved by allies or enemies.</p>
+                </div>
+                <div class="condition" id="cursed">
+                    <h3>Cursed</h3>
+                    <p>A cursed creature is marked with vile magic that weakens them. A cursed creature takes a -1 penalty on all checks and attack rolls. While cursed, a creature is treated as having 0 armor for the purpose of applying effects even while the target still has physical or magical armor.</p>
+                </div>
+                <div class="condition" id="deaf">
+                    <h3>Deaf</h3>
+                    <p>Deaf creatures are incapable of hearing their surroundings. A creature who is deaf is automatically Unaware of anything that relies on hearing to perceive it unless it was previously aware of its presence.</p>
+                </div>
+                <div class="condition" id="diseased">
+                    <h3>Diseased</h3>
+                    <p>While diseased, a creature gains disadvantage on all checks and attack rolls. A creature that is diseased must succeed a DC 10 + Damage Taken Resistance (Body) check or gain the Nauseated condition.</p>
+                </div>
+                <div class="condition" id="dominated">
+                    <h3>Dominated (Charmed)</h3>
+                    <p>While dominated, a creature follows all commands given by its charmer.</p>
+                </div>
+                <div class="condition" id="draining">
+                    <h3>Draining</h3>
+                    <p>While draining, a creature loses half of its current magical armor at the start of each of its turns.</p>
+                </div>
+                <div class="condition" id="dying">
+                    <h3>Dying</h3>
+                    <ol>
+                        <li><strong>Unconscious:</strong> The creature falls unconscious and has 0 AP.</li>
+                        <li><strong>Negative Health:</strong>
+                            <ul>
+                                <li>Track how far below 0 the creature's health is (e.g., -5 HP).</li>
+                                <li>If negative HP exceeds the creature's Fortitude score, it dies immediately.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Death Saving Throws:</strong> At the end of their turn, the dying creature must make a death saving throw:
+                            <ul>
+                                <li>Roll d100 (percentile dice)</li>
+                                <li>Target number: Creature's (Fortitude modifier + Level)</li>
+                                <li>Success: No change in condition</li>
+                                <li>Failure: Mark one failed death save</li>
+                                <li>Any damage taken while dying causes an automatic failed death save</li>
+                            </ul>
+                        </li>
+                        <li><strong>Stabilization:</strong>
+                            <ul>
+                                <li>Another creature can attempt to stabilize the dying creature with a Medicine check</li>
+                                <li>DC = Current negative HP value (e.g., DC 5 for a creature at -5 HP)</li>
+                                <li>Success: Creature is stable at 0 health but, is no longer dying</li>
+                            </ul>
+                        </li>
+                        <li><strong>Healing:</strong> Any amount of healing removes the dying condition if it brings the creature above 0 health.</li>
+                        <li><strong>Death:</strong> A creature dies if:
+                            <ul>
+                                <li>It accumulates 3 failed death saves</li>
+                                <li>It remains dying for 1 minute (5 rounds)</li>
+                                <li>Its negative HP exceeds its Fortitude modifier at any point</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+                <div class="condition" id="exhausted">
+                    <h3>Exhausted</h3>
+                    <p>An exhausted creature is fighting every drop of energy it expends. While exhausted, a creature has the Tired condition. A creature that gains the exhausted condition gains a cumulative -2 penalty to its physical statistics for each time it gains the exhausted condition. A creature that gains a penalty higher than -10 must succeed a DC 30 Physical resistance check each time it is gained after or die. The DC for this increases by 10 each time until the creature is no longer exhausted. Exhaustion can be removed from a full rest.</p>
+                </div>
+                <div class="condition" id="fearful">
+                    <h3>Fearful</h3>
+                    <p>A fearful creature is afraid of a single creature in its line of sight. A creature that is fearful has disadvantage on Resistance (Mind) checks and attack rolls while it is aware its source of fear is in its presence. If the creature gains the fearful condition again, it gains the Hopeless condition. A creature that becomes Motivated or Inspired cancels both effects.</p>
+                </div>
+                <div class="condition" id="freezing">
+                    <h3>Freezing</h3>
+                    <p>Any creature that is freezing has its resistance to cold lowered by 20 and its resistance to heat raised by 20. Any creature that is frozen and is not immune or resistant to cold damage becomes vulnerable to cold damage and has its AP maximum reduced to 2. Any creature that is freezing that gains the burning condition cancels both.</p>
+                </div>
+                <div class="condition" id="grappling">
+                    <h3>Grappling</h3>
+                    <p>While grappling a target, you move with the target you are grappling unless they move instantaneously from effects such as teleportation.</p>
+                </div>
+                <div class="condition" id="hastened">
+                    <h3>Hastened</h3>
+                    <p>While hastened, a creature has its maximum AP increased by 1, doubles its movement, and gains 2 AC. A slowed creature that becomes hasted removes both effects.</p>
+                </div>
+                <div class="condition" id="hopeless">
+                    <h3>Hopeless</h3>
+                    <p>A creature who is hopeless is Fearful and believes it has no chance of success against a source. While acting towards a source of hopelessness, a creature gains a -5 to all checks and attack rolls and has disadvantage against effects that apply the Fearful condition. While hopeless, each time a creature fails a check, gets hit, or misses an attack against a source of hopelessness, it subtracts an additional -5 to all checks and attack rolls towards overcoming its source. A creature that becomes Inspired cancels both effects.</p>
+                </div>
+                <div class="condition" id="inspired">
+                    <h3>Inspired</h3>
+                    <p>An inspired creature is motivated to continue its task and believes its odds of success are guaranteed because of its source. While acting directly towards its goal, a creature gains a +5 to all checks and attack rolls towards its goal. While inspired, each time a creature succeeds a check or lands an attack directly towards its goal, it gains an additional +5 to all checks and attack rolls towards completing it. A creature that becomes Hopeless cancels both effects.</p>
+                </div>
+                <div class="condition" id="invisible">
+                    <h3>Invisible</h3>
+                    <p>All creatures that rely on sight gain the Unaware condition against you unless previously aware of you. Invisible creatures gain advantage on attack rolls against creatures that cannot see them. Attack rolls made against the invisible creature by creatures that cannot see them must roll a Percentile die. On a 75 or higher, the attack automatically misses.</p>
+                </div>
+                <div class="condition" id="knocked-down">
+                    <h3>Knocked Down</h3>
+                    <p>A creature who is knocked down moves at half speed. Knocked down creatures also gain disadvantage on evasion checks. While knocked down, attack rolls and contesting overpower checks made on contestants who are not knocked down have disadvantage. A knocked down creature may spend 1 AP to stand up if they are not Pinned or Crippled.</p>
+                </div>
+                <div class="condition" id="motivated">
+                    <h3>Motivated</h3>
+                    <p>A motivated creature gains advantage on all Resistance (Mind) checks and attack rolls towards directly overcoming its goal. If the creature gains the motivated condition again while motivated, it gains the Inspired condition. A creature that becomes Fearful or Hopeless cancels both effects.</p>
+                </div>
+                <div class="condition" id="nauseated">
+                    <h3>Nauseated</h3>
+                    <p>While nauseated, a creature wastes its AP taking no actions as it spends its turn vomiting or some other action caused by sickness. A nauseated creature cannot take reactions.</p>
+                </div>
+                <div class="condition" id="paralyzed">
+                    <h3>Paralyzed</h3>
+                    <p>A creature who is paralyzed is Crippled. The creature is incapable of any bodily function that requires the movement of any body parts. All vital body operations still function while paralyzed, such as breathing and heartbeat. A paralyzed creature has its AP reduced to a maximum of 0 and regains no AP at the start of each of its turns.</p>
+                </div>
+                <div class="condition" id="petrified">
+                    <h3>Petrified</h3>
+                    <p>A petrified creature has its AP reduced to 0 and gains 10 resistance to physical damage. While petrified, a creature gains the Unaware condition for all creatures and effects in its surroundings. While petrified, a creature does not require sustenance and shows no signs of aging until freed.</p>
+                </div>
+                <div class="condition" id="pinned">
+                    <h3>Pinned</h3>
+                    <p>Pinned creatures are incapable of using AP for the movement action.</p>
+                </div>
+                <div class="condition" id="poisoned">
+                    <h3>Poisoned</h3>
+                    <p>A poisoned creature gains disadvantage on all checks that use Finesse, Fortitude, or Strength.</p>
+                </div>
+                <div class="condition" id="possessed">
+                    <h3>Possessed</h3>
+                    <p>A force has invaded the body of a creature. As a result, the creature can no longer spend AP to perform actions. Instead, the creature may spend 2 AP to roll a contested Resistance (Mind) against its inhabitant to attempt to regain control of itself. On a successful check, the inhabitant loses control over the creature for a number of minutes equal to the amount of time it lost the contest by. If the inhabitant loses the check by 10 or more, it is forced out of the creature. A creature who allows an inhabitant to possess it has disadvantage on attempts to force it out. An inhabitant uses the host's physical stats but its own mental stats unless stated otherwise.</p>
+                </div>
+                <div class="condition" id="severed">
+                    <h3>Severed</h3>
+                    <p>While severed, a creature is incapable of using magic items and spending mana or stamina for the duration. Any effects on the creature gained from mana or stamina resources are dispelled, while magic items are no longer responsive to its severed wielder and cannot be reapplied until its severance ends.</p>
+                </div>
+                <div class="condition" id="shocked">
+                    <h3>Shocked</h3>
+                    <p>Any creature that is shocked has its resistance to air lowered by 10. Any creature that is shocked and is not immune or resistant to air damage becomes vulnerable to air damage and must roll a d100 at the start of each of its turns. On a 50 or lower, it wastes its turn doing nothing.</p>
+                </div>
+                <div class="condition" id="shoved">
+                    <h3>Shoved</h3>
+                    <p>A creature who is shoved is physically moved by an opposing force. A shoved creature is moved 1 meter for each point it failed the check by (minimum one meter). Shoved creatures only interact with the initial and final meter they land on for environmental effects. If shoved into an object, the GM determines if the creature passes through or stops on the obstacle. A creature shoved takes 5 damage for each meter it is prevented from moving if it stops on an obstacle. A creature shoved less than 2 meters must pass a balance check determined by the GM to prevent being Knocked Down after being shoved. Creatures shoved 3 or more meters are Knocked Down.</p>
+                </div>
+                <div class="condition" id="silenced">
+                    <h3>Silenced</h3>
+                    <p>A silenced creature is incapable of speaking. While silenced, it is impossible to cast spells that require Words of Power or perform any other action that requires speech.</p>
+                </div>
+                <div class="condition" id="slowed">
+                    <h3>Slowed</h3>
+                    <p>While slowed, a creature has its maximum AP reduced by 1, loses half its movement and 2 AC. A hasted creature that becomes slowed removes both effects.</p>
+                </div>
+                <div class="condition" id="stunned">
+                    <h3>Stunned</h3>
+                    <p>A stunned creature cannot take reactions and has its AP reduced to 0.</p>
+                </div>
+                <div class="condition" id="tired">
+                    <h3>Tired</h3>
+                    <p>A tired creature teeters on the brink of exhaustion. The creature gains disadvantage on all Strength, Finesse, and Fortitude checks. If a creature were to gain this condition again, it would gain the Exhausted condition. The tired condition is removed on a partial rest.</p>
+                </div>
+                <div class="condition" id="unaware">
+                    <h3>Unaware</h3>
+                    <p>A creature who has this condition does not know that the creature that applied this condition is around it. Any creature that applies the Unaware condition to a creature gains advantage on attack rolls, and its first attack is a critical strike to the target. A creature loses the Unaware condition whenever the current turn ends after it becomes aware of its applicant.</p>
+                </div>
+                <div class="condition" id="unconscious">
+                    <h3>Unconscious</h3>
+                    <p>An unconscious creature has its AP reduced to 0. An unconscious creature gains the Unaware condition for all creatures and effects in its surroundings. Hits on unconscious creatures are automatically critical hits and allow for decisive strikes. An unconscious creature must succeed on a (DC 10 + Damage Taken) Resistance (Body) check or die.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Live search filter for conditions
+        (function() {
+            var searchInput = document.getElementById('conditionSearch');
+            if (!searchInput) return;
+
+            searchInput.addEventListener('input', function() {
+                var query = this.value.toLowerCase().trim();
+                var cards = document.querySelectorAll('.condition');
+                cards.forEach(function(card) {
+                    var text = card.textContent.toLowerCase();
+                    if (!query || text.indexOf(query) !== -1) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

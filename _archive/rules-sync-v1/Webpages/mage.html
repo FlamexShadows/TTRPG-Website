@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sparks | Mage</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+        <link rel="stylesheet"
+        type="text/css" 
+        href="styles.css"/>
+
+        <style>
+            header {
+                width: 100%;
+            }
+#centered-text-middle {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    position: absolute;
+    left: 50%;
+}
+
+#centered-text {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    
+  
+}
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+    $(function(){
+      $("#header-placeholder").load("a-header.html"); 
+    });
+    </script>
+    
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <div style="margin-top: 100px; color: white;">
+            <div class="main-content">
+                <div class="content-panel">
+
+                    <div class="section-title">
+                        Class Chart
+                        </div>
+                        <br><br>
+                    <table class="class-table">
+                        <tr>
+                          <th>Level</th>
+                          <th>Class Bonus Statistics</th>
+                          <th>Class Features</th>
+                          <th>Skill Progression</th>
+                          <th>Mana</th>
+                          <th>Spell Slots</th>
+                          <th>Hit Points</th>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>+2 Intelligence, +1 Memory</td>
+                          <td>Arcane Focus</td>
+                          <td>2 Levels</td>
+                          <td>4</td>
+                          <td>10</td>
+                          <td>1d4</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>+2 Intelligence, +2 Memory</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>8</td>
+                          <td>10</td>
+                          <td>2d4</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>+3 Intelligence, +2 Memory</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>12</td>
+                          <td>10</td>
+                          <td>3d4</td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>+4 Intelligence, +2 Memory</td>
+                          <td>-</td>
+                          <td>4 Levels</td>
+                          <td>16</td>
+                          <td>12</td>
+                          <td>4d4</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>+5 Intelligence, +3 Memory</td>
+                            <td>Elements of Chaos</td>
+                            <td>-</td>
+                            <td>20</td>
+                            <td>12</td>
+                            <td>5d4</td>
+                          </tr>
+                          <tr>
+                            <td>6</td>
+                            <td>+6 Intelligence, +3 Memory</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>24</td>
+                            <td>12</td>
+                            <td>6d4</td>
+                          </tr>
+                          <tr>
+                            <td>7</td>
+                            <td>+6 Intelligence, +4 Memory</td>
+                            <td>-</td>
+                            <td>6 Levels</td>
+                            <td>28</td>
+                            <td>14</td>
+                            <td>7d4</td>
+                          </tr>
+                          <tr>
+                            <td>8</td>
+                            <td>+7 Intelligence, +4 Memory</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>32</td>
+                            <td>14</td>
+                            <td>8d4</td>
+                          </tr>
+                          <tr>
+                            <td>9</td>
+                            <td>+8 Intelligence, +4 Memory</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>36</td>
+                            <td>14</td>
+                            <td>9d4</td>
+                          </tr>
+                          <tr>
+                            <td>10</td>
+                            <td>+10 Intelligence, +5 Memory</td>
+                            <td>Arcane Protection</td>
+                            <td>8 Levels</td>
+                            <td>40</td>
+                            <td>14</td>
+                            <td>10d4</td>
+                          </tr>
+                          <tr>
+                            <td>11</td>
+                            <td>+12 Intelligence, +5 Memory</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>44</td>
+                            <td>14</td>
+                            <td>11d4</td>
+                          </tr>
+                          <tr>
+                            <td>12</td>
+                            <td>+12 Intelligence, +7 Memory</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>48</td>
+                            <td>16</td>
+                            <td>12d4</td>
+                          </tr>
+                          <tr>
+                            <td>13</td>
+                            <td>+14 Intelligence, +7 Memory</td>
+                            <td>Subclass Feature</td>
+                            <td>10 Levels</td>
+                            <td>52</td>
+                            <td>16</td>
+                            <td>13d4</td>
+                          </tr>
+                          <tr>
+                            <td>14</td>
+                            <td>+16 Intelligence, +7 Memory</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>56</td>
+                            <td>16</td>
+                            <td>14d4</td>
+                          </tr>
+                          <tr>
+                            <td>15</td>
+                            <td>+19 Intelligence, +10 Memory</td>
+                            <td>Converging Secrets</td>
+                            <td>-</td>
+                            <td>60</td>
+                            <td>18</td>
+                            <td>15d4</td>
+                          </tr>
+                          <tr>
+                            <td>16</td>
+                            <td>+22 Intelligence, +10 Memory</td>
+                            <td>-</td>
+                            <td>12 Levels</td>
+                            <td>64</td>
+                            <td>18</td>
+                            <td>16d4</td>
+                          </tr>
+                          <tr>
+                            <td>17</td>
+                            <td>+22 Intelligence, +13 Memory</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>68</td>
+                            <td>18</td>
+                            <td>17d4</td>
+                          </tr>
+                          <tr>
+                            <td>18</td>
+                            <td>+25 Intelligence, +13 Memory</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>72</td>
+                            <td>18</td>
+                            <td>18d4</td>
+                          </tr>
+                    
+                          <tr>
+                            <td>19</td>
+                            <td>+28 Intelligence, +13 Memory</td>
+                            <td>-</td>
+                            <td>14 Levels</td>
+                            <td>76</td>
+                            <td>18</td>
+                            <td>19d4</td>
+                          </tr>
+                          <tr>
+                            <td>20</td>
+                            <td>+32 Intelligence, +17 Memory</td>
+                            <td>Arcane Deviance</td>
+                            <td>-</td>
+                            <td>80</td>
+                            <td>20</td>
+                            <td>20d4</td>
+                          </tr>
+                          <tr>
+                            <td>21</td>
+                            <td>+36 Intelligence, +17 Memory</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>84</td>
+                            <td>22</td>
+                            <td>21d4</td>
+                          </tr>
+                          <tr>
+                            <td>22</td>
+                            <td>+36 Intelligence, +21 Memory</td>
+                            <td>-</td>
+                            <td>16 Levels</td>
+                            <td>88</td>
+                            <td>22</td>
+                            <td>22d4</td>
+                          </tr>
+                          <tr>
+                            <td>23</td>
+                            <td>+40 Intelligence, +21 Memory</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>92</td>
+                            <td>22</td>
+                            <td>23d4</td>
+                          </tr>
+                          <tr>
+                            <td>24</td>
+                            <td>+44 Intelligence, +21 Memory</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>96</td>
+                            <td>22</td>
+                            <td>24d4</td>
+                          </tr>
+                          <tr>
+                            <td>25</td>
+                            <td>+49 Intelligence, +26 Memory</td>
+                            <td>Indulgence of Mana</td>
+                            <td>18 Levels</td>
+                            <td>100</td>
+                            <td>22</td>
+                            <td>25d4</td>
+                          </tr>
+                        </table>
+        
+        <br> <br>
+                        <div class="section-title">
+                            Class Features
+                </div>
+                <div style="color: white; text-align: left;">
+                  <div id="centered-2">
+                  </div>
+        <br><br>
+        Arcane Focus<br>
+        Starting at 1st level a Mage gains a source charged item allowing the refueling of mana. The mage gains a pool of focus that allows the mage to restore mana to a creature. The pool equals half the level of the mage (minimum 1) and for 2 AP the mage may expend focus to restore mana to a creature within 20 meters of itself it can see. For each point of the pool expended the creature regains 10 Mana or 5 Stamina.  The arcane pool recharges on a full rest.<br><br>        
+        Elements of Chaos <br>
+        Starting at 5th level the Mage gains the ability to control the chaos of spells they create. Any creature of the mage's choice that is effected by a spell they cast may be treated as if they have magical armor. <br>  <br>      
+        Arcane Protection <br>
+        Starting at 10th level the Mage gains the ability to create an arcane ward protecting allies within 10 meters or themselves. As a reaction a number of times equal to its intelligence modifier the mage creates a translucent shield of magical armor equal to the mage levels a character holds. <br>  <br>     
+        Converging Secrets <br>
+        Starting at 15th level the Mage gains the ability to read any scroll and can identify magic items and a potions at a glance no longer requiring checks or AP. <br><br>
+        Arcane Deviance <br>
+        Starting at 20th level any spell cast by a Mage has its duration increased by 1 step. <br><br>
+        Indulgence of Mana <br>
+        Starting at 25th level when a Mage kills a creature with a spell it regains mana equal to the creatures threat rating or level whichever is higher. <br><br>
+    <br><br>
+
+  </div>
+
+  <div class="section-title">
+    Subclasses
+</div>
+<div style="color: white; text-align: left;">
+<div class="subsection-title">
+  <h3>Elementalist</h3>
+    </div>
+    <br>
+    Elemental Focus<br>
+    Starting at 1st level the mage specializes in a school of magic. When rolling for damage using the selected school the mage may reroll any 1s on the die. The new roll must be used even if it rolls another 1. <br><br>
+
+    Schools <br>
+    Pyromancy <br>
+    Cryomancy <br>
+    Geomancy <br> 
+    Aeromancy <br>
+        Elemental Channeling <br>
+        Starting at 3rd level the Elementalist learns to channel the energy of the selected school to gain additional effects. When casting a spell from their selected school they gain the following effects <br> <br>
+
+        Pyromancy <br>
+        Fire damage inflicted by spells is increased by a die size. D4's turn into d6, d6 turn into d8 etc <br><br>
+        
+        Cryomancy <br>
+        Any effect that applies the Frozen or Freezing condition is extended by 1 round <br><br>
+        
+        Geomancy<br>
+        Any effect that deals earth damage and applies the pinned or crippled condition is extended by 1 round <br><br>
+        
+        Aeromancy <br>
+        Any effect that applies the shocked or stunned condition is extended by one round <br><br>
+        
+        Prolonged Exposure <br>
+        Starting at 8th level the mages extended exposure to the elements they wield gain resistance to its elements. <br><br>
+
+        Pyromancy <br>
+        +5 to checks to avoid burning <br><br>
+        
+        Cryomancy <br>
+        +5 to checks to avoid frozen and freezing <br><br>
+        
+        Geomancy <br>
+        +5 to checks to avoid crippled and pinned <br><br>
+        
+        Aeromancy <br>
+        +5 to avoid or shocked <br><br>
+
+         New Horizons <br>
+        Starting at 13th level an Elementalist gains the ability to pick a second element to master <br><br>
+
+        No Escape <br>
+        Starting at 18th level the Elementalist gains the ability to aim spells with deadly precision. Spells that deal no damage on a successful check now deal half damage instead.<br><br>
+
+        Elemental Mastery <br>
+        Starting at 23rd level an Elementalist gains immunity to damage dealt by a school they mastered. <br><br>
+
+<div style="color: white; text-align: left;">
+      <div class="subsection-title">
+         <h3>Battle Mage</h3>
+    </div>
+    <br>
+Arcane Swordsmanship <br>
+Starting at 1st level a mage becomes proficient in 2 melee weapons, medium and light armor. <br><br>
+Martial Training <br>
+Starting at 3rd level a Battle Mage becomes adept in martial skills. They may choose 2 basic marital maneuvers and preform them twice each per full rest. <br><br>
+Enhanced Endurance <br>
+Starting at 8th level Battle Mage may use its Memory score for physical armor instead of fortitude. <br><br>
+Steadfast <br>
+Starting at 13th level when a battle mage uses Arcane Protection they can instead make it function as Physical Armor. <br><br>
+Flicker Step <br>
+Starting at 18th Level a Battle Mage enhance a its speed. The mage chooses 2 creatures it can see within 10 meters of itself. The Battle Mage makes one melee attack at each target dealing an additional 8d12 physical damage. The Battle Mage appears 1 meter adjacent next to the second target. <br><br>
+Advanced Martial Training <br>
+Starting at 23rd level a Battle Mage gains the ability to learn 2 additional advanced combat maneuvers and may perform them a number of times equal to their Memory modifier. <br><br>
+
+<div style="color: white; text-align: left;">
+  <div class="subsection-title">
+    <h3>Mystic</h3>
+</div>
+<br>
+Awakening <br>
+Starting at 1st level a Mage gains the ability to awaken the mind of a creature to its inner source within 20 meters of itself for 2 AP a number of times equal to its memory modifier. The creature gains a 1d4 bonus to its next roll. This bonus increases by an additional 1d4 every 5 levels by  <br><br>
+Psychic Surge <br>
+Starting at 3rd level a Mystic gains the ability to channel the energy of the mind to gain additional effects. When casting a spell the Mystic may choose to add their Memory score to the damage rolled. <br><br>
+Telepathy <br>
+Starting at 8th level a Mystic gains the ability to communicate telepathically with any creature within 20 meters of itself. The creature need not understand the Mystic but must speak at least one language <br><br>
+Mind Over Matter <br>
+Starting at 13th level once per day as a reaction, a Mystic gains the ability to add their Memory modifier to any check or save a creature within 10 meters of them makes. <br><br>
+Levitation <br>
+Starting at 18th level a Mystic gains the ability to levitate gaining a fly speed 8. <br><br>
+Silence Thoughts <br>
+Starting at 23rd level a Mystic gains the ability to silence the thoughts of all creatures of their choice within 20 meters of itself. The creature must make a Resistance Mind save or become severed for 1 minute. A creature may repeat its save at the start of each of its turns. <br><br>
+<div style="color: white; text-align: left;">
+  <div class="subsection-title">
+    <h3>Arcane Soul</h3> 
+</div>
+<br>
+Mana Overflow <br>
+Starting at 1st level the Arcane Soul born with abundant source and gains an additional 3 mana each level. <br><br>
+Magic Sensitivity <br>
+Starting at 3rd level the Arcane Soul gains the ability to sense the source of creatures. The Arcane Soul may use an action to sense the source of all creatures within 20 meters of itself. All creatures must make a Resistance Mind save or the Arcane Soul learns the creatures highest magic tier and current location becoming immune to the unaware condition from any creature that failed for the next hour. If the creature is 2 tiers higher than the Arcane Soul the Arcane Soul must succeed on a Resistance Mind check or become Nauseated until the end of its next turn.<br><br> 
+Mana Overload <br>
+Starting at 8th level the Arcane Soul gains the ability to overload the spell a creature is casting. As a reaction the Arcane Soul can spend an amount any amount of mana on the spell being cast to potentially causing it to explode. The target must succeed on a DC 10+Mana spent Resistance Mind check or take 10d6 magic damage and be Shoved 5 meters away from the Arcane Soul. On a successful check the creature casts the spell as normal. If the target fails its check all other creatures within 1 meter of it must succeed an Evasion check or 5d6 magic damage and be shoved away from the target 1 meter.  <br><br>
+Improved Mana Overflow <br>
+Starting at 13th level the Arcane Soul gains the ability to upcast spells a level above their current tier. Each time the Arcane Soul upcasts a spell above their current tier they gain the tired condition.<br><br>
+Source Instability <br>
+Starting at 18th level the Arcane Soul gains the ability to manipulate the mana of creatures. A number of times per day equal to its memory, the Arcane Soul force a creature within 5 meters of itself to make a Resistance Mind save or become unstable. On a failure the creature takes 2d10 for every 10 stamina or 1d12 for every 10 mana the creature has currently. <br><br>
+Arcane Resonance <br>
+Starting at 23rd level the Arcane Soul gains the ability to concentrate on two spells at once. If the Arcane Soul's concentration is broken they loose concentration on both spells.
+<br><br>
+
+<div style="color: white; text-align: left;">
+  <div class="subsection-title">
+    <h3>Rune Scholar</h3>
+</div>
+<br>
+Rune Casting <br>
+Starting at 1st level the Rune Scholar gains the ability to store minor spells using runes. The Rune Scholar gains a number of runes equal to its memory modifier. The Rune Scholar may expend a rune to cast a spell without using mana. The Rune Scholar regain all runes on a full rest. In addition they gain the proficiency in the calligraphy toolkit<br><br>
+Magic Infusion <br>
+Starting at 3rd level the Rune Scholar gains the ability to create magic items for half the price and spending 1 week of downtime for every 500 gold of the item. Crafting magic items still requires proficiency in relevant tools. <br><br>
+Improved Rune Casting <br>
+Starting at 8th level the Rune Scholar gains the ability to store adept spells using runes. The Rune Scholar gains a number of adept runes uses double the space of minor runes.<br><br>
+Runic Bombs <br>
+Starting at 13th level the Rune Scholar gains the ability to create a bomb using a rune. The Rune Scholar may expend a rune to create a bomb and throw it within 10 meters of themselves. All creatures in within 3 meters of rune must success on an Evasion check or take 8d6 magic damage or half as much on a success. <br><br>
+Runic Mastery <br>
+Starting at 18th level the Rune Scholar gains the ability to store major spells using runes. The Rune Scholar gains a number of major runes uses triple the space of minor runes. <br><br>
+Lord of Inscription <br>
+Starting at 23rd level the Rune Scholar gains the ability to cast spells from scroll using 2 AP and can read all languages.  <br><br>
+<div style="color: white; text-align: left;">
+  <div class="subsection-title">
+    <h3>Alchemist</h3>
+</div>
+<br>
+Apothecary <br>
+Starting at 1st level the Alchemist creates a number of fleeting health potions equal to its memory modifier. The Alchemist may expend a potion to restore 1d8+int modifier health to a creature. All potions made this way lose potency after 24 hours. <br><br>
+Formula Book <br>
+Starting at 3rd level the Alchemist keeps a formula book with various alternatives for various potions. An Alchemist may substitute any ingredient in potions with a cheaper alternative for one tenth the price. <br><br>
+Shared Potions <br>
+Starting at 8th level the Alchemist gains the ability to share potions with a creature. Whenever the Alchemist drinks a potion they can grant its benefit to a creature of their choice within 5 meters. <br><br>
+Improved Formula Book <br>
+Starting at 13th level when the Alchemist casts a spell that requires a costly material component the Alchemist only a component half the price of the original <br><br>
+Alchemical Savant <br>
+Starting at 18th level the Alchemist gains the ability to create a potion that can be used as a spell. The Alchemist may expend a potion to cast a spell without using mana. The Alchemist may only use this feature once per full rest. <br><br>
+Master Apothecary <br>
+Starting at 23rd level the Alchemist gains the ability to create any one potion for free once per full rest.<br><br>
+
+<div style="color: white; text-align: left;">
+  <div class="subsection-title">
+    <h3>Corpse Caller</h3>
+</div>
+<br>
+Corpse Mimicry <br>
+Starting at 1st level the Corpse Caller gains the ability to steal the appearance of a dead humanoid it touches for 24 hours. 
+<br><br>
+Necrotic Infusion <br>
+Starting at 3rd level a number of times equal to the Corpse Caller wit's modifier they infuse a creature with necrotic energy. The Corpse Caller may expend 2 AP to infuse a creature within 10 meters of itself. The creature gains 1d4 physical damage to all attacks for 1 minute. This damage increases by 1d4 for every 5 levels. <br><br>
+Dead Man's Tale<br>
+Starting at 8th level the Corpse Caller gains the ability to speak with the dead. The Corpse Caller may conduct a 1 minute ritual to speak with a dead creature within 1 meter of itself. The Corpse Caller may ask the creature 1 question per level. The creature is not compelled to tell the truth and can refuse to answer. <br><br>
+Bone Weaver <br>
+Starting at 13th level the Corpse Caller no longer needs dead bodies to make undead and can cast mimic life without expanding mana once per day.<br><br>
+Spirit Shepherd <br>
+Starting at 18th level the Corpse Caller gains the ability assert control over undead that are close to it. The Corpse Caller chooses an undead within 10 meters of itself and it must succeed a Resistance Mind check or fall under its control. If the undead is commanded by another creature it instead rolls a contested intelligence check against the undead's puppeteer. If the creature succsseds on its check or the Corpse Caller loses its contested roll the the puppeteers the undead or puppeteers minions are immune to this Corpse Caller's ability. A Corpse Caller may have undead up to its memory modifier under its control at once. <br><br>
+Hunger of the Dead <br>
+Starting at 23rd level the Corpse Caller gains the ability to inflict the hunger of a ghoul onto all other creatures. All creatures of the Corpse Caller's choice must succeed on a Resistance Mind check or become insane attacking the nearest creature for 1 minute. A creature may repeat its save at the end of each of its turns.  <br><br>
+
+
+    </div>
+
+    <div class="main-content">
+      <div style="text-align: center;">
+          <p style="font-weight: bold; text-decoration: underline;">Class Proficiencies</p>
+        <p>Access to Arcanomancy Tree </p>
+        <p>Light Armor </p>
+        <p> Mathematics Toolkit </p>
+        <p>1 Melee Weapon</p>
+
+        <h3>Saves</h3>
+          Resistance Mind (Good)<br>
+          Resistance Body (Poor)<br>
+          Evasion (Average)<br>
+          <p></p>
+
+      </div>
+  </div>
+        
+    </div></div></div></div></div></div></div></div></div></div>
+</body>
+</html>

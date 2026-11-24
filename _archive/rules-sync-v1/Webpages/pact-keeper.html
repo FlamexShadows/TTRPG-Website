@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sparks | Pact Keeper</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+        <link rel="stylesheet"
+        type="text/css" 
+        href="styles.css"/>
+
+        <style>
+            header {
+                width: 100%;
+            }
+
+            #centered-text-middle {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    position: absolute;
+    left: 50%;
+}
+
+#centered-text {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    
+  
+}
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+    $(function(){
+      $("#header-placeholder").load("a-header.html"); 
+    });
+    </script>
+    
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <div style="margin-top: 100px; color: white;">
+            <div class="main-content">
+                <div class="content-panel">
+
+                    <div class="section-title">
+                        Class Chart
+                        </div>
+                        <br><br>
+                    <table class="class-table">
+                        <tr>
+                          <th>Level</th>
+                          <th>Class Bonus Statistics</th>
+                          <th>Class Features</th>
+                          <th>Skill Progression</th>
+                          <th>Mana</th>
+                          <th>Spell Slots</th>
+                          <th>Hit Points</th>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>+2 Charisma, +1 Intelligence</td>
+                          <td>Otherworldly Pact</td>
+                          <td>6 Levels</td>
+                          <td>5</td>
+                          <td>2</td>
+                          <td>1d4</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>+2 Charisma, +2 Intelligence</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>10</td>
+                          <td>2</td>
+                          <td>2d4</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>+3 Charisma, +2 Intelligence</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>15</td>
+                          <td>2</td>
+                          <td>3d4</td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>+4 Charisma, +2 Intelligence</td>
+                          <td>-</td>
+                          <td>8 Levels</td>
+                          <td>20</td>
+                          <td>4</td>
+                          <td>4d4</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>+5 Charisma, +3 Intelligence</td>
+                            <td>Greater Bestowment</td>
+                            <td>-</td>
+                            <td>25</td>
+                            <td>4</td>
+                            <td>5d4</td>
+                          </tr>
+                          <tr>
+                            <td>6</td>
+                            <td>+6 Charisma, +3 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>30</td>
+                            <td>4</td>
+                            <td>6d4</td>
+                          </tr>
+                          <tr>
+                            <td>7</td>
+                            <td>+6 Charisma, +4 Intelligence</td>
+                            <td>-</td>
+                            <td>10 Levels</td>
+                            <td>35</td>
+                            <td>6</td>
+                            <td>7d4</td>
+                          </tr>
+                          <tr>
+                            <td>8</td>
+                            <td>+7 Charisma, +4 Intelligence</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>40</td>
+                            <td>6</td>
+                            <td>8d4</td>
+                          </tr>
+                          <tr>
+                            <td>9</td>
+                            <td>+8 Charisma, +4 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>45</td>
+                            <td>6</td>
+                            <td>9d4</td>
+                          </tr>
+                          <tr>
+                            <td>10</td>
+                            <td>+10 Charisma, +5 Intelligence</td>
+                            <td>Pact Puppetry</td>
+                            <td>12 Levels</td>
+                            <td>50</td>
+                            <td>6</td>
+                            <td>10d4</td>
+                          </tr>
+                          <tr>
+                            <td>11</td>
+                            <td>+12 Charisma, +5 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>55</td>
+                            <td>6</td>
+                            <td>11d4</td>
+                          </tr>
+                          <tr>
+                            <td>12</td>
+                            <td>+12 Charisma, +7 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>60</td>
+                            <td>8</td>
+                            <td>12d4</td>
+                          </tr>
+                          <tr>
+                            <td>13</td>
+                            <td>+14 Charisma, +7 Intelligence</td>
+                            <td>Subclass Feature</td>
+                            <td>14 Levels</td>
+                            <td>65</td>
+                            <td>8</td>
+                            <td>13d4</td>
+                          </tr>
+                          <tr>
+                            <td>14</td>
+                            <td>+16 Charisma, +7 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>70</td>
+                            <td>8</td>
+                            <td>14d4</td>
+                          </tr>
+                          <tr>
+                            <td>15</td>
+                            <td>+19 Charisma, +10 Intelligence</td>
+                            <td>Otherworldly Bargaining</td>
+                            <td>-</td>
+                            <td>75</td>
+                            <td>10</td>
+                            <td>15d4</td>
+                          </tr>
+                          <tr>
+                            <td>16</td>
+                            <td>+22 Charisma, +10 Intelligence</td>
+                            <td>-</td>
+                            <td>16 Levels</td>
+                            <td>80</td>
+                            <td>10</td>
+                            <td>16d4</td>
+                          </tr>
+                          <tr>
+                            <td>17</td>
+                            <td>+22 Charisma, +13 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>85</td>
+                            <td>10</td>
+                            <td>17d4</td>
+                          </tr>
+                          <tr>
+                            <td>18</td>
+                            <td>+25 Charisma, +13 Intelligence</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>90</td>
+                            <td>10</td>
+                            <td>18d4</td>
+                          </tr>
+                    
+                          <tr>
+                            <td>19</td>
+                            <td>+28 Charisma, +13 Intelligence</td>
+                            <td>-</td>
+                            <td>18 Levels</td>
+                            <td>95</td>
+                            <td>10</td>
+                            <td>19d4</td>
+                          </tr>
+                          <tr>
+                            <td>20</td>
+                            <td>+32 Charisma, +17 Intelligence</td>
+                            <td>Bound in Blood</td>
+                            <td>-</td>
+                            <td>100</td>
+                            <td>12</td>
+                            <td>20d4</td>
+                          </tr>
+                          <tr>
+                            <td>21</td>
+                            <td>+36 Charisma, +17 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>105</td>
+                            <td>14</td>
+                            <td>21d4</td>
+                          </tr>
+                          <tr>
+                            <td>22</td>
+                            <td>+36 Charisma, +21 Intelligence</td>
+                            <td>-</td>
+                            <td>20 Levels</td>
+                            <td>110</td>
+                            <td>14</td>
+                            <td>22d4</td>
+                          </tr>
+                          <tr>
+                            <td>23</td>
+                            <td>+40 Charisma, +21 Intelligence</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>115</td>
+                            <td>14</td>
+                            <td>23d4</td>
+                          </tr>
+                          <tr>
+                            <td>24</td>
+                            <td>+44 Charisma, +21 Intelligence</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>120</td>
+                            <td>14</td>
+                            <td>24d4</td>
+                          </tr>
+                          <tr>
+                            <td>25</td>
+                            <td>+49 Charisma, +26 Intelligence</td>
+                            <td>Embodiment of the Pact</td>
+                            <td>22 Levels</td>
+                            <td>125</td>
+                            <td>14</td>
+                            <td>25d4</td>
+                          </tr>
+                        </table>
+        
+        <br> <br>
+                        <div class="section-title">
+                            Class Features
+                </div>
+                <div style="color: white; text-align: left;">
+                  <div id="centered-2">
+                  </div>
+        <br><br>
+        Otherworldly Pact<br>
+        The Pact Keeper has made a bargain with an entity of great power within the multiverse. As a result, they learn the language of their benefactor's lineage and a language of choice. <br><br>
+        Greater Bestowment <br>
+        For its efforts in helping their benefactor further its goal, the Pack Keeper is granted greater knowledge of magic. Spells of their benefactor’s lineage now cost half Mana to cast. <br><br>    
+        Pact Puppetry <br>
+        Starting at 10th level the Pact Keeper gains the ability to invite its benefactor to inhabit their body to speak, or perform a task on the Pact Keeper's behalf. Once per day, they may roll a percentile die. On a 10 or lower the benefactor enters the Pact Keeper's body causing them to become Possessed of 10 rounds. While possessed the benefactor is not hostile to allies but may not regard its Pact Keeper's allies as allies for the purpose of spells and abilities. The percentile die always fails if the benefactor believes the pact keeper may attempt to harm, trap, or perform anything the benefactor may deem as a setback. <br><br>
+        Otherworldly Bargaining <br>
+        Starting at 15th level the Pact Keeper may bargain with its benefactor for enhanced powers. The Pact Keeper gains a +10 to any stat of its choice. This enhancement is permanent and may be rebargained each time the pact keeper levels up.  The pact keeper must succeed in a persuasion check DC equaling 20+10 for each time bargains to change its ability. This bonus increases to 15 at level 20 and 20 at level 25 <br><br>
+Bound in Blood <br>
+Starting at 20th level the Pact Keeper becomes one of the benefactor's most trusted. The Pact Keeper receives hints at completing daily tasks. 3 times per day the Pact Keeper may choose to add its charisma modifier onto a single check. <br><br>
+Embodiment of the Pact <br>
+Starting at 25th level the Pact Keeper no longer needs to roll for Pact Puppetry.  <br><br>
+  </div>
+
+  <div class="section-title">
+    Subclasses
+</div>
+<div style="color: white; text-align: left;">
+<div class="subsection-title">
+  <h3>Demonic Pact</h3>
+    </div>
+    <br>
+    Hellfire Casting<br>
+    Starting at 1st level the Pact Keeper makes a pact with an entity from the underworld. The Pact Keeper gains access to the Demonlogy spell list. <br><br>
+
+    Hellish Resistance <br>
+    Starting at 3rd level a Demonic Pact Keeper gains +5 resistance to unholy, fire and cold damage. <br><br>
+    Demonic Manifestation <br>
+    Starting at 8th level a Demonic Pact Keeper is treated as a fiend for the purpose of overcoming Demonlogy spells. The pact keeper also deals an additional 1 damage for each die rolled on unholy damage. <br><br>
+    Protective Hound <br>
+    Starting at 13th level a Demonic Pact Keeper is granted a protective hellhound. If slain the Pact Keeper may sacrifice 20 health, 1000 gold, and 10 mana to resummon the hound in a 10 minute ritual. All checks made by the hellhound are use as half the Pact Keeper skill levels. <br><br>
+
+Hell Hound <br>
+Creature Type: Fiend <br>
+Size: Medium <br>
+Physical Armor: 5*Pact Keeper level <br>
+Magic Armor 5*Pact Keeper level <br>
+Armor Class: 30 <br>
+Hit Points: 20+Pact Keeper Level <br>
+Alignment: Neutral Evil <br>
+Threat Rating: 8 <br>
+Languages: Bellsybabble <br>
+Speed: 3 <br>
+Resistance: Unholy 10 <br>
+Immunities: Fire <br> <br>
+
+
+<table>
+  <tr>
+    <th>Attribute</th>
+    <th>Value</th>
+    <th>Modifier</th>
+  </tr>
+  <tr>
+    <td>Strength</td>
+    <td>26</td>
+    <td>+9</td>
+  </tr>
+  <tr>
+    <td>Finesse</td>
+    <td>20</td>
+    <td>+6</td>
+  </tr>
+  <tr>
+    <td>Fortitude</td>
+    <td>24</td>
+    <td>+8</td>
+  </tr>
+  <tr>
+    <td>Intelligence</td>
+    <td>18</td>
+    <td>+5</td>
+  </tr>
+  <tr>
+    <td>Charisma</td>
+    <td>23</td>
+    <td>+8</td>
+  </tr>
+</table>
+<br><br>
+
+Actions<br>
+Max AP: 6 <br><br>
+
+Bite <br>
+9+8+Pack Keeper's Charisma <br>
+2d6+9 Physical + 1d6+8 Unholy <br><br>
+
+Abilities <br><br>
+
+Infernal Scar<br>
+The hellhound creates a burning scar on a creature with no Physical Armor. The creature must make a Resistance (Body) check (DC 10 + PactKeeper's Charisma). On a failed check the target is cursed. While cursed the target takes an additional 1d10 unholy from all unholy sources. <br><br>
+
+
+Infernal Knowledge <br>
+Starting at 18th level a Demonic Pact keeper's resistances increases to 10. In addition, the Pact Keeper learns ancient knowledge from their benefactor. The pact keeper gains the ability to speak, read and write in all languages. <br><br>
+Demonic Immunity <br>
+Starting at 23rd level the Demonic Pact keeper is immune to Unholy, Fire and Cold damage. The Demonic Pact Keepers gains the ability to desecrate land leaving unholy flames by performing a 10-minute ritual and sacrificing a worthy offering to their benefactor usually a good aligned creature or objects worth no less than 10,000 GP.
+
+<br><br>
+This desecration lasts until exorcised and any creature that is not a fiend or an ally of the Pact Keeper or benefactor that enters the area is cursed. <br> <br>
+   
+
+<div style="color: white; text-align: left;">
+      <div class="subsection-title">
+        <h3>Otherworldly Pact</h3>
+    </div>
+    <br>
+Empty Casting <br>
+Starting at 1st level the Pact Keeper creates a pact with an entity of the empty. The pact keeper gains access to the Otherworldly spell list. <br><br>
+Void's Translation <br>
+Starting at 3rd level the Pact Keeper gains the ability to understand all written and spoken languages. If the pact keeper encounters a coded message they no longer need to roll Inspect Object to read the message but takes triple the time to read. <br><br><br>
+Disruptive Hunger <br>
+Starting at 8th level the Void Pact Keeper gains the ability to disrupt the  source of a creature. As a reaction when the Pact Keeper sees a martialist or caster perform a maneuver or cast a spell it can roll a contested Charisma check against the creature. If the Pack Keeper wins the magic consumes the mana or stamina but produces no effects. On a failure, the spell is cast and the Pact Keeper loses Mana equal to the amount spent in the casting of the spell or maneuver. <br><br>
+Return to the Empty <br>
+Starting at 13th level the Pact keeper can temporarily banish a creature. The Pact keeper spends 10 Mana and makes a spell attack roll against the creature within 10 meters of itself. If the attack hits it takes 10d6 magic damage and if it has no magical armor must succeed on a Resistance (Body) check or be banished to the empty for 1d4+1 rounds. While in the empty the creature is stunned and takes 1d6 magic damage at the start of each of its turns. On a successful save the creature is immune to this effect permanently from that specific pact keeper. <br><br>
+Incorporeal <br>
+Starting at 18th level the Pact keeper gains the ability to become incorporeal and able to travel through solid objects. 
+This ability costs 5 mana to activate and requires concentration to maintain. 
+To maintain this incorporeal state requires 5 mana at the start of each of the Pact Keeper's turns. 
+If the pact keeper ends its turn inside a creature or object they take 10d10 magic damage and can't maintain Incorporeal, they are shunted to the nearest unoccupied space. <br><br> 
+Empty Manifestation <br>
+Starting at 23rd level the Pact Keeper partially merges with the empty. The pact keeper gains resistance 30 to physical damage and any creature that hits the pact keeper with a melee attack takes 5d12 magic damage. <br><br>
+
+<div style="color: white; text-align: left;">
+    <div class="subsection-title">
+      <h3>Fallen Pact</h3>
+  </div>
+  <br>
+Angelic Casting <br>
+Starting at 1st level the Pact Keeper makes a pact with a fallen angel or deity. The Pact Keeper gains access to Heavenly spells. <br><br>
+Corona of Ill Hope <br>
+Starting at 3rd level a Fallen Pact Keeper gains the ability to create a corona of despair manifesting their benefactor's aspects. Any creature within 10 meters of the Pact Keeper must make a Resistance (Mind) check. On a failure, the creature is filled with sorrow and empathy for the Pact Keeper granting them advantage on all charisma skills excluding teamwork. <br><br>
+Fallen Wings <br>
+Starting at 8th level the Fallen Pact keeper can manifest raven black wings granting them a flight speed equal to their walk speed. <br><br>
+Dreadful Aspect <br>
+Starting at 13th level the Fallen Pact keeper creates dread 10 meters around themselves. Any creature that the Fallen Pact Keeper designated must succeed on a Resistance (Mind) check or become Fearful of them for 1 hour. This ability cannot stack with itself into Hopeless. <br><br>
+False Idol <br>
+Starting at 18th level a Fallen Pact Keeper gains the ability to mimic its benefactor's former glory. For 2 AP and 10 mana any creature within 5 meters of the Fallen Pact Keeper's choice becomes Motivated for 1 hour. This ability cannot stack with itself into Inspired. <br><br>
+Divinity <br>
+Starting at 23rd level both Aura of Corona of Ill Hope and False Idol may stack into Inspired and Hopeless. In addition, the Pack Keeper gains Immunity to Holy damage. <br><br>
+
+<div style="color: white; text-align: left;">
+  <div class="subsection-title">
+    <h3>Spirit Pact</h3>
+</div>
+<br>
+Charming Presence <br>
+Starting at 1st level the Pact Keeper creates a pact with an entity of the spirit world grant them access to secrets to secrets of their lineage. The pact keeper gains access to the Enchantment spell list. <br><br>
+
+Dream Walker <br>
+Starting at 3rd level the Spirit pact keeper gains the ability to mold a creatures mind and psyche within their dreams. While within 1 meter of a sleeping creature the pact keeper may enter the creatures dream. While in its dream they make take 1 hour to alter them to cause one of the following effects. <br><br>
+
+Blissful Rest <br>
+The creatures rest was peaceful. The creature gains an 2d10+Charisma Modifier true armor upon waking up. <br><br>
+
+Night Terror <br>
+The pact keeper interrupts the dream of the creature filling it with horrible visions. The creature gains no benefits of a rest if it was taking one. In addition the creature takes 6d6 psychic damage.<br><br>
+
+Restore Spirit<br>
+The pact keeper restores fragments of the creatures mind and body. The creature gains an additional 2d8 mana or stamina until its next rest. <br><br>
+Subliminal Messaging <br>
+Beginning at 8th level the pact keeper gains the ability to supernaturally manipulate creatures. If the pact keeper spends 10 minutes speaking to a creature it can subtly encode the a command into its conversation. The creature must succeed on a Resistance (Mind) check or be forced to follow the command to the best of its ability. The command must not be directly harmful in nature and be reasonable for the creature to be able to complete. If a creature is a spirit it recognizes the command in the speech and gains a +20 to its roll.<br><br>
+Otherworldly Awareness <br>
+Beginning at 13th level the pact keeper strengthens their connection to the Spirit World. They can now identify if a creature is a spirit after 1 minute of speech. In addition they may add their charisma modifier to all Resistance (Mind) effects them.<br><br>
+Mind Rupture <br>
+Beginning at 18th level a Spirit pact keeper gains the ability to consume a creature in a festering growth of the Spirit Worlds corruption. The creature must succeed on a Resistance (Mind) check or take 10d8 psychic damage. If the creature has no magical armor it becomes charmed by the Pact Keeper. At 25th level the creature is dominated. This charm lasts until the end of the pact keepers' next turn. <br><br>
+Spirit Blossom <br>
+Beginning at 23rd level The Pact keeper is imbued with the beauty or horror of the spirit world. The pact keeper gains ranks in Allure and Persuasion equal to their level. Alternatively they can choose to gain ranks in Intimidate (Cha) and Deception. In addition once per day they may send a creature into a demiplane of mirrors. If the creature is unwilling it must roll a Resistance (Mind) check or be shunted into the maze like realm. A creature must succeed on a Intuition check to escape this imprisonment. A creature may repeat this save once every hour. While in this realm the creature ages 1d10 years per hour it is trapped. A creature incapable of escaping before it dies of old age does not return to the world. The Pact Keeper steals its years appearing more youthful (to a minimum of its adulthood).<br><br>
+<div style="color: white; text-align: left;">
+  <div class="subsection-title">
+    <h3>Eternal Pact</h3>
+</div>
+<br>
+Eternal Casting <br>
+Starting at 1st level the Pact Keeper creates a pact with an entity of undeath. The Eternal pact keeper gains access to the Pneumamancy spell list. <br><br>
+Undead Resilience <br>
+Starting at 3rd level the Eternal Pact Keeper gains the ability to resist death. Once per day, if the Eternal pact keeper is reduced to 0 hit points they don't begin dying but instead are reduced to 1 hit point. <br><br>
+Channel Death<br>
+Starting at 8th level the Eternal Pact Keeper gains the ability to channel the power of death. When the Eternal pact keeper casts a Necromancy its duration is increased by 1 step. <br><br>
+Essence Vampirism <br>
+Starting at 13th level the Eternal Pact Keeper gains the ability to drain the source of a creature. The Eternal Pact Keeper chooses a target within 15 meters of it that must succeed a Resistance Mind check or lose 2d8 stamina or 4d6 mana. The Eternal pact keeper gains mana equal to twice the amount of stamina stolen or mana equal to the mana stolen. <br><br>
+Undead Form <br>
+Starting at 18th level once per day, the Eternal Pact Keeper gains the ability to transform into an undead form reminiscent of its benefactor. This form requires concentration to maintain. The Pact Keeper gains physical and magic armor equal to their charisma score. Any creature within 5 meters of the Eternal Pact Keeper must succeed a Resistance (Mind) check or become hopeless until the end of its next turn. <br><br>
+Immortality <br>
+Starting at 23rd level the Eternal Pact Keeper gains a partial aspect of the immortality of it's benefactor possesses. The Pact Keeper no longer ages and is immune to all disease. In addition they gain the ability to use Undead Resilience a number of times equal to their intelligence modifier.<br><br>
+<br><br>
+<div style="color: white; text-align: left;">
+  <div class="subsection-title">
+    <h3>Majesty Pact</h3>
+</div>
+<br>
+Draconic Defense <br>
+Starting at 1st level the Pact Keeper creates a pact with an entity of the draconic lineage. The Pact Keeper gains resistance 10 to air, cold, earth, fire, or poison. <br><br>
+Draconic Infusion <br>
+Starting at 3rd level the Majesty Pact Keeper gains the ability to infuse their attacks with draconic energy. The Majesty Pact Keeper gains a pool of d4s equal to their charisma modifier. When the Majesty Pact Keeper deals damage of the type those choose in their draconic defense they can add any number of die from this pool to the roll. These die increase to 1d6 at 5th level, 1d8 at 10th level, 1d10 at 15 level, and 1d12 at 20th level.<br><br>
+Draconic Aspect <br>
+Starting at 8th level the Majesty Pact Keeper gains the ability to manifest draconic aspects. When the Pact Keeper deals air, cold, earth, fire, or poison damage they can choose to change the damage type to that of their draconic defense. <br><br>
+Aspect of Dragon <br>
+Starting at 13th level the Majesty Pact Keeper gains the ability to manifest draconic wings. The Majesty Pact Keeper gains a flight speed equal to their walk speed. In addition the pact keeper is granted treasure from its benefactors hoard allowing the Majesty Pact Keeper to pick a singular magic item worth 30,000 gp or less. <br><br>
+Dominance <br>
+Starting at 18th level the Majesty Pact Keeper gains the ability to instil fear in their enemies. Once per day, the Majesty Pact Keeper can force a creature within 10 meters to make a Resistance (Mind) check or become Fearful of the Pact Keeper for 1 hour. <br><br>
+Elemental Immunity <br>
+Starting at 23rd level the Majesty Pact Keeper gains immunity to the damage they chose for their draconic defense. <br><br>
+<br><br>
+
+    </div>
+
+    <div class="main-content">
+      <div style="text-align: center;">
+          <p style="font-weight: bold; text-decoration: underline;">Class Proficiencies</p>
+          <p>1 Toolkit of Choice</p>
+          <p>Light Armor </p>
+          <p>1 Melee Weapon </p>
+
+          <h3>Saves</h3>
+          Resistance Mind (Average)<br>
+          Resistance Body (Poor)<br>
+          Evasion (Good)<br>
+          <p></p>
+      </div>
+  </div>
+        
+    </div></div></div></div></div></div></div></div></div>
+</body>
+</html>

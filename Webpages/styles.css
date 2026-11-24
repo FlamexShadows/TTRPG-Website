@@ -1,0 +1,1541 @@
+/* ==========================================================================
+   SPARKS OF DYNASTY — TOME & GRIMOIRE STYLESHEET
+   Themed as an ancient fantasy book with folded-over marked page tabs.
+   ========================================================================== */
+
+/* --- Google Font Imports --- */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Cinzel+Decorative:wght@700;900&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
+
+/* --- Root Palette Variables --- */
+:root {
+    /* Leather & Bookbinding Tones */
+    --leather-dark: #140b07;
+    --leather-rich: #24140d;
+    --leather-mid: #331d13;
+    --leather-rim: #44271a;
+    --wood-desk: #100a06;
+
+    /* Gilded & Metallic Accents */
+    --gold-leaf: #d4af37;
+    --gold-bright: #f5d77f;
+    --gold-pale: #fbf0cb;
+    --gold-dark: #8c6a1e;
+    --gold-shadow: rgba(140, 106, 30, 0.35);
+
+    /* Parchment & Vellum Tones */
+    --parchment-light: #fefdf8;
+    --parchment-base: #fbf5e5;
+    --parchment-mid: #f5eccf;
+    --parchment-aged: #ebd9b8;
+    --parchment-border: #9a7642;
+    --parchment-shadow: rgba(70, 42, 20, 0.12);
+
+    /* Ink & Calligraphy Colors */
+    --ink-dark: #22160f;
+    --ink-sepia: #3c291d;
+    --ink-crimson: #781816;
+    --ink-crimson-bright: #98221f;
+    --ink-amber: #875114;
+    --ink-muted: #5e4635;
+
+    /* Marked Page Tab Colors (Folded Bookmark Tabs) */
+    --tab-rules-top: #aa2723;
+    --tab-rules-mid: #7d1715;
+    --tab-rules-crease: #550f0d;
+    --tab-rules-face: #881b19;
+
+    --tab-creation-top: #b58025;
+    --tab-creation-mid: #8a5d17;
+    --tab-creation-crease: #5c3b09;
+    --tab-creation-face: #946419;
+
+    --tab-misc-top: #2b6c5c;
+    --tab-misc-mid: #1d4d41;
+    --tab-misc-crease: #11332b;
+    --tab-misc-face: #22574a;
+}
+
+/* --- Antique Custom Scrollbar --- */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+::-webkit-scrollbar-track {
+    background: #180f0a;
+    border-left: 1px solid #331d13;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #7a5828 0%, #4a3418 100%);
+    border: 2px solid #180f0a;
+    border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #a37837 0%, #684a22 100%);
+}
+
+/* --- Selection Highlight --- */
+::selection {
+    background: #d4af37;
+    color: #1a0f08;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 20px;
+}
+
+/* ==========================================================================
+   GLOBAL BODY & DESK ENVIRONMENT
+   ========================================================================== */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--ink-dark);
+    /* Scholar's dark antique wooden desk with warm candlelight vignette */
+    background-color: var(--wood-desk);
+    background-image: 
+        radial-gradient(ellipse 90% 50% at 50% 0%, rgba(120, 75, 40, 0.45) 0%, transparent 75%),
+        radial-gradient(circle at 50% 60%, rgba(45, 26, 16, 0.95) 0%, rgba(14, 8, 5, 0.98) 100%),
+        repeating-linear-gradient(45deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 2px, transparent 2px, transparent 10px);
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ==========================================================================
+   HEADER & TOP FOLDED-OVER MARKED PAGE TABS
+   ========================================================================== */
+#header-placeholder {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1000;
+}
+
+header#main-header {
+    width: 92%;
+    max-width: 1100px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 18px 40px 14px 40px;
+    /* Rich bookbinding leather rim with fine gold tooling */
+    background: linear-gradient(180deg, #2c180f 0%, #20110a 75%, #180c07 100%);
+    border-top: 5px solid #140b07;
+    border-left: 2px solid #3d2315;
+    border-right: 2px solid #3d2315;
+    border-bottom: 3px double var(--gold-leaf);
+    box-shadow: 
+        0 6px 18px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(212, 175, 55, 0.35),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.8);
+    position: relative;
+    border-radius: 8px 8px 0 0;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+/* Book Title on Leather Header */
+.book-title-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+header#main-header h1,
+.book-title {
+    margin: 0;
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 2.2em;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    text-shadow: 
+        0 1px 1px #000000,
+        0 2px 4px rgba(0, 0, 0, 0.8),
+        0 0 14px rgba(212, 175, 55, 0.45);
+}
+
+header#main-header h1 a,
+.book-title a {
+    color: var(--gold-bright);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+header#main-header h1 a:hover,
+.book-title a:hover {
+    color: #ffffff;
+    text-shadow: 
+        0 0 10px var(--gold-leaf),
+        0 0 20px var(--gold-bright);
+}
+
+.title-fleuron-left,
+.title-fleuron-right {
+    font-family: 'EB Garamond', serif;
+    color: var(--gold-leaf);
+    font-size: 0.85em;
+    opacity: 0.9;
+}
+
+.book-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68em;
+    font-weight: 600;
+    color: #c9ad7d;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.85;
+}
+
+/* --- Navigation & Folded Book Tabs --- */
+header#main-header nav,
+.book-nav {
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+}
+
+/* The Dropdown Tab Container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* 
+   THE FOLDED-OVER MARKED PAGE TAB:
+   Crafted to appear as physical marked bookmark flags / tabs that stick up
+   from behind the book's top edge and fold over the headband onto the page!
+*/
+.dropdown > span,
+.dropdown > .tab-marker {
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px 14px 22px;
+    margin-top: -16px; /* Sticks up beyond top rim of the book cover! */
+    font-family: 'Cinzel', serif;
+    font-size: 0.9em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff9ed;
+    text-transform: uppercase;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    user-select: none;
+    outline: none;
+
+    /* Tab shape: rounded folded top shoulders where paper/ribbon loops over */
+    border-radius: 8px 8px 3px 3px;
+    border: 1px solid rgba(212, 175, 55, 0.65);
+    border-bottom: 3px solid var(--gold-leaf);
+
+    /* 3D Fold Crease Shading: highlighted bend at the top, crease in the middle, front flap hanging down */
+    background: linear-gradient(
+        180deg,
+        var(--tab-rules-top) 0%,
+        var(--tab-rules-mid) 38%,
+        var(--tab-rules-crease) 48%,
+        var(--tab-rules-face) 55%,
+        var(--tab-rules-mid) 100%
+    );
+
+    /* Realistic drop-shadow cast by the folded tab onto the leather book header */
+    box-shadow: 
+        0 6px 14px rgba(0, 0, 0, 0.65),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.4),
+        inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+
+    /* Smooth physical tab lift on interaction */
+    transform: translateY(0);
+    transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1), 
+                box-shadow 0.25s ease, 
+                filter 0.25s ease;
+}
+
+/* Subtle Fold Crease Line across the tab */
+.dropdown > span::before,
+.dropdown > .tab-marker::before {
+    content: '';
+    position: absolute;
+    top: 42%;
+    left: 4px;
+    right: 4px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+}
+
+/* Little metallic stitch/rivet accent on the tab */
+.dropdown > span::after,
+.dropdown > .tab-marker::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold-bright);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+
+/* Tab 1: Basic Rules (Royal Crimson Marked Tab) */
+.tab-rules > span,
+.tab-rules > .tab-marker,
+.dropdown:nth-child(1) > span {
+    background: linear-gradient(
+        180deg,
+        var(--tab-rules-top) 0%,
+        var(--tab-rules-mid) 38%,
+        var(--tab-rules-crease) 48%,
+        var(--tab-rules-face) 55%,
+        var(--tab-rules-mid) 100%
+    );
+    border-color: rgba(240, 170, 160, 0.5);
+    border-bottom-color: var(--gold-leaf);
+}
+
+/* Tab 2: Character Creation (Antique Amber / Gold Leaf Marked Tab) */
+.tab-creation > span,
+.tab-creation > .tab-marker,
+.dropdown:nth-child(2) > span {
+    background: linear-gradient(
+        180deg,
+        var(--tab-creation-top) 0%,
+        var(--tab-creation-mid) 38%,
+        var(--tab-creation-crease) 48%,
+        var(--tab-creation-face) 55%,
+        var(--tab-creation-mid) 100%
+    );
+    border-color: rgba(250, 210, 130, 0.6);
+    border-bottom-color: var(--gold-leaf);
+}
+
+/* Tab 3: Miscellaneous (Scholar's Deep Forest Jade Marked Tab) */
+.tab-misc > span,
+.tab-misc > .tab-marker,
+.dropdown:nth-child(3) > span {
+    background: linear-gradient(
+        180deg,
+        var(--tab-misc-top) 0%,
+        var(--tab-misc-mid) 38%,
+        var(--tab-misc-crease) 48%,
+        var(--tab-misc-face) 55%,
+        var(--tab-misc-mid) 100%
+    );
+    border-color: rgba(160, 220, 200, 0.5);
+    border-bottom-color: var(--gold-leaf);
+}
+
+/* Hover & Focus State: The marked tab lifts up! */
+.dropdown:hover > span,
+.dropdown:hover > .tab-marker,
+.dropdown:focus-within > span,
+.dropdown:focus-within > .tab-marker {
+    transform: translateY(-6px);
+    box-shadow: 
+        0 10px 22px rgba(0, 0, 0, 0.75),
+        0 0 14px rgba(212, 175, 55, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    filter: brightness(1.15);
+    color: #ffffff;
+}
+
+/* Tab internal helper elements */
+.tab-label {
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: inherit !important;
+    font: inherit !important;
+}
+
+.tab-crease,
+.tab-fold-edge {
+    display: none;
+}
+
+/* ==========================================================================
+   DROPDOWN MENU: UNROLLED ILLUMINATED PARCHMENT SCROLL
+   ========================================================================== */
+.dropdown-content {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 250px;
+    z-index: 1001;
+    transform: translateY(12px);
+    transform-origin: top center;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1), visibility 0.3s;
+
+    /* Warm manuscript parchment texture */
+    background-color: var(--parchment-base);
+    background-image: 
+        radial-gradient(ellipse at 50% 10%, rgba(255, 255, 255, 0.7) 0%, transparent 80%),
+        linear-gradient(to bottom, #fdf9ee 0%, #f7edd7 50%, #f0e2c4 100%);
+    border: 2px solid var(--parchment-border);
+    outline: 1px solid var(--gold-leaf);
+    outline-offset: -5px;
+    border-radius: 0 0 8px 8px;
+
+    /* Antique page drop shadow */
+    box-shadow: 
+        0 14px 32px rgba(0, 0, 0, 0.75),
+        0 4px 10px rgba(60, 30, 15, 0.35),
+        inset 0 0 25px rgba(160, 115, 60, 0.12);
+    overflow: hidden;
+    padding: 6px 0 10px 0;
+}
+
+/* Show Dropdown on Hover, Focus, or Active Click */
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content,
+.dropdown.active .dropdown-content {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Invisible hover bridge ensuring smooth mouse movement into dropdown */
+.dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 14px;
+    background: transparent;
+    z-index: 1000;
+}
+
+/* Dropdown Chapter Header Banner */
+.dropdown-header {
+    font-family: 'Cinzel', serif;
+    font-size: 0.76em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--ink-crimson);
+    background: rgba(212, 175, 55, 0.14);
+    padding: 8px 18px;
+    border-bottom: 1px solid rgba(154, 118, 66, 0.35);
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+/* Dropdown Index Links */
+.dropdown-content a {
+    color: var(--ink-dark);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1.05em;
+    font-weight: 600;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid rgba(154, 118, 66, 0.2);
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+/* Hover: Bookmark Ribbon highlight & calligraphic indent */
+.dropdown-content a:hover {
+    background: linear-gradient(90deg, rgba(120, 24, 22, 0.12) 0%, rgba(212, 175, 55, 0.18) 100%);
+    color: var(--ink-crimson);
+    padding-left: 28px;
+}
+
+/* Bookmark ribbon pip on hover */
+.dropdown-content a:hover::before {
+    content: '❧';
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-crimson);
+    font-size: 0.9em;
+}
+
+/* ==========================================================================
+   THE BOOK BODY: OPEN GRIMOIRE / MANUSCRIPT PAGE
+   ========================================================================== */
+.main-content {
+    width: 92%;
+    max-width: 1100px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+    padding: 50px 60px 70px;
+
+    /* Antique parchment page background */
+    background-color: var(--parchment-base);
+    background-image: 
+        radial-gradient(ellipse 90% 40% at 50% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 70%),
+        linear-gradient(to bottom, #fdf9ee 0%, #f7edd7 40%, #f3e6ca 85%, #ede0c2 100%);
+    color: var(--ink-dark);
+
+    /* Double ruled frame around the page edges */
+    border-left: 2px solid var(--parchment-border);
+    border-right: 2px solid var(--parchment-border);
+    border-bottom: 3px solid #735028;
+    border-radius: 0 0 10px 10px;
+
+    /* 
+       STACKED PAGES ILLUSION:
+       Simulating the stacked edges of hundreds of pages underneath!
+    */
+    box-shadow: 
+        0 0 0 1px #462818,
+        2px 2px 0 1px #dac5a1,
+        4px 4px 0 1px #cbaf87,
+        6px 6px 0 1px #bc9f75,
+        8px 8px 0 1px #ad8e64,
+        14px 20px 36px rgba(0, 0, 0, 0.75),
+        inset 0 0 60px rgba(110, 75, 35, 0.08),
+        inset 0 0 120px rgba(70, 40, 15, 0.05);
+
+    position: relative;
+    margin-bottom: 50px;
+}
+
+/* Subtle Book Center Spine Crease Effect */
+.main-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 30px;
+    transform: translateX(-50%);
+    background: linear-gradient(
+        90deg, 
+        transparent 0%, 
+        rgba(90, 55, 25, 0.04) 30%, 
+        rgba(50, 25, 10, 0.08) 50%, 
+        rgba(90, 55, 25, 0.04) 70%, 
+        transparent 100%
+    );
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   ILLUMINATED MANUSCRIPT CONTENT BOXES
+   ========================================================================== */
+.content-box {
+    background-color: var(--parchment-light);
+    background-image: 
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.9) 0%, transparent 80%),
+        linear-gradient(135deg, #fdfbf5 0%, #f6edd9 100%);
+    border-radius: 6px;
+    padding: 34px 38px;
+    color: var(--ink-dark);
+    /* Gilded double-line border */
+    border: 2px solid var(--parchment-border);
+    outline: 1px solid var(--gold-leaf);
+    outline-offset: -5px;
+    box-shadow: 
+        0 5px 18px rgba(60, 35, 15, 0.16),
+        inset 0 0 25px rgba(180, 140, 75, 0.07);
+    width: 90%;
+    max-width: 860px;
+    box-sizing: border-box;
+
+    /* Subtle entrance fade */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.7s ease-out forwards;
+    position: relative;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.paragraph-box {
+    animation-delay: 0.15s;
+}
+
+.paragraph-box p {
+    font-size: 1.14em;
+    line-height: 1.85;
+    text-align: justify;
+    margin: 0;
+    color: var(--ink-sepia);
+}
+
+/* Illuminated Drop Cap on Introduction Paragraph */
+.paragraph-box p::first-letter {
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    font-size: 3.4em;
+    font-weight: 700;
+    float: left;
+    line-height: 0.85;
+    margin: 8px 12px 0 0;
+    color: var(--ink-crimson);
+    text-shadow: 1px 1px 0px #ead3a4, 2px 2px 3px rgba(120, 24, 22, 0.25);
+}
+
+/* ==========================================================================
+   HOMEPAGE TILES: GILDED CHAPTER FOLIOS / BOOKPLATES
+   ========================================================================== */
+.tile-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    width: 90%;
+    max-width: 860px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.7s ease-out 0.3s forwards;
+}
+
+.tile {
+    flex: 1 1 240px;
+    background-color: var(--parchment-light);
+    background-image: 
+        linear-gradient(135deg, #fffdf8 0%, #f7edd7 100%);
+    border: 2px solid var(--parchment-border);
+    outline: 1px dashed rgba(180, 140, 60, 0.45);
+    outline-offset: -5px;
+    border-radius: 6px;
+    padding: 26px 22px;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 
+        0 4px 12px rgba(60, 35, 15, 0.14),
+        inset 0 0 15px rgba(212, 175, 55, 0.08);
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1), 
+                box-shadow 0.3s ease, 
+                border-color 0.3s ease;
+}
+
+/* Bookmark Ribbon Pip on Tile */
+.tile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 4px;
+    background: var(--ink-crimson);
+    border-radius: 0 0 3px 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.tile:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: var(--gold-leaf);
+    box-shadow: 
+        0 10px 25px rgba(180, 130, 40, 0.3),
+        0 0 12px rgba(212, 175, 55, 0.25),
+        inset 0 0 20px rgba(212, 175, 55, 0.15);
+}
+
+.tile h2 {
+    margin: 4px 0 8px;
+    font-family: 'Cinzel', serif;
+    font-size: 1.45em;
+    font-weight: 700;
+    color: var(--ink-crimson);
+    transition: color 0.3s ease;
+}
+
+.tile:hover h2 {
+    color: var(--ink-crimson-bright);
+    text-shadow: 0 0 8px rgba(152, 34, 31, 0.25);
+}
+
+.tile p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1.02em;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* ==========================================================================
+   CONTENT PANEL (SPELLS, RULES, MANEUVERS, STATS)
+   ========================================================================== */
+.content-panel {
+    width: 100%;
+    max-width: 900px;
+    box-sizing: border-box;
+    margin-top: 10px;
+    background-color: var(--parchment-light);
+    background-image: 
+        radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 70%),
+        linear-gradient(to bottom, #fdfaf0 0%, #f6edd7 100%);
+    border: 2px solid var(--parchment-border);
+    outline: 1px solid var(--gold-leaf);
+    outline-offset: -6px;
+    border-radius: 6px;
+    padding: 36px 42px;
+    color: var(--ink-dark);
+    line-height: 1.75;
+    font-size: 1.08em;
+    box-shadow: 
+        0 6px 20px rgba(50, 30, 15, 0.16),
+        inset 0 0 30px rgba(160, 120, 60, 0.08);
+    position: relative;
+}
+
+/* Headings in the Book */
+h1, h2, h3, h4 {
+    font-family: 'Cinzel', serif;
+    color: var(--ink-crimson);
+    letter-spacing: 0.5px;
+}
+
+.content-panel h2 {
+    font-size: 2em;
+    font-weight: 700;
+    text-align: center;
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px double var(--parchment-border);
+    color: var(--ink-crimson);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.content-panel h3 {
+    font-size: 1.4em;
+    color: var(--ink-amber);
+    margin-top: 24px;
+    margin-bottom: 10px;
+}
+
+/* Stat line badges (Range, Casting Time, Spell Rank, Class, etc.) */
+.content-panel b,
+.content-panel strong {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: var(--ink-amber);
+    font-size: 0.96em;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   CONDITIONS & STATUS EFFECTS
+   ========================================================================== */
+.conditions-header-desc {
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-muted);
+    margin: -10px 0 24px 0;
+    font-size: 1.05em;
+    line-height: 1.6;
+}
+
+.condition-search-container {
+    margin: 10px 0 20px 0;
+    width: 100%;
+}
+
+.condition-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1.1em;
+    padding: 10px 18px;
+    background: rgba(254, 253, 248, 0.95);
+    border: 2px solid var(--parchment-border);
+    border-radius: 4px;
+    color: var(--ink-dark);
+    outline: none;
+    box-shadow: inset 0 1px 4px rgba(60, 35, 15, 0.1);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.condition-search-input:focus {
+    border-color: var(--ink-crimson);
+    box-shadow: 0 0 10px rgba(120, 24, 22, 0.25), inset 0 1px 4px rgba(60, 35, 15, 0.1);
+}
+
+.condition-search-input::placeholder {
+    color: var(--ink-muted);
+    font-style: italic;
+    opacity: 0.8;
+}
+
+.conditions-quick-index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px dashed rgba(154, 118, 66, 0.45);
+}
+
+.conditions-quick-index a {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8em;
+    font-weight: 600;
+    padding: 3px 9px;
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(154, 118, 66, 0.35);
+    border-radius: 3px;
+    color: var(--ink-dark);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.conditions-quick-index a:hover {
+    background: var(--ink-crimson);
+    color: #fff8e8;
+    border-color: var(--ink-crimson);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(120, 24, 22, 0.3);
+}
+
+.condition {
+    background: linear-gradient(135deg, rgba(254, 253, 248, 0.95) 0%, rgba(247, 237, 215, 0.75) 100%);
+    border: 1px solid var(--parchment-border);
+    border-left: 5px solid var(--ink-crimson);
+    border-radius: 4px;
+    padding: 20px 26px;
+    margin: 20px 0;
+    box-shadow: 0 3px 10px rgba(60, 35, 15, 0.08), inset 0 0 18px rgba(212, 175, 55, 0.04);
+    position: relative;
+    scroll-margin-top: 24px;
+    box-sizing: border-box;
+    width: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-left-color 0.2s ease;
+}
+
+.condition:hover {
+    transform: translateX(3px);
+    box-shadow: 0 6px 20px rgba(60, 35, 15, 0.14), inset 0 0 18px rgba(212, 175, 55, 0.08);
+    border-left-color: var(--gold-leaf);
+}
+
+.condition h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.35em;
+    font-weight: 700;
+    color: var(--ink-crimson);
+    margin: 0 0 10px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(154, 118, 66, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.5px;
+}
+
+.condition h3::before {
+    content: '✦';
+    font-size: 0.75em;
+    color: var(--gold-dark);
+}
+
+.condition p {
+    margin: 0 0 10px 0;
+    color: var(--ink-sepia);
+    line-height: 1.75;
+    text-align: justify;
+}
+
+.condition p:last-child {
+    margin-bottom: 0;
+}
+
+.condition ol,
+.condition ul {
+    margin: 10px 0;
+    padding-left: 24px;
+    color: var(--ink-sepia);
+}
+
+.condition li {
+    margin-bottom: 6px;
+    line-height: 1.65;
+}
+
+.condition li > strong {
+    color: var(--ink-crimson);
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+}
+
+.condition ol > li {
+    margin-top: 8px;
+}
+
+.condition ul {
+    list-style-type: disc;
+    margin-top: 4px;
+}
+
+.condition .code-block,
+.condition-callout {
+    background-color: rgba(212, 175, 55, 0.1);
+    border-left: 3px solid var(--gold-leaf);
+    padding: 10px 14px;
+    border-radius: 3px;
+    margin: 12px 0;
+}
+
+/* ==========================================================================
+   LORE SECTIONS & LORE PAGES
+   ========================================================================== */
+.lore-section {
+    width: 100%;
+    max-width: 900px;
+    box-sizing: border-box;
+    padding: 32px 38px;
+    background-color: var(--parchment-light);
+    background-image: linear-gradient(135deg, #fdfbf4 0%, #f6ebd5 100%);
+    border: 2px solid var(--parchment-border);
+    outline: 1px solid var(--gold-leaf);
+    outline-offset: -5px;
+    border-radius: 6px;
+    box-shadow: 0 5px 18px rgba(60, 35, 15, 0.15);
+    color: var(--ink-dark);
+    margin-bottom: 24px;
+}
+
+.lore-section h2 {
+    color: var(--ink-crimson);
+    text-align: center;
+    margin-top: 0;
+    font-size: 1.9em;
+    border-bottom: 1px solid var(--parchment-border);
+    padding-bottom: 10px;
+}
+
+.lore-section h3 {
+    color: var(--ink-amber);
+    font-size: 1.35em;
+    margin-top: 20px;
+}
+
+.lore-section p {
+    color: var(--ink-sepia);
+    line-height: 1.8;
+    text-align: justify;
+}
+
+.lore-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+    text-align: center;
+}
+
+.lore-section li {
+    margin-bottom: 10px;
+}
+
+.lore-section a {
+    color: var(--ink-crimson);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+}
+
+.lore-section a:hover {
+    color: var(--ink-crimson-bright);
+}
+
+/* Side-by-side lore layout */
+.main-content.lore-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.lore-row .lore-section {
+    flex: 1 1 500px;
+    max-width: 800px;
+}
+
+.image-box {
+    flex: 1 1 300px;
+    max-width: 400px;
+}
+
+.image-box img {
+    width: 100%;
+    border-radius: 6px;
+    border: 2px solid var(--parchment-border);
+    box-shadow: 0 6px 18px rgba(40, 20, 10, 0.4);
+}
+
+/* ==========================================================================
+   ILLUMINATED MANUSCRIPT TABLES
+   ========================================================================== */
+.class-table,
+.list-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: var(--parchment-light);
+    border: 2px solid var(--parchment-border);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(60, 30, 15, 0.1);
+}
+
+.class-table th,
+.list-table th {
+    background: linear-gradient(180deg, #6c1614 0%, #4f0f0d 100%);
+    color: #fbf1db;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 0.95em;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--gold-leaf);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.class-table td,
+.list-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid rgba(154, 118, 66, 0.3);
+    color: var(--ink-dark);
+    font-size: 0.98em;
+    vertical-align: top;
+}
+
+.class-table tr:nth-child(even),
+.list-table tr:nth-child(even) {
+    background-color: rgba(212, 175, 55, 0.08);
+}
+
+.class-table tr:hover,
+.list-table tr:hover {
+    background-color: rgba(212, 175, 55, 0.18);
+}
+
+.class-table td a,
+.list-table td a {
+    display: block;
+    padding: 3px 2px;
+}
+
+/* ==========================================================================
+   PAGE-LAYOUT & THUMB-INDEX SIDEBAR (SPELLS-COMPLETE, ETC.)
+   ========================================================================== */
+.page-layout {
+    width: 92%;
+    max-width: 1200px;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    background-color: var(--parchment-base);
+    border-left: 2px solid var(--parchment-border);
+    border-right: 2px solid var(--parchment-border);
+    border-bottom: 3px solid #735028;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 
+        0 0 0 1px #462818,
+        2px 2px 0 1px #dac5a1,
+        4px 4px 0 1px #cbaf87,
+        6px 6px 0 1px #bc9f75,
+        8px 8px 0 1px #ad8e64,
+        14px 20px 36px rgba(0, 0, 0, 0.75);
+    margin-bottom: 50px;
+}
+
+/* Thumb-Index Sidebar along the left book page margin */
+.sidebar {
+    box-sizing: border-box;
+    width: 260px;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, #2b170e 0%, #1c0e07 100%) !important;
+    padding: 24px 16px;
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    border-right: 3px double var(--gold-leaf) !important;
+    border-radius: 0 0 0 8px;
+    box-shadow: inset -5px 0 12px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar h3 {
+    color: var(--gold-bright) !important;
+    font-family: 'Cinzel', serif;
+    font-size: 1.15em;
+    font-weight: 700;
+    margin-bottom: 18px;
+    text-align: center;
+    border-bottom: 2px solid var(--gold-leaf) !important;
+    padding-bottom: 8px;
+    letter-spacing: 1px;
+}
+
+.school-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.school-nav li {
+    margin-bottom: 8px;
+}
+
+.school-nav a {
+    color: #e5d7bd !important;
+    font-family: 'Cinzel', serif;
+    font-size: 0.9em;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: block;
+    border-radius: 4px;
+    border-left: 3px solid transparent !important;
+    transition: all 0.25s ease;
+}
+
+.school-nav a:hover {
+    background-color: rgba(212, 175, 55, 0.2) !important;
+    color: #ffffff !important;
+    border-left-color: var(--gold-leaf) !important;
+    padding-left: 16px;
+}
+
+.school-nav a.active {
+    background-color: rgba(120, 24, 22, 0.45) !important;
+    border-left-color: #ff4136 !important;
+    color: var(--gold-bright) !important;
+}
+
+/* Spell & Maneuver Description Boxes inside Grimoire */
+.spell-description-box,
+.maneuver-description-box {
+    background-color: var(--parchment-light) !important;
+    border: 2px solid var(--parchment-border) !important;
+    outline: 1px solid var(--gold-leaf);
+    outline-offset: -5px;
+    border-radius: 6px !important;
+    padding: 26px 30px !important;
+    color: var(--ink-dark) !important;
+    margin-bottom: 30px;
+    line-height: 1.7;
+    box-shadow: 0 4px 14px rgba(60, 30, 15, 0.12) !important;
+}
+
+.spell-description-box h3,
+.maneuver-description-box h3 {
+    color: var(--ink-crimson) !important;
+    font-family: 'Cinzel', serif;
+    font-size: 1.45em !important;
+    margin-top: 0;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--parchment-border) !important;
+    padding-bottom: 8px;
+}
+
+.spell-description-box strong,
+.maneuver-description-box strong {
+    color: var(--ink-amber) !important;
+    font-family: 'Cinzel', serif;
+}
+
+/* ==========================================================================
+   GENERAL LINKS & BUTTONS
+   ========================================================================== */
+a {
+    color: var(--ink-crimson);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--ink-crimson-bright);
+}
+
+button {
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(180deg, #881c19 0%, #68110f 100%);
+    color: #fff8e8;
+    border: 1px solid var(--gold-leaf);
+    padding: 10px 22px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    transition: all 0.25s ease;
+}
+
+button:hover {
+    background: linear-gradient(180deg, #aa2723 0%, #7d1715 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 14px rgba(120, 24, 22, 0.5);
+}
+
+/* ==========================================================================
+   SECTION & SUBSECTION TITLES
+   ========================================================================== */
+.section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.25em;
+    font-weight: 700;
+    color: var(--ink-crimson);
+    text-align: center;
+    margin: 24px 0 12px;
+    letter-spacing: 1px;
+}
+
+.subsection-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--ink-amber);
+    margin: 16px 0 8px;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (TABLETS & MOBILE)
+   ========================================================================== */
+@media (max-width: 900px) {
+    header#main-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 20px 12px 20px;
+        width: 96%;
+    }
+
+    .book-title-container {
+        text-align: center;
+        align-items: center;
+    }
+
+    header#main-header h1,
+    .book-title {
+        font-size: 1.7em;
+    }
+
+    header#main-header nav,
+    .book-nav {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .dropdown span,
+    .dropdown .tab-marker {
+        padding: 8px 14px 10px;
+        font-size: 0.8em;
+    }
+
+    .main-content {
+        width: 96%;
+        padding: 26px 20px 40px;
+    }
+
+    .content-box {
+        width: 100%;
+        padding: 22px 18px;
+    }
+
+    .content-panel {
+        padding: 22px 18px;
+    }
+
+    .condition {
+        padding: 16px 18px;
+    }
+
+    .page-layout {
+        width: 96%;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+        border-right: none !important;
+        border-bottom: 3px double var(--gold-leaf) !important;
+        border-radius: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    header#main-header h1,
+    .book-title {
+        font-size: 1.35em;
+    }
+
+    .book-subtitle {
+        font-size: 0.6em;
+    }
+
+    header#main-header nav,
+    .book-nav {
+        gap: 6px;
+    }
+
+    .dropdown span,
+    .dropdown .tab-marker {
+        padding: 6px 10px 8px;
+        font-size: 0.72em;
+    }
+
+    .dropdown-content {
+        min-width: 200px;
+    }
+
+    .condition {
+        padding: 14px 14px;
+        margin: 14px 0;
+    }
+
+    .conditions-quick-index a {
+        font-size: 0.75em;
+        padding: 2px 7px;
+    }
+}
+
+
+/* ==========================================================================
+   TOME DETAILS & MOTION (added November 24, 2026)
+   Gilt corners and a tailpiece on every page, a leaf that turns away as a
+   page loads, a candle that flickers over the desk, a ribbon bookmark under
+   the header, and dropdowns that unroll like parchment.
+   Everything here stops for visitors who ask for reduced motion.
+   ========================================================================== */
+
+/* --- Candlelight over the desk --- */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 70% 45% at 50% 0%, rgba(255, 168, 80, 0.13) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 30% at 50% 0%, rgba(255, 200, 120, 0.08) 0%, transparent 70%);
+    animation: candle-flicker 7s ease-in-out infinite;
+}
+@keyframes candle-flicker {
+    0%, 100% { opacity: 0.78; }
+    11% { opacity: 1; }
+    19% { opacity: 0.84; }
+    31% { opacity: 0.96; }
+    46% { opacity: 0.72; }
+    57% { opacity: 1; }
+    70% { opacity: 0.86; }
+    84% { opacity: 0.97; }
+}
+
+/* --- Gilt corner tooling and a closing tailpiece on each page --- */
+body > .main-content {
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Cg transform=''%3E%3Cg fill='none' stroke='%238c6a1e' stroke-width='1.2'%3E%3Cpath d='M2 58 V8 Q2 2 8 2 H58'/%3E%3Cpath d='M8 50 C8 22 22 8 50 8'/%3E%3Cpath d='M8 34 C12 20 20 12 34 8' stroke-width='0.9'/%3E%3C/g%3E%3Cpath fill='%23b08a2e' d='M18 10 l1.6 6.4 6.4 1.6 -6.4 1.6 -1.6 6.4 -1.6 -6.4 -6.4 -1.6 6.4 -1.6z'/%3E%3Ccircle cx='18' cy='18' r='1.5' fill='%23781816'/%3E%3C/g%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Cg transform='translate(60 0) scale(-1 1)'%3E%3Cg fill='none' stroke='%238c6a1e' stroke-width='1.2'%3E%3Cpath d='M2 58 V8 Q2 2 8 2 H58'/%3E%3Cpath d='M8 50 C8 22 22 8 50 8'/%3E%3Cpath d='M8 34 C12 20 20 12 34 8' stroke-width='0.9'/%3E%3C/g%3E%3Cpath fill='%23b08a2e' d='M18 10 l1.6 6.4 6.4 1.6 -6.4 1.6 -1.6 6.4 -1.6 -6.4 -6.4 -1.6 6.4 -1.6z'/%3E%3Ccircle cx='18' cy='18' r='1.5' fill='%23781816'/%3E%3C/g%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Cg transform='translate(0 60) scale(1 -1)'%3E%3Cg fill='none' stroke='%238c6a1e' stroke-width='1.2'%3E%3Cpath d='M2 58 V8 Q2 2 8 2 H58'/%3E%3Cpath d='M8 50 C8 22 22 8 50 8'/%3E%3Cpath d='M8 34 C12 20 20 12 34 8' stroke-width='0.9'/%3E%3C/g%3E%3Cpath fill='%23b08a2e' d='M18 10 l1.6 6.4 6.4 1.6 -6.4 1.6 -1.6 6.4 -1.6 -6.4 -6.4 -1.6 6.4 -1.6z'/%3E%3Ccircle cx='18' cy='18' r='1.5' fill='%23781816'/%3E%3C/g%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Cg transform='translate(60 60) scale(-1 -1)'%3E%3Cg fill='none' stroke='%238c6a1e' stroke-width='1.2'%3E%3Cpath d='M2 58 V8 Q2 2 8 2 H58'/%3E%3Cpath d='M8 50 C8 22 22 8 50 8'/%3E%3Cpath d='M8 34 C12 20 20 12 34 8' stroke-width='0.9'/%3E%3C/g%3E%3Cpath fill='%23b08a2e' d='M18 10 l1.6 6.4 6.4 1.6 -6.4 1.6 -1.6 6.4 -1.6 -6.4 -6.4 -1.6 6.4 -1.6z'/%3E%3Ccircle cx='18' cy='18' r='1.5' fill='%23781816'/%3E%3C/g%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 24'%3E%3Cpath d='M6 12 H62 M98 12 H154' stroke='%239a7642' stroke-width='1'/%3E%3Cpath d='M80 3 l8 9 -8 9 -8 -9z' fill='%23781816'/%3E%3Cpath d='M80 8 l4 4 -4 4 -4 -4z' fill='%23d4af37'/%3E%3Ccircle cx='67' cy='12' r='2' fill='%23b08a2e'/%3E%3Ccircle cx='93' cy='12' r='2' fill='%23b08a2e'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse 90% 40% at 50% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 70%),
+        linear-gradient(to bottom, #fdf9ee 0%, #f7edd7 40%, #f3e6ca 85%, #ede0c2 100%);
+    background-repeat: no-repeat;
+    background-position:
+        left 16px top 16px,
+        right 16px top 16px,
+        left 16px bottom 16px,
+        right 16px bottom 16px,
+        center bottom 24px,
+        0 0,
+        0 0;
+    background-size: 54px 54px, 54px 54px, 54px 54px, 54px 54px, 160px 24px, 100% 100%, 100% 100%;
+}
+
+/* --- The leaf turns away as a page opens --- */
+body > .main-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: min(100%, 100vh);
+    z-index: 5;
+    pointer-events: none;
+    border-radius: 0 0 10px 10px;
+    background:
+        linear-gradient(90deg, rgba(120, 80, 35, 0.16) 0%, transparent 12%, transparent 80%, rgba(120, 80, 35, 0.22) 100%),
+        linear-gradient(to bottom, #fdf9ee 0%, #f6ebd3 100%);
+    transform-origin: left center;
+    animation: leaf-turn 0.9s cubic-bezier(0.55, 0.05, 0.35, 1) 0.12s both;
+}
+body.home > .main-content::after { display: none; }
+@keyframes leaf-turn {
+    0% { transform: perspective(2400px) rotateY(0deg); opacity: 1; filter: brightness(1); }
+    65% { opacity: 1; }
+    100% { transform: perspective(2400px) rotateY(-118deg); opacity: 0; filter: brightness(0.7); }
+}
+
+/* --- Ribbon bookmark hanging from the header onto the page --- */
+header#main-header::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 78px;
+    width: 22px;
+    height: 76px;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, transparent 0 4px, rgba(0, 0, 0, 0.18) 4px 5px, transparent 5px calc(100% - 5px), rgba(0, 0, 0, 0.18) calc(100% - 5px) calc(100% - 4px), transparent 0),
+        linear-gradient(90deg, #5a0f0d 0%, #a62723 45%, #6d1210 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%);
+    transform-origin: top center;
+    animation: ribbon-unfurl 0.8s cubic-bezier(0.3, 1.35, 0.5, 1) 0.35s both;
+}
+@keyframes ribbon-unfurl {
+    from { transform: scaleY(0.15); }
+    to { transform: scaleY(1); }
+}
+
+/* --- Chapter dropdowns unroll like parchment --- */
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content,
+.dropdown.active .dropdown-content {
+    animation: parchment-unroll 0.32s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+}
+@keyframes parchment-unroll {
+    from { clip-path: inset(0 0 100% 0); }
+    to { clip-path: inset(0 0 0 0); }
+}
+
+/* --- A fleuron set into the rule under each page heading --- */
+.content-panel h2 { position: relative; }
+.content-panel h2::after {
+    content: '❦';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 55%);
+    padding: 0 10px;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 0.5em;
+    line-height: 1;
+    color: var(--gold-dark);
+    background: #fcf7ea;
+}
+
+/* --- Illuminated first letter on lore pages --- */
+.lore-section > p:first-of-type::first-letter {
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    font-size: 3.1em;
+    font-weight: 700;
+    float: left;
+    line-height: 0.85;
+    margin: 6px 10px 0 0;
+    color: var(--ink-crimson);
+    text-shadow: 1px 1px 0 #ead3a4, 2px 2px 3px rgba(120, 24, 22, 0.25);
+}
+
+/* --- Ink underline that draws in under links in running text --- */
+.content-panel p a {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s ease, color 0.2s ease;
+}
+.content-panel p a:hover,
+.content-panel p a:focus-visible {
+    background-size: 100% 1px;
+}
+
+/* --- Homepage tiles: the ribbon pip drops when you point at a chapter --- */
+.tile::before {
+    transition: height 0.3s cubic-bezier(0.3, 1.4, 0.5, 1);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
+    border-radius: 0;
+}
+.tile:hover::before,
+.tile:focus-visible::before {
+    height: 18px;
+}
+.tile:focus-visible {
+    outline: 2px solid var(--ink-crimson);
+    outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+    body > .main-content {
+        background-position:
+            left 7px top 7px,
+            right 7px top 7px,
+            left 7px bottom 7px,
+            right 7px bottom 7px,
+            center bottom 12px,
+            0 0,
+            0 0;
+        background-size: 32px 32px, 32px 32px, 32px 32px, 32px 32px, 120px 18px, 100% 100%, 100% 100%;
+    }
+    header#main-header::after {
+        right: 6px;
+        width: 14px;
+        height: 54px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body::before,
+    header#main-header::after,
+    .dropdown:hover .dropdown-content,
+    .dropdown:focus-within .dropdown-content,
+    .dropdown.active .dropdown-content {
+        animation: none;
+    }
+    body > .main-content::after { display: none; }
+    .content-box,
+    .tile-grid {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}

@@ -1,0 +1,105 @@
+Overall Changes
+Physical damage has been split into Piercing, Slashing, Bludegoning and Necrotic damage. 
+If you have any traits or items that give resistance or immunity to one of these you must pick 1 of the following to resist.
+
+
+Spells
+
+Lightning Bolt now costs 3 AP and has been changed to Resistence Body save instead of evasion
+Evasion has been changed to 2 AP
+Zap has had its damage increased by 1d6
+static charge has had it's AP cost reduced to 2.
+Wall of wind had its range reduced from 30 to 10 and had clarifications made.
+Vaccum has been reworked.
+Lightning Talon has had its damage buffed from 1d4 to 8d8. Additonally, it's AP cost has been reduced from 4 to 2.
+Thunderstorm has had it's AP cost increased to 4, its damage increased to 6d12, and it's diameter reduced to 5 meters. Additonally it has been worded more clearly.
+
+Armor of Magic has been changed to 1 condition being ended when cast.
+Banish has been increased to 4 AP
+Bind creature has been clarified through new wording
+Reworked magic sense.
+Dimensonal lock had had its range decreased to 20 meters but now automatically counters spells cast equal to it's level or lower.
+Stillness of the Mind has had it's name changes to Still Mind and is no loger only applicable to reistance mind saves.
+Finger of Doom had had its damage increased to 10d10.
+Magic Dome has been clarified
+Spectral Sword (All Variants) have had their AP increased to 3 and no longer requires AP to move.
+Symbol of Power is now a static of the caster's choice but no longer provides true armor.
+
+Continuity Error has been changed to instant.
+Changed foresight to end at the end of the next turn and not the start
+Changed Reciprocating Dimensions to use primary stat instead of modifier on percentile chance,
+Lowered the cost of changing the direction of gravity in alter gravity from 20 mana to 10.
+Planar Rift has had its casting time altered from 3 AP to 1 Minute
+Foresight now grants a bonus to evasion saves
+
+Curse no longer requires no magic armor to work
+Demonic Tether no longer requires no magic armor to work
+Entralling Invitation was specified to include manuvers
+False Miracle has been clarified
+Ray of the Vile had its name changed to Vile Ray
+Sphere of Agony has been changed to 1d6 unholy damage and 1d6 slashing damage
+Changed unholy burst to a resistence mind save and the fear only lasts till the end of the next turn.
+Visions of the Mire no longer requires no magic armor.
+
+Enhance body and Heighten Mind had its range decreased to 15 meters
+Crush now paralyses metal targets
+Crystal Spikes has been reduced from 5 to 3 spikes
+Dancing Grains had been changed to an Evasion save
+Loosen Earth's AP has been reduced to 3.
+
+Mend Metal had it's AP cost increased to 2
+Fixed Celestial Tongue and Understanding to be adept
+Celestial Shroud now effects all saves
+Mending Waters had it's AP reduced to 2
+Shatter has been increased to 3 AP but has been lowered from Major to Adept
+Cloud Scribe has been reduced to an Adept spell
+Envelop can now effect objects.
+
+Leech Positive Energy has been lowered to an Adept spell and no longer requires no magic armor
+Brand of Lethargy has been reduced to 3 AP and can be reapplied to the same target to stack.
+Key of the Mind has been increased to an Adept spell
+False eyes no longer requires 0 magic armor
+Gates of the Abyss now drains mana and stamina
+Chaos Bolt no longer requires no armor for the saving throw
+Anagisa no longer requires no magic armor to function
+Devour magic no longer affects relics and mythic items
+
+
+Essence Vampirism no longer requires no magic armor to function
+Disparate has been changed from touch to 5 meters, no longer requires no magic armor and now has an attack roll instead of an evasion save
+Ignite has been changed to a 5 meter cone
+Colums of Flame has been increased to 6d10 damage
+Flame Shroud had its damage increased to 2d12
+Flaming Weapon no longer requires no magic armor for it's save
+Heatwave has been changed to a Resistence Body save
+Hurl fire has been lowered to 2 AP
+Finger Flame has been (properly) changed to a minor spell
+Catastorpe has been reworked entirely
+Flame Web had it's radius reduced to 5
+Flames of the Phoenix has recived clarification
+Shadow Leap has been increased to 2 AP
+
+Harness Water had it's AP increased to 3 and had a save added to it when targeting creatures
+
+
+Matial Manuvers
+
+Impale no longer requires no physical armor
+Reflexive Riposte has been lowered to a +2 bonus.
+Removed the skill check from trick shot
+Changed Tripping Stike to all attacks
+
+Alchemical Weapon no longer requires charisma
+1000 Cuts no longer requires finesse
+Adamantite Body no longer requires fortitude
+Assasin's Escape no longer requires Finesse
+Cunning Tactics no longer requires Wits
+Dirty Tactics no longer requires Wits
+
+Flicker Step no longer requires finesse
+Rejuvinating Ki no longer requires Charisma
+Alter Weapon no longer requires charisma
+Conviction no longer requires charisma
+Phantom Steps no longer requires finesse
+Vampiric Blade no longer requires Charisma and is no longer restricted to melee
+Hero's Rally no longer requires Charisma

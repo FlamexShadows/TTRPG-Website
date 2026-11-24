@@ -1,0 +1,7 @@
+# Store text files with one line-ending style so Windows edits do not show up as whole-file changes.
+* text=auto
+*.xlsx binary
+*.docx binary
+*.jpg binary
+*.png binary
+*.exe binary

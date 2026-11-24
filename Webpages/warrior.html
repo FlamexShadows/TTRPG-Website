@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sparks | Warrior</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+        <link rel="stylesheet"
+        type="text/css" 
+        href="styles.css"/>
+
+        <style>
+            header {
+                width: 100%;
+            }
+
+            #centered-text-middle {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    position: absolute;
+    left: 50%;
+}
+
+#centered-text {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: underline;
+    
+  
+}
+        </style>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+    $(function(){
+      $("#header-placeholder").load("a-header.html"); 
+    });
+    </script>
+    
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <div style="margin-top: 100px; color: white;">
+            <div class="main-content">
+                <div class="content-panel">
+
+                    <div class="section-title">
+                        Class Chart
+                        </div>
+                        <br><br>
+                    <table class="class-table">
+                        <tr>
+                          <th>Level</th>
+                          <th>Class Bonus Statistics</th>
+                          <th>Class Features</th>
+                          <th>Skill Progression</th>
+                          <th>Stamina</th>
+                          <th>Maneuver Slots</th>
+                          <th>Hit Points</th>
+                        </tr>
+                        <tr>
+                          <td>1</td>
+                          <td>+2 Strength, +1 Fortitude</td>
+                          <td>Armored & Subclass Feature</td>
+                          <td>3 Levels</td>
+                          <td>1</td>
+                          <td>4</td>
+                          <td>1d10</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>+2 Strength, +2 Fortitude</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>2</td>
+                          <td>4</td>
+                          <td>2d10</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>+3 Strength, +2 Fortitude</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>3</td>
+                          <td>4</td>
+                          <td>3d10</td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td>+4 Strength, +2 Fortitude</td>
+                          <td>-</td>
+                          <td>6 Levels</td>
+                          <td>4</td>
+                          <td>6</td>
+                          <td>4d10</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>+5 Strength, +3 Fortitude</td>
+                            <td>Weapon Expert</td>
+                            <td>-</td>
+                            <td>5</td>
+                            <td>6</td>
+                            <td>5d10</td>
+                          </tr>
+                          <tr>
+                            <td>6</td>
+                            <td>+6 Strength, +3 Fortitude</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>6</td>
+                            <td>6</td>
+                            <td>6d10</td>
+                          </tr>
+                          <tr>
+                            <td>7</td>
+                            <td>+6 Strength, +4 Fortitude</td>
+                            <td>-</td>
+                            <td>9 Levels</td>
+                            <td>7</td>
+                            <td>8</td>
+                            <td>7d10</td>
+                          </tr>
+                          <tr>
+                            <td>8</td>
+                            <td>+7 Strength, +4 Fortitude</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>8</td>
+                            <td>8</td>
+                            <td>8d10</td>
+                          </tr>
+                          <tr>
+                            <td>9</td>
+                            <td>+8 Strength, +4 Fortitude</td>
+                            <td>Extra Feat</td>
+                            <td>-</td>
+                            <td>9</td>
+                            <td>8</td>
+                            <td>9d10</td>
+                          </tr>
+                          <tr>
+                            <td>10</td>
+                            <td>+10 Strength, +5 Fortitude</td>
+                            <td>Till the End</td>
+                            <td>12 Levels</td>
+                            <td>10</td>
+                            <td>8</td>
+                            <td>10d10</td>
+                          </tr>
+                          <tr>
+                            <td>11</td>
+                            <td>+12 Strength, +5 Fortitude</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>11</td>
+                            <td>8</td>
+                            <td>11d10</td>
+                          </tr>
+                          <tr>
+                            <td>12</td>
+                            <td>+12 Strength, +7 Fortitude</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>12</td>
+                            <td>10</td>
+                            <td>12d10</td>
+                          </tr>
+                          <tr>
+                            <td>13</td>
+                            <td>+14 Strength, +7 Fortitude</td>
+                            <td>Subclass Feature</td>
+                            <td>15 Levels</td>
+                            <td>13</td>
+                            <td>10</td>
+                            <td>13d10</td>
+                          </tr>
+                          <tr>
+                            <td>14</td>
+                            <td>+16 Strength, +7 Fortitude</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>14</td>
+                            <td>10</td>
+                            <td>14d10</td>
+                          </tr>
+                          <tr>
+                            <td>15</td>
+                            <td>+19 Strength, +10 Fortitude</td>
+                            <td>Magic Protection</td>
+                            <td>-</td>
+                            <td>15</td>
+                            <td>12</td>
+                            <td>15d10</td>
+                          </tr>
+                          <tr>
+                            <td>16</td>
+                            <td>+22 Strength, +10 Fortitude</td>
+                            <td>-</td>
+                            <td>18 Levels</td>
+                            <td>16</td>
+                            <td>12</td>
+                            <td>16d10</td>
+                          </tr>
+                          <tr>
+                            <td>17</td>
+                            <td>+22 Strength, +13 Fortitude</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>17</td>
+                            <td>12</td>
+                            <td>17d10</td>
+                          </tr>
+                          <tr>
+                            <td>18</td>
+                            <td>+25 Strength, +13 Fortitude</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>18</td>
+                            <td>12</td>
+                            <td>18d10</td>
+                          </tr>
+                    
+                          <tr>
+                            <td>19</td>
+                            <td>+28 Strength, +13 Fortitude</td>
+                            <td>-</td>
+                            <td>21 Levels</td>
+                            <td>19</td>
+                            <td>12</td>
+                            <td>19d10</td>
+                          </tr>
+                          <tr>
+                            <td>20</td>
+                            <td>+32 Strength, +17 Fortitude</td>
+                            <td>Destined Champion</td>
+                            <td>-</td>
+                            <td>40</td>
+                            <td>14</td>
+                            <td>20d10</td>
+                          </tr>
+                          <tr>
+                            <td>21</td>
+                            <td>+36 Strength, +17 Fortitude</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>42</td>
+                            <td>16</td>
+                            <td>21d10</td>
+                          </tr>
+                          <tr>
+                            <td>22</td>
+                            <td>+36 Strength, +21 Fortitude</td>
+                            <td>-</td>
+                            <td>24 Levels</td>
+                            <td>22</td>
+                            <td>16</td>
+                            <td>22d10</td>
+                          </tr>
+                          <tr>
+                            <td>23</td>
+                            <td>+40 Strength, +21 Fortitude</td>
+                            <td>Subclass Feature</td>
+                            <td>-</td>
+                            <td>23</td>
+                            <td>16</td>
+                            <td>23d10</td>
+                          </tr>
+                          <tr>
+                            <td>24</td>
+                            <td>+44 Strength, +21 Fortitude</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>24</td>
+                            <td>16</td>
+                            <td>24d10</td>
+                          </tr>
+                          <tr>
+                            <td>25</td>
+                            <td>+49 Strength, +26 Fortitude</td>
+                            <td>Fabled</td>
+                            <td>27 Levels</td>
+                            <td>25</td>
+                            <td>16</td>
+                            <td>25d10</td>
+                          </tr>
+                        </table>
+        
+        <br> <br>
+        <div class="section-title">
+          Class Features
+  </div>
+  <div style="color: white; text-align: left;">
+      <div id="centered-text-2">
+        Armored
+      </div>
+      Starting at 1st level a warrior gains proficiency in all armor and can wield a shield or heavy weapon while wearing heavy armor.<br><br>
+
+      Weapon Expert <br>
+      Starting at 5th level the warrior adds or gains a level of deadly on all weapons they wield. <br><br>
+      
+      Till the End <br>
+      Starting at 10th level when a warrior takes damage that results in them reaching 0 health they may choose to spend 5 stamina to regain a number of hit points equal to their level if not killed. <br><br>
+      
+      Magic Protection<br>
+      Starting at 15th level a warrior's maximum magic armor becomes half of their maximum physical armor if lower. <br> <br>
+      
+      Destined Champion <br>
+      Starting at 20th level a warrior becomes immune to the Fearful and Hopeless conditions. In addition when a warrior uses a basic or advanced martial maneuver it no longer costs stamina. <br><br>               
+                       
+      Fabled <br>
+      Starting at 25th level a warrior is renown in the world. The warrior's maximum AP increases to 8. In addition the warrior becomes Immune to AP drain effects.
+<br><br>
+or
+<br><br>
+The warrior's magical armor is equal to their physical armor if lower and gains an extra 2 reactions per round.<br><br>
+
+</div>
+
+    <div class="section-title">
+      Subclasses
+</div>
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>The Righteous</h3>
+    </div>
+    <br>
+    Divine Might<br>
+    Starting at 1st level The Righteous may choose 3 Minor Heavenly Spells. The Righteous may cast these spells three times per full rest. The same spell may be cast more than once but the total castings of these spells may not exceed three. <br><br>
+    Retribution <br>
+    Starting at 3rd level The Righteous gains a special combat maneuver called "Retribution". <br><br>
+
+    Name: Retribution <br>
+    Tier: Basic<br>
+    AP: 4<br>
+    Requirements: Weapon<br>
+    Type: Attack <br>
+    Duration: Instant<br>
+    Concentration: No <br><br>
+
+The martialist imbues an attack with the will of their god allowing them to strike true. 
+Upon a successful hit on a creature or object they struck takes an additional 2d6 True damage. 
+If the target is a creature who is evil aligned this damage increases to 4d6 and the martialist gains 
+a +5 bonus to their attack roll. Retribution may be used with other Martial Maneuvers in the same attack. <br><br>    
+
+    Chosen Weapon <br>
+    Starting at 8th level when The Righteous wields their deities chosen weapon they may carve holy symbols into it and preform a ritual. After the ritual the weapon becomes sentient Possessing Intelligence, Charisma, and Wits equal to the warriors level. When attacking or making a check while the weapon is in The Righteous who made it possession they may use any of its statistics in place of their own. The sword knows Enochian and Universal and may speak with The Righteous telepathically when worn or carried by them. <br><br>
+    Fear no Evil <br>
+    Starting at 13th level The Righteous gains the ability to resist the presence of evil. When a spell or effect that causes possession, charm, or cursed The Righteous may add its level to the resistance check. <br><br>
+    Greater Divine Might <br>
+    Starting at 18th level The Righteous may pick 3 Adept Heavenly Spells and add them to the Divine Might list and the limit of Divine Might spells becomes equal to their fortitude modifier. <br><br>
+    Divine Might <br>
+    Starting at 23rd level The Righteous gains 5 levels in overpower. In addition The Righteous's chosen weapon is imbued with greater power. The weapon gains an additional +5 to Intelligence. Wits, and Charisma and gains an additional level of enchanted and deadly. <br><br>
+<div style="color: black; text-align: left;">
+      <div class="subsection-title">
+        <h3>Twin Blades</h3>
+    </div>
+    <br>
+It's Nothing <br>
+Starting at 1st level the Twin Blades gains the ability to dual wield weapons with the two handed property. <br><br>
+Adjusted <br>
+Starting at 3rd level the Twin Blades ignores the dual wielding movement penalty.<br><br>
+Flurry <br>
+Starting at 8th level the Twin Blade creates a flurry of attacks that can overwhelm even the most defensive foes. Twice per day for 4 AP the Twin Blades can preform a flurry of attacks equal to half the Twin Blades strength modifier. Each attack deals 1d6+half strength modifier damage. <br><br>
+Heavy Weapon Wielder <br>
+Starting at 13th level the Twin Blades gains the ability to dual wield weapons with the heavy property. <br><br>
+Deceptive Tactics <br>
+Starting at 18th level the Twin Blades gains the ability to feint attacks with ease. The Twin Blades gains the feint Combat Maneuver if they don’t already posses it. In addition when using the feint Combat Maneuver while dual wielding it no longer costs any stamina and the +5 bonus is maintained if they miss their target. <br><br>
+Onslaught <br>
+Starting at 23rd level when dual wielding heavy weapons they gain the ability to follow through on attacks with ease. Whenever the Twin Blades lands an attack action the damage of the next offhand attack is no longer halved. <br><br>
+<div style="color: black; text-align: left;">
+    <div class="subsection-title">
+      <h3>Warlord</h3>
+  </div>
+  <br>
+Outflank <br>
+Starting at 1st level the warlord is adept out outflanking their enemies. For each ally in melee range while flanking a creature grants an additional +1 bonus to attack rolls. <br><br>
+Warlord's Order <br>
+Starting at 3rd level the warlord gains the ability to command their allies in battle. The warlord gains a basic combat maneuver called Warlord’s order. <br><br>
+
+Name: Warlord’s Order<br>
+Tier: Basic<br>
+AP: 1<br>
+Requirements: Ability to speak<br> 
+Type: Support<br>
+Concentration: No<br><br>
+
+The warlord issues an assertive command to a creature within 15 meters of themselves. The creature may use it's reaction if available to follow the command. The command may be one of as follows.<br><br>
+
+Attack<br>
+The creature makes one attack on another.<br><br>
+
+Reposition<br>
+The creature moves 1 AP worth of movement without provoking OA.<br><br>
+
+Defend<br>
+If the creature is using a medium or larger shield, the creature defends another ally in range granting it a bonus to its AC equal to its level against the next attack made against it.<br><br>
+
+Diplomat <br>
+Starting at 8th level a Warlord becomes an adept leader in battle. The warlord their charisma on the battlefield leads to greater diplomacy. The warlord gains levels in the persuasion skill equal to their level. <br><br>
+
+Duel <br>
+Starting at 13th level the warlord gains the ability to challenge others to issue a duel. If accepted the warlord gains a +5 bonus to all attack, resistance, and Evasion saves for the next minute as long as the duel remains honorable. If the enemy breaks this duel the bonuses are extended to 1 week against that creature and increase to +10. If an enemy leader refuses a duel any minions become fearful of the warlord for 1 minute.<br><br>
+
+Enduring <br>
+Starting at 18th level the warlord learns to raise the morale of their allies. Twice per day for 2 AP, the warlord can remove the fearful or hopeless condition on all allies that can hear them within 10 meters of themselves. <br><br>
+
+Onslaught <br>
+Starting at 23rd level the warlord fills their allies with blood lust. Once per day, a number of creatures equal to the warlords charisma modifier within 10 meters of themselves are granted advantage on all attack rolls for the next minute. <br><br>
+
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3> Chosen Blade </h3>
+</div>
+
+Focused Training<br>
+Starting at 1st level the Blade Master gains the ability to wield a single weapon with deadly precision The Blade Master spends their whole life training with one weapon from childhood which becomes their chosen weapon. The Blade Master gains a +2 bonus to attack rolls with their weapon of choice. <br><br>
+
+Blade Master's Strike<br>
+Starting at 3rd level the Blade Master gains an additional level of deadly, with their chosen weapon and a +5 bonus to the critical chance made with its chosen weapon. <br><br>
+
+Blade Master's Defense<br>
+Starting at 8th level the Blade Master gains a +5 bonus to their AC when wielding their chosen weapon. <br><br>
+
+Last Stand<br>
+Starting at 13th level the Blade Master masters the ability to strike with precision and power. The Blade Master gains the ability to combine their strength and finesse bonus to a number of their attack rolls with their chosen weapon a number of times a day equal to their level. <br><br>
+
+Blade Master's Bond <br>
+Starting at 18th level the Blade Master gains the ability to bond their mana with chosen weapon. The Chosen Blade gains a level of enchanted and becomes magical.<br><br>
+
+A Legend Was Born <br>
+Starting at 23rd level the Chosen Blade become that legends. The blade gains an additional 2 levels of Enchanted and Deadly. In addition the Chosen Blade's chosen weapon automatically confirms its critical chance. It's decisive strikes deals x4 dice.<br><br>
+
+<br>
+
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+     <h3>Eldritch Champion</h3>
+  </div>
+</div>
+
+     Dark Heart <br>
+     Starting at 1st level the Eldritch Champion gains a +2 bonus to avoid the fearful and hopeless conditions. <br><br>
+
+      Eldritch Blade <br>
+      Everlasting Wound
+    Starting at 3rd level Eldritch Champion gains a special combat maneuver called "Everlasting Wound". <br><br>
+
+    Name: Everlasting Wound <br>
+    Tier: Basic<br>
+    AP: 1<br>
+    Requirements: Weapon<br>
+    Type: Enhancement <br>
+    Duration: 1 Minute<br>
+    Concentration: No <br><br>
+
+    The martialist fuels its blade with ancient cursed knowledge. If the martial hits a creature within its duration, the target must succeed a Resistance (Body) save or take 2d10 damage at the start of their next turn.
+ <br><br>
+
+ Strange Anatomy <br>
+Starting at 8th level, Any creature that attacks the Eldritch Champion has its critical chance reduced by 10 and gains 5 Physical Resistance. <br><br>
+
+Caustic Blood <br>
+Starting at 13th level, when the Eldritch Champion takes damage from a melee attack, the attacker takes 1d6 poison damage. <br><br>
+
+Grasp of the Beyond <br>
+Starting at 18th level the Eldritch Champion once per day, causes a field of slimy black tentacles to appear, emerging from the ground and reaching for any creature in 5 meter radius sphere. <br>
+
+Every creature within the area of the spell is the target as the tentacles must succeed a Overpower check to avoid being grappled for 1 minute. The tentacles have 18 AC and 15 Health. Tentacles disappear if they do not grapple a creature. The tentacles can levitate if moved to fly across a chasm. A creature may repeat this check for 3 AP. The Eldrich Champion can spend 1 AP to move a tentacle 5 meters or release a grappled creature. <br><br>
+
+Soul Eater <br>
+Starting at 23rd level the Eldritch Champion gains the ability to consume the souls of their enemies. When the Eldritch Champion kills a creature with a melee attack, they gain 10 true armor and 1d10 stamina. <br><br>
+
+
+    
+</div>
+<br>
+<div style="color: black; text-align: left;">
+  <div class="subsection-title">
+    <h3>Phoenix Knight</h3>
+</div>
+
+Everbright Sight <br>
+Starting at 1st level the Phoenix Knight gains 30 meters of Dark Sight. <br><br>
+
+Flaming Fury <br>
+Starting at 3rd level the Phoenix Knight gains the ability to rage twice per full rest. While raging all creature within 5 meters of the Phoenix Knight take 2d6 fire damage at the start of each of their turns. This damage increases by 1d6 every 2 levels.  <br><br>
+
+Phoenix's Wings <br>
+Starting at 8th level the Phoenix Knight gains wings of fire granting them a fly speed of 7 and Resistance 10 to fire. <br><br>
+
+Everburning Resolve <br>
+Starting at 13th level, when the Phoenix Knight uses till the end a burst of fire erupts from them. All creatures of the Phoenix Knight's choice within 5 meters of the Phoenix Knight must succeed on a Evasion save or take 5d6 fire damage. <br><br>
+
+Healing Blood <br>
+Starting at 18th level the Phoenix Knight gains the ability to heal themselves with their own blood. When the Phoenix Knight takes damage, all allied creatures deal 1 health. <br><br>
+
+Phoenix's Flame <br>
+Starting at 23rd level the Phoenix Knight gains the ability to become a being of pure flame. Once per day the Phoenix Knight may transform into a Phoenix for 1 minute. While in this form the Phoenix Knight gains immunity to fire damage and 10 resistance to all damage types and deals an additional 4d8 fire damage with all attacks. In addition the phoenix knight's fire damage ignores resistance to fire damage <br><br>
+<br>
+</div>
+
+    </div>
+    <div class="main-content">
+      <div style="text-align: center;">
+          <p style="font-weight: bold; text-decoration: underline;">Class Proficiencies</p>
+          <p> 3 Weapons (1 can be skilled) </p>
+          <p>Shields</p>
+
+          <h3>Saves</h3>
+          Resistance (Mind) (Poor)<br>
+          Resistance (Body) (Good)<br>
+          Evasion (Average)<br>
+          <p></p>
+      </div>
+  </div>
+
+        
+    </div></div></div></div></div></div>
+</body>
+</html>

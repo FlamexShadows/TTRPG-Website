@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparks | Homepage</title>
+    <meta name="description" content="Sparks of Dynasty is a fantasy tabletop role-playing game of magic, swordsmanship, and archery. Rules, lore, classes, spells, and character tools.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+    <link rel="stylesheet" type="text/css" href="tome.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $("#header-placeholder").load("a-header.html");
+        });
+    </script>
+    <script src="tome.js" defer></script>
+</head>
+<body class="home">
+    <!-- THE CLOSED TOME: scroll (or tap the cover) to unbuckle the clasp and open the book. tome.css + tome.js -->
+    <section class="tome" id="tome" aria-label="Sparks of Dynasty">
+        <div class="tome-stage">
+            <div class="tome-book">
+                <div class="tome-back" aria-hidden="true"></div>
+                <div class="tome-ribbon" aria-hidden="true"></div>
+
+                <div class="tome-cover" role="button" tabindex="0" aria-label="Open the book">
+                    <div class="tome-face tome-front">
+                        <svg class="tome-tooling" viewBox="0 0 400 568" preserveAspectRatio="none" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="tome-gold" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="400" y2="568">
+                                    <stop offset="0" stop-color="#7a5a18"/>
+                                    <stop offset="0.28" stop-color="#d9b456"/>
+                                    <stop offset="0.46" stop-color="#f9e7a8"/>
+                                    <stop offset="0.56" stop-color="#e8c45e"/>
+                                    <stop offset="0.8" stop-color="#a37a26"/>
+                                    <stop offset="1" stop-color="#6e4f14"/>
+                                </linearGradient>
+                                <linearGradient id="tome-brass" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#f3d77f"/>
+                                    <stop offset="0.45" stop-color="#b8892e"/>
+                                    <stop offset="1" stop-color="#5e400f"/>
+                                </linearGradient>
+                                <g id="tome-corner">
+                                    <path d="M10 46 C10 24 24 10 46 10" fill="none" stroke-width="1.3"/>
+                                    <path d="M10 30 C13 20 20 13 30 10" fill="none" stroke-width="1"/>
+                                    <polygon stroke="none" transform="translate(21 21)" points="0,-9 1.7,-1.7 9,0 1.7,1.7 0,9 -1.7,1.7 -9,0 -1.7,-1.7"/>
+                                </g>
+                                <g id="tome-tool">
+                                    <rect x="44" y="30" width="332" height="508" fill="none" stroke-width="2.2"/>
+                                    <rect x="49" y="35" width="322" height="498" fill="none" stroke-width="2" stroke-dasharray="0.1 6.5" stroke-linecap="round"/>
+                                    <rect x="54" y="40" width="312" height="488" fill="none" stroke-width="0.9"/>
+                                    <use href="#tome-corner" transform="translate(54 40)"/>
+                                    <use href="#tome-corner" transform="translate(366 40) scale(-1 1)"/>
+                                    <use href="#tome-corner" transform="translate(54 528) scale(1 -1)"/>
+                                    <use href="#tome-corner" transform="translate(366 528) scale(-1 -1)"/>
+                                    <path d="M110 160 H196 M224 160 H310 M110 388 H196 M224 388 H310" fill="none" stroke-width="1"/>
+                                    <polygon stroke="none" points="210,152 218,160 210,168 202,160"/>
+                                    <polygon stroke="none" points="210,380 218,388 210,396 202,388"/>
+                                    <circle cx="210" cy="284" r="82" fill="none" stroke-width="2"/>
+                                    <circle cx="210" cy="284" r="76" fill="none" stroke-width="2" stroke-dasharray="0.1 5.2" stroke-linecap="round"/>
+                                    <circle cx="210" cy="284" r="70" fill="none" stroke-width="0.9"/>
+                                    <polygon stroke="none" opacity="0.9" points="210.0,220.0 219.8,247.3 242.0,228.6 236.9,257.1 265.4,252.0 246.7,274.2 274.0,284.0 246.7,293.8 265.4,316.0 236.9,310.9 242.0,339.4 219.8,320.7 210.0,348.0 200.2,320.7 178.0,339.4 183.1,310.9 154.6,316.0 173.3,293.8 146.0,284.0 173.3,274.2 154.6,252.0 183.1,257.1 178.0,228.6 200.2,247.3"/>
+                                    <circle cx="210" cy="284" r="34" fill="#2a0908" stroke-width="1.6"/>
+                                    <polygon stroke="none" points="210.0,258.0 214.9,279.1 236.0,284.0 214.9,288.9 210.0,310.0 205.1,288.9 184.0,284.0 205.1,279.1"/>
+                                    <polygon stroke="none" opacity="0.75" points="220.6,273.4 214.0,284.0 220.6,294.6 210.0,288.0 199.4,294.6 206.0,284.0 199.4,273.4 210.0,280.0"/>
+                                </g>
+                            </defs>
+                            <use href="#tome-tool" transform="translate(1.1 1.7)" stroke="#120403" fill="#120403" opacity="0.85"/>
+                            <use href="#tome-tool" stroke="url(#tome-gold)" fill="url(#tome-gold)"/>
+                            <g fill="url(#tome-brass)" stroke="#3a2608" stroke-width="0.8">
+                                <path d="M400 0 H350 C361 10 367 22 369 33 C380 35 392 41 400 50 Z"/>
+                                <path d="M400 568 H350 C361 558 367 546 369 535 C380 533 392 527 400 518 Z"/>
+                                <circle cx="386" cy="14" r="2.8"/>
+                                <circle cx="386" cy="554" r="2.8"/>
+                            </g>
+                        </svg>
+                        <p class="tome-word tome-word-1" aria-hidden="true">Sparks</p>
+                        <p class="tome-word tome-word-2" aria-hidden="true">of Dynasty</p>
+                        <p class="tome-word tome-word-3" aria-hidden="true">A tabletop role-playing tome</p>
+                    </div>
+                    <div class="tome-face tome-inside" aria-hidden="true">
+                        <div class="tome-plate">
+                            <p class="tome-plate-h">Ex Libris</p>
+                            <p class="tome-plate-s">This tome belongs to</p>
+                            <span class="tome-plate-line"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tome-page">
+                    <div class="tome-fleuron" aria-hidden="true">❦</div>
+                    <p class="tome-title">Sparks of Dynasty</p>
+                    <p class="tome-sub">A fantasy role-playing game of magic, swordsmanship, and archery</p>
+                    <hr class="tome-rule">
+                    <nav class="tome-nav" aria-label="Contents">
+                        <p class="tome-contents-h">Contents</p>
+                        <ol class="tome-toc">
+                            <li><a href="combat.html"><span>Core Rules</span><i aria-hidden="true"></i><b>I</b></a></li>
+                            <li><a href="classes.html"><span>Adventurer's Codex</span><i aria-hidden="true"></i><b>II</b></a></li>
+                            <li><a href="shops.html"><span>Compendium</span><i aria-hidden="true"></i><b>III</b></a></li>
+                        </ol>
+                    </nav>
+                    <a class="tome-begin" href="character-sheet.html">Begin a character</a>
+                    <p class="tome-folio" aria-hidden="true">i</p>
+                </div>
+
+                <div class="tome-strap" aria-hidden="true">
+                    <span class="tome-clasp">
+                        <svg viewBox="0 0 52 80">
+                            <defs>
+                                <linearGradient id="tome-clasp-g" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#f6dc8a"/>
+                                    <stop offset="0.5" stop-color="#b8892e"/>
+                                    <stop offset="1" stop-color="#5e400f"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M10 4 H47 a4 4 0 0 1 4 4 V72 a4 4 0 0 1 -4 4 H10 L1 40 Z" fill="url(#tome-clasp-g)" stroke="#3a2608" stroke-width="1"/>
+                            <path d="M13 9 H45 V71 H13 L6 40 Z" fill="none" stroke="#5e400f" stroke-width="0.9" opacity="0.8"/>
+                            <polygon points="29,28 35,40 29,52 23,40" fill="#2a1604"/>
+                            <circle cx="29" cy="37" r="2.2" fill="#0e0702"/>
+                            <circle cx="43" cy="14" r="2.4" fill="#fbe7a6" stroke="#5e400f" stroke-width="0.6"/>
+                            <circle cx="43" cy="66" r="2.4" fill="#fbe7a6" stroke="#5e400f" stroke-width="0.6"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <p class="tome-hint" aria-hidden="true">Scroll or tap to open
+                <svg viewBox="0 0 18 18"><path d="M3 6 L9 12 L15 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </p>
+        </div>
+    </section>
+
+    <div id="header-placeholder"></div>
+
+    <div class="main-content">
+        <div class="content-box paragraph-box">
+            <p>
+                Sparks of Dynasty is a fantasy role-playing game centered on magic, swordsmanship, and archery, inspired by role-playing games, folklore, and fantasy staples from around the world.
+                <br><br>
+                The rules are designed to keep the game fair and balanced while leaving room for every table to find its own kind of fun. Some groups love vicious combat where each character scrapes by on good rolls and battle-hardened tactics; others prefer exploring new lands, roleplaying with NPCs, and light-hearted adventure. Sparks is built to support both.
+            </p>
+        </div>
+
+        <div class="tile-grid">
+            <a class="tile" href="lore.html">
+                <h2>Lore</h2>
+                <p>Deities, continents, and the events that shaped the world</p>
+            </a>
+            <a class="tile" href="classes.html">
+                <h2>Classes</h2>
+                <p>From Grove Keeper to Warrior — find your calling</p>
+            </a>
+            <a class="tile" href="race.html">
+                <h2>Races</h2>
+                <p>The peoples of the world and their traits</p>
+            </a>
+            <a class="tile" href="spells-complete.html">
+                <h2>Spells</h2>
+                <p>Every spell, organized by school and rank</p>
+            </a>
+            <a class="tile" href="martial-maneuver.html">
+                <h2>Maneuvers</h2>
+                <p>Martial techniques from Basic to Master</p>
+            </a>
+            <a class="tile" href="character-sheet.html">
+                <h2>Character Sheet</h2>
+                <p>Build, track, and save your character online</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
