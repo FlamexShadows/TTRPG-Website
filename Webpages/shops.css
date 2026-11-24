@@ -221,3 +221,4 @@
 .sh-mlist li { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px dotted #d3bb92; padding: 3px 0; font-variant-numeric: tabular-nums; }
 .sh-list-btns { flex-wrap: wrap; }
 @media (max-width: 640px) { .sh-sheetlink { margin-left: 0; } .sh-item-foot { flex-wrap: wrap; } }
+.sh-forge { display: inline-flex; align-items: center; text-decoration: none; }

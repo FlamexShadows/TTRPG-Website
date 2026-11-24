@@ -38,10 +38,14 @@
     ['atkMelee', 'Melee attack'], ['atkRanged', 'Ranged attack'], ['dmgMelee', 'Melee damage'], ['dmgRanged', 'Ranged damage'],
     ['speed_fly', 'Fly speed'], ['speed_swim', 'Swim speed'], ['speed_climb', 'Climb speed'], ['speed_burrow', 'Burrow speed'],
     ['skillRanks', 'Skill ranks'], ['feats', 'Feats'], ['finMax', 'Armor Finesse max'], ['armorPen', 'Armor penalty reduction'],
+    ['chosen_atk', 'Chosen weapon attack'], ['chosen_dmg', 'Chosen weapon damage'], ['chosen_crit', 'Chosen weapon Critical Chance'],
+    ['chosen_deadly', 'Chosen weapon Deadly levels'], ['chosen_ench', 'Chosen weapon Enchanted levels'],
+    ['w_deadly', 'Deadly levels on every weapon'], ['w_ench', 'Enchanted levels on every weapon'],
   ].concat(D.stats.map(st => ['stat_' + st.key, st.name + ' score']), D.stats.map(st => ['statMin_' + st.key, st.name + ' becomes at least']),
     D.skills.map(sk => ['skill_' + sk.name, sk.name + ' checks']),
     [].concat(D.damageTypes.physical, D.damageTypes.magical, D.damageTypes.alignment, ['True']).map(t => ['res_' + t, 'Resistance to ' + t]));
   const BONUS_LABEL = Object.fromEntries(BONUS_KEYS);
+  BONUS_LABEL.chosen_dec = 'Chosen weapon decisive dice';
   const normSlot = sl => SLOT_ALIAS[sl] || sl || 'Misc';
   // Read an item's effect text and turn the fixed phrasings into bonuses. The player can edit the result.
   function detectBonuses(desc) {
@@ -82,6 +86,84 @@
   ((window.SPARKS_SHOPS && window.SPARKS_SHOPS.shops) || []).forEach(sh => (sh.items || []).forEach(it => {
     if (it.effects && it.effects.length) SHOP_FX[String(it.name).toLowerCase()] = it.effects;
   }));
+  // ---- magic weapons and armor. The magical bonus (+1 to +10) adds to attack and damage on a weapon, or to AC on armor
+  // and shields. The bonus is also the budget for magic traits: each trait spends part of it. Traits: D.magicTraits.
+  // Stored on the character as { base, bonus, name, traits: [{ name, level, pick }] } (weapons[i].magic, armorMagic, shieldMagic).
+  // The magic works only while base matches the weapon, armor, or shield picked.
+  const MTRAIT = {};
+  (D.magicTraits || []).forEach(t => { MTRAIT[t.for + '|' + t.name] = t; });
+  const MAGIC_PRICE = {};
+  let MAGIC_SHOP = 'Magic item forge';
+  ((window.SPARKS_SHOPS && window.SPARKS_SHOPS.shops) || []).forEach(sh => (sh.items || []).forEach(it => {
+    const m = String(it.name).match(/^Magic Item \+(\d+)$/i);
+    if (m && it.gp != null) { MAGIC_PRICE[+m[1]] = it.gp; MAGIC_SHOP = sh.name || MAGIC_SHOP; }
+  }));
+  const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+  const roman = v => ROMAN[v] || String(v);
+  const ENCH_RES = 5;   // resistance ignored per level of Enchanted
+  const NOUN_TRAITS = new Set(['Accuracy', 'Prowess', 'Harmony', 'Gravity', 'Tempo', 'Wild Magic', 'Timewarp', 'Mist', 'Elemental Resistance', 'Displacement', 'Aegis']);
+  const magicPrice = b => (MAGIC_PRICE[b] != null ? MAGIC_PRICE[b] : 0);
+  function magicOf(mg, kind) {
+    if (!mg || !(n(mg.bonus) > 0)) return null;
+    const bonus = clamp(n(mg.bonus), 1, 10);
+    const list = (mg.traits || []).map(x => {
+      const t = x && MTRAIT[kind + '|' + x.name];
+      if (!t) return null;
+      return { t, level: t.perLevel ? clamp(n(x.level) || 1, 1, t.maxLevel || 10) : 1, pick: String(x.pick || '').trim() };
+    }).filter(Boolean);
+    return { bonus, list, spent: list.reduce((a, x) => a + x.t.cost * x.level, 0), name: String(mg.name || '').trim() };
+  }
+  // Magic weapons, armor, and shields count as Miscellaneous items: each one needs an attunement slot to work.
+  // magic.attuned is true unless the player unticks it. Only gear on the sheet counts (the weapon, armor, or shield it was made for).
+  function attunedGear(c) {
+    const out = [];
+    (c.weapons || []).forEach((w, i) => {
+      const mg = w.magic;
+      if (mg && n(mg.bonus) > 0 && mg.base === w.item && mg.attuned !== false && weaponData(w)) out.push({ path: `weapons.${i}.magic`, where: 'Weapon', label: magicTitle(magicOf(mg, 'weapon'), weaponData(w).name) });
+    });
+    [['armor', 'armorMagic', 'Armor', ARMOR], ['shield', 'shieldMagic', 'Shield', SHIELD]].forEach(([slot, key, where, TABLE]) => {
+      const mg = c[key];
+      if (mg && n(mg.bonus) > 0 && mg.base === c[slot] && TABLE[c[slot]] && mg.attuned !== false) out.push({ path: key, where, label: magicTitle(magicOf(mg, 'armor'), c[slot]) });
+    });
+    return out;
+  }
+  // slots in the Attunement box, and how many are taken by Miscellaneous items plus attuned magic gear
+  function attuneUse(c, exceptPath) {
+    const misc = (c.misc || []).filter(r => r && r.name).length;
+    const gear = attunedGear(c).filter(g => g.path !== exceptPath).length;
+    return { slots: (c.misc || []).length, misc, gear, used: misc + gear };
+  }
+  const traitLabel = x => x.t.name + (x.t.perLevel && x.level > 1 ? ' ' + roman(x.level) : '');
+  // "+1 Arming Sword of Accuracy", "+7 Vorpal Unholy Arming Sword"
+  function magicTitle(mg, baseName) {
+    if (!mg) return baseName;
+    if (mg.name) return mg.name;
+    const pre = mg.list.filter(x => !NOUN_TRAITS.has(x.t.name)).map(traitLabel);
+    const post = mg.list.filter(x => NOUN_TRAITS.has(x.t.name)).map(traitLabel);
+    return `+${mg.bonus} ${pre.concat(baseName).join(' ')}${post.length ? ' of ' + post.join(' and ') : ''}`;
+  }
+  const fillNote = (s, mg, x) => String(s || '').replace(/\{bonus\}/g, mg ? mg.bonus : 'the magical bonus')
+    .replace(/\{half\}/g, mg ? Math.floor(mg.bonus / 2) : 'half the magical bonus').replace(/\{pick\}/g, (x && x.pick) || 'the chosen creature type');
+  // the trait's effect lines with its pick filled in: "Resist {Fire|Cold} +10" becomes "Resist Fire +10"
+  const traitFxLines = x => fxLines(x.t.fx).map(ln => {
+    const m = ln.match(/\{([^}]*)\}/);
+    return m && x.pick && m[1].split('|').map(o => o.trim()).includes(x.pick) ? ln.replace(m[0], x.pick) : ln;
+  });
+  // what one trait does, in short lines, for the forge and the trait popups
+  function traitSummary(t, x, mg) {
+    const lv = x ? x.level : 1, out = [];
+    if (t.atk) out.push(`Attack +${t.atk * lv}`);
+    if (t.ench) out.push(`Enchanted +${t.ench * lv}: ignores ${t.ench * lv * ENCH_RES} more resistance`);
+    (t.extra || []).forEach(e => out.push(`+${e.dice} ${e.type} damage on a hit`));
+    (t.vs || []).forEach(e => out.push(`+${e.dice}${e.type ? ' ' + e.type : ''} damage against ${fillNote(e.vs, mg, x)}`));
+    if (t.ignore) out.push(t.ignore);
+    fxLines(t.fx).forEach(l => {
+      const m = l.match(/\{([^}]*)\}/), opts = m ? m[1].split('|').map(o => o.trim()) : [];
+      out.push(!m ? l : x && opts.includes(x.pick) ? l.replace(m[0], x.pick) : l.replace(m[0], opts.join(' or ')));
+    });
+    if (t.note) out.push(fillNote(t.note, mg, x));
+    return out;
+  }
   const DMG_TYPES = [].concat(D.damageTypes.physical, D.damageTypes.magical, D.damageTypes.alignment);
   const FX_NAMES = (() => {
     const m = {};
@@ -107,6 +189,12 @@
     put('dmgMelee', 'Melee Damage'); put('dmgRanged', 'Ranged Damage');
     put('skillRanks', 'Skill Ranks'); put('feats', 'Feats'); put('carry', 'Carrying Capacity', 'Carry');
     put('finMax', 'Armor Finesse Max'); put('armorPen', 'Armor Penalty Reduction');
+    // weapon targets. "Chosen Weapon ..." lines apply to the weapon ticked as Chosen weapon on the Combat tab.
+    put('chosen_atk', 'Chosen Weapon Attack'); put('chosen_dmg', 'Chosen Weapon Damage');
+    put('chosen_crit', 'Chosen Weapon Critical Chance', 'Chosen Weapon Crit Chance');
+    put('chosen_deadly', 'Chosen Weapon Deadly'); put('chosen_ench', 'Chosen Weapon Enchanted');
+    put('chosen_dec', 'Chosen Weapon Decisive Dice');
+    put('w_deadly', 'All Weapons Deadly', 'Weapon Deadly'); put('w_ench', 'All Weapons Enchanted', 'Weapon Enchanted');
     put(D.skills.map(sk => 'skill_' + sk.name), 'All Skills');
     put(D.skills.filter(sk => /^Knowledge/.test(sk.name)).map(sk => 'skill_' + sk.name), 'All Knowledge', 'All Knowledge Skills', 'Knowledge');
     put(['skill_Intimidate (Cha)', 'skill_Intimidate (Str)'].filter(k => SKILL[k.slice(6)]), 'Intimidate');
@@ -189,6 +277,24 @@
   const fxId = (...parts) => parts.join('|').replace(/[^A-Za-z0-9|]+/g, '_');
   const fxLines = v => (Array.isArray(v) ? v : String(v || '').split('\n')).map(x => String(x).trim()).filter(Boolean);
   function itemFx(e) { return SHOP_FX[String((e && e.name) || '').toLowerCase()] || null; }
+  // Situations the sheet checks by itself. They show as Active or Inactive instead of a checkbox.
+  const AUTO_WHEN = [
+    [/^wielding (?:your |their |the )?chosen weapon$/i, c => c.weapons.some(w => w.chosen && w.inHand !== false && weaponData(w))],
+    [/^wearing (?:light armor or no armor|no armor or light armor)$/i, c => !ARMOR[c.armor] || ARMOR[c.armor].type === 'Light'],
+    [/^wearing no armor$/i, c => !ARMOR[c.armor]],
+    [/^wearing (light|medium|heavy) armor$/i, (c, m) => !!ARMOR[c.armor] && ARMOR[c.armor].type.toLowerCase() === m[1].toLowerCase()],
+    [/^wearing (?:any )?armor$/i, c => !!ARMOR[c.armor]],
+    [/^wielding a shield$/i, c => !!SHIELD[c.shield]],
+    [/^not wielding a shield$/i, c => !SHIELD[c.shield]],
+  ];
+  // Situations that name weapons. The effect goes on those weapons only (attack, damage, or Critical Chance lines).
+  const WEAPON_WHEN = [
+    [/^attacking unarmed$/i, () => wc => wc.data.name === 'Unarmed Strike' || !!wc.data.natural],
+    [/^attacking with (?:your |the |a |an )?chosen weapon$/i, () => wc => wc.chosen],
+    [/^attacking with (?:a |an )?(melee|ranged) weapon$/i, m => wc => (m[1].toLowerCase() === 'ranged') === wc.ranged],
+    [/^attacking with (?:your |the |a |an )?(.+)$/i, m => wc => [wc.title, wc.data.name, wc.src && wc.src.notes].some(t => String(t || '').toLowerCase().includes(m[1].toLowerCase()))],
+  ];
+  const WEAPON_KEYS = new Set(['atkAll', 'dmgAll', 'atkMelee', 'atkRanged', 'dmgMelee', 'dmgRanged', 'crit']);
   // Every effect that applies to this character right now, with where it came from.
   function collectFx(c, d) {
     const out = [];
@@ -202,8 +308,30 @@
       list.forEach(([f, src]) => { if (f.level <= kc.level) fxLines(f.effects).forEach((ln, i) => add(ln, fxId('cls', kc.name, src, f.name, f.level, i), f.name, `${src} ${f.level}`, kc.level)); });
     });
     (c.features || []).forEach((f, j) => fxLines(f.fx == null ? itemFx(f) : f.fx).forEach((ln, i) => add(ln, fxId('feat', j, i), f.name || 'Other feature', 'Feature', d.level)));
+    // magic weapon traits work while the weapon is in hand. Magic armor and shield traits work while worn.
+    c.weapons.forEach((w, i) => {
+      const mg = w.inHand !== false && w.magic && w.magic.base === w.item && w.magic.attuned !== false ? magicOf(w.magic, 'weapon') : null;
+      if (!mg) return;
+      const nm = magicTitle(mg, (weaponData(w) || {}).name || 'Weapon');
+      mg.list.forEach(x => traitFxLines(x).forEach((ln, j) => add(ln, fxId('mw', i, x.t.name, j), nm, 'Magic weapon', d.level, { path: 'weapons.' + i })));
+    });
+    [['armor', 'armorMagic', ARMOR, 'Magic armor'], ['shield', 'shieldMagic', SHIELD, 'Magic shield']].forEach(([slot, key, TABLE, src]) => {
+      const mg = TABLE[c[slot]] && c[key] && c[key].base === c[slot] && c[key].attuned !== false ? magicOf(c[key], 'armor') : null;
+      if (!mg) return;
+      const nm = magicTitle(mg, c[slot]);
+      mg.list.forEach(x => traitFxLines(x).forEach((ln, j) => add(ln, fxId('mg', slot, x.t.name, j), nm, src, d.level, { path: key })));
+    });
     const picks = c.fxPick || {}, ons = c.fxOn || {};
-    out.forEach(x => { x.on = !x.p.when || !!ons[x.id]; x.pick = x.p.choice ? (picks[x.id] || '') : null; });
+    out.forEach(x => {
+      x.pick = x.p.choice ? (picks[x.id] || '') : null;
+      const wh = x.p.when;
+      if (!wh) { x.on = true; return; }
+      const a = AUTO_WHEN.find(([re]) => re.test(wh));
+      if (a) { x.auto = true; x.on = !!a[1](c, wh.match(a[0])); return; }
+      const ws = (x.p.keys || []).length && x.p.keys.every(k => WEAPON_KEYS.has(k)) && WEAPON_WHEN.find(([re]) => re.test(wh));
+      if (ws) { x.auto = true; x.on = true; x.scope = ws[1](wh.match(ws[0])); return; }
+      x.on = !!ons[x.id];
+    });
     return out;
   }
   const SAVE_NAME = { mind: 'Resistance (Mind)', body: 'Resistance (Body)', evasion: 'Evasion' };
@@ -287,7 +415,7 @@
       feats: [], features: [], prof: '',
       resist: [], immune: '', vuln: '',
       notes: { appearance: '', backstory: '', allies: '', notes: '' }, art: '',
-      bonus: {}, purchases: [], fxPick: {}, fxOn: {},
+      bonus: {}, purchases: [], fxPick: {}, fxOn: {}, armorMagic: null, shieldMagic: null,
       rules: defaultRules(),
       updated: Date.now(),
     };
@@ -297,7 +425,7 @@
       raceStats: true, weaponStat: 'best', manAtkLevel: false };
   }
   function newWeapon(item) {
-    return { item: item || '', name: '', die: '', traits: '', range: '', type: '', prof: true, stat: 'auto', atk: 0, dmg: 0, notes: '' };
+    return { item: item || '', name: '', die: '', traits: '', range: '', type: '', prof: true, stat: 'auto', atk: 0, dmg: 0, notes: '', inHand: true, chosen: false, magic: null };
   }
   function exampleChar() {
     const c = blankChar();
@@ -379,6 +507,8 @@
     STAT_KEYS.forEach(k => { c.stats[k] = Object.assign({ base: 8, lvl: 0, perm: 0, temp: 0, drain: 0 }, c.stats[k] || {}); });
     while (c.classes.length < 2) c.classes.push({ name: '', level: 0, sub: '' });
     c.cur = Object.assign(b.cur, c.cur || {});
+    (c.weapons || []).forEach(w => { if (w.inHand === undefined) w.inHand = true; if (w.chosen === undefined) w.chosen = false; if (w.magic === undefined) w.magic = null; });
+    [].concat((c.weapons || []).map(w => w.magic), [c.armorMagic, c.shieldMagic]).forEach(mg => { if (mg && mg.attuned === undefined) mg.attuned = true; });
     // features bought before shop effects existed (church blessings) pick up their effect lines once
     (c.features || []).forEach(f => { if (f && f.fx == null) { const fx = itemFx(f); if (fx) f.fx = fx.join('\n'); } });
     return c;
@@ -462,7 +592,7 @@
     const fxCtx = cl => ({ lv: L, cl, mod: k => (d.stat && d.stat[k] ? d.stat[k].mod : 0), score: k => (d.stat && d.stat[k] ? d.stat[k].score : 0),
       pa: d.pa ? d.pa.total : 0, ma: d.ma ? d.ma.total : 0, walk: d.walk || 0 });
     d.fx = collectFx(c, d);
-    d.fxImmune = []; d.fxVuln = []; d.fxInfo = [];
+    d.fxImmune = []; d.fxVuln = []; d.fxInfo = []; d.wScoped = [];
     d.fx.forEach(x => {
       const p = x.p, label = `${x.label}${x.src === 'Item' || x.src === 'Feature' ? '' : ` (${x.src})`}`;
       x.status = p.err ? 'error' : !x.on ? 'off' : (p.choice && !x.pick) ? 'choose' : 'on';
@@ -473,9 +603,11 @@
       if (p.choice && !opt) { x.status = 'choose'; return; }
       const keys = opt ? opt.keys : p.keys;
       const f = p.op === '-' ? () => -p.expr(fxCtx(x.cl)) : () => p.expr(fxCtx(x.cl));
-      keys.forEach(k => addB(p.op === '=' ? minB : itemB, k, label, f));
+      if (x.scope && p.op !== '=') keys.forEach(k => d.wScoped.push({ test: x.scope, key: k, label, f }));
+      else keys.forEach(k => addB(p.op === '=' ? minB : itemB, k, label, f));
       x.keys = keys;
     });
+    d.usesChosen = d.fx.some(x => x.status !== 'error' && ((x.p.keys || []).some(k => k.startsWith('chosen_')) || /chosen weapon/i.test(`${x.p.when || ''} ${x.p.info || ''}`)));
     const { r: race, statSrc, speedSrc } = raceInfo(c);
     d.race = race;
     const auto = race ? race.auto : {};
@@ -517,6 +649,11 @@
     d.points = { avail: lvRow.points, spent: STAT_KEYS.reduce((a, k) => a + n(c.stats[k].lvl), 0) };
     if (d.points.spent > d.points.avail) d.warnings.push(`You spent ${d.points.spent} leveling points. Level ${L} allows ${d.points.avail}.`);
 
+    // magic armor and shields: the magical bonus adds to AC and to every save
+    d.armorMagicStored = ARMOR[c.armor] && c.armorMagic && n(c.armorMagic.bonus) > 0 && c.armorMagic.base === c.armor ? magicOf(c.armorMagic, 'armor') : null;
+    d.shieldMagicStored = SHIELD[c.shield] && c.shieldMagic && n(c.shieldMagic.bonus) > 0 && c.shieldMagic.base === c.shield ? magicOf(c.shieldMagic, 'armor') : null;
+    d.armorMagic = d.armorMagicStored && c.armorMagic.attuned !== false ? d.armorMagicStored : null;
+    d.shieldMagic = d.shieldMagicStored && c.shieldMagic.attuned !== false ? d.shieldMagicStored : null;
     // saves
     d.save = {};
     Object.keys(SAVE_STAT).forEach(sv => {
@@ -529,6 +666,8 @@
       });
       if (auto.save && auto.save[sv]) parts.push([race.name, auto.save[sv]]);
       if (sv === 'body' && c.hunt && auto.hunt) parts.push(['The Hunt', L]);
+      if (d.armorMagic) parts.push([`${c.armor}: magic +${d.armorMagic.bonus}`, d.armorMagic.bonus]);
+      if (d.shieldMagic) parts.push([`${c.shield}: magic +${d.shieldMagic.bonus}`, d.shieldMagic.bonus]);
       parts.push(...BP('save_' + sv));
       d.save[sv] = { total: atLeast('save_' + sv, parts, sum(parts)), parts };
     });
@@ -579,6 +718,8 @@
       parts.push(['Finesse modifier (no armor)', M('fin')]);
     }
     if (sh) parts.push([sh.name, sh.ac]);
+    if (d.armorMagic) parts.push([`${arm.name}: magic +${d.armorMagic.bonus}`, d.armorMagic.bonus]);
+    if (d.shieldMagic) parts.push([`${sh.name}: magic +${d.shieldMagic.bonus}`, d.shieldMagic.bonus]);
     if (auto.ac) parts.push([race.name, auto.ac]);
     adapt.forEach(a => { if (a.ac) parts.push([a.name, a.ac]); });
     if (n(c.defensiveWielded)) parts.push(['Defensive weapons wielded', n(c.defensiveWielded)]);
@@ -673,8 +814,14 @@
     });
 
     // weapons
-    d._BP = BP;
+    d._BP = BP; d._atLeast = atLeast;
     d.weapon = c.weapons.map(w => weaponCalc(c, d, w, cursed, auto, race));
+    const overMg = d.weapon.filter(wc => wc && wc.stored && wc.stored.spent > wc.stored.bonus).map(wc => wc.title)
+      .concat([[d.armorMagic, c.armor], [d.shieldMagic, c.shield]].filter(([mg]) => mg && mg.spent > mg.bonus).map(([mg, nm]) => magicTitle(mg, nm)));
+    d.attune = attuneUse(c);
+    if (d.attune.used > d.attune.slots) d.warnings.push(`You are attuned to ${d.attune.used} items but have ${d.attune.slots} attunement slots. Unattune one or add a slot on the Gear tab.`);
+    if (overMg.length) d.warnings.push(`${overMg.join(', ')}: the traits cost more than the magical bonus. Open Enchant on the Combat tab to fix it.`);
+    if (d.usesChosen && !c.weapons.some(w => w.chosen && weaponData(w))) d.warnings.push('A class feature works with your chosen weapon. Tick Chosen weapon on one weapon on the Combat tab.');
 
     // carrying
     let used = 0;
@@ -727,7 +874,7 @@
       else if (x.status === 'on' && p.info != null) text = p.info;
       else if (x.status === 'error') text = `${p.raw}: ${p.err}`;
       else if (x.status === 'choose') text = p.raw.replace(/\{[^}]*\}/g, '(choose)');
-      return { id: x.id, label: x.label, src: x.src, path: x.path, text, value, status: x.status, when: p.when, choice: p.choice, pick: x.pick, raw: p.raw, custom: !!x.custom };
+      return { id: x.id, label: x.label, src: x.src, path: x.path, text, value, status: x.status, when: p.when, choice: p.choice, pick: x.pick, raw: p.raw, custom: !!x.custom, auto: !!x.auto, scoped: !!x.scope };
     });
     const nErr = d.fxList.filter(x => x.status === 'error').length;
     if (nErr) d.warnings.push(`${nErr} effect${nErr > 1 ? 's' : ''} could not be read. See Active effects on the Bonuses & Rules tab.`);
@@ -746,6 +893,15 @@
     if (!base) return null;
     return Object.assign({}, base, { type: w.type || base.type, name: w.name || base.name });
   }
+  // Deadly I, Deadly (2), or plain Deadly: the level of a weapon trait
+  function traitLevel(data, name) {
+    let lv = 0;
+    (data.traits || []).forEach(t => {
+      const m = String(t).trim().match(new RegExp(`^${name}(?:\\s+([IVX]+|\\d+))?(?:\\s*\\((\\d+)\\))?$`, 'i'));
+      if (m) lv += m[1] ? (/^\d+$/.test(m[1]) ? +m[1] : Math.max(1, ROMAN.indexOf(m[1].toUpperCase()))) : m[2] ? +m[2] : 1;
+    });
+    return lv;
+  }
   function weaponCalc(c, d, w, cursed, auto, race) {
     const data = weaponData(w);
     if (!data) return null;
@@ -754,22 +910,66 @@
       if (c.rules.weaponStat === 'traits') stat = (hasTrait(data, 'Light') || hasTrait(data, 'Ranged (Finesse)')) ? 'fin' : 'str';
       else stat = d.stat.fin.mod > d.stat.str.mod ? 'fin' : 'str';
     }
+    const BPx = k => (d._BP ? d._BP(k) : []);
+    const tot = ps => ps.reduce((a, p) => a + p[1], 0);
+    const stored = w.magic && w.magic.base === w.item ? magicOf(w.magic, 'weapon') : null;
+    const mg = stored && w.magic.attuned !== false ? stored : null;
+    const chosen = !!w.chosen;
+    const isRanged = (data.traits || []).some(t => /^Ranged/i.test(t));
+    const title = magicTitle(stored, data.name);
+    const self = { data, title, chosen, ranged: isRanged, src: w };
+    const scoped = k => (d.wScoped || []).filter(x => x.key === k && x.test(self)).map(x => [x.label, x.f()]).filter(p => p[1]);
+    const lbl = x => x.t.name + (x.t.perLevel ? ' ' + roman(x.level) : '');
     const simple = hasTrait(data, 'Simple') || data.name === 'Unarmed Strike' || data.natural;
     const atk = [[`${STAT[stat].name} modifier`, d.stat[stat].mod]];
     if (w.prof || simple) atk.push([simple && !w.prof ? 'Level (simple weapon)' : 'Level (proficient)', d.level]);
     if (c.hunt && auto.hunt) atk.push(['The Hunt', d.level]);
     if (cursed) atk.push(['Cursed', -1]);
     if (n(w.atk)) atk.push(['Bonus', n(w.atk)]);
-    const isRanged = (data.traits || []).some(t => /^Ranged/i.test(t));
-    if (d._BP) atk.push(...d._BP('atkAll'), ...d._BP(isRanged ? 'atkRanged' : 'atkMelee'));
+    if (mg) { atk.push([`Magic +${mg.bonus}`, mg.bonus]); mg.list.forEach(x => { if (x.t.atk) atk.push([lbl(x), x.t.atk * x.level]); }); }
+    atk.push(...BPx('atkAll'), ...BPx(isRanged ? 'atkRanged' : 'atkMelee'), ...scoped('atkAll'), ...scoped(isRanged ? 'atkRanged' : 'atkMelee'));
+    if (chosen) atk.push(...BPx('chosen_atk'));
     const dmg = [[`${STAT[stat].name} modifier`, d.stat[stat].mod]];
     if (auto.damageHalfLevel) dmg.push([`${race.name}: ½ level`, Math.floor(d.level / 2)]);
     if (n(w.dmg)) dmg.push(['Bonus', n(w.dmg)]);
-    if (d._BP) dmg.push(...d._BP('dmgAll'), ...d._BP(isRanged ? 'dmgRanged' : 'dmgMelee'));
-    const needsSkilled = hasTrait(data, 'Skilled');
-    return { data, stat, atk: { total: atk.reduce((a, p) => a + p[1], 0), parts: atk },
-      dmg: { total: dmg.reduce((a, p) => a + p[1], 0), parts: dmg }, needsSkilled,
-      ranged: (data.traits || []).some(t => /^Ranged/i.test(t)) };
+    if (mg) dmg.push([`Magic +${mg.bonus}`, mg.bonus]);
+    dmg.push(...BPx('dmgAll'), ...BPx(isRanged ? 'dmgRanged' : 'dmgMelee'), ...scoped('dmgAll'), ...scoped(isRanged ? 'dmgRanged' : 'dmgMelee'));
+    if (chosen) dmg.push(...BPx('chosen_dmg'));
+    // Deadly widens the decisive range (natural 20) by 1 per level. Enchanted ignores 5 resistance per level.
+    const deadly = [];
+    const baseDeadly = traitLevel(data, 'Deadly');
+    if (baseDeadly) deadly.push([`Deadly ${roman(baseDeadly)} (weapon)`, baseDeadly]);
+    deadly.push(...BPx('w_deadly'));
+    if (chosen) deadly.push(...BPx('chosen_deadly'));
+    const ench = [];
+    const baseEnch = traitLevel(data, 'Enchanted');
+    if (baseEnch) ench.push([`Enchanted ${roman(baseEnch)} (weapon)`, baseEnch]);
+    if (mg) mg.list.forEach(x => { if (x.t.ench) ench.push([lbl(x), x.t.ench * x.level]); });
+    ench.push(...BPx('w_ench'));
+    if (chosen) ench.push(...BPx('chosen_ench'));
+    const crit = [['Critical Chance', d.crit.total], ...scoped('crit')];
+    if (chosen) crit.push(...BPx('chosen_crit'));
+    let critTot = tot(crit);
+    if (chosen && d._atLeast) critTot = d._atLeast('chosen_crit', crit, critTot);
+    const dec = [['Decisive Strike', 3]];
+    if (chosen) dec.push(...BPx('chosen_dec'));
+    let decTot = tot(dec);
+    if (chosen && d._atLeast) decTot = d._atLeast('chosen_dec', dec, decTot);
+    // magic trait dice are never multiplied on critical or decisive strikes
+    const extra = [], vs = [], ignore = [];
+    if (mg) mg.list.forEach(x => {
+      (x.t.extra || []).forEach(e => extra.push({ dice: e.dice, type: e.type, src: x.t.name }));
+      (x.t.vs || []).forEach(e => vs.push({ dice: e.dice, type: e.type || '', vs: fillNote(e.vs, mg, x), src: x.t.name }));
+      if (x.t.ignore && !ignore.includes(x.t.ignore)) ignore.push(x.t.ignore);
+    });
+    const deadlyTot = tot(deadly), enchTot = Math.max(0, tot(ench));
+    return { data, title, stat, chosen, magic: mg, stored, attuned: !!mg, inHand: w.inHand !== false,
+      atk: { total: tot(atk), parts: atk }, dmg: { total: tot(dmg), parts: dmg }, needsSkilled: hasTrait(data, 'Skilled'), ranged: isRanged,
+      deadly: { total: deadlyTot, parts: deadly.length ? deadly : [['No Deadly levels', 0]] },
+      ench: { total: enchTot, parts: ench.length ? ench : [['No Enchanted levels', 0]] },
+      critW: { total: critTot, parts: crit }, decisive: { total: decTot, parts: dec },
+      decFrom: Math.max(2, 20 - Math.max(0, deadlyTot)), extra, vs, ignore,
+      wrongBase: !!(w.magic && n(w.magic.bonus) > 0 && w.magic.base !== w.item) };
   }
 
   // ------------------------------------------------------------------ dice
@@ -807,6 +1007,15 @@
     const cls = r.nat === 20 ? 'nat20' : r.nat === 1 ? 'nat1' : '';
     logRoll(title, tot, `${esc(r.txt)} ${sign(mod)}${r.nat === 20 ? ' · natural 20' : r.nat === 1 ? ' · natural 1' : ''}`, cls);
   }
+  // magic dice, Enchanted, and ignore lines added under an attack or damage roll
+  function magicDamageHtml(w) {
+    let h = '';
+    w.extra.forEach(e => { const r = rollDice(e.dice, 1); h += `<br>+ <b>${r.sum}</b> ${esc(e.type)} (${esc(e.dice)}: ${r.dice.join(' + ')}, ${esc(e.src)})`; });
+    w.vs.forEach(e => { const r = rollDice(e.dice, 1); h += `<br>+ <b>${r.sum}</b>${e.type ? ' ' + esc(e.type) : ''} against ${esc(e.vs)} (${esc(e.dice)}: ${r.dice.join(' + ')})`; });
+    if (w.ench.total) h += `<br>Enchanted ${roman(w.ench.total)}: ignores ${w.ench.total * ENCH_RES} resistance.`;
+    w.ignore.forEach(t => { h += `<br>${esc(t)}.`; });
+    return h;
+  }
   function rollAttack(idx) {
     const c = char(), d = compute(c);
     const w = d.weapon[idx];
@@ -814,28 +1023,31 @@
     const r = d20();
     const tot = r.nat + w.atk.total;
     const critRoll = rnd(100);
-    let mult = 1, tag = '';
-    if (r.nat === 20) {
-      const dec = critRoll <= d.crit.total;
-      mult = dec ? 3 : 2;
-      tag = dec ? `Natural 20: Decisive Strike (d100 ${critRoll} ≤ ${d.crit.total}). Target is Crippled.` : `Natural 20: Critical Strike (d100 ${critRoll} > ${d.crit.total} for Decisive).`;
-    } else if (critRoll <= d.crit.total) {
-      mult = 2; tag = `If it hits: Critical Strike (d100 ${critRoll} ≤ ${d.crit.total}).`;
-    } else tag = `If it hits: normal hit (d100 ${critRoll} > ${d.crit.total}).`;
+    const crit = w.critW.total, from = w.decFrom, dx = w.decisive.total, sure = crit >= 100;
+    const conf = ok => (sure ? 'automatic' : `d100 ${critRoll} ${ok ? '≤' : '>'} ${crit}`);
+    let mult = 1, tag;
+    if (r.nat >= from) {
+      const dec = critRoll <= crit;
+      mult = dec ? dx : 2;
+      tag = `Natural ${r.nat}${from < 20 ? ` (decisive range ${from}–20)` : ''}: ${dec ? `Decisive Strike ×${dx} (${conf(true)}). Target is Crippled.` : `Critical Strike (${conf(false)} for Decisive).`}`;
+    } else if (critRoll <= crit) {
+      mult = 2; tag = `If it hits: Critical Strike (${conf(true)}).`;
+    } else tag = `If it hits: normal hit (${conf(false)}).`;
     const dm = rollDice(w.data.die, mult);
     const dmgTot = dm.sum + w.dmg.total;
     const ranged = w.ranged ? ' Ranged attacks in melee take −5.' : '';
-    logRoll(`${w.data.name} attack`, tot,
-      `${esc(r.txt)} ${sign(w.atk.total)}<br>${esc(tag)}<br>Damage <b>${dmgTot}</b> ${esc(w.data.type)} (${mult > 1 ? `${esc(w.data.die)} ×${mult}: ` : ''}${dm.dice.join(' + ') || dm.flat} ${sign(w.dmg.total)})${esc(ranged)}`,
-      r.nat === 20 ? 'nat20' : r.nat === 1 ? 'nat1' : '');
+    logRoll(`${w.title} attack`, tot,
+      `${esc(r.txt)} ${sign(w.atk.total)}<br>${esc(tag)}<br>Damage <b>${dmgTot}</b> ${esc(w.data.type)} (${mult > 1 ? `${esc(w.data.die)} ×${mult}: ` : ''}${dm.dice.join(' + ') || dm.flat} ${sign(w.dmg.total)})${esc(ranged)}${magicDamageHtml(w)}`,
+      r.nat >= from ? 'nat20' : r.nat === 1 ? 'nat1' : '');
   }
   function rollDamage(idx, mult) {
     const c = char(), d = compute(c);
     const w = d.weapon[idx];
     if (!w) return;
-    const dm = rollDice(w.data.die, mult);
-    logRoll(`${w.data.name} damage${mult === 2 ? ' (critical)' : mult === 3 ? ' (decisive)' : ''}`, dm.sum + w.dmg.total,
-      `${esc(w.data.die)}${mult > 1 ? ' ×' + mult : ''}: ${dm.dice.join(' + ') || dm.flat} ${sign(w.dmg.total)} · ${esc(w.data.type)}`);
+    const m = mult === 3 ? w.decisive.total : mult;
+    const dm = rollDice(w.data.die, m);
+    logRoll(`${w.title} damage${mult === 2 ? ' (critical)' : mult === 3 ? ' (decisive)' : ''}`, dm.sum + w.dmg.total,
+      `${esc(w.data.die)}${m > 1 ? ' ×' + m : ''}: ${dm.dice.join(' + ') || dm.flat} ${sign(w.dmg.total)} · ${esc(w.data.type)}${magicDamageHtml(w)}`);
   }
 
   // ------------------------------------------------------------------ resources and damage
@@ -966,7 +1178,7 @@
     let path;
     if (sl === 'Ring') { let k = c.rings.findIndex(r => !r || !r.name); if (k < 0) { c.rings.push({}); k = c.rings.length - 1; toast('Every ring slot was full, so the sheet added one. Check with your GM.'); } path = 'rings.' + k; }
     else if (D.itemSlots.includes(sl)) path = 'items.' + sl;
-    else { let k = c.misc.findIndex(r => !r || !r.name); if (k < 0) { c.misc.push({}); k = c.misc.length - 1; toast('Every attunement slot was full, so the sheet added one. Check with your GM.'); } path = 'misc.' + k; }
+    else { let k = c.misc.findIndex(r => !r || !r.name); if (k < 0 || attuneUse(c).used >= c.misc.length) { c.misc.push({}); k = c.misc.length - 1; toast('Every attunement slot was full, so the sheet added one. Check with your GM.'); } path = 'misc.' + k; }
     const old = getPath(c, path);
     if (old && old.name) unequipTo(c, path);
     const data = itemFx(it);
@@ -1181,10 +1393,11 @@
   <div class="cs-box">
     <h3 class="cs-h">Armor and shield</h3>
     <div class="cs-form">
-      <label class="cs-span"><span class="cs-lbl">Armor</span><select data-bind="armor" id="f-armor">${opt('', 'No armor')}${['Light', 'Medium', 'Heavy'].map(t => `<optgroup label="${t}">${D.armor.filter(a => a.type === t).map(a => opt(a.name, `${a.name} (AC ${a.ac}${a.maxFin != null && a.maxFin < 25 ? `, Finesse max ${a.maxFin}` : ''}${a.penalty ? `, penalty ${a.penalty}` : ''})`)).join('')}</optgroup>`).join('')}</select></label>
-      <label><span class="cs-lbl">Shield</span><select data-bind="shield" id="f-shield">${opt('', 'No shield')}${D.shields.map(s => opt(s.name, `${s.name} (+${s.ac} AC${s.penalty ? `, penalty ${s.penalty}` : ''})`)).join('')}</select></label>
+      <label class="cs-span"><span class="cs-lbl">Armor</span><select data-bind="armor" id="f-armor" data-rerender="armor">${opt('', 'No armor')}${['Light', 'Medium', 'Heavy'].map(t => `<optgroup label="${t}">${D.armor.filter(a => a.type === t).map(a => opt(a.name, `${a.name} (AC ${a.ac}${a.maxFin != null && a.maxFin < 25 ? `, Finesse max ${a.maxFin}` : ''}${a.penalty ? `, penalty ${a.penalty}` : ''})`)).join('')}</optgroup>`).join('')}</select></label>
+      <label><span class="cs-lbl">Shield</span><select data-bind="shield" id="f-shield" data-rerender="armor">${opt('', 'No shield')}${D.shields.map(s => opt(s.name, `${s.name} (+${s.ac} AC${s.penalty ? `, penalty ${s.penalty}` : ''})`)).join('')}</select></label>
       <label><span class="cs-lbl">Defensive weapons wielded</span>${numIn('defensiveWielded', 'id="f-defw" min="0" max="2"')}</label>
     </div>
+    <div id="cs-armor-magic" class="cs-armor-magic"></div>
     <dl class="cs-dl">
       <div><dt>Armor Class</dt><dd>${brk('ac', 'Armor Class')}</dd></div>
       <div><dt>Armor penalty</dt><dd>${brk('pen', 'Armor penalty')}</dd></div>
@@ -1193,7 +1406,7 @@
   </div>
 </div>
 <div class="cs-box">
-  <div class="cs-h-row"><h3 class="cs-h">Weapons</h3><button type="button" class="cs-btn cs-btn-sm" data-act="add-weapon">Add weapon</button></div>
+  <div class="cs-h-row"><h3 class="cs-h">Weapons</h3><span class="cs-btnrow"><button type="button" class="cs-btn cs-btn-sm" data-forge="new">Forge a magic weapon</button><button type="button" class="cs-btn cs-btn-sm" data-act="add-weapon">Add weapon</button></span></div>
   <div id="cs-weapons" class="cs-weapons"></div>
 </div>
 <div class="cs-box">
@@ -1269,7 +1482,7 @@
     <p class="cs-note">You wear 2 rings. Rituals in Lemara's church add more.</p>
     <div class="cs-h-row"><h3 class="cs-h">Attunement</h3><button type="button" class="cs-btn cs-btn-sm" data-act="add-misc">Add slot</button></div>
     <div id="cs-misc"></div>
-    <p class="cs-note">Miscellaneous items need attunement. You start with 3 slots. Attuning takes 10 minutes.</p>
+    <p class="cs-note">Miscellaneous items need attunement, and magic weapons, armor, and shields count as Miscellaneous items. You start with 3 slots. Attuning takes 10 minutes.</p>
   </div>
 </div>
 <div class="cs-box">
@@ -1455,8 +1668,12 @@
       return `<article class="cs-weapon">
         <div class="cs-weapon-top">
           <select data-bind="weapons.${i}.item" id="w${i}-item" data-rerender="weapons" aria-label="Weapon ${i + 1}">${opt('', 'Choose a weapon')}${D.weapons.map(x => opt(x.name, `${x.name} · ${x.die}`)).join('')}${opt('__custom', 'Custom weapon…')}</select>
+          ${data ? `<button type="button" class="cs-btn cs-btn-sm cs-forge-btn" data-forge="w:${i}">${wc.stored ? 'Magic' : 'Enchant'}</button>` : ''}
           <button type="button" class="cs-x" data-del="weapons.${i}" aria-label="Remove weapon">×</button>
         </div>
+        ${data && (wc.stored || wc.chosen) ? `<p class="cs-wtitle">${esc(wc.title)}${wc.chosen ? '<span class="cs-tag cs-tag-chosen">Chosen weapon</span>' : ''}${wc.stored && !wc.attuned ? '<span class="cs-tag cs-tag-off">Not attuned</span>' : ''}</p>` : ''}
+        ${data && wc.stored && !wc.attuned ? '<p class="cs-note">The magic is off until you attune this weapon. Each magic weapon, armor, or shield takes an attunement slot.</p>' : ''}
+        ${data && wc.wrongBase ? `<p class="cs-note">This weapon's +${esc(w.magic.bonus)} enchantment belongs to ${esc((WEAPON[w.magic.base] || {}).name || 'another weapon')}. Pick it again to use the magic.</p>` : ''}
         ${custom ? `<div class="cs-form cs-form-inline">
           <label><span class="cs-lbl">Name</span><input data-bind="weapons.${i}.name" id="w${i}-name"></label>
           <label class="cs-narrow"><span class="cs-lbl">Damage die</span><input data-bind="weapons.${i}.die" id="w${i}-die" placeholder="1d8" data-rerender="weapons"></label>
@@ -1469,10 +1686,18 @@
           <div><span class="cs-lbl">Damage</span><button type="button" class="cs-val big" data-break="weapon.${i}.dmg" aria-label="Damage: show the math">${esc(data.die)} ${sign(wc.dmg.total)}</button></div>
           <div><span class="cs-lbl">Type</span><select data-bind="weapons.${i}.type" id="w${i}-type" data-rerender="weapons" aria-label="Damage type">${opt('', data.custom ? 'Slashing' : (WEAPON[w.item] || {}).type)}${traitsOpts.map(t => opt(t)).join('')}</select></div>
           <div><span class="cs-lbl">Range</span><span class="cs-plain">${esc(rangeText(data))}</span></div>
+          ${wc.deadly.total || wc.critW.total !== d.crit.total || wc.decisive.total !== 3 ? `<div><span class="cs-lbl">Decisive range</span><button type="button" class="cs-val" data-break="weapon.${i}.deadly" aria-label="Decisive range: show the math">${wc.decFrom}–20</button></div>
+          <div><span class="cs-lbl">Critical Chance</span><button type="button" class="cs-val" data-break="weapon.${i}.critW" aria-label="Critical Chance: show the math">${wc.critW.total >= 100 ? 'Always' : wc.critW.total}</button></div>` : ''}
+          ${wc.ench.total ? `<div><span class="cs-lbl">Enchanted</span><button type="button" class="cs-val" data-break="weapon.${i}.ench" aria-label="Enchanted: show the math">${roman(wc.ench.total)} · ignores ${wc.ench.total * ENCH_RES}</button></div>` : ''}
         </div>
-        <div class="cs-traits">${(data.traits || []).map(t => `<button type="button" class="cs-chip" data-info="trait:${esc(t)}">${esc(t)}</button>`).join('') || '<span class="cs-note">No traits</span>'}</div>
+        <div class="cs-traits">${(data.traits || []).map(t => `<button type="button" class="cs-chip" data-info="trait:${esc(t)}">${esc(t)}</button>`).join('') || (wc.stored ? '' : '<span class="cs-note">No traits</span>')}${wc.stored ? magicChips(wc.stored, 'weapon', `weapons.${i}.magic`, !wc.attuned) : ''}</div>
+        ${wc.extra.length || wc.vs.length || wc.ignore.length ? `<ul class="cs-wmagic">${wc.extra.map(e => `<li>+${esc(e.dice)} ${esc(e.type)} damage <small>${esc(e.src)}</small></li>`).join('')}${wc.vs.map(e => `<li>+${esc(e.dice)}${e.type ? ' ' + esc(e.type) : ''} damage against ${esc(e.vs)} <small>${esc(e.src)}</small></li>`).join('')}${wc.ignore.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
+        ${(() => { const fl = (d.fxList || []).filter(x => x.path === `weapons.${i}`); return fl.length ? `<div class="cs-fxrow">${fl.map(fxChip).join('')}</div>` : ''; })()}
         <div class="cs-form cs-form-inline">
           <label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.prof" id="w${i}-prof" data-type="bool" data-rerender="weapons"> Proficient</label>
+          <label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.inHand" id="w${i}-hand" data-rerender="weaponfx"> In hand</label>
+          ${wc.stored ? `<label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.magic.attuned" id="w${i}-attuned" data-rerender="attune"> Attuned</label>` : ''}
+          ${d.usesChosen || w.chosen ? `<label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.chosen" id="w${i}-chosen" data-rerender="weaponfx"> Chosen weapon</label>` : ''}
           <label><span class="cs-lbl">Stat</span><select data-bind="weapons.${i}.stat" id="w${i}-stat" data-rerender="weapons">${opt('auto', `Auto (${STAT[wc.stat].name})`)}${opt('str', 'Strength')}${opt('fin', 'Finesse')}</select></label>
           <label class="cs-narrow"><span class="cs-lbl">Attack bonus</span>${numIn(`weapons.${i}.atk`, `id="w${i}-atkb" data-rerender="weapons"`)}</label>
           <label class="cs-narrow"><span class="cs-lbl">Damage bonus</span>${numIn(`weapons.${i}.dmg`, `id="w${i}-dmgb" data-rerender="weapons"`)}</label>
@@ -1482,7 +1707,7 @@
           <button type="button" class="cs-btn cs-btn-red" data-attack="${i}">Attack</button>
           <button type="button" class="cs-btn cs-btn-sm" data-damage="${i}:1">Damage</button>
           <button type="button" class="cs-btn cs-btn-sm" data-damage="${i}:2">Crit ×2</button>
-          <button type="button" class="cs-btn cs-btn-sm" data-damage="${i}:3">Decisive ×3</button>
+          <button type="button" class="cs-btn cs-btn-sm" data-damage="${i}:3">Decisive ×${wc.decisive.total}</button>
         </div>
         <input class="cs-inline-note" data-bind="weapons.${i}.notes" id="w${i}-notes" placeholder="Notes" aria-label="Weapon notes">` : ''}
       </article>`;
@@ -1532,13 +1757,39 @@
         <div><dt>${k.isSpell ? 'Mana' : 'Stamina'}</dt><dd class="cs-plain">${curOf(k.isSpell ? 'mana' : 'stamina', d)} / ${d[k.isSpell ? 'mana' : 'stamina'].total}</dd></div>
       </dl></div>`).join('');
   }
+  function magicChips(mg, kind, path, off) {
+    return mg.list.map(x => `<button type="button" class="cs-chip cs-mchip${off ? ' cs-mchip-off' : ''}" data-info="mtrait:${esc(kind)}|${esc(x.t.name)}|${esc(path)}">${esc(traitLabel(x))}${x.pick ? ` (${esc(x.pick)})` : ''}</button>`).join('');
+  }
+  function renderArmorMagic(d) {
+    const box = $('#cs-armor-magic');
+    if (!box) return;
+    const c = char();
+    const row = (slot, key, TABLE, sm, mg) => {
+      if (!TABLE[c[slot]]) return '';
+      const stored = c[key];
+      const wrong = stored && n(stored.bonus) > 0 && stored.base !== c[slot];
+      const fl = (d.fxList || []).filter(x => x.path === key);
+      return `<div class="cs-amagic${mg ? ' on' : ''}">
+        <div class="cs-amagic-head"><span class="cs-amagic-name">${esc(magicTitle(sm, c[slot]))}${sm && !mg ? '<span class="cs-tag cs-tag-off">Not attuned</span>' : ''}</span>
+          <button type="button" class="cs-btn cs-btn-sm" data-forge="${slot}">${sm ? 'Magic' : 'Enchant'}</button></div>
+        ${sm ? `<div class="cs-traits"><span class="cs-chip cs-bchip ${mg ? 'on' : 'cs-fx-off'}">AC and saves +${sm.bonus}</span>${magicChips(sm, 'armor', key, !mg)}</div>
+        <label class="cs-check"><input type="checkbox" data-bind="${key}.attuned" id="f-${key}-attuned" data-rerender="attune"> Attuned</label>` : ''}
+        ${fl.length ? `<div class="cs-fxrow">${fl.map(fxChip).join('')}</div>` : ''}
+        ${wrong ? `<p class="cs-note">Your +${esc(stored.bonus)} enchantment is on the ${esc(stored.base)}. Pick it again to use the magic.</p>` : ''}
+      </div>`;
+    };
+    box.innerHTML = row('armor', 'armorMagic', ARMOR, d.armorMagicStored, d.armorMagic) + row('shield', 'shieldMagic', SHIELD, d.shieldMagicStored, d.shieldMagic);
+    fillInputs(box);
+  }
   // One effect as a chip, plus its choice menu or on/off switch.
   function fxChip(x) {
     const cls = { on: 'on', off: 'cs-fx-off', choose: 'cs-fx-choose', error: 'cs-fx-err' }[x.status] || '';
     const title = esc(x.raw + (x.when ? '' : ''));
-    let h = `<span class="cs-chip cs-bchip ${cls}" title="${title}">${esc(x.status === 'off' ? x.raw.replace(/\s+(?:when|while)\s+.*$/i, '').replace(/\{[^}]*\}/g, '(choose)') : x.text)}</span>`;
+    let h = `<span class="cs-chip cs-bchip ${cls}" title="${title}">${esc(x.status === 'off' || x.scoped ? x.raw.replace(/\s+(?:when|while)\s+.*$/i, '').replace(/\{[^}]*\}/g, '(choose)') : x.text)}</span>`;
     if (x.choice) h += `<select class="cs-fx-pick" data-bind="fxPick.${x.id}" data-rerender="fx" aria-label="Choose for ${esc(x.label)}">${opt('', 'Choose')}${x.choice.map(o => opt(o.label)).join('')}</select>`;
-    if (x.when) h += `<label class="cs-check cs-fx-when"><input type="checkbox" data-bind="fxOn.${x.id}" data-rerender="fx"> ${esc(x.when)}</label>`;
+    if (x.when && x.scoped) h += `<span class="cs-fx-auto">On the matching weapon: ${esc(x.when)}</span>`;
+    else if (x.when && x.auto) h += `<span class="cs-fx-auto ${x.status === 'off' ? '' : 'on'}">${x.status === 'off' ? 'Inactive' : 'Active'}: ${esc(x.when)}</span>`;
+    else if (x.when) h += `<label class="cs-check cs-fx-when"><input type="checkbox" data-bind="fxOn.${x.id}" data-rerender="fx"> ${esc(x.when)}</label>`;
     return `<span class="cs-fx">${h}</span>`;
   }
   function renderItems() {
@@ -1573,7 +1824,14 @@
     };
     $('#cs-items').innerHTML = D.itemSlots.map(s => slot(`items.${s}`, s)).join('');
     $('#cs-rings').innerHTML = c.rings.map((r, i) => slot(`rings.${i}`, `Ring ${i + 1}`)).join('');
-    $('#cs-misc').innerHTML = c.misc.map((r, i) => slot(`misc.${i}`, `Slot ${i + 1}`)).join('');
+    const gear = attunedGear(c), au = attuneUse(c);
+    let gi = 0;
+    const gearSlot = (g, i) => `<div class="cs-slotwrap filled cs-gearslot${i < 0 ? ' over' : ''}"><div class="cs-slot"><span class="cs-lbl">${i < 0 ? 'No slot' : `Slot ${i + 1}`}</span>
+      <span class="cs-gear-name">${esc(g.label)}</span><span class="cs-gear-where">${esc(g.where)}</span>
+      <button type="button" class="cs-why" data-unattune="${esc(g.path)}">Unattune</button></div></div>`;
+    $('#cs-misc').innerHTML = `<p class="cs-note cs-attune-count${au.used > au.slots ? ' cs-bad' : ''}">${au.used} of ${au.slots} slots used${au.gear ? `, ${au.gear} by magic weapons or armor` : ''}.${au.used > au.slots ? ' Unattune an item or add a slot.' : ''}</p>`
+      + c.misc.map((r, i) => ((!r || !r.name) && gi < gear.length ? gearSlot(gear[gi++], i) : slot(`misc.${i}`, `Slot ${i + 1}`))).join('')
+      + gear.slice(gi).map(g => gearSlot(g, -1)).join('');
     fillInputs($('#cs-items')); fillInputs($('#cs-rings')); fillInputs($('#cs-misc'));
     openEditors.forEach(path => { const box = document.getElementById(path.replace(/\./g, '-') + '-bedit'); if (box) { box.hidden = false; const b = $(`[data-bedit="${path}"]`); if (b) b.setAttribute('aria-expanded', 'true'); } });
   }
@@ -1797,6 +2055,7 @@
         if (!wc) return;
         const a = $(`[data-break="weapon.${i}.atk"]`); if (a) a.textContent = sign(wc.atk.total);
         const m = $(`[data-break="weapon.${i}.dmg"]`); if (m) m.textContent = `${wc.data.die} ${sign(wc.dmg.total)}`;
+        const cr = $(`[data-break="weapon.${i}.critW"]`); if (cr) cr.textContent = wc.critW.total >= 100 ? 'Always' : wc.critW.total;
       });
       if (sig !== lastSig) {
         lastSig = sig;
@@ -1815,6 +2074,7 @@
     renderRaceChoices();
     renderClassSelects();
     renderWeapons(d);
+    renderArmorMagic(d);
     renderTools(d);
     renderTierList('#cs-spells', 'spells', D.spellTiers, d, 'Mana');
     renderTierList('#cs-mans', 'maneuvers', D.maneuverTiers, d, 'Stamina');
@@ -1832,7 +2092,10 @@
     if (kind === 'weapons' || kind === 'hunt') renderWeapons(d);
     if (kind === 'name') renderRoster();
     if (kind === 'items') { renderItems(); renderResists(d); }
-    if (kind === 'fx') { renderItems(); renderFeatures(d); renderResists(d); renderFx(d); }
+    if (kind === 'fx') { renderItems(); renderFeatures(d); renderResists(d); renderFx(d); renderWeapons(d); renderArmorMagic(d); }
+    if (kind === 'armor') { renderArmorMagic(d); renderFeatures(d); renderFx(d); renderResists(d); }
+    if (kind === 'attune') { renderWeapons(d); renderArmorMagic(d); renderItems(); renderFeatures(d); renderFx(d); renderResists(d); }
+    if (kind === 'weaponfx') { renderWeapons(d); renderArmorMagic(d); renderFeatures(d); renderFx(d); renderResists(d); }
   }
 
   // ------------------------------------------------------------------ binding
@@ -1869,6 +2132,15 @@
         fillInputs($(`#f-clvl${i}`).parentNode);
       }
       if (/^weapons\.\d+\.item$/.test(path)) { const w = getPath(c, path.replace(/\.item$/, '')); w.type = ''; }
+      if (/^(weapons\.\d+\.magic|armorMagic|shieldMagic)\.attuned$/.test(path) && readInput(el)) {
+        const au = attuneUse(c);
+        if (au.used > au.slots) {
+          setPath(c, path, false); el.checked = false;
+          toast(`No free attunement slot (${au.slots} of ${au.slots} used). Unattune an item or press Add slot on the Gear tab.`, 'dmg');
+          return;
+        }
+      }
+      if (/^weapons\.\d+\.chosen$/.test(path) && readInput(el)) c.weapons.forEach((w, j) => { if (j !== n(path.split('.')[1])) w.chosen = false; });
       if (path.startsWith('rules.')) { update(true); return; }
       if (e.type === 'change' && el.dataset.rerender) rerender(el.dataset.rerender);
       if (path === 'name') { if (e.type === 'change') renderRoster(); }
@@ -1911,7 +2183,7 @@
       ac: 'Armor Class', hp: 'Maximum Health', pa: 'Maximum Physical Armor', ma: 'Maximum Magical Armor', ta: 'Maximum True Armor',
       mana: 'Maximum Mana', stamina: 'Maximum Stamina', crit: 'Critical Chance', init: 'Initiative', speed: 'Walk speed (m per AP)',
       pen: 'Armor penalty', carry: 'Carrying capacity (kg)', ranks: 'Skill ranks available',
-    }[key] || (key.startsWith('weapon.') ? `${d.weapon[n(key.split('.')[1])].data.name} ${key.endsWith('atk') ? 'attack' : 'damage bonus'}` :
+    }[key] || (key.startsWith('weapon.') ? `${d.weapon[n(key.split('.')[1])].title} ${{ atk: 'attack', dmg: 'damage bonus', deadly: 'Deadly levels', ench: 'Enchanted levels', critW: 'Critical Chance', decisive: 'decisive dice' }[key.split('.')[2]] || ''}` :
       key.startsWith('cast.') ? `${d.cast[n(key.split('.')[1])].name} ${key.endsWith('dc') ? 'DC' : 'attack'}` :
       key.startsWith('tool.') ? (char().tools[n(key.split('.')[1])].name || 'Tool') :
       key.startsWith('stat.') ? STAT[key.split('.')[1]].name + ' score' : key.startsWith('save.') ? SAVE_NAME[key.split('.')[1]] :
@@ -1924,6 +2196,15 @@
     if (kind === 'skill') { const s = SKILL[name]; return `<h4>${esc(name)}</h4><p>${s.desc}</p><p class="cs-note">Stat: ${STAT[s.stat].name}${s.armorPenalty ? '. Armor penalty applies.' : ''}</p>`; }
     if (kind === 'trait') { const [k, t] = traitText(name); return `<h4>${esc(name)}</h4><p>${esc(t || 'No description in the Equipment table.')}</p>${k === 'Piercing' ? '<p class="cs-note">This weapon trait is separate from the Piercing damage type.</p>' : ''}`; }
     if (kind === 'cond') { const k = COND[name]; return `<h4>${esc(name)}</h4><p>${k ? k.text : ''}</p>`; }
+    if (kind === 'mtrait') {
+      const [k2, tn, path] = name.split('|');
+      const t = MTRAIT[k2 + '|' + tn];
+      if (!t) return '';
+      const mg = path ? magicOf(getPath(char(), path), k2) : null;
+      const x = mg && mg.list.find(y => y.t.name === tn);
+      return `<h4>${esc(x ? traitLabel(x) : tn)}</h4><ul class="cs-tsum">${traitSummary(t, x, mg).map(l => `<li>${esc(l)}</li>`).join('')}</ul>
+        <p>${esc(t.text)}</p><p class="cs-note">Costs +${t.cost}${t.perLevel ? ' per level' : ''} of the magical bonus.${t.costNote ? ' ' + esc(t.costNote) : ''}</p>`;
+    }
     if (kind === 'inv' || kind === 'slot') {
       const it = kind === 'inv' ? char().inventory[n(name)] : getPath(char(), name);
       if (!it) return '';
@@ -1945,6 +2226,7 @@
     const back = $('#cs-modal');
     const m = back.firstElementChild;
     m.innerHTML = `<h3 id="cs-modal-title" class="cs-h">${esc(title)}</h3>${bodyHtml}<div class="cs-btnrow cs-modal-btns">${buttons.map((b, i) => `<button type="button" class="cs-btn ${b.cls || ''}" data-mbtn="${i}">${esc(b.label)}</button>`).join('')}</div>`;
+    m.oninput = null; m.onchange = null;
     back.hidden = false;
     const first = m.querySelector('textarea, input, [data-mbtn]');
     if (first) first.focus();
@@ -1955,6 +2237,183 @@
       const keep = fn ? fn(m) === false : false;
       if (!keep) back.hidden = true;
     };
+  }
+
+  // ------------------------------------------------------------------ magic item forge
+  // spec: 'new' (buy a weapon and enchant it), 'w:<index>' (a weapon on the sheet), 'armor', or 'shield'
+  function openForge(spec) {
+    const c = char();
+    const isW = spec === 'new' || spec.startsWith('w:');
+    const kind = isW ? 'weapon' : 'armor';
+    const wi = spec.startsWith('w:') ? n(spec.slice(2)) : -1;
+    const w = wi >= 0 ? c.weapons[wi] : null;
+    const slot = isW ? null : spec;
+    const key = slot === 'armor' ? 'armorMagic' : slot === 'shield' ? 'shieldMagic' : null;
+    const TABLE = slot === 'shield' ? SHIELD : ARMOR;
+    if (wi >= 0 && (!w || !weaponData(w))) return;
+    if (slot && !TABLE[c[slot]]) { toast(`Pick ${slot === 'armor' ? 'armor' : 'a shield'} first, then enchant it.`); return; }
+    const stored = w ? w.magic : key ? c[key] : null;
+    const myPath = w ? `weapons.${wi}.magic` : key;
+    const cur = stored && n(stored.bonus) > 0 && stored.base === (w ? w.item : slot ? c[slot] : '') ? stored : null;
+    const st = {
+      base: w ? w.item : slot ? c[slot] : (WEAPON['Arming Sword'] ? 'Arming Sword' : D.weapons[0].name),
+      bonus: cur ? clamp(n(cur.bonus), 1, 10) : 1, name: cur ? cur.name || '' : '', payBase: spec === 'new', sel: {},
+    };
+    let seq = 0;   // traits keep the order they were picked in, so the name reads the way the player built it
+    (cur ? cur.traits || [] : []).forEach(x => { if (x && MTRAIT[kind + '|' + x.name]) st.sel[x.name] = { on: true, level: n(x.level) || 1, pick: x.pick || '', seq: ++seq }; });
+    const paidBonus = cur ? clamp(n(cur.bonus), 1, 10) : 0;
+    const baseName = () => (isW ? ((st.base === '__custom' ? weaponData(w) : WEAPON[st.base]) || {}).name || 'Weapon' : st.base);
+    const basePrice = () => (isW ? (WEAPON[st.base] || {}).price : (TABLE[st.base] || {}).price) || 0;
+    const rangedBase = () => {
+      const data = st.base === '__custom' ? weaponData(w) : WEAPON[st.base];
+      return !!data && (data.traits || []).some(t => /^Ranged/i.test(t));
+    };
+    const fits = t => !t.only || (t.only === 'ranged') === rangedBase();
+    const traitsHere = () => (D.magicTraits || []).filter(t => t.for === kind && fits(t));
+    const pickOpts = t => { const m = fxLines(t.fx).join(' ').match(/\{([^}]*)\}/); return m ? m[1].split('|').map(o => o.trim()) : null; };
+    const chosenList = () => traitsHere().filter(t => st.sel[t.name] && st.sel[t.name].on)
+      .sort((a, b2) => (st.sel[a.name].seq || 0) - (st.sel[b2.name].seq || 0))
+      .map(t => ({ name: t.name, level: t.perLevel ? clamp(n(st.sel[t.name].level) || 1, 1, t.maxLevel || 10) : 1, pick: String(st.sel[t.name].pick || '').trim() }));
+    const draft = () => ({ base: st.base, bonus: st.bonus, name: st.name.trim(), traits: chosenList() });
+    const gold = () => Math.max(0, n(c.gold));
+    const costNow = () => Math.max(0, magicPrice(st.bonus) - magicPrice(paidBonus)) + (st.payBase ? basePrice() : 0);
+    const gp = v => `${Number(v).toLocaleString('en-US')} GP`;
+    const traitRow = t => {
+      const s0 = st.sel[t.name] || {};
+      const po = pickOpts(t);
+      return `<div class="cs-ftrait" data-t="${esc(t.name)}" data-q="${esc((t.name + ' ' + traitSummary(t).join(' ') + ' ' + t.text).toLowerCase())}">
+        <label class="cs-check cs-ftrait-name"><input type="checkbox" data-ft="${esc(t.name)}"${s0.on ? ' checked' : ''}> ${esc(t.name)}</label>
+        <span class="cs-fcost">+${t.cost}${t.perLevel ? ' a level' : ''}</span>
+        <span class="cs-fopts">
+          ${t.perLevel ? `<label class="cs-flevel"><span class="cs-lbl">Level</span><input type="number" min="1" max="${t.maxLevel || 10}" value="${esc(s0.level || 1)}" data-fl="${esc(t.name)}" aria-label="${esc(t.name)} level"></label>` : ''}
+          ${t.choice ? (po ? `<select data-fp="${esc(t.name)}" aria-label="${esc(t.name)} choice">${opt('', 'Choose')}${po.map(o => opt(o, o, s0.pick)).join('')}</select>`
+            : `<input data-fp="${esc(t.name)}" value="${esc(s0.pick || '')}" placeholder="Creature type" aria-label="${esc(t.name)}: creature type">`) : ''}
+        </span>
+        <span class="cs-fsum">${esc(traitSummary(t).join('. '))}</span>
+      </div>`;
+    };
+    const baseSel = spec === 'new'
+      ? `<label class="cs-span"><span class="cs-lbl">Weapon</span><select id="fg-base">${D.weapons.filter(x => x.price != null).map(x => opt(x.name, `${x.name} · ${x.die} · ${x.price} GP`, st.base)).join('')}</select></label>`
+      : `<div class="cs-span"><span class="cs-lbl">${isW ? 'Weapon' : slot === 'armor' ? 'Armor' : 'Shield'}</span><p class="cs-forge-base">${esc(baseName())}</p></div>`;
+    const body = `<div class="cs-forge">
+      <p class="cs-note">The magical bonus adds to ${isW ? 'attack and damage rolls' : 'AC and saves'}. It is also the budget for traits: each trait spends part of it, up to +10.${spec === 'new' ? ' For magic armor or a shield, pick it under Armor and shield, then press Enchant.' : ''}</p>
+      <div class="cs-form">
+        ${baseSel}
+        <label><span class="cs-lbl">Magical bonus</span><select id="fg-bonus">${Array.from({ length: 10 }, (_, i) => i + 1).map(b => opt(b, `+${b} · ${gp(magicPrice(b))}`, st.bonus)).join('')}</select></label>
+        <label><span class="cs-lbl">Name (optional)</span><input id="fg-name" value="${esc(st.name)}" placeholder="Leave blank to name it from its traits"></label>
+      </div>
+      <div class="cs-forge-budget"><span id="fg-points"></span><span class="cs-forge-meter" aria-hidden="true"><span id="fg-meter"></span></span></div>
+      <label class="cs-forge-filter"><span class="cs-lbl">Find a trait</span><input type="search" id="fg-q" placeholder="Fire, attack, speed…"></label>
+      <div class="cs-forge-traits" id="fg-traits" role="group" aria-label="Magic traits"></div>
+      <div class="cs-forge-preview" id="fg-prev" aria-live="polite"></div>
+      <label class="cs-check" id="fg-paywrap"><input type="checkbox" id="fg-paybase"${st.payBase ? ' checked' : ''}> <span id="fg-paytext"></span></label>
+      <p class="cs-note" id="fg-attune"></p>
+      <div class="cs-forge-cost"><span>Cost</span><strong id="fg-cost"></strong></div>
+      <p class="cs-note" id="fg-left"></p>
+    </div>`;
+    const commit = pay => {
+      const dr = draft(), mg = magicOf(dr, kind);
+      if (!mg) return false;
+      const cost = costNow();
+      if (pay && cost > gold()) { toast('Not enough gold.'); return false; }
+      const title = magicTitle(mg, baseName());
+      if (pay && cost) {
+        c.gold = gold() - cost;
+        c.purchases = c.purchases || [];
+        c.purchases.push({ t: Date.now(), name: paidBonus ? `${title} (upgrade from +${paidBonus})` : title, shop: MAGIC_SHOP, qty: 1, cost, kind: 'magic' });
+      }
+      const au = attuneUse(c, myPath);
+      dr.attuned = cur && cur.attuned === false ? false : au.used < au.slots;
+      if (spec === 'new') { const nw = newWeapon(st.base); nw.magic = dr; c.weapons.push(nw); }
+      else if (w) w.magic = dr;
+      else c[key] = dr;
+      if (c.example) c.example = false;
+      fillInputs(); update(true);
+      toast(`${esc(title)} is ready${pay && cost ? ` for ${gp(cost)}. ${gp(c.gold)} left` : ''}.${dr.attuned ? '' : ' It is not attuned, so its magic stays off. Free an attunement slot on the Gear tab, then tick Attuned.'}`);
+      return true;
+    };
+    const btns = [
+      { label: 'Buy', cls: 'cs-btn-red', fn: () => (commit(true) ? undefined : false) },
+      { label: 'Save without paying', fn: () => (commit(false) ? undefined : false) },
+    ];
+    if (cur) btns.push({ label: 'Remove magic', cls: 'cs-btn-quiet', fn: () => { if (w) w.magic = null; else c[key] = null; update(true); toast('Magic removed.'); } });
+    btns.push({ label: 'Cancel', cls: 'cs-btn-quiet' });
+    modal(spec === 'new' ? 'Forge a magic weapon' : cur ? `Magic on ${baseName()}` : `Enchant ${baseName()}`, body, btns);
+    const m = $('#cs-modal').firstElementChild;
+    const fillTraits = () => {
+      $('#fg-traits', m).innerHTML = traitsHere().map(traitRow).join('') || '<p class="cs-note">No traits fit this item.</p>';
+      filter();
+    };
+    const filter = () => {
+      const q = ($('#fg-q', m).value || '').trim().toLowerCase();
+      $$('.cs-ftrait', m).forEach(r => { r.hidden = !!q && !r.dataset.q.includes(q) && !(st.sel[r.dataset.t] || {}).on; });
+    };
+    const refresh = () => {
+      const dr = draft(), mg = magicOf(dr, kind), left = st.bonus - mg.spent;
+      const listHere = traitsHere();
+      const blocked = [];
+      listHere.forEach(t => {
+        const row = $(`.cs-ftrait[data-t="${CSS.escape(t.name)}"]`, m);
+        if (!row) return;
+        const on = !!(st.sel[t.name] && st.sel[t.name].on);
+        const cb = row.querySelector('[data-ft]');
+        const needs = t.requires && !(st.sel[t.requires] && st.sel[t.requires].on) && !(isW && traitLevel(st.base === '__custom' ? weaponData(w) : WEAPON[st.base] || {}, t.requires));
+        cb.disabled = !on && (t.cost > left || needs);
+        row.classList.toggle('on', on);
+        row.classList.toggle('cant', cb.disabled);
+        row.title = cb.disabled ? (needs ? `Needs ${t.requires}` : `Needs +${t.cost} of the bonus. ${left > 0 ? `+${left} is left.` : 'None is left.'}`) : '';
+        row.querySelectorAll('[data-fl], [data-fp]').forEach(el => { el.disabled = !on; });
+        const x = on ? mg.list.find(y => y.t.name === t.name) : null;
+        const fs = row.querySelector('.cs-fsum'), txt = traitSummary(t, x, x ? mg : null).join('. ');
+        if (fs.textContent !== txt) fs.textContent = txt;
+        if (on && needs) blocked.push(`${t.name} needs ${t.requires}.`);
+      });
+      $('#fg-points', m).textContent = `Traits spend +${mg.spent} of +${st.bonus}.${left > 0 ? ` +${left} left.` : ''}`;
+      $('#fg-meter', m).style.width = Math.min(100, (mg.spent / st.bonus) * 100) + '%';
+      m.querySelector('.cs-forge-budget').classList.toggle('over', left < 0);
+      const title = magicTitle(mg, baseName());
+      const lines = [isW ? `Attack +${st.bonus + mg.list.reduce((a, x) => a + (x.t.atk || 0) * x.level, 0)}, damage +${st.bonus}` : `AC +${st.bonus}, Evasion, Resistance (Body), and Resistance (Mind) +${st.bonus}`];
+      mg.list.forEach(x => traitSummary(x.t, x, mg).forEach(l => { if (!/^Attack \+/.test(l)) lines.push(`${traitLabel(x)}: ${l}`); }));
+      $('#fg-prev', m).innerHTML = `<p class="cs-forge-name">${esc(title)}</p><ul>${lines.map(l => `<li>${esc(l)}</li>`).join('')}</ul>`;
+      const bp = basePrice();
+      $('#fg-paywrap', m).hidden = !bp;
+      $('#fg-paytext', m).textContent = `Also pay for the ${baseName()} (${gp(bp)})`;
+      const au = attuneUse(c, myPath), keepOff = cur && cur.attuned === false;
+      $('#fg-attune', m).textContent = keepOff ? 'Not attuned. Tick Attuned on the sheet to use the magic.'
+        : au.used < au.slots ? `Takes 1 attunement slot. ${au.slots - au.used} of ${au.slots} free.` : `Takes 1 attunement slot, and all ${au.slots} are full. It will wait unattuned until you free one.`;
+      const cost = costNow(), after = gold() - cost;
+      $('#fg-cost', m).textContent = gp(cost);
+      const problems = blocked.concat(left < 0 ? [`The traits cost +${mg.spent}. Raise the bonus or drop a trait.`] : []);
+      $('#fg-left', m).innerHTML = problems.length ? `<span class="cs-bad">${esc(problems.join(' '))}</span>`
+        : paidBonus && st.bonus <= paidBonus ? `No charge for the bonus. You paid for +${paidBonus} already.`
+          : after >= 0 ? `${esc(c.name || 'Your character')} has ${gp(gold())}. ${gp(after)} left after buying.` : `<span class="cs-bad">Not enough gold for Buy. You need ${gp(-after)} more. Save without paying records loot or a gift.</span>`;
+      const buy = m.querySelector('[data-mbtn="0"]'), save = m.querySelector('[data-mbtn="1"]');
+      buy.textContent = cost ? `Buy for ${gp(cost)}` : 'Save';
+      buy.disabled = !!problems.length || after < 0;
+      save.disabled = !!problems.length;
+      save.hidden = !cost;
+    };
+    m.oninput = e => {
+      const el = e.target, ds = el.dataset;
+      if (el.id === 'fg-bonus') st.bonus = clamp(n(el.value), 1, 10);
+      else if (el.id === 'fg-name') st.name = el.value;
+      else if (el.id === 'fg-paybase') st.payBase = el.checked;
+      else if (el.id === 'fg-q') { filter(); return; }
+      else if (el.id === 'fg-base') {
+        st.base = el.value;
+        Object.keys(st.sel).forEach(k => { const t = MTRAIT[kind + '|' + k]; if (t && !fits(t)) delete st.sel[k]; });
+        fillTraits();
+      } else if (ds.ft) { st.sel[ds.ft] = Object.assign(st.sel[ds.ft] || { level: 1, pick: '' }, { on: el.checked }, el.checked ? { seq: ++seq } : {}); }
+      else if (ds.fl) { (st.sel[ds.fl] = st.sel[ds.fl] || { on: true, pick: '' }).level = n(el.value) || 1; }
+      else if (ds.fp) { (st.sel[ds.fp] = st.sel[ds.fp] || { on: true, level: 1 }).pick = el.value; }
+      else return;
+      refresh();
+    };
+    m.onchange = m.oninput;
+    fillTraits();
+    refresh();
+    const first = $('#fg-base', m) || $('#fg-bonus', m);
+    if (first) first.focus();
   }
 
   // ------------------------------------------------------------------ actions
@@ -2082,7 +2541,18 @@
     if (ds.step) { const [k, v] = ds.step.split(':'); const d = compute(c); setCur(k, curOf(k, d) + n(v), d); if (k === 'hp' && curOf('hp', d) <= 0) toggleCondition('Dying', true); update(); return; }
     if (ds.cond) { toggleCondition(ds.cond); if (ds.cond === 'Dying' && !c.conditions.includes('Dying')) c.dying = { fails: 0, rounds: 0, dead: false }; update(); return; }
     if (ds.fail) { const x = n(ds.fail); c.dying.fails = n(c.dying.fails) >= x ? x - 1 : x; checkDeath(c, compute(c)); update(); return; }
-    if (ds.del) { del(ds.del); return; }
+    if (ds.forge) { hidePop(); openForge(ds.forge); return; }
+    if (ds.unattune) { const mg = getPath(c, ds.unattune); if (mg) mg.attuned = false; fillInputs(); update(true); toast('Unattuned. Its magic is off until you attune it again.'); return; }
+    if (ds.del) {
+      const mw = /^weapons\.\d+$/.test(ds.del) && getPath(c, ds.del);
+      if (mw && mw.magic && n(mw.magic.bonus) > 0) {
+        const wc = compute(c).weapon[n(ds.del.split('.')[1])];
+        modal('Remove this magic weapon?', `<p>${esc(wc ? wc.title : 'This weapon')} and its magic leave the sheet. Gold you paid is not returned.</p>`,
+          [{ label: 'Remove', cls: 'cs-btn-red', fn: () => del(ds.del) }, { label: 'Keep it' }]);
+        return;
+      }
+      del(ds.del); return;
+    }
     if (ds.equip !== undefined) { equip(n(ds.equip)); return; }
     if (ds.use !== undefined && t.closest('#cs-inventory')) { useItem(n(ds.use)); return; }
     if (ds.unequip) { unequipTo(c, ds.unequip); renderItems(); renderInventory(); update(true); toast('Moved back to your inventory.'); return; }
@@ -2222,13 +2692,20 @@
     });
     window.addEventListener('scroll', () => { if (!$('#cs-pop').hidden) hidePop(); }, { passive: true });
     fillInputs();
+    if (/^#forge/.test(location.hash)) tab = 'combat';
     setTab(tab);
     update(true);
     renderRolls();
     saveNow();
+    if (/^#forge/.test(location.hash)) {
+      const b = Number((location.hash.match(/^#forge-(\d+)$/) || [])[1]);
+      openForge('new');
+      if (b >= 1 && b <= 10) { const sel = $('#fg-bonus'); if (sel) { sel.value = String(b); sel.dispatchEvent(new Event('input', { bubbles: true })); } }
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* file:// pages */ }
+    }
   }
   // Exposed for tests and for GMs who want to inspect a sheet in the console.
-  window.SparksSheet = { compute: () => compute(char()), char: () => char(), roster: () => roster, levelFromXp, modOf };
+  window.SparksSheet = { compute: () => compute(char()), char: () => char(), roster: () => roster, levelFromXp, modOf, magicOf, magicTitle, openForge, update };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();

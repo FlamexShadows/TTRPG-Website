@@ -65,6 +65,8 @@ Save the file. The shop shows the item, and the sheet applies its effects when a
 | Pools | Health, Mana, Stamina, Physical Armor, Magical Armor, True Armor |
 | Defense | AC, Evasion, Resistance (Body), Resistance (Mind), All Saves |
 | Combat | Initiative, Critical Chance, Attack, Damage, Melee Attack, Melee Damage, Ranged Attack, Ranged Damage |
+| Chosen weapon | Chosen Weapon Attack, Chosen Weapon Damage, Chosen Weapon Critical Chance, Chosen Weapon Deadly, Chosen Weapon Enchanted, Chosen Weapon Decisive Dice |
+| Every weapon | All Weapons Deadly, All Weapons Enchanted |
 | Magic | Spell DC, Spell Attack, Maneuver DC, Maneuver Attack |
 | Movement | Speed, Fly, Swim, Climb, Burrow (also written as Fly Speed and so on) |
 | Skills | Any skill by its sheet name, such as Sneak or Knowledge (Arcane). All Skills, All Knowledge, Intimidate (both), Traverse (both). Stealth works as Sneak. |
@@ -72,6 +74,17 @@ Save the file. The shop shows the item, and the sheet applies its effects when a
 | Resistance | Resist plus any damage type, Resist Physical, Resist Magical, Resist All |
 
 Attack and Damage apply to every weapon on the Combat tab. Melee and Ranged apply to weapons of that kind.
+
+Chosen Weapon targets apply only to the weapon the player ticks as Chosen weapon on the Combat tab. One weapon at a time can be chosen. The Chosen weapon box shows once a feature uses one of these targets.
+
+| Effect | Result |
+|---|---|
+| `Chosen Weapon Attack +2` | +2 to attack rolls with the chosen weapon. |
+| `Chosen Weapon Deadly +1` | One more level of Deadly on the chosen weapon. Each level widens the decisive range by 1, so Deadly I means 19 to 20. |
+| `Chosen Weapon Enchanted +1` | One more level of Enchanted. Each level ignores 5 resistance. |
+| `Chosen Weapon Critical Chance = 100` | Every hit with the chosen weapon is a Critical Strike, and every roll in the decisive range is a Decisive Strike. |
+| `Chosen Weapon Decisive Dice = 4` | Decisive Strikes with the chosen weapon multiply dice by 4 instead of 3. |
+| `All Weapons Deadly +1` | One more level of Deadly on every weapon. |
 
 ## Amounts
 
@@ -108,12 +121,35 @@ For two picks, write the line twice. Each line gets its own menu.
 End a line with `when` or `while` and a situation. The sheet shows a checkbox, off by default. The bonus applies only while the player ticks it.
 
 ```
-AC +5 when wielding your chosen weapon
 Damage +2 while raging
 Fly = walk speed when the boots are active
 ```
 
 Use switches for anything with a trigger, a duration, or a daily use.
+
+### Situations the sheet checks
+
+These situations need no checkbox. The sheet reads them from the Combat tab and shows Active or Inactive.
+
+| Situation | Active when |
+|---|---|
+| `wielding your chosen weapon` | A weapon is ticked as Chosen weapon and In hand. |
+| `wearing light armor or no armor` | The armor is Light, or there is none. |
+| `wearing no armor` | No armor is picked. |
+| `wearing light armor`, `wearing medium armor`, `wearing heavy armor` | The armor is that type. |
+| `wearing armor` | Any armor is picked. |
+| `wielding a shield`, `not wielding a shield` | A shield is picked, or none is. |
+
+### Situations that pick weapons
+
+Attack, Damage, and Critical Chance lines with these situations apply to the matching weapons only.
+
+| Situation | Weapons |
+|---|---|
+| `attacking unarmed` | Unarmed Strike and natural weapons. |
+| `attacking with your chosen weapon` | The chosen weapon. |
+| `attacking with a melee weapon`, `attacking with a ranged weapon` | Weapons of that kind. |
+| `attacking with the <name>` | Weapons whose name or notes contain the name, such as `Damage +2 when attacking with the Thirsting Edge`. |
 
 ## Notes
 
@@ -138,6 +174,43 @@ Class and subclass features live in `character-sheet-data.js` under `"classes"`.
 
 The sheet applies a feature once the character reaches its level in that class. Effects from every reached feature add together. When a later feature raises the same bonus, give it only the increase.
 
+## Magic weapon and armor traits
+
+The sheet's forge builds magic weapons, armor, and shields. A player picks the item, a magical bonus from +1 to +10, and traits. The bonus adds to attack and damage on a weapon, or to AC and every save on armor and shields. The bonus is also the trait budget. Magic weapons, armor, and shields count as Miscellaneous items: each takes an attunement slot, and its magic works only while attuned. Prices come from the Magic Item +1 to +10 entries in shops-data.js.
+
+The traits live in `character-sheet-data.js` under `"magicTraits"`. Each trait is one entry.
+
+```json
+{
+ "name": "Flaming",
+ "for": "weapon",
+ "cost": 1,
+ "perLevel": false,
+ "extra": [{ "dice": "1d8", "type": "Fire" }],
+ "note": "Sheds bright light 5 meters and dim light 5 more.",
+ "text": "The full rules text."
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `for` | `weapon` or `armor`. Armor traits also go on shields. |
+| `cost` | The magical bonus the trait spends. |
+| `perLevel`, `maxLevel` | The trait takes levels. Cost and effect multiply by the level. |
+| `only` | `melee` or `ranged`. The forge hides the trait on other weapons. |
+| `requires` | Another trait the item needs first, such as `Enchanted`. |
+| `atk` | Attack bonus per level. |
+| `ench` | Enchanted levels per level. |
+| `extra` | Damage dice on every hit. Never multiplied on critical or decisive strikes. |
+| `vs` | Damage dice against a kind of creature. `{pick}` uses the player's choice. |
+| `ignore` | A line shown on the weapon and under every roll. |
+| `fx` | Effect lines in the format above. They work while the weapon is in hand or the armor is worn. |
+| `choice` | The player types or picks an option. A `{Fire|Cold}` choice in `fx` becomes a menu. |
+| `note` | Text for the weapon card. `{bonus}` is the magical bonus, `{half}` is half of it, `{pick}` is the choice. |
+| `costNote` | A note shown with the cost. |
+
+Weapon names follow the traits: `+1 Arming Sword of Accuracy`, `+7 Vorpal Unholy Arming Sword`. Players can type their own name in the forge.
+
 ## Church blessings and Other features
 
 Buying a blessing in the shop copies its effects into Other features. Blessings bought before this update pick them up the first time the sheet opens.
@@ -159,4 +232,4 @@ Every equipped item and every Other feature has an Effects box on the sheet. Pla
 | amount "2 * rank" does not know "rank" | The formula uses a word outside the Amounts list. |
 | amount "floor(level / 2" is missing a ) | Close every bracket. |
 
-`update_rules.py` only swaps old rule terms, so it leaves effects alone.
+`update_rules.py` only swaps old rule terms, so it leaves effects and magic traits alone.

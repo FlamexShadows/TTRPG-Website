@@ -430,7 +430,10 @@ window.SPARKS_DATA = {
     {
      "name": "Weapon Expert",
      "level": 5,
-     "text": "Starting at 5th level the warrior adds or gains a level of deadly on all weapons they wield."
+     "text": "Starting at 5th level the warrior adds or gains a level of deadly on all weapons they wield.",
+     "effects": [
+      "All Weapons Deadly +1"
+     ]
     },
     {
      "name": "Extra Feat",
@@ -481,7 +484,10 @@ window.SPARKS_DATA = {
      {
       "name": "Chosen Weapon",
       "level": 8,
-      "text": "Starting at 8th level when The Righteous wields their deities chosen weapon they may carve holy symbols into it and preform a ritual. After the ritual the weapon becomes sentient Possessing Intelligence, Charisma, and Wits equal to the warriors level. When attacking or making a check while the weapon is in The Righteous who made it possession they may use any of its statistics in place of their own. The sword knows Enochian and Universal and may speak with The Righteous telepathically when worn or carried by them."
+      "text": "Starting at 8th level when The Righteous wields their deities chosen weapon they may carve holy symbols into it and preform a ritual. After the ritual the weapon becomes sentient Possessing Intelligence, Charisma, and Wits equal to the warriors level. When attacking or making a check while the weapon is in The Righteous who made it possession they may use any of its statistics in place of their own. The sword knows Enochian and Universal and may speak with The Righteous telepathically when worn or carried by them.",
+      "effects": [
+       "Note: Your chosen weapon is sentient. It has Intelligence, Wits, and Charisma equal to your Warrior level. While you hold it, you may use its scores in place of your own."
+      ]
      },
      {
       "name": "Fear no Evil",
@@ -499,7 +505,9 @@ window.SPARKS_DATA = {
       "text": "Starting at 23rd level The Righteous gains 5 levels in overpower. In addition The Righteous's chosen weapon is imbued with greater power. The weapon gains an additional +5 to Intelligence. Wits, and Charisma and gains an additional level of enchanted and deadly.",
       "effects": [
        "Overpower +5",
-       "Note: Your chosen weapon gains +5 Intelligence, Wits and Charisma and a level of enchanted and deadly."
+       "Chosen Weapon Enchanted +1",
+       "Chosen Weapon Deadly +1",
+       "Note: Your chosen weapon gains +5 Intelligence, Wits, and Charisma."
       ]
      }
     ],
@@ -580,7 +588,7 @@ window.SPARKS_DATA = {
       "level": 1,
       "text": "Starting at 1st level the Blade Master gains the ability to wield a single weapon with deadly precision The Blade Master spends their whole life training with one weapon from childhood which becomes their chosen weapon. The Blade Master gains a +2 bonus to attack rolls with their weapon of choice.",
       "effects": [
-       "Attack +2 when attacking with your chosen weapon"
+       "Chosen Weapon Attack +2"
       ]
      },
      {
@@ -588,7 +596,8 @@ window.SPARKS_DATA = {
       "level": 3,
       "text": "Starting at 3rd level the Blade Master gains an additional level of deadly, with their chosen weapon and a +5 bonus to the critical chance made with its chosen weapon.",
       "effects": [
-       "Critical Chance +5 when attacking with your chosen weapon"
+       "Chosen Weapon Deadly +1",
+       "Chosen Weapon Critical Chance +5"
       ]
      },
      {
@@ -596,23 +605,37 @@ window.SPARKS_DATA = {
       "level": 8,
       "text": "Starting at 8th level the Blade Master gains a +5 bonus to their AC when wielding their chosen weapon.",
       "effects": [
-       "AC +5 when wielding your chosen weapon"
+       "AC +5 while wielding your chosen weapon"
       ]
      },
      {
       "name": "Last Stand",
       "level": 13,
-      "text": "Starting at 13th level the Blade Master masters the ability to strike with precision and power. The Blade Master gains the ability to combine their strength and finesse bonus to a number of their attack rolls with their chosen weapon a number of times a day equal to their level."
+      "text": "Starting at 13th level the Blade Master masters the ability to strike with precision and power. The Blade Master gains the ability to combine their strength and finesse bonus to a number of their attack rolls with their chosen weapon a number of times a day equal to their level.",
+      "effects": [
+       "Chosen Weapon Attack + min(Strength modifier, Finesse modifier) when using Last Stand on this attack",
+       "Note: Last Stand works a number of times per day equal to your level."
+      ]
      },
      {
       "name": "Blade Master's Bond",
       "level": 18,
-      "text": "Starting at 18th level the Blade Master gains the ability to bond their mana with chosen weapon. The Chosen Blade gains a level of enchanted and becomes magical."
+      "text": "Starting at 18th level the Blade Master gains the ability to bond their mana with chosen weapon. The Chosen Blade gains a level of enchanted and becomes magical.",
+      "effects": [
+       "Chosen Weapon Enchanted +1",
+       "Note: Your chosen weapon is magical."
+      ]
      },
      {
       "name": "A Legend Was Born",
       "level": 23,
-      "text": "Starting at 23rd level the Chosen Blade become that legends. The blade gains an additional 2 levels of Enchanted and Deadly. In addition the Chosen Blade's chosen weapon automatically confirms its critical chance. It's decisive strikes deals x4 dice."
+      "text": "Starting at 23rd level the Chosen Blade become that legends. The blade gains an additional 2 levels of Enchanted and Deadly. In addition the Chosen Blade's chosen weapon automatically confirms its critical chance. It's decisive strikes deals x4 dice.",
+      "effects": [
+       "Chosen Weapon Enchanted +2",
+       "Chosen Weapon Deadly +2",
+       "Chosen Weapon Critical Chance = 100",
+       "Chosen Weapon Decisive Dice = 4"
+      ]
      }
     ],
     "Eldritch Champion": [
@@ -1800,7 +1823,10 @@ window.SPARKS_DATA = {
      {
       "name": "Ambush",
       "level": 1,
-      "text": "Starting at 1st level an Assassin's critical range increases by 20 when unseen by a creature they attack."
+      "text": "Starting at 1st level an Assassin's critical range increases by 20 when unseen by a creature they attack.",
+      "effects": [
+       "Critical Chance +20 when unseen by the creature you attack"
+      ]
      },
      {
       "name": "Silent Shadow",
@@ -1956,7 +1982,11 @@ window.SPARKS_DATA = {
      {
       "name": "Ninja's Precision",
       "level": 18,
-      "text": "Starting at 18th level all weapons a Ninja uses gain a level of deadly and the hidden property."
+      "text": "Starting at 18th level all weapons a Ninja uses gain a level of deadly and the hidden property.",
+      "effects": [
+       "All Weapons Deadly +1",
+       "Note: Every weapon you use has the Hidden property."
+      ]
      },
      {
       "name": "Afterimages",
@@ -4842,7 +4872,7 @@ window.SPARKS_DATA = {
   "Two Handed": "A weapon with this property requires 2 hands to wield.",
   "Hooked": "Weapons with the hooked property allow for an overpower check to be made after landing a successful attack as part of the attack.",
   "Brittle": "Weapons with the brittle property break after a certain amount of uses. It is GM discretion if a weapon with this property is allowed to be repaired before or after it has broken.",
-  "Enchanted": "A weapon with the enchanted property ignores 10 resistance per level of enchantment",
+  "Enchanted": "A weapon with the enchanted property ignores 5 resistance per level of enchantment",
   "Magical": "A weapon with the magical property can have its damage type changed to magical for 1 AP. A weapon must have the enchanted property to have the magical property.",
   "Secured": "A weapon with the secured property is hard to disarm gaining a +5 to all checks to avoid being disarmed.",
   "Ranged (Finesse)": "This functions as ranged but uses finesse instead of strength",
@@ -8016,5 +8046,816 @@ window.SPARKS_DATA = {
   "Lawful Evil",
   "Neutral Evil",
   "Chaotic Evil"
+ ],
+ "magicTraits": [
+  {
+   "name": "Accuracy",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": true,
+   "maxLevel": 10,
+   "atk": 1,
+   "text": "A weapon of accuracy adds an additional +1 to the weapons attack rolls for each level of accuracy."
+  },
+  {
+   "name": "Sharing",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "note": "Share some of its magical bonus with a creature within 10 meters until the end of your turn.",
+   "text": "A sharing weapon allows a creature wielding it to share it’s magical bonus to a creature within 10 meters of it. A sharing weapon that shares its some or all of it’s bonus to the ally so long as they are within range until the end of their turn up to a maximum of +10."
+  },
+  {
+   "name": "Slaying",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "choice": "creature",
+   "vs": [
+    {
+     "dice": "1d10",
+     "type": "True",
+     "vs": "{pick}"
+    }
+   ],
+   "note": "One more level of Deadly against {pick}.",
+   "text": "A slaying weapon is designed to kill a specific creature type. When attacking the chosen creature type, a slaying weapon deals an additional 1d10 true damage and gains an additional level of deadly to the creature."
+  },
+  {
+   "name": "Merciful",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "note": "No penalty for nonlethal attacks.",
+   "text": "A merciful weapon can easily be used to not kill a creature. When using a merciful weapon, you do not incur a nonlethal attack penalty."
+  },
+  {
+   "name": "Holy",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "ench": 1,
+   "vs": [
+    {
+     "dice": "4d4",
+     "vs": "evil-aligned creatures"
+    }
+   ],
+   "text": "A holy weapon gains a level of enchanted and deals an additional 4d4 damage to evil aligned creatures."
+  },
+  {
+   "name": "Unholy",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "ench": 1,
+   "vs": [
+    {
+     "dice": "4d4",
+     "vs": "good-aligned creatures"
+    }
+   ],
+   "text": "A holy weapon gains a level of enchanted and deals an additional 4d4 damage to good aligned creatures."
+  },
+  {
+   "name": "Duplicating",
+   "for": "weapon",
+   "cost": 5,
+   "perLevel": false,
+   "only": "ranged",
+   "note": "One extra attack when you fire it, made as an offhand attack.",
+   "text": "A duplicating weapon can make one additional attack when fired and is treated as an offhand attack when the attack action is taken using it. Duplicating can only be applied to ranged weapons."
+  },
+  {
+   "name": "Blinding",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "note": "Critical or decisive strike: the target is Blind until the end of its next turn (once per turn).",
+   "text": "A blinding weapon on a critical or decisive strike emits a burst of light be blinding the target until the end of its next turn. This effect can only occur once per turn."
+  },
+  {
+   "name": "Flaming",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "extra": [
+    {
+     "dice": "1d8",
+     "type": "Fire"
+    }
+   ],
+   "note": "Sheds bright light 5 meters and dim light 5 more.",
+   "text": "A flaming weapon is wreathed in magical fire. When you hit with a flaming weapon, it deals an additional 1d8 fire damage. Additionally, the weapon sheds bright light in a 5-meter radius and dim light for an additional 5 meters."
+  },
+  {
+   "name": "Freezing",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "extra": [
+    {
+     "dice": "1d8",
+     "type": "Cold"
+    }
+   ],
+   "note": "On a hit the target loses 1 meter of speed until the end of its next turn.",
+   "text": "A freezing weapon is imbued with the power of ice. When you hit with a freezing weapon, it deals an additional 1d8 cold damage and reduces the target's movement speed by 1 meter until the end of its next turn."
+  },
+  {
+   "name": "Vampiric",
+   "for": "weapon",
+   "cost": 4,
+   "perLevel": false,
+   "note": "When you deal damage with it, regain {half} Health.",
+   "text": "A vampiric weapon drains the life force of those it strikes. When you deal damage with a vampiric weapon, you regain health equal to half the additional magical bonus of the weapon."
+  },
+  {
+   "name": "Thunderous",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "extra": [
+    {
+     "dice": "1d8",
+     "type": "Air"
+    }
+   ],
+   "note": "Critical or decisive strike: push the target 5 meters.",
+   "text": "A thunderous weapon reverberates with a booming sound. When you hit with a thunderous weapon, it deals an additional 1d8 air damage. Additionally on a critical or decisive strike the target is pushed back 5 meters."
+  },
+  {
+   "name": "Venomous",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "extra": [
+    {
+     "dice": "1d8",
+     "type": "Poison"
+    }
+   ],
+   "text": "A venomous weapon injects poison into the target. When you hit with a venomous weapon, the target take 1d8 poison damage."
+  },
+  {
+   "name": "Guiding",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "note": "On a hit, the next attack against the target by someone else gets +1 before the end of your next turn.",
+   "text": "A guiding weapon aids in precision. When you hit with a guiding weapon, the next attack roll made against the target by an attacker other than you has a +1 bonus if the attack is made before the end of your next turn."
+  },
+  {
+   "name": "Stormcaller",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "extra": [
+    {
+     "dice": "1d8",
+     "type": "Air"
+    }
+   ],
+   "note": "Critical or decisive strike: the target is Deaf until the end of its next turn.",
+   "text": "A stormcaller weapon crackles with electrical energy. When you hit with a stormcaller weapon, it deals an additional 1d8 air damage. Additionally, on a critical or decisive strike, the target is deaf until the end of its next turn."
+  },
+  {
+   "name": "Arcane",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "fx": [
+    "Spell Attack +1",
+    "Spell DC +1"
+   ],
+   "text": "An arcane weapon enhances spellcasting abilities. While wielding an arcane weapon, you gain a +1 bonus to spell attack rolls and spell save DCs."
+  },
+  {
+   "name": "Prowess",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "fx": [
+    "Maneuver Attack +1",
+    "Maneuver DC +1"
+   ],
+   "text": "A prowess weapon enhances martial abilities. While wielding an prowess weapon, you gain a +1 bonus to maneuver attack rolls and maneuver save DCs."
+  },
+  {
+   "name": "Shadow",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "note": "Critical or decisive strike: the target is Fearful of the weapon until the end of its next turn.",
+   "text": "A shadow weapon is cloaked in darkness. When you land a critical or decisive strike the target becomes fearful of the sword until the end of its next turn."
+  },
+  {
+   "name": "Enchanted",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": true,
+   "maxLevel": 10,
+   "ench": 1,
+   "text": "A weapon with the enchanted property ignores 5 resistance per level of enchantment"
+  },
+  {
+   "name": "Transmuting",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "requires": "Enchanted",
+   "note": "Spend 1 AP to change its damage type to Magic.",
+   "costNote": "The rules list no bonus for this trait. The sheet counts it as +1.",
+   "text": "A weapon with the magical property can have its damage type changed to magical for 1 AP. A weapon must have the enchanted property to have the magical property."
+  },
+  {
+   "name": "Homing",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Ignores cover, concealment, and Finesse added to AC.",
+   "text": "A homing weapon seeks out its target. When you make an attack with a homing weapon, you can ignore cover, concealment and finesse modifiers added to AC."
+  },
+  {
+   "name": "Phasing",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "only": "melee",
+   "note": "Ignores Fortitude, armor, and shield bonuses to the target's AC.",
+   "text": "A phasing weapon can bypass physical barriers. When you make an attack with a phasing weapon, you can ignore fortitude modifiers, armor and shield bonuses to AC, treating the target as if they have no armor or shield. This trait can only be applied to melee weapons."
+  },
+  {
+   "name": "Vortex",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "note": "On a hit, pull the target up to 5 meters. A collision deals 1d6 physical damage to both.",
+   "text": "A vortex weapon creates a gravitational pull. When you hit with a vortex weapon, you can pull a you can see target up to 5 meters closer to you. If the target collides with another creature or obstacle, both take 1d6 physical damage."
+  },
+  {
+   "name": "Resonating",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "note": "On a hit, you and allies within 5 meters get +1 on the next attack roll.",
+   "text": "A resonating weapon hums with energy. When you hit with a resonating weapon, you and allies within 5 meters gain a +1 bonus to their next attack roll before the end of their next turn."
+  },
+  {
+   "name": "Leeching",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "note": "On a hit, regain 2d4 Mana or 1d6 Stamina (once per turn).",
+   "text": "A leeching weapon drains energy from the target. When you hit with a leeching weapon, you regain 2d4 mana or 1d6 stamina This effect can only occur once per turn."
+  },
+  {
+   "name": "Warping",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Once per day on a hit, teleport up to 5 meters.",
+   "text": "A warping weapon distorts space around it. Once per day, when you hit with a warping weapon, you can teleport up to 5 meters to an unoccupied space you can see. This teleportation does not provoke opportunity attacks."
+  },
+  {
+   "name": "Elemental",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "note": "Each attack can deal fire, cold, air, or poison damage instead.",
+   "text": "An elemental weapon can channel different types of energy. When you make an attack with an elemental weapon, you can choose to deal fire, cold, air, or poison damage instead of the weapon's normal damage type."
+  },
+  {
+   "name": "Illuminating",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "note": "On a hit, the target and creatures within 5 meters are lit.",
+   "text": "An illuminating weapon glows with a bright light. When you hit with an illuminating weapon, the target and all creatures within 5 meters are bathed in light."
+  },
+  {
+   "name": "Gravity",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "note": "On a hit, raise or lower the target's weight.",
+   "text": "A gravity weapon can alter the weight of its strikes. When you hit with a gravity weapon, you can choose to increase or decrease the target's weight. Increasing the weight reduces the target's movement speed by 5 meters until the end of its next turn. Decreasing the weight allows the target to jump twice as high until the end of its next turn."
+  },
+  {
+   "name": "Phantom",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Ignores cover and concealment.",
+   "text": "A phantom weapon exists partially out of phase with reality. When you make an attack with a phantom weapon, you can choose to ignore cover and concealment, treating the target as if it were in plain sight."
+  },
+  {
+   "name": "Recalling",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "note": "Spend 1 AP to call it to your hand from up to 10 kilometers.",
+   "text": "A recalling weapon can be called to it’s wielder’s hand magically teleporting to their hand for 1 AP if it is within 10 kilometers of them. Any effect such as dimensional lock that is in the area of the sword or the wielder causes this trait to fail."
+  },
+  {
+   "name": "Dispelling",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Critical or decisive strike: end one spell or maneuver on the target.",
+   "text": "A dispelling weapon vibrates with an innate hunger for source. When landing a critical or decisive strike on a creature or object under the effects of a maneuver or spell, the sword dispels one current effect on them."
+  },
+  {
+   "name": "Storing",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "note": "Stores 20 Mana or 10 Stamina of spells or maneuvers.",
+   "text": "A lesser storing weapon can store up to 20 mana or 10 stamina worth of magic. Using a spell or maneuver from a storing weapon does not use it’s wielder's mana or stamina. Upon attuning to a storing item, it’s wielder learns of any spell or maneuver stored within it. The wielder may choose to restore any spells into a storing sword in a full or partial rest."
+  },
+  {
+   "name": "Lesser Storing",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "note": "Stores 10 Mana or 5 Stamina of spells or maneuvers.",
+   "text": "A lesser storing weapon functions as a storing weapon but stores up to 10 mana or 5 stamina."
+  },
+  {
+   "name": "Greater Storing",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Stores 30 Mana or 15 Stamina of spells or maneuvers.",
+   "text": "A greater storing weapon functions as a storing weapon but stores up to 30 mana or 15 stamina."
+  },
+  {
+   "name": "Vorpal",
+   "for": "weapon",
+   "cost": 5,
+   "perLevel": false,
+   "only": "melee",
+   "ignore": "Ignores resistance and immunity to physical damage",
+   "text": "A vorpal weapon ignores any resistance and immunity to physical damage a creature has. This trait can only be applied to melee weapons."
+  },
+  {
+   "name": "Piercing",
+   "for": "weapon",
+   "cost": 5,
+   "perLevel": false,
+   "only": "ranged",
+   "ignore": "Ignores resistance and immunity to physical damage",
+   "text": "A piercing weapon ignores any resistance or immunity to physical damage a creature has. This trait can only be applied to ranged weapons."
+  },
+  {
+   "name": "Tempo",
+   "for": "weapon",
+   "cost": 5,
+   "perLevel": false,
+   "note": "The attack action with it costs 2 AP.",
+   "text": "A tempo weapon has the attack action reduced to 2 AP."
+  },
+  {
+   "name": "Shattering",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "note": "On a hit, the target's AC, movement, and attack rolls drop by 1 until the end of its next turn.",
+   "text": "A shattering weapon can cause devastating fractures. When you hit with a shattering weapon, the target has it’s its AC, movement and attack rolls reduced by 1 until the end of its next turn."
+  },
+  {
+   "name": "Ensnaring",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Critical strike: the target is Pinned until the end of its next turn.",
+   "text": "An ensnaring weapon entangles its targets. When you land a critical strike with an ensnaring weapon, the target becomes pinned until the end of its next turn."
+  },
+  {
+   "name": "Repelling",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "note": "On a hit, push the target 1 meter.",
+   "text": "A repelling weapon creates a forceful push. When you hit with a repelling weapon, you can push the target up to 1 meter directly away from you."
+  },
+  {
+   "name": "Entropic",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "note": "Critical or decisive strike: the target's next save drops by 1d4.",
+   "text": "An entropic weapon accelerates the decay of its target. When you land a critical or decisive strike with an entropic weapon, the target suffers from a weakened state, having it’s next save reduced by 1d4."
+  },
+  {
+   "name": "Corrosive",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "extra": [
+    {
+     "dice": "1d8",
+     "type": "Poison"
+    }
+   ],
+   "note": "On a hit, the target's AC drops by 1 until the end of its next turn.",
+   "text": "A corrosive weapon is coated in a powerful acid. When you hit with a corrosive weapon, it deals an additional 1d8 poison damage and reduces the target's armor effectiveness, lowering their AC by 1 until the end of its next turn."
+  },
+  {
+   "name": "Harmony",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "note": "On a hit, you and allies within 5 meters regain {half} Health.",
+   "text": "A harmony weapon resonates with positive energy. When you hit with a harmony weapon, you and allies within 5 meters regain health equal to half the additional magical bonus (rounded down)."
+  },
+  {
+   "name": "Chilling",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "note": "On a hit, the target spends 1 extra AP on its next action.",
+   "text": "A chilling weapon emanates a frigid aura. When you hit with a chilling weapon, the target's attacks are slowed, causing them to spend 1 additional action point on their next action."
+  },
+  {
+   "name": "Timewarp",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Once per combat on a hit, gain 1 AP this turn.",
+   "text": "A timewarp weapon bends the fabric of time. When you hit with a timewarp weapon, you can choose to gain 1 additional action point immediately, usable before the end of your turn. This effect can only occur once per combat."
+  },
+  {
+   "name": "Life Draining",
+   "for": "weapon",
+   "cost": 2,
+   "perLevel": false,
+   "note": "On a hit, the target's maximum Health drops by {bonus} until its next full rest.",
+   "text": "A life-draining weapon siphons vitality from its targets. When you hit with a life-draining weapon, the target's maximum health is reduced by an amount equal to the additional magical bonus until the end of its next full rest."
+  },
+  {
+   "name": "Forceful",
+   "for": "weapon",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Critical strike: knock the target back 5 meters. Decisive strike: knock it down.",
+   "text": "A forceful weapon strikes with incredible power. When you land a critical strike the target is knocked back 5 meters. If you land a decisive strike, the target is knocked down."
+  },
+  {
+   "name": "Mind Piercing",
+   "for": "weapon",
+   "cost": 4,
+   "perLevel": false,
+   "note": "Decisive strike: the target is Stunned until the end of its next turn.",
+   "text": "A mind-piercing weapon disrupts mental defenses. When you you land a decisive strike the target is stunned until the end of its next turn. This is a charm effect."
+  },
+  {
+   "name": "Wild Magic",
+   "for": "weapon",
+   "cost": 1,
+   "perLevel": false,
+   "note": "On a hit roll a d6. On 5 or 6, add 2d6 fire, cold, air, or poison damage.",
+   "text": "A wild magic weapon is infused with chaotic energy. When you hit with a wild magic weapon, roll a d6. On a roll of 5 or 6, the weapon deals an additional 2d6 damage of a random type (fire, cold, air, or poison)."
+  },
+  {
+   "name": "Teleporting",
+   "for": "weapon",
+   "cost": 5,
+   "perLevel": false,
+   "note": "On a hit, teleport up to 5 meters.",
+   "text": "A teleporting weapon allows for rapid repositioning. When you hit with a teleporting weapon, you can teleport up to 5 meters to an unoccupied space you can see. This teleportation does not provoke opportunity attacks."
+  },
+  {
+   "name": "Sharing",
+   "for": "armor",
+   "cost": 1,
+   "perLevel": false,
+   "note": "Share some of its magical bonus with a creature within 10 meters until the end of your turn.",
+   "text": "Sharing armor allows a creature wielding it to share it’s magical bonus to a creature within 10 meters of it. Sharing armor that shares its some or all of it’s bonus to the ally so long as they are within range until the end of their turn up to a maximum of +10."
+  },
+  {
+   "name": "Reflective",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "note": "Once per full rest, use your reaction to reflect a ranged attack back at the attacker.",
+   "text": "Reflective armor can reflect ranged attacks back at their caster. When you are targeted by a ranged attack, you can use your reaction to reflect the projectile or ray back at the attacker. If the attacker’s attack roll is high enough to hit their AC they take half the damage they would’ve dealt. This effect can be used once per full rest."
+  },
+  {
+   "name": "Healing",
+   "for": "armor",
+   "cost": 1,
+   "perLevel": false,
+   "fx": [
+    "Immune Bleeding"
+   ],
+   "note": "Regain 1 Health at the start of your turn.",
+   "text": "Healing armor continuously restores its wearer's health. At the start of your turn, you regain 1 health. You are also immune to the bleeding condition while wearing healing armor."
+  },
+  {
+   "name": "Phasing",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Once per full rest, spend 2 AP to turn ethereal until the start of your next turn.",
+   "text": "Phasing armor allows the wearer to become ethereal. For 2 AP, you can phase out of the material plane, becoming ethereal until the start of your next turn. While ethereal, you cannot be targeted or affected by non-ethereal creatures and effects. This ability can be used once per full rest."
+  },
+  {
+   "name": "Thorned",
+   "for": "armor",
+   "cost": 1,
+   "perLevel": false,
+   "note": "A creature that hits you with a melee attack takes 1d6 piercing damage.",
+   "text": "Thorned armor is covered in sharp spikes. When a creature hits you with a melee attack, it takes 1d6 piercing damage."
+  },
+  {
+   "name": "Elemental Resistance",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "choice": "element",
+   "fx": [
+    "Resist {Fire|Cold|Air|Poison} +10"
+   ],
+   "text": "Elemental resistance armor grants protection against specific elements. Choose one damage type: fire, cold, air, or poison. You gain resistance 10 to the chosen damage type while wearing this armor."
+  },
+  {
+   "name": "Displacement",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Attacks against you have a 10% miss chance until you take damage.",
+   "text": "Displacement armor creates an illusionary duplicate of you. Attackers have a 10% miss chance on attack against you while you are wearing this armor. This effect ends if you take damage, but reactivates at the start of your next turn."
+  },
+  {
+   "name": "Sturdy",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "note": "+3 on checks and saves against being knocked down or shoved.",
+   "text": "Sturdy armor grants the wearer a +3 bonus checks and saves to avoid becoming knocked down or shoved."
+  },
+  {
+   "name": "Mist",
+   "for": "armor",
+   "cost": 1,
+   "perLevel": false,
+   "note": "Spend 2 AP: +2 on checks and saves against gases and liquid droplets.",
+   "text": "Mist armor coats its wearer in a thick mist for 2 AP that displaces environmental effects such as gasses like cloud mind, plague cloud, or weak liquid droplets such as rain granting a +2 bonus to checks and saves to avoid effects from them."
+  },
+  {
+   "name": "Guardian",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Use your reaction to take an attack aimed at an ally within 5 meters.",
+   "text": "Guardian armor can protect allies. As a reaction, when an ally within 5 meters is targeted by an attack, you can transfer the attack to yourself."
+  },
+  {
+   "name": "Temporal",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "note": "Once per partial rest, use your reaction to reroll a failed check, save, or attack roll.",
+   "text": "Temporal armor can manipulate time around you allowing for a second chance. Once per partial rest, you can use a reaction to reroll a failed check, save or attack roll."
+  },
+  {
+   "name": "Anchoring",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "note": "Creatures within 5 meters cannot teleport.",
+   "text": "Anchoring armor prevents teleportation. Any creature within 5 meters of you cannot teleport or use abilities that involve teleportation."
+  },
+  {
+   "name": "Chameleon",
+   "for": "armor",
+   "cost": 1,
+   "perLevel": false,
+   "fx": [
+    "Sneak +5"
+   ],
+   "text": "Chameleon armor blends into the surroundings. You gain a +5 bonus to Sneak checks while wearing this armor."
+  },
+  {
+   "name": "Shining",
+   "for": "armor",
+   "cost": 1,
+   "perLevel": false,
+   "note": "Once per full rest, shed bright sunlight 5 meters and dim light 5 more.",
+   "text": "Shining armor glows with a glimmer as if it was always bathed in light. Once per full rest, the wearer can create bright sunlight in a 5 meter radius around them and 5 meters of dim light."
+  },
+  {
+   "name": "Aegis",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Once per partial rest, use your reaction to give allies within 5 meters +2 AC for a round.",
+   "text": "Aegis armor projects a protective shield. As a reaction, you can create a shield that provides a +2 bonus to AC for all allies within 5 meters for one round. This ability can be used once per partial rest."
+  },
+  {
+   "name": "Absorptive",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "note": "When you take damage, reduce it by 1d10.",
+   "text": "Absorptive armor absorbs a portion of incoming damage. When you take damage, you can reduce the damage taken by 1d10."
+  },
+  {
+   "name": "Fleetfoot",
+   "for": "armor",
+   "cost": 1,
+   "perLevel": false,
+   "fx": [
+    "Speed +2"
+   ],
+   "text": "Fleetfoot armor increases your speed. While wearing this armor, your movement speed increases by 2 meters."
+  },
+  {
+   "name": "Fortifying",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "fx": [
+    "Health +10"
+   ],
+   "text": "Fortifying armor enhances your resilience. While wearing this armor, you gain an additional 10 health points."
+  },
+  {
+   "name": "Warding",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "fx": [
+    "Resistance (Mind) +5"
+   ],
+   "text": "Warding armor provides a magical barrier. While wearing warding armor, you gain a +5 bonus to Resistance (Mind) saves."
+  },
+  {
+   "name": "Evasive",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "fx": [
+    "Evasion +5"
+   ],
+   "text": "Evasive armor provides ais nimble and grants its wearer small bursts of speed . While wearing warding armor, you gain a +5 bonus to Evasion saves."
+  },
+  {
+   "name": "Fortified",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "fx": [
+    "Resistance (Body) +5"
+   ],
+   "text": "Fortified armor provides a protection from physical effects. While wearing warding armor, you gain a +5 bonus to Resistance (Body) saves."
+  },
+  {
+   "name": "Silent",
+   "for": "armor",
+   "cost": 1,
+   "perLevel": false,
+   "note": "You make no noise. This armor gives no Sneak penalty.",
+   "text": "Silent armor muffles sound. While wearing this armor, you make no noise, removing the sneak penalty from a piece of armor if it had it."
+  },
+  {
+   "name": "Stalwart",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "note": "Lasting negative effects on you end 1 round sooner.",
+   "text": "Stalwart armor grants unwavering resolve. When subject to a negative effect with a duration that is longer than instant, the duration of a status effect on you is reduced by 1 round."
+  },
+  {
+   "name": "Radiant",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Shining, and creatures other than you that start their turn in the light take 3d6 holy damage.",
+   "text": "Radiant armor shines with holy light. Radiant armor functions as shining but any creature that isn't the wearer that begins its turn in the light takes 3d6 holy damage."
+  },
+  {
+   "name": "Adaptive",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "note": "Resistance 5 to the first damage type you take each combat.",
+   "text": "Adaptive armor changes to suit the environment. While wearing this armor, you gain resistance 5 to the first type of damage you take in a combat encounter until the end of that encounter."
+  },
+  {
+   "name": "Aquatic",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "fx": [
+    "Swim = walk speed"
+   ],
+   "note": "You breathe underwater.",
+   "text": "Blessed by Marissa, Aquatic armor enhances underwater capabilities. You can breathe underwater and gain a swim speed equal to your walking speed while wearing this armor."
+  },
+  {
+   "name": "Glacial",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "note": "A creature that hits you with a melee attack takes 1d4 cold damage. Immune to cold weather.",
+   "text": "Glacial armor emanates cold. Any creature that hits you with a melee attack takes 1d4 cold damage. Additionally, you are immune to cold environmental weather effects."
+  },
+  {
+   "name": "Stormbound",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Use your reaction to deal 2d6 air damage to a creature that hits you with a melee attack.",
+   "text": "Stormbound armor is charged with electrical energy. While wearing this armor, you can use a reaction to deal 2d6 air damage to a creature that hits you with a melee attack."
+  },
+  {
+   "name": "Beastial",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "fx": [
+    "Sense Environment +2",
+    "Balance +2"
+   ],
+   "text": "Beastial armor enhances your senses and agility. You gain a +2 bonus on Sense Environment checks and Balance checks while wearing this armor."
+  },
+  {
+   "name": "Volcanic",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "note": "Once per partial rest, erupt for 2d6 fire damage within 5 meters and create a Smoke Screen.",
+   "text": "Volcanic armor is infused with the power of a volcano. Once per partial rest, you can erupt in flames, dealing 2d6 fire damage to all creatures within 5 meters and creating a Smoke Screen"
+  },
+  {
+   "name": "Vigilant",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "fx": [
+    "Initiative +5"
+   ],
+   "note": "You cannot be surprised.",
+   "text": "Vigilant armor enhances your alertness. You cannot be surprised while wearing this armor, and you gain a +5 bonus on initiative rolls."
+  },
+  {
+   "name": "Featherlight",
+   "for": "armor",
+   "cost": 1,
+   "perLevel": false,
+   "note": "Use your reaction to take no falling damage.",
+   "text": "Featherlight armor reduces weight making you light as a feather. As a reaction the armor can be activated, causing you take no damage from falling while wearing this armor."
+  },
+  {
+   "name": "Spellguard",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "note": "+2 on saves against spells.",
+   "text": "Spellguard armor provides protection against magic. While wearing this armor, you have a +2 bonus on saves against spells."
+  },
+  {
+   "name": "Sentinel",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "note": "+2 on saves against martial maneuvers.",
+   "text": "Spellguard armor provides protection against magic. While wearing this armor, you have a +2 bonus on saves against martial maneuvers."
+  },
+  {
+   "name": "Spiritbound",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "fx": [
+    "Resist Psychic +10"
+   ],
+   "note": "+2 against the Charmed condition.",
+   "text": "Spiritbound armor connects you to the spirit realm. You gain a +2 bonus to the charmed condition and you gain resistance 10 to psychic damage."
+  },
+  {
+   "name": "Sanctified",
+   "for": "armor",
+   "cost": 3,
+   "perLevel": false,
+   "fx": [
+    "Resist Unholy +5"
+   ],
+   "note": "+2 on saves against being cursed.",
+   "text": "Sanctified armor is blessed with holy power. You gain resistance 5 to unholy damage and a +2 bonus on saves against being cursed while wearing this armor."
+  },
+  {
+   "name": "Windborne",
+   "for": "armor",
+   "cost": 2,
+   "perLevel": false,
+   "fx": [
+    "Fly = 5 when Windborne is active"
+   ],
+   "note": "Once per partial rest, fly 5 meters for 1 minute.",
+   "text": "Windborne armor grants the agility of the wind. When activated, you gain a flying speed of 5 meters for the next minute. This ability can be used once per partial rest."
+  }
  ]
 };

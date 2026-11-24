@@ -576,3 +576,77 @@ a.cs-btn { text-decoration: none; }
   .cs-fxth { display: none; }
   .cs-fxhelp code { white-space: normal; }
 }
+
+/* ---------- magic weapons, armor, and the forge ---------- */
+/* Magic reads as gold leaf on the ledger: gold-edged chips, a gilt name line, and a gold budget gauge. */
+.cs-wtitle { margin: -2px 0 0; font-family: var(--cs-display); font-weight: 700; font-size: 0.95rem; color: var(--cs-red); line-height: 1.3;
+  padding-bottom: 4px; border-bottom: 1px solid var(--cs-gold); overflow-wrap: anywhere; }
+.cs-tag-chosen { color: var(--cs-amber); border-color: var(--cs-gold); }
+.cs-chip.cs-mchip { background: linear-gradient(180deg, #fff6d6 0%, #f3dc98 100%) !important; border-color: var(--cs-gold-lo) !important; color: var(--cs-ink); }
+.cs-chip.cs-mchip:hover { border-color: var(--cs-red) !important; }
+.cs-forge-btn { margin-left: auto; white-space: nowrap; }
+.cs-weapon-top select { min-width: 0; flex: 1 1 auto; }
+.cs-wmagic { margin: 0; padding: 6px 10px; list-style: none; border-left: 2px solid var(--cs-gold); background: rgba(245, 215, 127, 0.14);
+  font-size: 0.88rem; color: var(--cs-ink-2); display: flex; flex-direction: column; gap: 2px; }
+.cs-wmagic small { color: var(--cs-ink-3); font-size: 0.75rem; }
+.cs-fx-auto { font-size: 0.7rem; color: var(--cs-ink-3); font-style: italic; }
+.cs-fx-auto.on { color: var(--cs-good); font-style: normal; font-weight: 600; }
+.cs-armor-magic { display: flex; flex-direction: column; gap: 8px; margin: 10px 0 4px; }
+.cs-armor-magic:empty { display: none; }
+.cs-amagic { border: 1px dashed #d3bb92; border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; }
+.cs-amagic.on { border: 1px solid var(--cs-gold); background: rgba(245, 215, 127, 0.12); }
+.cs-amagic-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.cs-amagic-name { font-family: var(--cs-display); font-weight: 700; font-size: 0.85rem; color: var(--cs-ink-2); overflow-wrap: anywhere; }
+.cs-amagic.on .cs-amagic-name { color: var(--cs-red); }
+.cs-tsum { margin: 0 0 6px; padding-left: 18px; font-size: 0.9rem; }
+
+.cs-modal:has(.cs-forge) { width: min(780px, 100%); }
+.cs-forge { display: flex; flex-direction: column; gap: 12px; }
+.cs-forge > .cs-note { margin: 0; }
+.cs-forge-base { margin: 4px 0 0; font-family: var(--cs-display); font-weight: 700; color: var(--cs-ink); }
+.cs-forge-budget { display: grid; grid-template-columns: auto minmax(80px, 1fr); align-items: center; gap: 12px; font-size: 0.9rem; color: var(--cs-ink-2); }
+.cs-forge-meter { height: 8px; border-radius: 4px; background: var(--cs-leaf-lo); border: 1px solid #d3bb92; overflow: hidden; }
+.cs-forge-meter > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cs-gold-lo), var(--cs-gold)); transition: width 0.2s ease; }
+.cs-forge-budget.over { color: var(--cs-bad); font-weight: 600; }
+.cs-forge-budget.over .cs-forge-meter > span { background: var(--cs-red); }
+.cs-forge-filter { display: flex; flex-direction: column; gap: 3px; }
+.cs-forge-filter input { max-width: 320px; }
+.cs-forge-traits { max-height: min(46vh, 420px); overflow-y: auto; border: 1px solid #d3bb92; border-radius: 6px; background: var(--cs-leaf); }
+.cs-ftrait { display: grid; grid-template-columns: minmax(0, 11em) 5.5em minmax(0, auto) minmax(0, 1fr); gap: 4px 10px; align-items: center;
+  padding: 7px 10px; border-bottom: 1px solid #eadbbd; border-left: 3px solid transparent; }
+.cs-ftrait:last-child { border-bottom: 0; }
+.cs-ftrait[hidden] { display: none; }
+.cs-ftrait.on { background: var(--cs-leaf-hi); border-left-color: var(--cs-red); }
+.cs-ftrait.cant { opacity: 0.55; }
+.cs-ftrait-name { font-weight: 600; color: var(--cs-ink); }
+.cs-fcost { font-family: var(--cs-display); font-size: 0.7rem; font-weight: 700; color: var(--cs-amber); white-space: nowrap; }
+.cs-fopts { display: flex; gap: 6px; align-items: center; }
+.cs-fopts:empty { display: none; }
+.cs-flevel { display: flex; align-items: center; gap: 4px; }
+.cs-flevel input { width: 4.2em; }
+.cs-fopts select, .cs-fopts input:not([type="number"]) { max-width: 11em; font-size: 0.85rem; }
+.cs-fsum { font-size: 0.84rem; color: var(--cs-ink-3); line-height: 1.35; }
+.cs-forge-preview { border: 1px solid var(--cs-gold); border-radius: 6px; padding: 10px 12px; background: rgba(245, 215, 127, 0.12); }
+.cs-forge-preview ul { margin: 4px 0 0; padding-left: 18px; font-size: 0.9rem; color: var(--cs-ink-2); }
+.cs-forge-name { margin: 0; font-family: var(--cs-display); font-weight: 700; color: var(--cs-red); font-size: 1rem; overflow-wrap: anywhere; }
+.cs-forge-cost { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid var(--cs-rule); padding-top: 8px;
+  font-family: var(--cs-display); font-weight: 700; }
+.cs-forge-cost strong { font-size: 1.1rem; color: var(--cs-red); }
+.cs-forge + .cs-modal-btns .cs-btn[hidden] { display: none; }
+.cs-modal-btns .cs-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+@media (max-width: 640px) {
+  .cs-ftrait { grid-template-columns: minmax(0, 1fr) auto; }
+  .cs-fopts, .cs-fsum { grid-column: 1 / -1; }
+  .cs-forge-budget { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { .cs-forge-meter > span { transition: none; } }
+@media print { .cs-forge-btn, [data-forge] { display: none !important; } }
+/* attunement: magic gear takes attunement slots */
+.cs-tag-off { color: var(--cs-bad); border-color: #d9a59f; }
+.cs-chip.cs-mchip.cs-mchip-off { background: transparent !important; border-style: dashed !important; color: var(--cs-ink-3); }
+.cs-attune-count { margin: 0 0 4px; }
+.cs-gearslot .cs-gear-name { font-family: var(--cs-display); font-weight: 700; font-size: 0.82rem; color: var(--cs-ink); overflow-wrap: anywhere; }
+.cs-gearslot .cs-gear-where { font-size: 0.8rem; color: var(--cs-ink-3); }
+.cs-gearslot .cs-why { justify-self: start; }
+.cs-gearslot.over .cs-lbl { color: var(--cs-bad) !important; }
+.cs-amagic .cs-check { font-size: 0.9rem; }

@@ -156,6 +156,8 @@
       ${S.shops.map(s => `<a href="${esc(s.page)}"${active === s.id ? ' aria-current="page" class="on"' : ''}>${esc(s.name)}</a>`).join('')}
     </nav>`;
   }
+  // "Magic Item +N" is bought on the character sheet's forge, where the player picks the weapon or armor and its traits
+  const forgeLevel = it => { const m = String(it.name).match(/^Magic Item \+(\d+)$/i); return m ? +m[1] : 0; };
   function itemCard(it, showShop) {
     const long = (it.desc || '').length > 260;
     const meta = [];
@@ -173,7 +175,7 @@
       ${it.desc ? `<div class="sh-desc${long ? ' sh-clamp' : ''}">${paras(it.desc)}</div>` : '<p class="sh-desc sh-none">No description yet.</p>'}
       <div class="sh-item-foot">
         ${long ? '<button type="button" class="sh-more" data-more aria-expanded="false">Read more</button>' : '<span></span>'}
-        <span class="sh-btnpair"><button type="button" class="sh-add" data-add="${esc(it.key)}">Add to list</button><button type="button" class="sh-buy" data-buy="${esc(it.key)}">Buy</button></span>
+        <span class="sh-btnpair">${forgeLevel(it) ? `<a class="sh-buy sh-forge" href="character-sheet.html#forge-${forgeLevel(it)}">Forge on the sheet</a>` : `<button type="button" class="sh-add" data-add="${esc(it.key)}">Add to list</button><button type="button" class="sh-buy" data-buy="${esc(it.key)}">Buy</button>`}</span>
       </div>
     </article>`;
   }

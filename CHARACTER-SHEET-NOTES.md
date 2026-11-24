@@ -39,6 +39,19 @@ Added November 23, 2026. The sheet applies bonuses from equipped magic items, cl
 - The Bonuses & Rules tab lists every active effect and flags any line the sheet cannot read.
 - Items with no `"effects"` list still use the old description guesswork.
 
+## Chosen weapon and magic item forge
+
+Added November 24, 2026.
+
+- Each weapon has an In hand box and, once a feature needs it, a Chosen weapon box. Ticking one chosen weapon unticks the others.
+- Chosen Blade, The Righteous, Weapon Expert, and Ninja's Precision now apply to weapons. The Combat tab shows each weapon's decisive range, Critical Chance, and Enchanted level. Tap a number to see where it comes from.
+- Forge a magic weapon (Weapons box) buys a new weapon with magic. Enchant on a weapon, armor, or shield adds magic to one the character has. Upgrades charge the price difference. Save without paying records loot.
+- The magical bonus adds to attack and damage, or to AC and every save on armor and shields. Enchanted ignores 5 resistance per level.
+- Magic weapons, armor, and shields count as Miscellaneous items. Each takes an attunement slot and works only while attuned. The Attunement box on the Gear tab lists them in the slots they fill. The forge attunes new gear when a slot is free. Ticking Attuned with every slot full is refused. Traits add attack bonuses, Enchanted levels, extra dice, dice against creature types, ignore lines, and effects such as Spell DC +1 or Health +10.
+- Attack rolls use the weapon's decisive range and Critical Chance, roll magic dice once without multiplying them, and list Enchanted and ignore lines.
+- The magic works only on the item it was made for. Switching a weapon or armor keeps the magic stored until the player picks that item again.
+- Magic Item +1 to +10 in the shops links to the forge.
+
 ## Rules the sheet follows where the Google Sheet differed
 
 Each of these has a switch on the Bonuses & Rules tab, per character.
@@ -73,3 +86,5 @@ Each of these has a switch on the Bonuses & Rules tab, per character.
 - Weapon damage types: the Equipment tab lists every weapon as Physical. The sheet assigns Piercing, Slashing, or Bludgeoning to each, and players can change it per weapon.
 - Shield weights: Buckler 10 kg, Kite Shield 5 kg, Round Shield 1 kg look reversed. Rondache, Tower Shield, and Spiked Shield have no price or weight.
 - Maneuver attack: the Basic Rules do not say whether it adds level.
+- Transmuting lists no magical bonus cost. The sheet counts it as +1.
+- Greater Storing was listed at +1. Fixed to +3 on the magic traits page and the sheet, above Storing at +2.
