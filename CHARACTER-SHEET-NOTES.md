@@ -90,13 +90,13 @@ Each of these has a switch on the Bonuses & Rules tab, per character.
 
 ## Questions for you
 
-- Priest Mana: the class page gives 4 per level. The Google Sheet gives 3. The sheet uses the class page.
-- Warrior Stamina: the class chart shows 40 at level 20 and 42 at level 21. The sheet uses 20 and 21.
-- Priest level 15: the chart says Trance of Mercy, the feature text says Trance of Guidance.
+- Priest Mana: resolved to 4 per level (matches Basic Rules, class page, and sheet).
+- Warrior Stamina: resolved to 20 at level 20 and 21 at level 21 (matches Basic Rules and sheet; fixed on the Warrior class page).
+- Priest level 15: resolved to Trance of Guidance (fixed on the Priest class chart and sheet data).
 - Robes (AC 5), Lamellar (8), and Shadowcloak (8) give less AC than no armor under the Basic Rules formula.
 - The Piercing weapon trait (spend 2 AP for true damage) shares its name with the Piercing damage type. A rename such as Armor Piercing would help.
 - Weapon damage types: the Equipment tab lists every weapon as Physical. The sheet assigns Piercing, Slashing, or Bludgeoning to each, and players can change it per weapon.
 - Shield weights: Buckler 10 kg, Kite Shield 5 kg, Round Shield 1 kg look reversed. Rondache, Tower Shield, and Spiked Shield have no price or weight.
 - Maneuver attack: the Basic Rules do not say whether it adds level.
-- Transmuting lists no magical bonus cost. The sheet counts it as +1.
+- Transmuting: resolved as a +1 trait (matches Basic Rules, magic items table, magic traits page, and sheet).
 - Greater Storing was listed at +1. Fixed to +3 on the magic traits page and the sheet, above Storing at +2.

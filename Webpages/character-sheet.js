@@ -726,10 +726,11 @@
     parts.push(...BP('ac'));
     d.ac = { total: atLeast('ac', parts, sum(parts)), parts };
     parts = [];
-    if (arm && arm.penalty) parts.push([arm.name, arm.penalty]);
-    if (sh && sh.penalty) parts.push([sh.name, sh.penalty]);
+    if (arm && arm.penalty) parts.push([c.armorNoProf ? `${arm.name} (not proficient, doubled)` : arm.name, arm.penalty * (c.armorNoProf ? 2 : 1)]);
+    if (sh && sh.penalty) parts.push([c.shieldNoProf ? `${sh.name} (not proficient, doubled)` : sh.name, sh.penalty * (c.shieldNoProf ? 2 : 1)]);
     if (B('armorPen')) parts.push(['Penalty reduction', -B('armorPen')]);
     d.pen = { total: Math.max(0, parts.reduce((a, p) => a + p[1], 0)), parts };
+    d.missSelf = (arm && c.armorNoProf) || (sh && c.shieldNoProf) ? 20 : 0;
 
     // crit, initiative, speed, carry
     parts = [[R.critBase === 'score' ? 'Wits score' : 'Wits base score', Math.max(0, R.critBase === 'score' ? S('wits') : n(c.stats.wits.base))]];
@@ -1016,10 +1017,34 @@
     w.ignore.forEach(t => { h += `<br>${esc(t)}.`; });
     return h;
   }
+  function ammoCap(data) {
+    const m = (data && data.traits || []).map(t => String(t).match(/^Reload \((\d+)\)/i)).find(Boolean);
+    return m ? n(m[1]) : 0;
+  }
+  function ammoLeft(cw, cap) { return cw && cw.ammo != null && cw.ammo !== '' ? Math.max(0, Math.min(cap, n(cw.ammo))) : cap; }
+  function showAmmo(idx, left, cap) { const el = document.getElementById(`w${idx}-ammo`); if (el) el.textContent = `${left} / ${cap}`; }
+  function reloadWeapon(idx) {
+    const c = char(), d = compute(c), w = d.weapon[idx], cw = c.weapons[idx];
+    const cap = w && ammoCap(w.data);
+    if (!cap) return;
+    cw.ammo = cap; showAmmo(idx, cap, cap); saveSoon();
+    const fa = (w.data.traits || []).some(t => /^Firearm$/i.test(t));
+    toast(`${esc(w.title)} reloaded: ${cap} / ${cap}. Costs ${fa ? '2 AP (Firearm)' : '1 AP'} and a free hand.`);
+  }
   function rollAttack(idx) {
     const c = char(), d = compute(c);
     const w = d.weapon[idx];
     if (!w) return;
+    const cap = ammoCap(w.data), cw = c.weapons[idx];
+    let ammoNote = '';
+    if (cap) {
+      const left = ammoLeft(cw, cap);
+      if (left <= 0) { toast(`${esc(w.title)} is empty. Press Reload first.`, 'dmg'); return; }
+      cw.ammo = left - 1; showAmmo(idx, left - 1, cap); saveSoon();
+      ammoNote = `<br>Ammunition: ${left - 1} / ${cap} left.`;
+    }
+    let missNote = '';
+    if (d.missSelf) { const mr = rnd(100); missNote = `<br>Miss chance ${d.missSelf}% (not proficient with armor or shield): d100 ${mr}. ${mr <= d.missSelf ? '<b>The attack misses even if it hits.</b>' : 'No miss.'}`; }
     const r = d20();
     const tot = r.nat + w.atk.total;
     const critRoll = rnd(100);
@@ -1037,7 +1062,7 @@
     const dmgTot = dm.sum + w.dmg.total;
     const ranged = w.ranged ? ' Ranged attacks in melee take −5.' : '';
     logRoll(`${w.title} attack`, tot,
-      `${esc(r.txt)} ${sign(w.atk.total)}<br>${esc(tag)}<br>Damage <b>${dmgTot}</b> ${esc(w.data.type)} (${mult > 1 ? `${esc(w.data.die)} ×${mult}: ` : ''}${dm.dice.join(' + ') || dm.flat} ${sign(w.dmg.total)})${esc(ranged)}${magicDamageHtml(w)}`,
+      `${esc(r.txt)} ${sign(w.atk.total)}<br>${esc(tag)}<br>Damage <b>${dmgTot}</b> ${esc(w.data.type)} (${mult > 1 ? `${esc(w.data.die)} ×${mult}: ` : ''}${dm.dice.join(' + ') || dm.flat} ${sign(w.dmg.total)})${esc(ranged)}${magicDamageHtml(w)}${missNote}${ammoNote}`,
       r.nat >= from ? 'nat20' : r.nat === 1 ? 'nat1' : '');
   }
   function rollDamage(idx, mult) {
@@ -1412,13 +1437,15 @@
       <label class="cs-span"><span class="cs-lbl">Armor</span><select data-bind="armor" id="f-armor" data-rerender="armor">${opt('', 'No armor')}${['Light', 'Medium', 'Heavy'].map(t => `<optgroup label="${t}">${D.armor.filter(a => a.type === t).map(a => opt(a.name, `${a.name} (AC ${a.ac}${a.maxFin != null && a.maxFin < 25 ? `, Finesse max ${a.maxFin}` : ''}${a.penalty ? `, penalty ${a.penalty}` : ''})`)).join('')}</optgroup>`).join('')}</select></label>
       <label><span class="cs-lbl">Shield</span><select data-bind="shield" id="f-shield" data-rerender="armor">${opt('', 'No shield')}${D.shields.map(s => opt(s.name, `${s.name} (+${s.ac} AC${s.penalty ? `, penalty ${s.penalty}` : ''})`)).join('')}</select></label>
       <label><span class="cs-lbl">Defensive weapons wielded</span>${numIn('defensiveWielded', 'id="f-defw" min="0" max="2"')}</label>
+      <label class="cs-check"><input type="checkbox" data-bind="armorNoProf" id="f-armor-noprof" data-type="bool" data-rerender="armor"> Not proficient with this armor</label>
+      <label class="cs-check"><input type="checkbox" data-bind="shieldNoProf" id="f-shield-noprof" data-type="bool" data-rerender="armor"> Not proficient with this shield</label>
     </div>
     <div id="cs-armor-magic" class="cs-armor-magic"></div>
     <dl class="cs-dl">
       <div><dt>Armor Class</dt><dd>${brk('ac', 'Armor Class')}</dd></div>
       <div><dt>Armor penalty</dt><dd>${brk('pen', 'Armor penalty')}</dd></div>
     </dl>
-    <p class="cs-note">The armor penalty comes off Balance, Heavy Object Interaction, Overpower, Sleight of Hand, Sneak, both Traverse skills, and the Lockpicking Kit.</p>
+    <p class="cs-note">The armor penalty comes off every Strength or Finesse skill check and the Lockpicking Kit. Armor or a shield you are not proficient with doubles its penalty and gives your attack rolls a 20% miss chance. A tower shield needs two hands.</p>
   </div>
 </div>
 <div class="cs-box">
@@ -1697,35 +1724,45 @@
           <label><span class="cs-lbl">Traits</span><input data-bind="weapons.${i}.traits" id="w${i}-traits" placeholder="Light, Deadly I" data-rerender="weapons"></label>
         </div>` : ''}
         ${data ? `
-        <div class="cs-weapon-stats">
-          <div><span class="cs-lbl">Attack</span><button type="button" class="cs-val big" data-break="weapon.${i}.atk" aria-label="Attack bonus: show the math">${sign(wc.atk.total)}</button></div>
-          <div><span class="cs-lbl">Damage</span><button type="button" class="cs-val big" data-break="weapon.${i}.dmg" aria-label="Damage: show the math">${esc(data.die)} ${sign(wc.dmg.total)}</button></div>
-          <div><span class="cs-lbl">Type</span><select data-bind="weapons.${i}.type" id="w${i}-type" data-rerender="weapons" aria-label="Damage type">${opt('', data.custom ? 'Slashing' : (WEAPON[w.item] || {}).type)}${traitsOpts.map(t => opt(t)).join('')}</select></div>
-          <div><span class="cs-lbl">Range</span><span class="cs-plain">${esc(rangeText(data))}</span></div>
-          ${wc.deadly.total || wc.critW.total !== d.crit.total || wc.decisive.total !== 3 ? `<div><span class="cs-lbl">Decisive range</span><button type="button" class="cs-val" data-break="weapon.${i}.deadly" aria-label="Decisive range: show the math">${wc.decFrom}–20</button></div>
-          <div><span class="cs-lbl">Critical Chance</span><button type="button" class="cs-val" data-break="weapon.${i}.critW" aria-label="Critical Chance: show the math">${wc.critW.total >= 100 ? 'Always' : wc.critW.total}</button></div>` : ''}
-          ${wc.ench.total ? `<div><span class="cs-lbl">Enchanted</span><button type="button" class="cs-val" data-break="weapon.${i}.ench" aria-label="Enchanted: show the math">${roman(wc.ench.total)} · ignores ${wc.ench.total * ENCH_RES}</button></div>` : ''}
+        <div class="cs-weapon-hero">
+          <div class="cs-weapon-hit">
+            <div><span class="cs-lbl">Attack</span><button type="button" class="cs-val big" data-break="weapon.${i}.atk" aria-label="Attack bonus: show the math">${sign(wc.atk.total)}</button></div>
+            <div><span class="cs-lbl">Damage</span><button type="button" class="cs-val big" data-break="weapon.${i}.dmg" aria-label="Damage: show the math">${esc(data.die)} ${sign(wc.dmg.total)}</button></div>
+            <div><span class="cs-lbl">Range</span><span class="cs-plain">${esc(rangeText(data))}</span></div>
+            ${ammoCap(data) ? `<div><span class="cs-lbl">Ammo</span><span class="cs-plain" id="w${i}-ammo">${ammoLeft(w, ammoCap(data))} / ${ammoCap(data)}</span></div>` : ''}
+          </div>
+          <div class="cs-btnrow cs-atkrow">
+            <button type="button" class="cs-btn cs-btn-red" data-attack="${i}">Attack</button>
+            <button type="button" class="cs-btn cs-btn-sm" data-damage="${i}:1">Damage</button>
+            <button type="button" class="cs-btn cs-btn-sm" data-damage="${i}:2">Crit ×2</button>
+            <button type="button" class="cs-btn cs-btn-sm" data-damage="${i}:3">Decisive ×${wc.decisive.total}</button>
+            ${ammoCap(data) ? `<button type="button" class="cs-btn cs-btn-sm" data-reload="${i}">Reload</button>` : ''}
+          </div>
+        </div>
+        <div class="cs-weapon-meta">
+          <label><span class="cs-lbl">Damage type</span><select data-bind="weapons.${i}.type" id="w${i}-type" data-rerender="weapons" aria-label="Damage type">${opt('', data.custom ? 'Slashing' : (WEAPON[w.item] || {}).type)}${traitsOpts.map(t => opt(t)).join('')}</select></label>
+          ${wc.deadly.total || wc.critW.total !== d.crit.total || wc.decisive.total !== 3 ? `<div><span class="cs-lbl">Decisive</span><button type="button" class="cs-val" data-break="weapon.${i}.deadly" aria-label="Decisive range: show the math">${wc.decFrom}–20</button></div>
+          <div><span class="cs-lbl">Crit Chance</span><button type="button" class="cs-val" data-break="weapon.${i}.critW" aria-label="Critical Chance: show the math">${wc.critW.total >= 100 ? 'Always' : wc.critW.total}</button></div>` : ''}
+          ${wc.ench.total ? `<div><span class="cs-lbl">Enchanted</span><button type="button" class="cs-val" data-break="weapon.${i}.ench" aria-label="Enchanted: show the math">${roman(wc.ench.total)} · −${wc.ench.total * ENCH_RES} res</button></div>` : ''}
         </div>
         <div class="cs-traits">${(data.traits || []).map(t => `<button type="button" class="cs-chip" data-info="trait:${esc(t)}">${esc(t)}</button>`).join('') || (wc.stored ? '' : '<span class="cs-note">No traits</span>')}${wc.stored ? magicChips(wc.stored, 'weapon', `weapons.${i}.magic`, !wc.attuned) : ''}</div>
         ${wc.extra.length || wc.vs.length || wc.ignore.length ? `<ul class="cs-wmagic">${wc.extra.map(e => `<li>+${esc(e.dice)} ${esc(e.type)} damage <small>${esc(e.src)}</small></li>`).join('')}${wc.vs.map(e => `<li>+${esc(e.dice)}${e.type ? ' ' + esc(e.type) : ''} damage against ${esc(e.vs)} <small>${esc(e.src)}</small></li>`).join('')}${wc.ignore.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
         ${(() => { const fl = (d.fxList || []).filter(x => x.path === `weapons.${i}`); return fl.length ? `<div class="cs-fxrow">${fl.map(fxChip).join('')}</div>` : ''; })()}
-        <div class="cs-form cs-form-inline">
-          <label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.prof" id="w${i}-prof" data-type="bool" data-rerender="weapons"> Proficient</label>
-          <label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.inHand" id="w${i}-hand" data-rerender="weaponfx"> In hand</label>
-          ${wc.stored ? `<label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.magic.attuned" id="w${i}-attuned" data-rerender="attune"> Attuned</label>` : ''}
-          ${d.usesChosen || w.chosen ? `<label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.chosen" id="w${i}-chosen" data-rerender="weaponfx"> Chosen weapon</label>` : ''}
-          <label><span class="cs-lbl">Stat</span><select data-bind="weapons.${i}.stat" id="w${i}-stat" data-rerender="weapons">${opt('auto', `Auto (${STAT[wc.stat].name})`)}${opt('str', 'Strength')}${opt('fin', 'Finesse')}</select></label>
-          <label class="cs-narrow"><span class="cs-lbl">Attack bonus</span>${numIn(`weapons.${i}.atk`, `id="w${i}-atkb" data-rerender="weapons"`)}</label>
-          <label class="cs-narrow"><span class="cs-lbl">Damage bonus</span>${numIn(`weapons.${i}.dmg`, `id="w${i}-dmgb" data-rerender="weapons"`)}</label>
+        <div class="cs-weapon-controls">
+          <div class="cs-weapon-toggles">
+            <label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.prof" id="w${i}-prof" data-type="bool" data-rerender="weapons"> Proficient</label>
+            <label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.inHand" id="w${i}-hand" data-rerender="weaponfx"> In hand</label>
+            ${wc.stored ? `<label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.magic.attuned" id="w${i}-attuned" data-rerender="attune"> Attuned</label>` : ''}
+            ${d.usesChosen || w.chosen ? `<label class="cs-check"><input type="checkbox" data-bind="weapons.${i}.chosen" id="w${i}-chosen" data-rerender="weaponfx"> Chosen</label>` : ''}
+          </div>
+          <div class="cs-weapon-mods">
+            <label><span class="cs-lbl">Stat</span><select data-bind="weapons.${i}.stat" id="w${i}-stat" data-rerender="weapons">${opt('auto', `Auto (${STAT[wc.stat].name})`)}${opt('str', 'Strength')}${opt('fin', 'Finesse')}</select></label>
+            <label class="cs-narrow"><span class="cs-lbl">Atk +</span>${numIn(`weapons.${i}.atk`, `id="w${i}-atkb" data-rerender="weapons"`)}</label>
+            <label class="cs-narrow"><span class="cs-lbl">Dmg +</span>${numIn(`weapons.${i}.dmg`, `id="w${i}-dmgb" data-rerender="weapons"`)}</label>
+          </div>
+          <input class="cs-inline-note" data-bind="weapons.${i}.notes" id="w${i}-notes" placeholder="Notes" aria-label="Weapon notes">
         </div>
-        ${wc.needsSkilled && !w.prof ? '<p class="cs-note cs-bad">Skilled weapon: you need skilled weapon proficiency.</p>' : ''}
-        <div class="cs-btnrow cs-atkrow">
-          <button type="button" class="cs-btn cs-btn-red" data-attack="${i}">Attack</button>
-          <button type="button" class="cs-btn cs-btn-sm" data-damage="${i}:1">Damage</button>
-          <button type="button" class="cs-btn cs-btn-sm" data-damage="${i}:2">Crit ×2</button>
-          <button type="button" class="cs-btn cs-btn-sm" data-damage="${i}:3">Decisive ×${wc.decisive.total}</button>
-        </div>
-        <input class="cs-inline-note" data-bind="weapons.${i}.notes" id="w${i}-notes" placeholder="Notes" aria-label="Weapon notes">` : ''}
+        ${wc.needsSkilled && !w.prof ? '<p class="cs-note cs-bad">Skilled weapon: you need skilled weapon proficiency.</p>' : ''}` : ''}
       </article>`;
     }).join('') || '<p class="cs-note">No weapons yet.</p>';
     fillInputs($('#cs-weapons'));
@@ -2210,7 +2247,7 @@
     const [kind, ...rest] = spec.split(':');
     const name = rest.join(':');
     if (kind === 'skill') { const s = SKILL[name]; return `<h4>${esc(name)}</h4><p>${s.desc}</p><p class="cs-note">Stat: ${STAT[s.stat].name}${s.armorPenalty ? '. Armor penalty applies.' : ''}</p>`; }
-    if (kind === 'trait') { const [k, t] = traitText(name); return `<h4>${esc(name)}</h4><p>${esc(t || 'No description in the Equipment table.')}</p>${k === 'Piercing' ? '<p class="cs-note">This weapon trait is separate from the Piercing damage type.</p>' : ''}`; }
+    if (kind === 'trait') { const [k, t] = traitText(name); return `<h4>${esc(name)}</h4><p>${esc(t || 'No description in the Equipment table.')}</p>`; }
     if (kind === 'cond') { const k = COND[name]; return `<h4>${esc(name)}</h4><p>${k ? k.text : ''}</p>`; }
     if (kind === 'mtrait') {
       const [k2, tn, path] = name.split('|');
@@ -2500,6 +2537,7 @@
   function bClass() { return D.classes[B.cls] || null; }
   function bBase(k) {
     if (B.method === 'custom') return n(B.custom[k]);
+    if (B.method === 'rolled') return B.assign[k] === '' || !B.rolls ? 8 : n(B.rolls[n(B.assign[k])]);
     return B.assign[k] === '' ? 8 : STAT_ARRAY[n(B.assign[k])];
   }
   function bPoints() { return D.levels[0].points; }
@@ -2591,6 +2629,7 @@
       case 'sub': return B.sub ? '' : 'Pick a subclass.';
       case 'stats':
         if (B.method === 'array') { const used = STAT_KEYS.map(k => B.assign[k]); if (used.some(v => v === '')) return 'Place every number from the array.'; }
+        if (B.method === 'rolled') { if (!B.rolls) return 'Roll your seven numbers first.'; const used = STAT_KEYS.map(k => B.assign[k]); if (used.some(v => v === '')) return 'Place every rolled number.'; }
         if (bSpent() !== bPoints()) return `Spend all ${bPoints()} leveling points (${bSpent()} spent).`;
         return '';
       case 'magic': {
@@ -2752,8 +2791,11 @@
       const rows = STAT_KEYS.map(k => {
         const s = d.stat[k];
         let baseCell;
-        if (B.method === 'array') {
-          baseCell = `<select id="b-as-${k}" data-bas="${k}" aria-label="${STAT[k].name} base">${opt('', '—', String(B.assign[k]))}${STAT_ARRAY.map((v, i) => (usedIdx.includes(i) && String(B.assign[k]) !== String(i)) ? '' : opt(String(i), String(v), String(B.assign[k]))).join('')}</select>`;
+        const list = B.method === 'rolled' ? (B.rolls || null) : STAT_ARRAY;
+        if (B.method !== 'custom' && !list) {
+          baseCell = '<span class="cs-note">Roll first</span>';
+        } else if (B.method !== 'custom') {
+          baseCell = `<select id="b-as-${k}" data-bas="${k}" aria-label="${STAT[k].name} base">${opt('', '—', String(B.assign[k]))}${list.map((v, i) => (usedIdx.includes(i) && String(B.assign[k]) !== String(i)) ? '' : opt(String(i), String(v), String(B.assign[k]))).join('')}</select>`;
         } else {
           baseCell = `<input type="number" class="cs-num" id="b-cu-${k}" data-bcu="${k}" value="${n(B.custom[k])}" min="1" max="30" aria-label="${STAT[k].name} base">`;
         }
@@ -2765,9 +2807,13 @@
       }).join('');
       return `<div class="cs-seg cs-b-method" role="radiogroup" aria-label="Stat method">
           <button type="button" role="radio" aria-checked="${B.method === 'array'}" data-bx="method:array" class="${B.method === 'array' ? 'on' : ''}">Selective Array</button>
+          <button type="button" role="radio" aria-checked="${B.method === 'rolled'}" data-bx="method:rolled" class="${B.method === 'rolled' ? 'on' : ''}">Rolled Array</button>
           <button type="button" role="radio" aria-checked="${B.method === 'custom'}" data-bx="method:custom" class="${B.method === 'custom' ? 'on' : ''}">GM approved scores</button>
         </div>
-        <p class="cs-note">${B.method === 'array' ? `Place each number once: ${STAT_ARRAY.join(', ')}. ${link('Stat Generation', 'stat-generation.html')} explains the array.` : 'Type the base scores your GM approved.'} Race, size, and your class bonuses add on their own. Then spend ${bPoints()} leveling points.</p>
+        ${B.method === 'rolled' ? (B.rolls
+          ? `<p class="cs-b-rolls">Your rolls: ${B.rolls.map((v, i) => `<b>${v}</b> <small>(${B.rollDice[i].join(', ')}, drop ${Math.min(...B.rollDice[i])})</small>`).join(' · ')}</p>`
+          : '<p><button type="button" class="cs-btn cs-btn-red" data-bx="roll">Roll 4d4 seven times</button></p>') : ''}
+        <p class="cs-note">${B.method === 'array' ? `Place each number once: ${STAT_ARRAY.join(', ')}. ${link('Stat Generation', 'stat-generation.html')} explains the array.` : B.method === 'rolled' ? 'Each number is 4d4 with the lowest die dropped. Place each number once. You roll once. Ask your GM before you roll again.' : 'Type the base scores your GM approved.'} Race, size, and your class bonuses add on their own. Then spend ${bPoints()} leveling points.</p>
         <div class="cs-table-wrap"><table class="cs-b-stats"><thead><tr><th>Stat</th><th>Base</th><th>Race, size, class</th><th>Leveling points</th><th>Score</th></tr></thead><tbody>${rows}</tbody></table></div>
         <p class="cs-note">Leveling points: ${bSpent()} of ${bPoints()} spent. Modifier = (score − 8) ÷ 2, rounded down.</p>
         <p class="cs-b-preview">Health ${d.hp.total} · AC ${d.ac.total} · Mana ${d.mana.total} · Stamina ${d.stamina.total} · Evasion ${sign(d.save.evasion.total)} · Body ${sign(d.save.body.total)} · Mind ${sign(d.save.mind.total)}</p>`;
@@ -2914,7 +2960,13 @@
         break;
       case 'class': if (B.cls !== arg) { B.cls = arg; B.sub = ''; B.spells = []; B.subSpells = []; B.maneuvers = []; } break;
       case 'sub': if (B.sub !== arg) { B.sub = arg; B.subSpells = []; } break;
-      case 'method': B.method = arg; break;
+      case 'method': if (B.method !== arg) { B.method = arg; STAT_KEYS.forEach(k => { B.assign[k] = ''; }); } break;
+      case 'roll': {
+        if (B.rolls) break;
+        B.rollDice = STAT_KEYS.map(() => [rnd(4), rnd(4), rnd(4), rnd(4)]);
+        B.rolls = B.rollDice.map(r => r.reduce((a, b) => a + b, 0) - Math.min(...r));
+        break;
+      }
       case 'pt': { const [k, dv] = arg.split(':'); const v = n(B.lvl[k]) + n(dv); if (v >= 0 && bSpent() + n(dv) <= bPoints()) B.lvl[k] = v; break; }
       case 'pick': {
         const i = arg.indexOf(':'); const kind = arg.slice(0, i), name = arg.slice(i + 1);
@@ -3091,6 +3143,7 @@
       return;
     }
     if (ds.attack !== undefined) { rollAttack(n(ds.attack)); return; }
+    if (ds.reload !== undefined) { reloadWeapon(n(ds.reload)); return; }
     if (ds.damage) { const [i, m] = ds.damage.split(':'); rollDamage(n(i), n(m)); return; }
     if (ds.step) { const [k, v] = ds.step.split(':'); const d = compute(c); setCur(k, curOf(k, d) + n(v), d); if (k === 'hp' && curOf('hp', d) <= 0) toggleCondition('Dying', true); update(); return; }
     if (ds.cond) { toggleCondition(ds.cond); if (ds.cond === 'Dying' && !c.conditions.includes('Dying')) c.dying = { fails: 0, rounds: 0, dead: false }; update(); return; }

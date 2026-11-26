@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sparks | Loot Roller</title>
+    <meta name="description" content="GM tool: roll random treasure for a Sparks of Dynasty encounter or lair hoard, balanced to the Wealth by Level table.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $("#header-placeholder").load("a-header.html");
+        });
+    </script>
+    <style>
+#loot-app{gap:0}
+#loot-app *{box-sizing:border-box;min-width:0}
+#loot-app h1,#loot-app h2,#loot-app h3{font-family:Cinzel,Georgia,serif;font-weight:700;line-height:1.1;margin:0;color:var(--ink-crimson)}
+#loot-app .wrap{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:0;width:100%;border:2px solid var(--parchment-border);border-radius:8px;overflow:hidden;background:var(--parchment-light)}
+#loot-app .side{background:linear-gradient(160deg,var(--leather-mid),var(--leather-rich));color:var(--gold-pale);padding:26px 22px;border-right:2px solid var(--gold-dark)}
+#loot-app .side h1{font-size:28px;color:var(--gold-bright)}
+#loot-app .side p{color:#e7d6ab;margin:6px 0 18px;font-size:16px}
+#loot-app label{display:block;font-size:15px;color:#e7d6ab;margin-bottom:4px}
+#loot-app select,#loot-app input{font:inherit;font-size:16px;color:var(--ink-dark);background:var(--parchment-light);border:1px solid var(--parchment-border);border-radius:6px;padding:8px 10px;min-height:44px;width:100%}
+#loot-app select:focus-visible,#loot-app input:focus-visible,#loot-app button:focus-visible{outline:3px solid var(--gold-bright);outline-offset:2px}
+#loot-app .row{display:grid;grid-template-columns:1.2fr .8fr .7fr 44px;gap:8px;align-items:end;margin-bottom:8px}
+#loot-app .row .x{background:transparent;color:var(--gold-pale);border:1px solid var(--gold-dark);border-radius:6px;min-height:44px;font-size:20px;cursor:pointer}
+#loot-app .field{margin-bottom:14px}
+#loot-app .btn{font:inherit;font-family:Cinzel,Georgia,serif;font-weight:700;border:0;border-radius:6px;min-height:44px;padding:10px 16px;cursor:pointer}
+#loot-app .add{background:transparent;color:var(--gold-pale);border:1px dashed var(--gold-leaf);width:100%;margin:4px 0 16px}
+#loot-app .roll{background:linear-gradient(var(--gold-bright),var(--gold-leaf));color:var(--leather-dark);width:100%;font-size:18px;min-height:52px;box-shadow:0 2px 0 var(--gold-dark)}
+#loot-app .check{display:flex;gap:10px;align-items:center;font-size:16px;color:var(--gold-pale);margin:4px 0 18px;cursor:pointer}
+#loot-app .check input{width:22px;min-height:22px;height:22px;accent-color:var(--gold-leaf)}
+#loot-app .summary{margin-top:16px;font-size:15px;color:#e7d6ab;line-height:1.6}
+#loot-app .summary b{color:var(--gold-bright)}
+#loot-app main{padding:26px clamp(16px,3vw,36px)}
+#loot-app .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;border-bottom:2px solid var(--ink-crimson);padding-bottom:10px}
+#loot-app .head h2{font-size:clamp(26px,3.5vw,38px)}
+#loot-app .total{font-family:Cinzel,Georgia,serif;font-weight:700;font-size:clamp(28px,4.5vw,44px);color:var(--ink-amber);white-space:nowrap}
+#loot-app .sub{color:var(--ink-muted);font-size:16px;margin:6px 0 0}
+#loot-app .items{list-style:none;margin:0;padding:0}
+#loot-app .items li{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--parchment-aged)}
+#loot-app .kind{font-family:Cinzel,Georgia,serif;font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;justify-self:start;background:var(--parchment-mid);color:var(--ink-sepia);border:1px solid var(--parchment-aged)}
+#loot-app .k-magic{background:#dcefe9;color:var(--tab-misc-mid);border-color:#a9d2c6}
+#loot-app .k-coins,#loot-app .k-valuables{background:var(--gold-pale);color:var(--ink-amber);border-color:var(--gold-leaf)}
+#loot-app .name{font-weight:700;font-size:18px}
+#loot-app .det{display:block;font-weight:400;color:var(--ink-muted);font-size:15px;font-style:italic}
+#loot-app .gp{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right;font-weight:600}
+#loot-app .empty{padding:40px 0;color:var(--ink-muted);font-size:18px}
+#loot-app .tools{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+#loot-app .ghost{background:var(--parchment-mid);color:var(--ink-sepia);border:1px solid var(--parchment-border)}
+#loot-app .note{font-size:15px;color:var(--ink-muted);margin:6px 0}
+#loot-app details{margin:12px 0;border-top:1px solid var(--parchment-aged);padding-top:10px}
+#loot-app summary{cursor:pointer;font-weight:700;min-height:32px}
+#loot-app ol.log{font-size:15px;color:var(--ink-muted);padding-left:22px}
+#loot-app .single{margin-top:30px;padding:20px;border:1px solid var(--parchment-border);border-radius:8px;background:var(--parchment-base)}
+#loot-app .single h3{font-size:22px;margin-bottom:12px}
+#loot-app .single .grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto;gap:10px;align-items:end}
+#loot-app .single label{color:var(--ink-muted)}
+#loot-app .single .btn{background:var(--ink-crimson);color:var(--gold-pale)}
+#loot-app .out{margin-top:14px;font-size:18px;min-height:26px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--leather-rich);color:var(--gold-pale);padding:10px 16px;border-radius:8px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:50}
+.toast.on{opacity:1}
+@media(max-width:860px){#loot-app .wrap{grid-template-columns:minmax(0,1fr)}#loot-app .side{border-right:0;border-bottom:2px solid var(--gold-dark)}}
+@media(max-width:600px){body>#loot-app.main-content{padding:24px 10px 50px;width:100%}#loot-app .items li{grid-template-columns:minmax(0,1fr) auto}#loot-app .kind{grid-column:1/-1}#loot-app .single .grid{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <div class="main-content" id="loot-app">
+<div class="wrap">
+  <aside class="side">
+    <h1>Sparks Loot Roller</h1>
+    <p>Add the monsters the party defeated, then roll. Values follow the Sparks Random Loot Tables.</p>
+    <div class="field"><label for="lvl">Party level (sets the magic item cap)</label>
+      <select id="lvl"></select></div>
+    <div id="mons"></div>
+    <button class="btn add" id="addMon" type="button">Add a monster</button>
+    <label class="check"><input type="checkbox" id="lair"> Lair hoard (use the Hoards table)</label>
+    <button class="btn roll" id="roll" type="button">Roll the loot</button>
+    <div class="summary" id="sum"></div>
+  </aside>
+  <main>
+    <div class="head"><div><h2>The haul</h2><p class="sub" id="meta">No loot rolled yet.</p></div><div class="total" id="total">0 GP</div></div>
+    <ul class="items" id="items"><li class="empty" style="display:block;border:0">Press Roll the loot to fill the manifest.</li></ul>
+    <div class="tools">
+      <button class="btn ghost" id="again" type="button">Roll again</button>
+      <button class="btn ghost" id="copy" type="button">Copy as text</button>
+    </div>
+    <p class="note" id="fix"></p>
+    <details><summary>Dice log</summary><ol class="log" id="log"></ol></details>
+    <section class="single">
+      <h3>Roll one table</h3>
+      <div class="grid">
+        <div><label for="tbl">Table</label><select id="tbl">
+          <option value="type">Loot Type (d100)</option><option value="coins">Coins</option><option value="val">Valuables</option>
+          <option value="gear">Gear (d20)</option><option value="cons">Consumables (d12)</option><option value="magic">Magic Items (d20)</option>
+          <option value="weapon">Random Weapon</option><option value="armor">Random Armor</option><option value="shield">Random Shield</option>
+          <option value="found">Coins: found as (d8)</option><option value="lairspot">Hoard: where it lies (d8)</option></select></div>
+        <div><label for="tband">Band</label><select id="tband">
+          <option value="1">Band 1 (TR 1 to 4)</option><option value="2">Band 2 (TR 5 to 8)</option><option value="3">Band 3 (TR 9 to 12)</option>
+          <option value="4">Band 4 (TR 13 to 17)</option><option value="5">Band 5 (TR 18 to 25)</option></select></div>
+        <button class="btn" id="one" type="button">Roll</button>
+      </div>
+      <div class="out" id="oneOut"></div>
+    </section>
+  </main>
+</div>
+    </div>
+    <div class="toast" id="toast"></div>
+<script>
+{
+const ELITE=[80,120,190,280,420,610,880,1250,1750,2400,3250,4350,5700,7350,9300,11500,14000,17000,20000,23000,26500,29500,32000,34000,35500];
+const MINION=[40,60,95,140,210,305,440,625,875,1200,1625,2175,2850,3675,4650,5750,7000,8500,10000,11500,13250,14750,16000,17000,17750];
+const WEALTH=[1000,1600,2600,4100,6300,9700,14600,21600,31700,45700,65000,91200,126000,172000,230000,305000,397000,510000,646000,807000,992000,1203000,1438000,1694000,1966000];
+const UNIT=[0,100,500,2000,10000,30000];
+const TYPE=[null,[45,60,80,95],[35,55,65,85],[30,50,55,75],[25,50,50,70],[25,50,50,65]];
+const COINX=[0,10,50,200,1000,3000];
+const GEMV=[0,25,100,500,2500,7500], ARTV=[0,100,500,2000,10000,30000];
+const PLUS=[0,100,500,1000,5000,10000,50000,75000,125000,250000,500000];
+const FOUND=['Loose coins in a belt pouch','A purse sewn into a coat lining','A lockbox with a simple lock, DC 15',"Coins from Sol Inos stamped with the God King's face",'A merchant\'s letter of credit, paid out at any bank in Nova Strados','A scattered pile under bones and rubble','Ingots of silver, worth the total by weight','A hollow book or false-bottomed chest, Inspect Object DC 15 to find'];
+const LAIRSPOT=["Heaped on the floor of the solo's nest","In iron chests behind a trapped door (trap TR = the solo's TR − 2)",'Sunk in a pool, Traverse (Str) DC 15 to dive for it','Spread among the bodies of past adventurers','In a shrine to a deity, guarded by an Arcane Sigil','Buried under a loose floor, Inspect Object DC 20 to find','Carried by the solo as a gaudy crown, belt and rings','In a vault with a masterwork lock, DC 30'];
+const GEMS=[null,
+['Agate','Jasper','Moonstone','Onyx','Quartz','Turquoise','Hematite',"Tiger's eye"],
+['Amethyst','Garnet','Jade','Coral from Coraloach','Bloodstone','Pearl','Peridot','Amber'],
+['Black pearl','Fire opal','Aquamarine','Topaz','Sunstone','Violet spinel','Mana-veined crystal','Chrysoberyl'],
+['Star sapphire','Emerald','Ruby','Black sapphire','Blue diamond','Jacinth','Alexandrite','Imperial jade'],
+["Dragon's eye opal",'Flawless diamond','Heartstone of a fallen star','Living amber with a sealed spark','Tear of Lemara, a gem that glows in prayer','Void crystal that drinks light','Rough-cut adamantine','A Qeptol core, still warm']];
+const ART=[null,
+['Carved bone dice set','Brass ring with a family crest','Small wood carving of an Avatol','Copper bracelet','Glass bead necklace','Clay idol of a minor spirit','Pewter goblet','Hand-painted playing cards'],
+['Silver holy symbol of Lemara','Embroidered silk banner','Ivory comb','Painted portrait of a noble','Silver hand mirror','Gilded drinking horn','Dwarven stein with gem eyes','Gold earrings'],
+['Gold chalice set with garnets','Painted shield of a famous knight','Elven harp of living wood','Gold-leaf map of Sol Inos','Platinum signet ring','Jade figurine of a Lung dragon','Ornate Yoroi helm','Cathedral bell from Wolren'],
+['Jeweled war mask of an orc chieftain','Mithril filigree music box','Tapestry of the Great Purge','Gem-set reliquary','Gold censer from the Blood Rose','Diamond-studded rapier hilt','Coraloach coral crown','Ancient elven death mask'],
+['Crown of a dead dragon lord','Statue of Marissa in sea-glass and pearl','Throne arm of carved angel bone','Original star chart of the seven heavens','Sealed scroll signed by the God King','Phoenix-feather cloak (not magical)','Chess set carved from Kaiju teeth','The lost codex of a Grand mage']];
+const WEAPONS=[['Arming Sword',10],['Club',1],['Glaive',25],['Halberd',75],['Heavy Bow',15],['Heavy Crossbow',60],['Light Bow',10],['Light Crossbow',30],['Longsword',20],['Mace',10],['Rapier',50],['Spear',10],['Tachi',50],['Throwing Axe',5],['War Axe',20],['War Hammer',15],['Whip',10],['Claymore',100],['Flysaa',35]];
+const EXOTIC=[['Bayonet',15],['Chakram',5],['Firelance',200],['Flintlock',375],['Hand Crossbow',750],['Heilongjiang',100],['Hook Sword',80],['Katar',120],['Kusarigama',25],['Musket',500],['Talons',30],['Wrist Blade',175]];
+const ARMOR=[['Lamellar',10],['Robes',50],['Padded Armor',25],['Padded Gambeson',25],['Cuirass',25],['Leather',50],['Studded Leather',75],['Hide Armor',100],['Chain Shirt',150],['Half Plate',1500],['Brigandine',250],['Scale Mail',200],['Chitin Vest',200],['Chainmail',200],['Banded Mail',400],['Splint Mail',500],['Shadowcloak',500],['Dō',1250],['Plate',2500]];
+const RARE=[['Yoroi',3000],['Elven Chain',2000],['Dragon Scale',5000],['Mithril Plate',10000]];
+const SHIELDS=[['Buckler',50],['Round Shield',20],['Spiked Shield',55],['Rondache',40],['Kite Shield',30],['Tower Shield',45]];
+// gear: [name, gp, qtyDice] or special string
+const GEAR=[null,
+[['Rope (10 m) and grappling hook',11],['Torches',1,'1d6'],['Lanturn and 2 flasks of oil',11],['Healing Kit',5],['Medicine Kit',30],['Lockpicking Kit',5],['Climbing kit',5],['Map of the region',5],['Compass',10],['Manacles',10],['Bags of caltrops',1,'1d4'],['Ball bearings',10],['Bear trap',1],['Smoke bombs',15,'1d2'],['Spyglass',150],'weapon','weapon','armor','shield',['Musical Instrument',250]],
+[['Cartographer Kit',80],['Calligraphy Tools',75],['Woodshop Toolkit',200],['Spyglass',150],["Painter's Supplies",750],['Astronomy Kit',800],['Anatomy Kit',800],['Alchemy Kit',1000],['Tinkering Tools',1000],["Enchanter's Tools",1000],['Powder kegs',100,'1d4'],['Sticks of dynamite',40,'1d6'],['Barding (Light)',100],['Horse with saddle',50],['Camel',800],'exotic','armor','armor',['Large wagon',500],['Barding (Heavy)',5000]],
+[['Land Vehicle',7500],['Barding (Heavy)',5000],['Raptor, trained mount',5000],['Elephant',2500],['Mini Dragon hatchling',10000],['Mithril Plate',10000],['Dragon Scale',5000],['Elven Chain',2000],['Yoroi',3000],['Plate',2500],['Half Plate',1500],['Dō',1250],['Musket',500],['Hand Crossbow',750],['Flintlock',375],['Large wagon and 2 horses',600],["Indentured servant's contract",2500],['Three camels, packed for the desert',2400],'silver','plat']];
+// consumables: array of parts [name,gp,qty] ; 'twice' ; 'b4twice' ; 'elix'
+const C=(n,g,q)=>[[n,g,q]];
+const CONS=[null,
+[C('Health Potions',50,'1d2'),C('Mana Potions',50,'1d2'),C('Elixir of Endurance',75),C('Lesser Antidotes',10,'1d4'),C('Spell Scroll (Minor)',100),C('Holy Water',100),C('Blessed Candle',50),C('Bandage of Clotting',150),[['Flask of Water Walking',10],['Everburn',15]],C("Mermaid's Kiss",100),[['Smoke Bombs',15,'1d2'],['Acid',20]],'twice'],
+[C('Advanced Potions of Healing',250,'1d4'),C('Dragon Blood elixir',250),C('Holy Oil',150),C('Antidote',500),C('Dust of the Ageless',500),C('Mutagen',500),C('Gaze',1000),C('Heart Clutch poison',100),C('Nightshade poison',150),C('Tonic of Berserk',750),C('Ichor (Black Market)',800),'twice'],
+[C('Elixir of Power',2000),C('Broth of Enlightenment',2000),C('Ichor of Prowess',2000),C('Stoneskin Vial',2000),C('Tonic of Flourish',2000),C('Greater Antidote',2500),C('Elixir of Transformation',2500),C('Spell Scroll (Adept)',2500),C("Medusa's Bane",3575),C("Hero's Resolve",7500),C('Apple of Endless Sleep',5000),C('Potion of Phantasmal Shifting',8000)],
+[[['Advanced Potions of Healing',250,'1d4'],["Hero's Resolve",7500]],C('Potion of Phantasmal Shifting',8000),C("Elesnia's Breath",18000),C('Spell Scrolls (Adept)',2500,'1d4'),[["Medusa's Bane",3575],['Greater Antidote',2500]],'elix',[['Giant Blood (ingredient)',2750],["Hero's Resolve",7500]],[['Apple of Endless Sleep',5000],['Mucus of Madness',1000]],C('Potions of Phantasmal Shifting',8000,'1d4'),[['Advanced Potions of Healing',250,'1d6'],['Antidotes',500,'1d4']],C("Elesnia's Breath",18000),'twice'],
+[C('Taffy',40000),C('Hourglass of Timelessness',50000),C('Elixir of the Phoenix',60000),C('Dragon Blood (ingredient)',50000),C('Potions of Phantasmal Shifting',8000,'1d4'),C("Elesnia's Breath",18000,'1d4'),C('Elixir of the Phoenix',60000),[['Taffy',40000],["Hero's Resolve",7500,'1d4']],C('Hourglass of Timelessness',50000),[['Elixir of the Phoenix',60000],['Taffy',40000]],'b4twice','twice']];
+const ELIX=['Elixir of Power','Broth of Enlightenment','Ichor of Prowess','Stoneskin Vial'];
+const STATS=['Strength','Finesse','Fortitude','Charisma','Wits','Intelligence','Memory'];
+const MAGIC=[null,
+[1,1,1,2,['Spell Scroll (Minor)',100],['Chalk of Trails',100],['Ember Thimble',100],['Bandage of Clotting',150],["Tinker's Thread",150],['Amulet of Regrowth',200],['Lantern Moth Jar',200],['Ring of Lesser Physical Defense',200],['Ring of Lesser Magical Defense',200],['Ring of the Second Wind',300],['Whisper Shells',300],['Ring of Archery',300],['Lesser Bracers of Defense',500],['Lesser Headband of Mental Resistance',500],['Cloak of the Dry Traveler',500],3],
+[3,3,4,4,['Spell Scroll (Adept)',2500],['Wand of Sparks',2500],['Bracers of Defense',2500],['Headband of Mental Resistance',2500],['Boots of the Quiet Step',1500],['Belt of Bottomless Pouches',2000],['Glider of Flight',2000],['Cloak of Disguise',3000],['Dagger of Returning',3000],['Circlet of the Keen Mind',4000],['Ring of Power',5000],['Ring of Physical Defense',5000],['Ring of Magical Defense',5000],['Girdle of the Ox',5000],['Bracers of the Archer',6000],5],
+[5,5,5,'ring',['Mask of 1000 Faces',10000],['Eyes of the Appraiser',15000],['Chaofu of Luck',18000],['Parasol of Reflection',19000],['Bracelets of Shared Pain',20000],['Ring of Arcane Authority',20000],['Ring of Martial Prowess',20000],['Ring of Greater Physical Defense',20000],['Ring of Greater Magical Defense',20000],['Cloak of Revealing Light',20000],['Mantle of Lesser (Damage) Resistance',25000],['Greater Bracers of Defense',9000],['Greater Headband of Mental Resistance',9000],['Vest of the Duelist',8000],['Mask of the Night Hunter',25000],["Belt of the Giant's Shadow",30000]],
+[6,6,6,7,['Helm of the Unbroken Will',35000],['Bracers of the Riposte',35000],['Blade of the Thirsting Edge',35000],['Bracers of Spell Reflection',40000],['Cloak of the Mist',40000],['Ring of the Twin Strike',40000],['Shield of Thorns',40000],['Celestial Fan',45000],['Crown of the Tactician',45000],['Staff of the Storm Caller',45000],['Greater Ring of Arcane Authority',50000],['Ring of Greater Martial Prowess',50000],['Robe of the Deep Well',50000],['Gloves of Spell Catching',55000],['Boots of the Blink',60000],['Mantle of (Damage) Resistance',75000]],
+[8,8,9,9,10,['Crown of the Silver Tongue',80000],['Belt of Stamina',85000],["Bracers of the Storm's Speed",90000],['Necklace of Mana',90000],['Gauntlets of the Earthbreaker',95000],['Amulet of the Unyielding',100000],['Belt of the Titan',100000],['Boots of the Sky Stride',110000],['Visor of the Truth Seer',110000],['Harness of the Living Wall',115000],['Hourglass of the Stolen Moment',125000],['Halo Crystillian Necklace',200000],['Gauntlets of the World Forge',300000],['Crown of the Sovereign Mind',350000],['Heart of the Phoenix',500000]]];
+const HOARD=[null,{m:[[1,'1']],c:'1',v:1},{m:[[2,'1'],[1,'1']],c:'1d2',v:2},{m:[[3,'1'],[2,'1']],c:'1d2',v:3},{m:[[4,'1'],[3,'1d2']],c:'1d3',v:4},{m:[[5,'1'],[4,'1d2']],c:'1d3',v:5}];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const gp=n=>Math.round(n).toLocaleString('en-US')+' GP';
+const d=n=>1+Math.floor(Math.random()*n);
+let LOG=[];
+const roll=(expr,why)=>{const m=String(expr).match(/^(\d+)d(\d+)$/);if(!m)return +expr;let t=0;const r=[];for(let i=0;i<+m[1];i++){const x=d(+m[2]);r.push(x);t+=x}if(why)LOG.push(`${why}: ${expr} = ${r.join(' + ')}${r.length>1?' = '+t:''}`);return t};
+const die=(n,why)=>{const x=d(n);if(why)LOG.push(`${why}: d${n} = ${x}`);return x};
+const bandOf=tr=>tr<=4?1:tr<=8?2:tr<=12?3:tr<=17?4:5;
+const item=(kind,name,value,det)=>({kind,name,value,det:det||''});
+
+function weapon(){const r=die(20,'Random Weapon');if(r<20){const w=WEAPONS[r-1];return {name:w[0],gp:w[1]}}const e=EXOTIC[die(12,'Exotic weapon')-1];return {name:e[0],gp:e[1]}}
+function exotic(){const e=EXOTIC[die(12,'Exotic weapon')-1];return {name:e[0],gp:e[1]}}
+function armor(){const r=die(20,'Random Armor');if(r<20){const a=ARMOR[r-1];return {name:a[0],gp:a[1]}}const a=RARE[die(4,'Rare armor')-1];return {name:a[0],gp:a[1]}}
+function shield(){const s=SHIELDS[die(6,'Random Shield')-1];return {name:s[0],gp:s[1]}}
+
+function coins(b){const n=roll('2d6','Coins');const v=n*COINX[b];const f=FOUND[die(8,'Found as')-1];return [item('coins',gp(v)+' in coins',v,f)]}
+function valuables(b){if(die(6,'Gems or art (1 to 3 gems)')<=3){const q=roll('1d4','Number of gems');const names=[];for(let i=0;i<q;i++)names.push(GEMS[b][die(8,'Gem')-1]);return [item('valuables',`${q} gem${q>1?'s':''}`,q*GEMV[b],`${names.join(', ')}. ${gp(GEMV[b])} each`)]}
+  const a=ART[b][die(8,'Art object')-1];return [item('valuables',a,ARTV[b],'Art object')]}
+function gear(b){if(b>3){LOG.push('Band '+b+' rolls no gear');return []}const e=GEAR[b][die(20,'Gear')-1];
+  if(e==='weapon'){const w=weapon();return [item('gear',w.name,w.gp,'Weapon')]}
+  if(e==='exotic'){const w=exotic();return [item('gear',w.name,w.gp,'Exotic weapon')]}
+  if(e==='armor'){const a=armor();return [item('gear',a.name,a.gp,'Armor')]}
+  if(e==='shield'){const s=shield();return [item('gear',s.name,s.gp,'Shield')]}
+  if(e==='silver'){const w=weapon();return [item('gear',w.name+' with Silver Coating',w.gp+100,'Overcomes silver resistance')]}
+  if(e==='plat'){const w=weapon();return [item('gear',w.name+' with Platinum Coating',w.gp+1000,'Overcomes platinum resistance')]}
+  const q=e[2]?roll(e[2],e[0]):1;return [item('gear',(q>1?q+' × ':'')+e[0],e[1]*q,q>1?gp(e[1])+' each':'')]}
+function consumable(b,depth){depth=depth||0;const r=die(12,'Consumable, Band '+b);const e=CONS[b][r-1];
+  if(e==='twice'){if(depth>3)return [];return consumable(b,depth+1).concat(consumable(b,depth+1))}
+  if(e==='b4twice')return consumable(4,depth+1).concat(consumable(4,depth+1));
+  if(e==='elix'){const q=roll('1d4','Elixirs');const out=[];for(let i=0;i<q;i++){const n=ELIX[die(4,'Elixir')-1];out.push(item('consumable',n,2000))}return out}
+  return e.map(p=>{const q=p[2]?roll(p[2],p[0]):1;return item('consumable',(q>1?q+' × ':'')+p[0],p[1]*q,q>1?gp(p[1])+' each':'')})}
+function magicBase(b){const r=die(20,'Magic item, Band '+b);const e=MAGIC[b][r-1];
+  if(typeof e==='number'){const k=die(6,'Weapon, armor or shield (1 to 3 weapon, 4 to 5 armor, 6 shield)');const base=k<=3?weapon():k<=5?armor():shield();
+    return item('magic',`+${e} ${base.name}`,PLUS[e]+base.gp,`Magical bonus +${e} (${gp(PLUS[e])}). The GM adds magic traits worth +${e}.`)}
+  if(e==='ring'){const s=STATS[die(7,'Stat ring')-1];return item('magic','Ring of '+s,10000,'Stat ring')}
+  return item('magic',e[0],e[1],'Marionette\'s Market item')}
+function magic(b,cap){for(let t=0;t<25;t++){const it=magicBase(b);if(it.value<=cap)return [it];LOG.push(`${it.name} costs ${gp(it.value)}, over the ${gp(cap)} cap. Reroll.`)}
+  if(b>1){LOG.push('No item under the cap in Band '+b+'. Rolling Band '+(b-1)+'.');return magic(b-1,cap)}return []}
+function lootType(b,cap){const r=die(100,'Loot Type, Band '+b);const t=TYPE[b];
+  if(r<=t[0])return coins(b);if(r<=t[1])return valuables(b);if(r<=t[2])return gear(b);if(r<=t[3])return consumable(b);return magic(b,cap)}
+
+// ---------- state & UI
+let state={lvl:6,lair:false,mons:[{tier:'solo',tr:8,n:1},{tier:'minion',tr:4,n:4}]};
+try{const s=JSON.parse(localStorage.getItem('sparks-loot')||'null');if(s&&s.mons)state=s}catch(e){}
+const save=()=>{try{localStorage.setItem('sparks-loot',JSON.stringify(state))}catch(e){}};
+$('lvl').innerHTML=Array.from({length:25},(_,i)=>`<option value="${i+1}">Level ${i+1} · cap ${gp(WEALTH[i]/2)}</option>`).join('');
+function drawMons(){$('mons').innerHTML=state.mons.map((m,i)=>`<div class="row">
+  <div><label for="t${i}">Tier</label><select id="t${i}" data-i="${i}" data-k="tier">${['minion','elite','solo'].map(t=>`<option value="${t}"${m.tier===t?' selected':''}>${t[0].toUpperCase()+t.slice(1)}</option>`).join('')}</select></div>
+  <div><label for="r${i}">TR</label><input id="r${i}" type="number" min="1" max="25" value="${m.tr}" data-i="${i}" data-k="tr"></div>
+  <div><label for="n${i}">Count</label><input id="n${i}" type="number" min="1" max="99" value="${m.n}" data-i="${i}" data-k="n"></div>
+  <button class="x" type="button" data-del="${i}" aria-label="Remove monster ${i+1}">×</button></div>`).join('');summary()}
+const valOf=m=>{const tr=Math.min(25,Math.max(1,+m.tr||1)),n=Math.max(1,+m.n||1);return (m.tier==='minion'?MINION[tr-1]:m.tier==='solo'?ELITE[tr-1]*2:ELITE[tr-1])*n};
+function calc(){const total=state.mons.reduce((a,m)=>a+valOf(m),0);const top=Math.max(1,...state.mons.map(m=>Math.min(25,+m.tr||1)));const b=bandOf(top);const cap=WEALTH[state.lvl-1]/2;return {total,b,cap,rolls:Math.max(1,Math.floor(total/UNIT[b]))}}
+function summary(){const c=calc();$('sum').innerHTML=`Treasure value <b>${gp(c.total)}</b><br>Band <b>${c.b}</b> · ${state.lair?'<b>Lair hoard</b>':`<b>${c.rolls}</b> Loot Type roll${c.rolls>1?'s':''} at ${gp(UNIT[c.b])} each`}<br>Magic item cap <b>${gp(c.cap)}</b>`}
+$('mons').addEventListener('input',e=>{const t=e.target;if(!t.dataset.k)return;const m=state.mons[+t.dataset.i];m[t.dataset.k]=t.dataset.k==='tier'?t.value:Math.max(1,Math.min(t.dataset.k==='tr'?25:99,+t.value||1));save();summary()});
+$('mons').addEventListener('click',e=>{const b=e.target.closest('[data-del]');if(!b)return;state.mons.splice(+b.dataset.del,1);if(!state.mons.length)state.mons.push({tier:'elite',tr:1,n:1});save();drawMons()});
+$('addMon').addEventListener('click',()=>{const last=state.mons[state.mons.length-1]||{tier:'elite',tr:1,n:1};state.mons.push({tier:'elite',tr:last.tr,n:1});save();drawMons();const f=$('t'+(state.mons.length-1));f&&f.focus()});
+$('lvl').addEventListener('change',e=>{state.lvl=+e.target.value;save();summary()});
+$('lair').addEventListener('change',e=>{state.lair=e.target.checked;save();summary()});
+
+let last=null;
+function rollHaul(){LOG=[];const c=calc();let out=[];let fix='';
+  if(state.lair){const h=HOARD[c.b];LOG.push('Lair hoard, Band '+c.b);
+    h.m.forEach(([band,q])=>{const k=roll(q,'Magic items from Band '+band);for(let i=0;i<k;i++){const left=c.total-out.reduce((a,x)=>a+x.value,0);out=out.concat(magic(band,Math.min(c.cap,Math.max(left,0))))}});
+    const k=roll(h.c,'Consumable rolls');for(let i=0;i<k;i++)out=out.concat(consumable(c.b));
+    for(let i=0;i<h.v;i++)out=out.concat(valuables(c.b));
+    const spot=LAIRSPOT[die(8,'Where the hoard lies')-1];
+    let sum=out.reduce((a,x)=>a+x.value,0);
+    if(sum>c.total*1.25){const dropped=[];const pool=out.filter(x=>x.kind!=='magic').sort((a,b)=>b.value-a.value);
+      while(sum>c.total*1.25&&pool.length){const x=pool.shift();dropped.push(x.name);sum-=x.value;out.splice(out.indexOf(x),1)}
+      fix=`The hoard ran more than 25% over its treasure value, so these were left out: ${dropped.join(', ')}.`}
+    const left=c.total-sum;
+    if(left>0)out.push(item('coins',gp(left)+' in coins',left,'The rest of the hoard'));
+    out.unshift(item('note','Where it lies',0,spot));
+  }else{
+    for(let i=0;i<c.rolls;i++)out=out.concat(lootType(c.b,c.cap));
+    let sum=out.reduce((a,x)=>a+x.value,0);
+    if(sum>c.total*1.25&&out.length>1){const dropped=[];const sorted=out.slice().sort((a,b)=>a.value-b.value);
+      for(const x of sorted){if(sum<=c.total*1.25||out.length<=1)break;if(sum-x.value<c.total)continue;dropped.push(x.name);sum-=x.value;out.splice(out.indexOf(x),1)}
+      fix=dropped.length?`Over budget by more than 25%, so the cheapest results were dropped: ${dropped.join(', ')}.`:'';
+      if(sum>c.total*1.25)fix+=(fix?' ':'')+`Still ${gp(sum-c.total)} over budget: one big item carries the haul. Keep it, or reroll.`}
+    if(sum<c.total){const gap=c.total-sum;out.push(item('coins',gp(gap)+' in coins',gap,'Makes up the treasure value'));fix=(fix?fix+' ':'')+`Under budget, so ${gp(gap)} in coins makes up the gap.`}
+  }
+  last={c,out,fix,log:LOG.slice()};render()}
+function render(){if(!last)return;const {c,out,fix,log}=last;const sum=out.reduce((a,x)=>a+x.value,0);
+  $('total').textContent=gp(sum);
+  $('meta').textContent=`Budget ${gp(c.total)} · Band ${c.b} · ${state.lair?'Lair hoard':c.rolls+' roll'+(c.rolls>1?'s':'')} · cap ${gp(c.cap)}`;
+  $('items').innerHTML=out.map(x=>`<li><span class="kind k-${x.kind}">${x.kind==='note'?'Hoard':x.kind[0].toUpperCase()+x.kind.slice(1)}</span><span class="name">${esc(x.name)}${x.det?`<span class="det">${esc(x.det)}</span>`:''}</span><span class="gp">${x.value?gp(x.value):''}</span></li>`).join('')||'<li class="empty" style="display:block;border:0">Nothing this time.</li>';
+  $('fix').textContent=fix;$('log').innerHTML=log.map(l=>`<li>${esc(l)}</li>`).join('')}
+$('roll').addEventListener('click',rollHaul);$('again').addEventListener('click',rollHaul);
+const toast=t=>{const el=$('toast');el.textContent=t;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),1600)};
+$('copy').addEventListener('click',()=>{if(!last){toast('Roll some loot first.');return}const sum=last.out.reduce((a,x)=>a+x.value,0);
+  const txt=`Loot (Band ${last.c.b}, budget ${gp(last.c.total)}): ${gp(sum)}\n`+last.out.map(x=>`- ${x.name}${x.det?' ('+x.det+')':''}${x.value?': '+gp(x.value):''}`).join('\n');
+  try{navigator.clipboard.writeText(txt).then(()=>toast('Copied.'),()=>toast('Copy was blocked. Select the list instead.'))}catch(e){toast('Copy was blocked. Select the list instead.')}});
+$('one').addEventListener('click',()=>{LOG=[];const b=+$('tband').value,t=$('tbl').value,cap=Infinity;let res;
+  const show=arr=>arr.map(x=>`<b>${esc(x.name)}</b>${x.det?' · '+esc(x.det):''}${x.value?' · '+gp(x.value):''}`).join('<br>')||'Nothing';
+  if(t==='type'){const r=die(100,'');const k=TYPE[b];res=`d100 ${r}: <b>${r<=k[0]?'Coins':r<=k[1]?'Valuables':r<=k[2]?'Gear':r<=k[3]?'Consumable':'Magic item'}</b>`}
+  else if(t==='coins')res=show(coins(b));else if(t==='val')res=show(valuables(b));else if(t==='gear')res=show(gear(b));
+  else if(t==='cons')res=show(consumable(b));else if(t==='magic')res=show(magic(b,cap));
+  else if(t==='weapon'){const w=weapon();res=`<b>${esc(w.name)}</b> · ${gp(w.gp)}`}else if(t==='armor'){const a=armor();res=`<b>${esc(a.name)}</b> · ${gp(a.gp)}`}
+  else if(t==='shield'){const s=shield();res=`<b>${esc(s.name)}</b> · ${gp(s.gp)}`}
+  else if(t==='found')res=esc(FOUND[d(8)-1]);else res=esc(LAIRSPOT[d(8)-1]);
+  $('oneOut').innerHTML=res+(LOG.length?`<div class="note">${LOG.map(esc).join(' · ')}</div>`:'')});
+$('lvl').value=state.lvl;$('lair').checked=!!state.lair;drawMons();
+}
+</script>
+</body>
+</html>

@@ -2161,12 +2161,12 @@ window.SPARKS_DATA = {
     {
      "name": "Radiant Idol",
      "level": 10,
-     "text": "Starting at 10th level the Priest gains the ability to roll for critical and decisive strikes on spells and non weapon magical items. Spells and magic items with a save can only land critical hits.\n\nTrance of Guidance\nStarting at 15th level the Priest gains the ability to enter a trance of tranquility. Once per day, the Priest makes contact with an entity directly under the influence of their deity by performing a 1-hour ritual. The entity gives guidance based on a series of questions they present to the Priest. To determine the results the Priest must roll Knowledge (Divine). Any bonus granted by this feature lasts for no longer than 1 hour.\n\n1-10 Nothing of Use\n11-20 Minor Information\n21-30 Major Information\n31+ Major Information +10 Bonus to Intelligence."
+     "text": "Starting at 10th level the Priest gains the ability to roll for critical and decisive strikes on spells and non weapon magical items. Spells and magic items with a save can only land critical hits."
     },
     {
-     "name": "Trance of Mercy",
+     "name": "Trance of Guidance",
      "level": 15,
-     "text": "(See the class page.)"
+     "text": "Starting at 15th level the Priest gains the ability to enter a trance of tranquility. Once per day, the Priest makes contact with an entity directly under the influence of their deity by performing a 1-hour ritual. The entity gives guidance based on a series of questions they present to the Priest. To determine the results the Priest must roll Knowledge (Divine). Any bonus granted by this feature lasts for no longer than 1 hour.\n\n1-10 Nothing of Use\n11-20 Minor Information\n21-30 Major Information\n31+ Major Information +10 Bonus to Intelligence."
     },
     {
      "name": "Protection of the Gods",
@@ -4098,7 +4098,7 @@ window.SPARKS_DATA = {
   {
    "name": "Intimidate (Str)",
    "stat": "str",
-   "armorPenalty": false,
+   "armorPenalty": true,
    "desc": "Intimidate a creature with physical stature or force. Contested by Resistance (Mind). If you have no intention of following through on the threat, the target uses Intuition instead."
   },
   {
@@ -4285,7 +4285,7 @@ window.SPARKS_DATA = {
    "name": "Firelance",
    "die": "1d6",
    "traits": [
-    "Reload",
+    "Reload (1)",
     "Ranged (Finesse) (5)",
     "Attachment",
     "Firearm",
@@ -4299,7 +4299,7 @@ window.SPARKS_DATA = {
    "name": "Flintlock",
    "die": "1d10",
    "traits": [
-    "Reload",
+    "Reload (1)",
     "Ranged (Finesse) (10)",
     "Firearm",
     "Exotic",
@@ -4381,10 +4381,10 @@ window.SPARKS_DATA = {
    "name": "Heavy Crossbow",
    "die": "1d10",
    "traits": [
-    "Reload",
+    "Reload (1)",
     "Ranged (Finesse) (30)",
     "Heavy",
-    "Piercing"
+    "Punchthrough"
    ],
    "price": 60,
    "range": 30,
@@ -4395,7 +4395,7 @@ window.SPARKS_DATA = {
    "die": "1d8",
    "traits": [
     "Firearm",
-    "Reload",
+    "Reload (2)",
     "Exotic",
     "Ranged (Finesse) (10)",
     "Skilled"
@@ -4469,10 +4469,10 @@ window.SPARKS_DATA = {
    "name": "Light Crossbow",
    "die": "1d6",
    "traits": [
-    "Two handed",
-    "Reload",
+    "Two Handed",
+    "Reload (2)",
     "Ranged (Finesse) (20)",
-    "Piercing"
+    "Punchthrough"
    ],
    "price": 30,
    "range": 20,
@@ -4502,11 +4502,11 @@ window.SPARKS_DATA = {
    "name": "Musket",
    "die": "2d8",
    "traits": [
-    "Reload",
+    "Reload (1)",
     "Ranged (Finesse) (20)",
     "Two Handed",
     "Firearm",
-    "Piercing",
+    "Punchthrough",
     "Exotic",
     "Skilled"
    ],
@@ -4593,7 +4593,7 @@ window.SPARKS_DATA = {
    "name": "War Hammer",
    "die": "1d8",
    "traits": [
-    "Piercing"
+    "Punchthrough"
    ],
    "price": 15,
    "range": 1,
@@ -4629,7 +4629,7 @@ window.SPARKS_DATA = {
  "armor": [
   {
    "name": "Plate",
-   "ac": 30,
+   "ac": 35,
    "maxFin": 2,
    "penalty": 8,
    "price": 2500,
@@ -4637,7 +4637,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Half Plate",
-   "ac": 20,
+   "ac": 25,
    "maxFin": 7,
    "penalty": 3,
    "price": 1500,
@@ -4645,7 +4645,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Chainmail",
-   "ac": 18,
+   "ac": 23,
    "maxFin": 3,
    "penalty": 1,
    "price": 200,
@@ -4653,7 +4653,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Leather",
-   "ac": 10,
+   "ac": 15,
    "maxFin": 30,
    "penalty": 0,
    "price": 50,
@@ -4661,7 +4661,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Dō",
-   "ac": 17,
+   "ac": 22,
    "maxFin": 11,
    "penalty": 4,
    "price": 1250,
@@ -4669,7 +4669,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Yoroi",
-   "ac": 25,
+   "ac": 30,
    "maxFin": 5,
    "penalty": 6,
    "price": 3000,
@@ -4677,7 +4677,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Lamellar",
-   "ac": 8,
+   "ac": 13,
    "maxFin": null,
    "penalty": 0,
    "price": 10,
@@ -4685,7 +4685,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Cuirass",
-   "ac": 19,
+   "ac": 24,
    "maxFin": 4,
    "penalty": 2,
    "price": 25,
@@ -4693,7 +4693,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Robes",
-   "ac": 5,
+   "ac": 10,
    "maxFin": null,
    "penalty": 0,
    "price": 50,
@@ -4701,7 +4701,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Padded Armor",
-   "ac": 10,
+   "ac": 15,
    "maxFin": 25,
    "penalty": 1,
    "price": 25,
@@ -4709,7 +4709,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Chitin Vest",
-   "ac": 15,
+   "ac": 20,
    "maxFin": 13,
    "penalty": 3,
    "price": 200,
@@ -4717,7 +4717,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Shadowcloak",
-   "ac": 8,
+   "ac": 13,
    "maxFin": 30,
    "penalty": 0,
    "price": 500,
@@ -4725,7 +4725,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Studded Leather",
-   "ac": 12,
+   "ac": 17,
    "maxFin": 25,
    "penalty": 0,
    "price": 75,
@@ -4733,7 +4733,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Hide Armor",
-   "ac": 14,
+   "ac": 19,
    "maxFin": 20,
    "penalty": 1,
    "price": 100,
@@ -4741,7 +4741,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Scale Mail",
-   "ac": 16,
+   "ac": 21,
    "maxFin": 15,
    "penalty": 2,
    "price": 200,
@@ -4749,7 +4749,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Chain Shirt",
-   "ac": 13,
+   "ac": 18,
    "maxFin": 18,
    "penalty": 1,
    "price": 150,
@@ -4757,7 +4757,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Brigandine",
-   "ac": 15,
+   "ac": 20,
    "maxFin": 12,
    "penalty": 2,
    "price": 250,
@@ -4765,7 +4765,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Splint Mail",
-   "ac": 24,
+   "ac": 29,
    "maxFin": null,
    "penalty": 3,
    "price": 500,
@@ -4773,7 +4773,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Banded Mail",
-   "ac": 17,
+   "ac": 22,
    "maxFin": 8,
    "penalty": 3,
    "price": 400,
@@ -4781,7 +4781,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Elven Chain",
-   "ac": 18,
+   "ac": 23,
    "maxFin": 20,
    "penalty": 1,
    "price": 2000,
@@ -4789,7 +4789,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Mithril Plate",
-   "ac": 30,
+   "ac": 35,
    "maxFin": 12,
    "penalty": 8,
    "price": 10000,
@@ -4797,7 +4797,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Dragon Scale",
-   "ac": 20,
+   "ac": 25,
    "maxFin": 15,
    "penalty": 2,
    "price": 5000,
@@ -4805,7 +4805,7 @@ window.SPARKS_DATA = {
   },
   {
    "name": "Padded Gambeson",
-   "ac": 10,
+   "ac": 15,
    "maxFin": 30,
    "penalty": 0,
    "price": 25,
@@ -4817,69 +4817,70 @@ window.SPARKS_DATA = {
    "name": "Round Shield",
    "ac": 3,
    "price": 20,
-   "weight": 1,
+   "weight": 3,
    "penalty": 2
   },
   {
    "name": "Kite Shield",
    "ac": 5,
    "price": 30,
-   "weight": 5,
-   "penalty": 3
+   "weight": 6,
+   "penalty": 4
   },
   {
    "name": "Buckler",
    "ac": 1,
    "price": 50,
-   "weight": 10,
+   "weight": 1.5,
    "penalty": 0
   },
   {
    "name": "Rondache",
    "ac": 4,
-   "price": null,
-   "weight": null,
-   "penalty": 4
+   "price": 40,
+   "weight": 3.5,
+   "penalty": 3
   },
   {
    "name": "Tower Shield",
    "ac": 6,
-   "price": null,
-   "weight": null,
-   "penalty": 4
+   "price": 45,
+   "weight": 12,
+   "penalty": 8,
+   "twoHanded": true
   },
   {
    "name": "Spiked Shield",
    "ac": 3,
-   "price": null,
-   "weight": null,
+   "price": 55,
+   "weight": 4,
    "penalty": 3
   }
  ],
  "traits": {
   "Hidden": "This weapon is easily concealable. When hidden in clothing or armor, any creature without the observant feature is incapable of spotting the weapon.",
-  "Piercing": "Spending an extra 2 AP when you take the attack action you can choose to make the weapon's damage dice deal true damage.",
-  "Light": "Any weapon with the light property uses finesse instead of strength for attack and damage rolls",
-  "Ranged": "This weapon is used from range and can reach any creature within the amount of tiles designated to the weapon. While within the melee range of any hostile creature, the user takes a -5 to all attack rolls.",
-  "Reload": "Any weapon with this feature must reload after a set amount of uses equal to its level.  Reloading a weapon takes 1 AP. A weapon with this property requires a free hand to reload.",
-  "Thrown": "Usually a melee weapon this weapon has the option to be thrown to any tile within the designated range.",
+  "Light": "This weapon uses Finesse instead of Strength for attack and damage rolls when Finesse is higher.",
+  "Ranged": "This weapon attacks any creature within the range listed with it. While a hostile creature has you in its melee range, you take −5 on attack rolls with this weapon.",
+  "Reload": "The weapon holds the number of shots in parentheses. Each attack uses one. When it reaches 0, reload the weapon to full for 1 AP. Reloading needs a free hand.",
+  "Thrown": "You throw this weapon at any tile within the range listed with it.",
   "Reach": "This weapon reaches an extra tile per level of reach.",
-  "Firearm": "This weapon's ammunition is bullets instead of arrows or bolts Costs an extra 1 AP to reload",
-  "Heavy": "While wearing or holding a object with the heavy property its movement is lowered by 2. Weapons with this property require 2 hands to wield.",
-  "Defensive": "A weapon with the defensive trait adds +1 to a target's AC for each weapon thue actively wield with the defensive trait.",
-  "Deadly": "Any weapon with the deadly property has its decisive range increased by 1 for each level.",
-  "Cleave": "Weapons with this property don't attack a single target but instead hit all adjacent tiles in a single direction within the targets melee range of the wielder's choice.",
-  "Two Handed": "A weapon with this property requires 2 hands to wield.",
-  "Hooked": "Weapons with the hooked property allow for an overpower check to be made after landing a successful attack as part of the attack.",
-  "Brittle": "Weapons with the brittle property break after a certain amount of uses. It is GM discretion if a weapon with this property is allowed to be repaired before or after it has broken.",
-  "Enchanted": "A weapon with the enchanted property ignores 5 resistance per level of enchantment",
-  "Magical": "A weapon with the magical property can have its damage type changed to magical for 1 AP. A weapon must have the enchanted property to have the magical property.",
-  "Secured": "A weapon with the secured property is hard to disarm gaining a +5 to all checks to avoid being disarmed.",
-  "Ranged (Finesse)": "This functions as ranged but uses finesse instead of strength",
-  "Exotic": "Exotic weapons are rare and are rare or sold in very few places.",
-  "Attachment": "A weapon with this property is attacked onto a two handed weapon with the reach property",
-  "Skilled": "Requires proficiency in skilled weapons to use",
-  "Simple": "Any creature can use this weapon without being proficient."
+  "Firearm": "This weapon fires bullets instead of arrows or bolts. Reloading it costs 1 extra AP.",
+  "Heavy": "While you wear or hold an object with this trait, your Speed drops by 2. A heavy weapon needs two hands.",
+  "Defensive": "You gain +1 AC for each weapon with this trait you wield.",
+  "Deadly": "Each level of this trait widens the weapon's decisive range by 1.",
+  "Cleave": "Instead of one target, the attack hits every adjacent tile in one direction of your choice within your melee range.",
+  "Two Handed": "This weapon needs two hands to wield.",
+  "Hooked": "After a hit, you make an Overpower check as part of the same attack.",
+  "Brittle": "This weapon breaks after a set number of uses. The GM decides whether it can be repaired before or after it breaks.",
+  "Enchanted": "Each level of this trait ignores 5 resistance.",
+  "Magical": "Spend 1 AP to change this weapon's damage type to magical. The weapon must also have the Enchanted trait.",
+  "Secured": "This weapon is hard to knock away. You gain +5 on checks to avoid being disarmed.",
+  "Ranged (Finesse)": "This works as Ranged but uses Finesse instead of Strength.",
+  "Exotic": "Exotic weapons are rare and sold in few places.",
+  "Attachment": "This weapon attaches to a two-handed weapon with the Reach trait.",
+  "Skilled": "Proficiency with this weapon needs a skilled weapon proficiency.",
+  "Simple": "Every creature counts as proficient with this weapon.",
+  "Punchthrough": "When you take the Attack action, spend 2 extra AP to make the weapon's damage dice deal true damage."
  },
  "damageTypes": {
   "physical": [
@@ -8265,7 +8266,6 @@ window.SPARKS_DATA = {
    "perLevel": false,
    "requires": "Enchanted",
    "note": "Spend 1 AP to change its damage type to Magic.",
-   "costNote": "The rules list no bonus for this trait. The sheet counts it as +1.",
    "text": "A weapon with the magical property can have its damage type changed to magical for 1 AP. A weapon must have the enchanted property to have the magical property."
   },
   {

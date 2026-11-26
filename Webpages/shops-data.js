@@ -485,14 +485,14 @@ window.SPARKS_SHOPS = {
      "price": "200 GP",
      "gp": 200,
      "section": "Weapons",
-     "desc": "1d6 fire damage. Traits: Reload, Ranged (Finesse) (5), Attachment, Firearm, Skilled. Range 5."
+     "desc": "1d6 fire damage. Traits: Reload (1), Ranged (Finesse) (5), Attachment, Firearm, Skilled. Range 5."
     },
     {
      "name": "Flintlock",
      "price": "375 GP",
      "gp": 375,
      "section": "Weapons",
-     "desc": "1d10 piercing damage. Traits: Reload, Ranged (Finesse) (10), Firearm, Exotic, Skilled. Range 10."
+     "desc": "1d10 piercing damage. Traits: Reload (1), Ranged (Finesse) (10), Firearm, Exotic, Skilled. Range 10."
     },
     {
      "name": "Flysaa",
@@ -534,14 +534,14 @@ window.SPARKS_SHOPS = {
      "price": "60 GP",
      "gp": 60,
      "section": "Weapons",
-     "desc": "1d10 piercing damage. Traits: Reload, Ranged (Finesse) (30), Heavy, Piercing. Range 30."
+     "desc": "1d10 piercing damage. Traits: Reload (1), Ranged (Finesse) (30), Heavy, Punchthrough. Range 30."
     },
     {
      "name": "Heilongjiang",
      "price": "100 GP",
      "gp": 100,
      "section": "Weapons",
-     "desc": "1d8 piercing damage. Traits: Firearm, Reload, Exotic, Ranged (Finesse) (10), Skilled. Range 10."
+     "desc": "1d8 piercing damage. Traits: Firearm, Reload (2), Exotic, Ranged (Finesse) (10), Skilled. Range 10."
     },
     {
      "name": "Hook Sword",
@@ -576,7 +576,7 @@ window.SPARKS_SHOPS = {
      "price": "30 GP",
      "gp": 30,
      "section": "Weapons",
-     "desc": "1d6 piercing damage. Traits: Two handed, Reload, Ranged (Finesse) (20), Piercing. Range 20."
+     "desc": "1d6 piercing damage. Traits: Two Handed, Reload (2), Ranged (Finesse) (20), Punchthrough. Range 20."
     },
     {
      "name": "Longsword",
@@ -597,7 +597,7 @@ window.SPARKS_SHOPS = {
      "price": "500 GP",
      "gp": 500,
      "section": "Weapons",
-     "desc": "2d8 piercing damage. Traits: Reload, Ranged (Finesse) (20), Two Handed, Firearm, Piercing, Exotic, Skilled. Range 20."
+     "desc": "2d8 piercing damage. Traits: Reload (1), Ranged (Finesse) (20), Two Handed, Firearm, Punchthrough, Exotic, Skilled. Range 20."
     },
     {
      "name": "Rapier",
@@ -646,7 +646,7 @@ window.SPARKS_SHOPS = {
      "price": "15 GP",
      "gp": 15,
      "section": "Weapons",
-     "desc": "1d8 bludgeoning damage. Traits: Piercing."
+     "desc": "1d8 bludgeoning damage. Traits: Punchthrough."
     },
     {
      "name": "Whip",
@@ -667,182 +667,203 @@ window.SPARKS_SHOPS = {
      "price": "2,500 GP",
      "gp": 2500,
      "section": "Armor",
-     "desc": "Heavy armor. AC 30, maximum Finesse bonus +2, penalty 8."
+     "desc": "Heavy armor. AC 35, maximum Finesse bonus +2, penalty 8."
     },
     {
      "name": "Half Plate",
      "price": "1,500 GP",
      "gp": 1500,
      "section": "Armor",
-     "desc": "Medium armor. AC 20, maximum Finesse bonus +7, penalty 3."
+     "desc": "Medium armor. AC 25, maximum Finesse bonus +7, penalty 3."
     },
     {
      "name": "Chainmail",
      "price": "200 GP",
      "gp": 200,
      "section": "Armor",
-     "desc": "Heavy armor. AC 18, maximum Finesse bonus +3, penalty 1."
+     "desc": "Heavy armor. AC 23, maximum Finesse bonus +3, penalty 1."
     },
     {
      "name": "Leather",
      "price": "50 GP",
      "gp": 50,
      "section": "Armor",
-     "desc": "Light armor. AC 10, maximum Finesse bonus +30, penalty 0."
+     "desc": "Light armor. AC 15, maximum Finesse bonus +30, penalty 0."
     },
     {
      "name": "Dō",
      "price": "1,250 GP",
      "gp": 1250,
      "section": "Armor",
-     "desc": "Medium armor. AC 17, maximum Finesse bonus +11, penalty 4."
+     "desc": "Medium armor. AC 22, maximum Finesse bonus +11, penalty 4."
     },
     {
      "name": "Yoroi",
      "price": "3,000 GP",
      "gp": 3000,
      "section": "Armor",
-     "desc": "Heavy armor. AC 25, maximum Finesse bonus +5, penalty 6."
+     "desc": "Heavy armor. AC 30, maximum Finesse bonus +5, penalty 6."
     },
     {
      "name": "Lamellar",
      "price": "10 GP",
      "gp": 10,
      "section": "Armor",
-     "desc": "Light armor. AC 8, maximum Finesse bonus none, penalty 0."
+     "desc": "Light armor. AC 13, maximum Finesse bonus none, penalty 0."
     },
     {
      "name": "Cuirass",
      "price": "25 GP",
      "gp": 25,
      "section": "Armor",
-     "desc": "Medium armor. AC 19, maximum Finesse bonus +4, penalty 2."
+     "desc": "Medium armor. AC 24, maximum Finesse bonus +4, penalty 2."
     },
     {
      "name": "Robes",
      "price": "50 GP",
      "gp": 50,
      "section": "Armor",
-     "desc": "Light armor. AC 5, maximum Finesse bonus none, penalty 0."
+     "desc": "Light armor. AC 10, maximum Finesse bonus none, penalty 0."
     },
     {
      "name": "Padded Armor",
      "price": "25 GP",
      "gp": 25,
      "section": "Armor",
-     "desc": "Light armor. AC 10, maximum Finesse bonus +25, penalty 1."
+     "desc": "Light armor. AC 15, maximum Finesse bonus +25, penalty 1."
     },
     {
      "name": "Chitin Vest",
      "price": "200 GP",
      "gp": 200,
      "section": "Armor",
-     "desc": "Medium armor. AC 15, maximum Finesse bonus +13, penalty 3."
+     "desc": "Medium armor. AC 20, maximum Finesse bonus +13, penalty 3."
     },
     {
      "name": "Shadowcloak",
      "price": "500 GP",
      "gp": 500,
      "section": "Armor",
-     "desc": "Light armor. AC 8, maximum Finesse bonus +30, penalty 0."
+     "desc": "Light armor. AC 13, maximum Finesse bonus +30, penalty 0."
     },
     {
      "name": "Studded Leather",
      "price": "75 GP",
      "gp": 75,
      "section": "Armor",
-     "desc": "Light armor. AC 12, maximum Finesse bonus +25, penalty 0."
+     "desc": "Light armor. AC 17, maximum Finesse bonus +25, penalty 0."
     },
     {
      "name": "Hide Armor",
      "price": "100 GP",
      "gp": 100,
      "section": "Armor",
-     "desc": "Medium armor. AC 14, maximum Finesse bonus +20, penalty 1."
+     "desc": "Medium armor. AC 19, maximum Finesse bonus +20, penalty 1."
     },
     {
      "name": "Scale Mail",
      "price": "200 GP",
      "gp": 200,
      "section": "Armor",
-     "desc": "Medium armor. AC 16, maximum Finesse bonus +15, penalty 2."
+     "desc": "Medium armor. AC 21, maximum Finesse bonus +15, penalty 2."
     },
     {
      "name": "Chain Shirt",
      "price": "150 GP",
      "gp": 150,
      "section": "Armor",
-     "desc": "Medium armor. AC 13, maximum Finesse bonus +18, penalty 1."
+     "desc": "Medium armor. AC 18, maximum Finesse bonus +18, penalty 1."
     },
     {
      "name": "Brigandine",
      "price": "250 GP",
      "gp": 250,
      "section": "Armor",
-     "desc": "Medium armor. AC 15, maximum Finesse bonus +12, penalty 2."
+     "desc": "Medium armor. AC 20, maximum Finesse bonus +12, penalty 2."
     },
     {
      "name": "Splint Mail",
      "price": "500 GP",
      "gp": 500,
      "section": "Armor",
-     "desc": "Heavy armor. AC 24, maximum Finesse bonus none, penalty 3."
+     "desc": "Heavy armor. AC 29, maximum Finesse bonus none, penalty 3."
     },
     {
      "name": "Banded Mail",
      "price": "400 GP",
      "gp": 400,
      "section": "Armor",
-     "desc": "Heavy armor. AC 17, maximum Finesse bonus +8, penalty 3."
+     "desc": "Heavy armor. AC 22, maximum Finesse bonus +8, penalty 3."
     },
     {
      "name": "Elven Chain",
      "price": "2,000 GP",
      "gp": 2000,
      "section": "Armor",
-     "desc": "Medium armor. AC 18, maximum Finesse bonus +20, penalty 1."
+     "desc": "Medium armor. AC 23, maximum Finesse bonus +20, penalty 1."
     },
     {
      "name": "Mithril Plate",
      "price": "10,000 GP",
      "gp": 10000,
      "section": "Armor",
-     "desc": "Heavy armor. AC 30, maximum Finesse bonus +12, penalty 8."
+     "desc": "Heavy armor. AC 35, maximum Finesse bonus +12, penalty 8."
     },
     {
      "name": "Dragon Scale",
      "price": "5,000 GP",
      "gp": 5000,
      "section": "Armor",
-     "desc": "Heavy armor. AC 20, maximum Finesse bonus +15, penalty 2."
+     "desc": "Heavy armor. AC 25, maximum Finesse bonus +15, penalty 2."
     },
     {
      "name": "Padded Gambeson",
      "price": "25 GP",
      "gp": 25,
      "section": "Armor",
-     "desc": "Light armor. AC 10, maximum Finesse bonus +30, penalty 0."
+     "desc": "Light armor. AC 15, maximum Finesse bonus +30, penalty 0."
     },
     {
      "name": "Round Shield",
      "price": "20 GP",
      "gp": 20,
      "section": "Shields",
-     "desc": "Shield. +3 AC, penalty 2."
+     "desc": "+3 AC, penalty 2, 3 kg."
     },
     {
      "name": "Kite Shield",
      "price": "30 GP",
      "gp": 30,
      "section": "Shields",
-     "desc": "Shield. +5 AC, penalty 3."
+     "desc": "+5 AC, penalty 4, 6 kg."
     },
     {
      "name": "Buckler",
      "price": "50 GP",
      "gp": 50,
      "section": "Shields",
-     "desc": "Shield. +1 AC, penalty 0."
+     "desc": "+1 AC, penalty 0, 1.5 kg."
+    },
+    {
+     "name": "Rondache",
+     "price": "40 GP",
+     "gp": 40,
+     "section": "Shields",
+     "desc": "+4 AC, penalty 3, 3.5 kg."
+    },
+    {
+     "name": "Tower Shield",
+     "price": "45 GP",
+     "gp": 45,
+     "section": "Shields",
+     "desc": "+6 AC, penalty 8, 12 kg, needs two hands."
+    },
+    {
+     "name": "Spiked Shield",
+     "price": "55 GP",
+     "gp": 55,
+     "section": "Shields",
+     "desc": "+3 AC, penalty 3, 4 kg."
     }
    ],
    "hasSlots": false,

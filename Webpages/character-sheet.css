@@ -280,14 +280,23 @@ label.cs-check { flex-direction: row !important; align-items: center; gap: 7px !
 .cs-tag { font-family: var(--cs-display); font-size: 0.56rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cs-ink-3); border: 1px solid #d3bb92; border-radius: 3px; padding: 1px 4px; margin-left: 6px; vertical-align: 2px; white-space: nowrap; }
 
 /* ---------- weapons ---------- */
-.cs-weapons { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 12px; align-items: start; }
-.cs-weapon { border: 1px solid #d3bb92; border-radius: 6px; padding: 12px; display: flex; flex-direction: column; gap: 10px; background: var(--cs-leaf); min-width: 0; }
-.cs-weapon-top { display: flex; gap: 6px; align-items: center; }
-.cs-weapon-top select { font-family: var(--cs-display); font-weight: 700; }
-.cs-weapon-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 10px; }
-.cs-weapon-stats > div { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; min-width: 0; }
+.cs-weapons { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); gap: 14px; align-items: start; }
+.cs-weapon { border: 1px solid #d3bb92; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 10px; background: var(--cs-leaf); min-width: 0; box-shadow: 0 2px 6px rgba(60, 35, 15, 0.06); }
+.cs-weapon-top { display: flex; gap: 6px; align-items: center; padding-bottom: 8px; border-bottom: 1px solid rgba(211, 187, 146, 0.65); }
+.cs-weapon-top select { font-family: var(--cs-display); font-weight: 700; font-size: 1rem; }
+.cs-weapon-hero { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; border-radius: 6px; background: rgba(255, 252, 244, 0.72); border: 1px solid rgba(211, 187, 146, 0.75); }
+.cs-weapon-hit { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px 18px; align-items: end; }
+.cs-weapon-hit > div { display: flex; flex-direction: column; gap: 2px; align-items: flex-start; min-width: 0; }
+.cs-weapon-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px 12px; align-items: end; }
+.cs-weapon-meta > div, .cs-weapon-meta > label { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; min-width: 0; }
+.cs-weapon-meta select { width: 100%; }
 .cs-traits { display: flex; flex-wrap: wrap; gap: 5px; }
-.cs-inline-note { font-size: 0.92rem !important; padding: 4px 7px !important; }
+.cs-weapon-controls { display: flex; flex-direction: column; gap: 8px; padding: 10px; border-radius: 6px; background: rgba(211, 187, 146, 0.15); border-top: 1px dotted #d3bb92; }
+.cs-weapon-toggles { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; }
+.cs-weapon-mods { display: grid; grid-template-columns: minmax(0, 1fr) 74px 74px; gap: 8px; align-items: end; }
+.cs-weapon-mods > label { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.cs-weapon-mods select, .cs-weapon-mods input { width: 100%; }
+.cs-inline-note { font-size: 0.92rem !important; padding: 5px 8px !important; background: rgba(255, 255, 255, 0.55) !important; }
 
 /* ---------- rows ---------- */
 .cs-rows { display: flex; flex-direction: column; gap: 8px; }

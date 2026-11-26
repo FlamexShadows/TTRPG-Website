@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sparks | Conditions</title>
-    <meta name="description" content="Sparks of Dynasty Basic Rules: Conditions. Updated November 3, 2026.">
+    <meta name="description" content="Sparks of Dynasty Basic Rules: Conditions. Updated November 26, 2026.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" type="text/css" href="styles.css"/>
     <style>.rules-table th,.rules-table td{text-align:left;vertical-align:top} .rules-toc{text-align:center} .rules-rev{text-align:center;font-style:italic;color:var(--ink-muted)}</style>
@@ -18,7 +18,7 @@
     <div class="main-content">
         <div class="content-panel">
             <h2>Conditions</h2>
-            <p class="rules-rev">Basic Rules, updated November 3, 2026</p>
+            <p class="rules-rev">Basic Rules, updated November 26, 2026</p>
 <div class="condition-search-container"><input class="condition-search-input" id="cond-q" type="search" placeholder="Search conditions" aria-label="Search conditions"></div>
 <script>document.getElementById('cond-q').addEventListener('input',function(){var q=this.value.toLowerCase();document.querySelectorAll('.condition').forEach(function(c){c.style.display=c.textContent.toLowerCase().indexOf(q)>-1?'':'none';});});</script>
 <p>Conditions are lasting effects on a creature. Each entry says what the condition does.</p>
@@ -32,7 +32,7 @@
 <p>Any creature that is burning has its resistance to fire lowered by 20 and its resistance to cold raised by 20. Any creature that is burning and is not immune or resistant to fire damage becomes vulnerable to fire damage and takes 2d6 fire damage at the start of each of its turns. Any creature that is burning that gains the freezing condition cancels both.</p>
 </div>
 <div class="condition" id="charmed"><h3>Charmed</h3>
-<p>A creature becomes under the influence of another. While charmed, the charmer gains a +10 to all Charisma-based checks made with the charmed creature. While charmed, creatures may be convinced to perform actions that they would not perform under the influence of a charm. Charmed creatures will not perform actions that they perceive as directly harmful to themselves.</p>
+<p>A creature becomes under the influence of another. While charmed, the charmer gains a +10 to all Charisma-based checks made with the charmed creature. While charmed, creatures may be convinced to perform actions that they would not perform without the influence of a charm. Charmed creatures will not perform actions that they perceive as directly harmful to themselves.</p>
 </div>
 <div class="condition" id="corroding"><h3>Corroding</h3>
 <p>While corroding, a creature loses half of its current physical armor at the start of each of its turns.</p>
@@ -56,6 +56,7 @@
 <p>While draining, a creature loses half of its current magical armor at the start of each of its turns.</p>
 </div>
 <div class="condition" id="dying"><h3>Dying</h3>
+<ul><li>Resurrection: to resurrect a creature, its soul must be free and willing to return to its body. If the soul is trapped, unable, or unwilling, the spell fails. Attempting to resurrect a creature into an unsurvivable body (such as one missing its head) still returns the creature, but it is instantly slain and the resurrection materials are wasted.</li></ul>
 <p>A creature reduced to 0 Health or below gains Dying.</p>
 <ol><li><strong>Unconscious:</strong> the creature falls unconscious and has 0 AP.</li><li><strong>Negative Health:</strong> track how far below 0 its Health falls (−5, for example). If the number passes its Fortitude score, it dies.</li><li><strong>Death saves:</strong> at the end of each of its turns, the creature rolls d100 and succeeds at or under its Fortitude modifier + level. Success: no change. Failure: mark one failed death save. Damage taken while Dying marks one failed save automatically.</li><li><strong>Stabilizing:</strong> another creature rolls Knowledge (Medical) against a DC equal to the negative Health (DC 5 at −5). Success: the creature is stable at 0 Health and loses Dying.</li><li><strong>Healing:</strong> any healing bringing the creature above 0 Health ends Dying.</li><li><strong>Death:</strong> the creature dies at 3 failed death saves, after 1 minute (5 rounds) of Dying, or when its negative Health passes its Fortitude score.</li></ol>
 </div>
@@ -69,7 +70,7 @@
 <p>Any creature that is freezing has its resistance to cold lowered by 20 and its resistance to fire raised by 20. Any creature that is freezing and is not immune or resistant to cold damage becomes vulnerable to cold damage and has its AP maximum reduced to 2. Any creature that is freezing that gains the burning condition cancels both.</p>
 </div>
 <div class="condition" id="grappling"><h3>Grappling</h3>
-<p>While grappling a target, you move with the target you are grappling unless they move instantaneously from effects such as teleportation.</p>
+<p>While grappling a target, you move with the target you are grappling. A grappled creature can spend 3 AP to make a contested Overpower check against the grappler; if it wins, it breaks free. If the grappler is force-moved, it drops the grappled creature, and teleportation also ends a grapple.</p>
 </div>
 <div class="condition" id="hastened"><h3>Hastened</h3>
 <p>While hastened, a creature has its maximum AP increased by 1, doubles its movement, and gains 2 AC. A slowed creature that becomes hastened removes both effects.</p>
@@ -114,7 +115,7 @@
 <p>Any creature that is shocked has its resistance to air lowered by 10. Any creature that is shocked and is not immune or resistant to air damage becomes vulnerable to air damage and must roll a d100 at the start of each of its turns. On a 50 or lower, it wastes its turn doing nothing.</p>
 </div>
 <div class="condition" id="shoved"><h3>Shoved</h3>
-<p>A creature who is shoved is physically moved by an opposing force. A shoved creature is moved 1 meter for each point it failed the check by (minimum one meter). Shoved creatures only interact with the initial and final meter they land on for environmental effects. If shoved into an object, the GM determines if the creature passes through or stops on the obstacle. A creature shoved takes 5 damage for each meter it is prevented from moving if it stops on an obstacle. A creature shoved less than 2 meters must pass a balance check determined by the GM to prevent being Knocked Down after being shoved. Creatures shoved 3 or more meters are Knocked Down.</p>
+<p>A creature who is shoved is physically moved by an opposing force. A shoved creature is moved 1 meter for each point it failed the check by (minimum one meter). Shoved creatures only interact with the initial and final meter they land on for environmental effects. If shoved into an object, the GM determines if the creature passes through or stops on the obstacle. A creature shoved takes 5 damage for each meter it is prevented from moving if it stops on an obstacle. A creature shoved less than 2 meters must pass a balance check determined by the GM to prevent being Knocked Down after being shoved. Creatures shoved more than 2 meters are Knocked Down.</p>
 </div>
 <div class="condition" id="silenced"><h3>Silenced</h3>
 <p>A silenced creature is incapable of speaking. While silenced, it is impossible to cast spells that require Words of Power or perform any other action that requires speech.</p>

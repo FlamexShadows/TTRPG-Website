@@ -1,0 +1,55 @@
+---
+layout: layouts/base.njk
+permalink: spells-complete.html
+title: Complete Spells - Organized by School and Rank
+description: Every spell in Sparks of Dynasty, organized by school of magic and rank.
+styles: [spells-list.css]
+scripts: [spells-list.js]
+---
+{#- The spell list. Eleventy fills it from src/spells/: a new spell file shows up here on the next build.
+    The rules box between the BASIC-RULES comments is rebuilt from the Basic Rules docx by update_rules.py. -#}
+{%- set schools = collections.spells | bySchool %}
+    <div class="page-layout">
+
+    <nav class="sidebar" aria-label="Spell schools">
+        <h3>Spell Schools</h3>
+        <ul class="school-nav">
+        {%- for s in schools %}
+            <li><a href="#{{ s.school | slugify }}">{{ s.school }}</a></li>
+        {%- endfor %}
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <div class="spell-description-box">
+            <h3>Complete Spells Organized by School and Rank</h3>
+            {% raw %}<!-- BASIC-RULES: Martial Maneuvers and Spells / Spells; Martial Maneuvers and Spells / Upcasting -->
+<p>Spells turn a creature&#x27;s source into mana and shape it into effects. The schools of magic are Arcanomancy, Heavenly, Otherworldly, Nature, Chronomancy, Demonology, Enchantment, Necromancy, Transmutation, Hydromancy, Pyromancy, Geomancy, and Aeromancy. Spells are ranked by the mana they cost: Minor, Adept, Major, Grand, and Divine. Mortals do not cast Divine spells. Lemara enforces this law.</p>
+<p>Anyone learns spells from Necromancy, Transmutation, Hydromancy, Pyromancy, Geomancy, and Aeromancy. Heavenly, Demonology, Arcanomancy, Nature, Otherworldly, Enchantment, and Chronomancy are rare. You learn them only through a feature granting access.</p>
+<p>Your casting stat is your class&#x27;s primary stat.</p>
+<h4>Upcasting</h4>
+<p>Magic is volatile. Adding mana to a spell upcasts it and greatly empowers its effects. You upcast only to a tier you are able to cast: a level 5 character casts Minor spells only, so no upcasting to Adept or Major.</p>
+<p>Upcast effects are geometric: a spell upcast from Minor to Grand is 8 times as potent. Each step, choose one effect:</p>
+<ul><li>Double the dice rolled.</li><li>Double the range.</li><li>Add your casting modifier if not already included.</li><li>Increase the duration one step: 1 round → 1 minute → 10 minutes → 1 hour → 6 hours → 12 hours → 1 day → 1 week → 1 month → 1 year → permanent. Instant spells gain no duration.</li></ul>
+<!-- /BASIC-RULES -->{% endraw %}
+        </div>
+
+        <div class="schools-grid">
+        {%- for s in schools %}
+            <section class="school-section" id="{{ s.school | slugify }}">
+                <h2 class="school-title">{{ s.school }}</h2>
+            {%- for r in s.ranks %}
+                <div class="rank-section">
+                    <h3 class="rank-title">{{ r.rank }}</h3>
+                    <ul class="spell-list">
+                    {%- for spell in r.spells %}
+                        <li class="spell-item"><a href="{{ spell.url | replace("/", "") }}">{{ spell.data.name }}</a></li>
+                    {%- endfor %}
+                    </ul>
+                </div>
+            {%- endfor %}
+            </section>
+        {%- endfor %}
+        </div>
+    </div>
+    </div>
