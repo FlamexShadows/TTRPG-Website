@@ -53,6 +53,11 @@
     --tab-misc-mid: #1d4d41;
     --tab-misc-crease: #11332b;
     --tab-misc-face: #22574a;
+
+    --tab-characters-top: #4e3d80;
+    --tab-characters-mid: #36295e;
+    --tab-characters-crease: #21183d;
+    --tab-characters-face: #40316d;
 }
 
 /* --- Antique Custom Scrollbar --- */
@@ -209,9 +214,11 @@ header#main-header nav,
 }
 
 /* The Dropdown Tab Container */
-.dropdown {
+.dropdown,
+.book-tab-link {
     position: relative;
     display: inline-block;
+    text-decoration: none;
 }
 
 /* 
@@ -220,7 +227,8 @@ header#main-header nav,
    from behind the book's top edge and fold over the headband onto the page!
 */
 .dropdown > span,
-.dropdown > .tab-marker {
+.dropdown > .tab-marker,
+.book-tab-link > .tab-marker {
     cursor: pointer;
     position: relative;
     display: flex;
@@ -269,7 +277,8 @@ header#main-header nav,
 
 /* Subtle Fold Crease Line across the tab */
 .dropdown > span::before,
-.dropdown > .tab-marker::before {
+.dropdown > .tab-marker::before,
+.book-tab-link > .tab-marker::before {
     content: '';
     position: absolute;
     top: 42%;
@@ -283,7 +292,8 @@ header#main-header nav,
 
 /* Little metallic stitch/rivet accent on the tab */
 .dropdown > span::after,
-.dropdown > .tab-marker::after {
+.dropdown > .tab-marker::after,
+.book-tab-link > .tab-marker::after {
     content: '';
     position: absolute;
     top: 6px;
@@ -343,11 +353,27 @@ header#main-header nav,
     border-bottom-color: var(--gold-leaf);
 }
 
+/* Tab 4: Characters (Royal Indigo Marked Tab) */
+.tab-characters > .tab-marker {
+    background: linear-gradient(
+        180deg,
+        var(--tab-characters-top) 0%,
+        var(--tab-characters-mid) 38%,
+        var(--tab-characters-crease) 48%,
+        var(--tab-characters-face) 55%,
+        var(--tab-characters-mid) 100%
+    );
+    border-color: rgba(190, 175, 240, 0.55);
+    border-bottom-color: var(--gold-leaf);
+}
+
 /* Hover & Focus State: The marked tab lifts up! */
 .dropdown:hover > span,
 .dropdown:hover > .tab-marker,
 .dropdown:focus-within > span,
-.dropdown:focus-within > .tab-marker {
+.dropdown:focus-within > .tab-marker,
+.book-tab-link:hover > .tab-marker,
+.book-tab-link:focus-visible > .tab-marker {
     transform: translateY(-6px);
     box-shadow: 
         0 10px 22px rgba(0, 0, 0, 0.75),
@@ -1263,7 +1289,8 @@ button:hover {
     }
 
     .dropdown span,
-    .dropdown .tab-marker {
+    .dropdown .tab-marker,
+    .book-tab-link .tab-marker {
         padding: 8px 14px 10px;
         font-size: 0.8em;
     }
@@ -1317,7 +1344,8 @@ button:hover {
     }
 
     .dropdown span,
-    .dropdown .tab-marker {
+    .dropdown .tab-marker,
+    .book-tab-link .tab-marker {
         padding: 6px 10px 8px;
         font-size: 0.72em;
     }

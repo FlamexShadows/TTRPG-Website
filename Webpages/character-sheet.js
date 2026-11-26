@@ -2440,6 +2440,16 @@
   const STAT_ARRAY = [12, 12, 10, 8, 7, 6, 4];   // Selective Array (stat-generation.html)
   const COMMON_SCHOOLS = ['Necromancy', 'Transmutation', 'Hydromancy', 'Pyromancy', 'Geomancy', 'Aeromancy'];
   const ALL_SCHOOLS = Array.from(new Set(D.spells.map(s => s[1]))).sort();
+  const RACE_BONUS_SPELLS = {
+    'Avatol': { count: 2, tier: 'Minor', schools: ['Aeromancy'], label: 'Avatol (Skyborn)', note: 'Choose 2 Minor Aeromancy spells. Cast each once per full rest without spending Mana.' },
+    'Gnome': { count: 2, tier: 'Minor', schools: ['Geomancy', 'Nature'], label: 'Gnome (Earthborn)', note: 'Choose 2 Minor Geomancy or Nature spells. Swap them every 5 levels. Cast each once per full rest without spending Mana.' },
+    'Moon Elf': { count: 2, tier: 'Minor', schools: ['Pyromancy'], label: 'Moon Elf (Ashborn)', note: 'Choose 2 Minor Pyromancy spells. Cast each once per full rest without spending Mana.' },
+  };
+  const SUB_BONUS_SPELLS = {
+    'The Righteous': { count: 3, tier: 'Minor', schools: ['Heavenly'], label: 'The Righteous (Divine Might)', note: 'Choose 3 Minor Heavenly spells. Castable 3 times per full rest.' },
+    'Shadow': { count: 3, tier: 'Minor', schools: ['Tenemancy'], label: "Shadow (Darkness's Friend)", note: 'Choose 3 Minor Tenemancy spells. Castable 3 times per day.' },
+    'Rift Walker': { count: 3, tier: 'Minor', schools: ['Chronomancy'], label: 'Rift Walker (Time Novice)', note: 'Choose 3 Minor Chronomancy spells. Castable 3 times per day.' },
+  };
   const B_STEPS = [['who', 'Create character'], ['race', 'Race'], ['class', 'Class'], ['sub', 'Subclass'], ['stats', 'Statistics'], ['magic', 'Spells and maneuvers'], ['gear', 'Equipment'], ['review', 'Review']];
   const SMITH_ID = 'general-smithing';
   let B = null;
@@ -2484,7 +2494,7 @@
     return { step: opts && opts.landing ? 'start' : 'who', replaceId: (opts && opts.replaceId) || null,
       name: '', player: '', alignment: '', deity: '', race: '', prevRace: '', raceChoice: {}, raceResist: '', adaptations: ['', ''],
       cls: '', sub: '', method: 'array', assign: stats, custom: Object.fromEntries(STAT_KEYS.map(k => [k, 8])), lvl,
-      spells: [], maneuvers: [], allSchools: false, extraKind: false, cart: {}, wearArmor: '', wearShield: '', shop: 'smith', filter: '' };
+      spells: [], raceSpells: [], subSpells: [], maneuvers: [], allSchools: false, extraKind: false, cart: {}, wearArmor: '', wearShield: '', shop: 'smith', filter: '' };
   }
   function bRace() { return RACE[B.race] || null; }
   function bClass() { return D.classes[B.cls] || null; }
@@ -2517,8 +2527,10 @@
     const cl = bClass();
     if (!cl) return [];
     const text = [].concat(cl.prof || [], (cl.features || []).filter(f => f.level <= 1).map(f => f.text),
-      ((cl.subclasses || {})[B.sub] || []).filter(f => f.level <= 1).map(f => f.text)).join(' ');
-    return ALL_SCHOOLS.filter(s => new RegExp('\\b' + s + '\\b', 'i').test(text));
+      ((cl.subclasses || {})[B.sub] || []).filter(f => f.level <= 1).map(f => f.text)).join(' ').replace(/\bDemonlogy\b/gi, 'Demonology');
+    const subGrant = SUB_BONUS_SPELLS[B.sub];
+    const fromSub = subGrant ? subGrant.schools : [];
+    return ALL_SCHOOLS.filter(s => fromSub.includes(s) || new RegExp('\\b' + s + '\\b', 'i').test(text));
   }
 
   // the character the builder will hand to the sheet; light=true skips gear for previews
@@ -2529,7 +2541,21 @@
     c.classes = [{ name: B.cls, level: 1, sub: B.sub }, { name: '', level: 0, sub: '' }];
     const r = bRace(); if (r) c.languages = r.languages || '';
     STAT_KEYS.forEach(k => { c.stats[k].base = bBase(k); c.stats[k].lvl = n(B.lvl[k]); });
-    c.spells = B.spells.map(nm => SPELL_BY_NAME[nm.toLowerCase()]).filter(Boolean).map(s => ({ name: s[0], school: s[1], tier: s[2], href: s[3], notes: '' }));
+    const spellNotes = {};
+    const addSpell = (nm, note) => {
+      const key = nm.toLowerCase();
+      if (!SPELL_BY_NAME[key]) return;
+      if (!spellNotes[key]) spellNotes[key] = [];
+      if (note && !spellNotes[key].includes(note)) spellNotes[key].push(note);
+    };
+    const rGrant = RACE_BONUS_SPELLS[B.race], sGrant = SUB_BONUS_SPELLS[B.sub];
+    B.spells.forEach(nm => addSpell(nm, ''));
+    (B.raceSpells || []).forEach(nm => addSpell(nm, rGrant ? rGrant.label : 'Race'));
+    (B.subSpells || []).forEach(nm => addSpell(nm, sGrant ? sGrant.label : 'Subclass'));
+    c.spells = Object.keys(spellNotes).map(key => {
+      const s = SPELL_BY_NAME[key];
+      return { name: s[0], school: s[1], tier: s[2], href: s[3], notes: spellNotes[key].join(' · ') };
+    });
     c.maneuvers = B.maneuvers.map(nm => MAN_BY_NAME[nm.toLowerCase()]).filter(Boolean).map(m => ({ name: m[0], tier: m[1], href: m[2], notes: '' }));
     c.gold = START_GOLD;
     if (light) return c;
@@ -2567,8 +2593,15 @@
         if (B.method === 'array') { const used = STAT_KEYS.map(k => B.assign[k]); if (used.some(v => v === '')) return 'Place every number from the array.'; }
         if (bSpent() !== bPoints()) return `Spend all ${bPoints()} leveling points (${bSpent()} spent).`;
         return '';
-      case 'magic': { const s = bSlots(); const have = (s.kind === 'spell' ? B.spells : B.maneuvers).length;
-        return have > s.slots ? `You picked ${have} but have ${s.slots} slots. Remove ${have - s.slots}.` : ''; }
+      case 'magic': {
+        const s = bSlots(); const have = (s.kind === 'spell' ? B.spells : B.maneuvers).length;
+        if (have > s.slots) return `You picked ${have} but have ${s.slots} slots. Remove ${have - s.slots}.`;
+        const rg = RACE_BONUS_SPELLS[B.race];
+        if (rg && B.raceSpells.length > rg.count) return `You picked ${B.raceSpells.length} ${rg.label} spells but may choose ${rg.count}.`;
+        const sg = SUB_BONUS_SPELLS[B.sub];
+        if (sg && B.subSpells.length > sg.count) return `You picked ${B.subSpells.length} ${sg.label} spells but may choose ${sg.count}.`;
+        return '';
+      }
       case 'gear': return bGold() < 0 ? `You are ${(-bGold()).toLocaleString('en-US')} GP over budget.` : '';
       default: return '';
     }
@@ -2765,7 +2798,23 @@
       };
       const granted = bGrantedSchools();
       const word = main === 'spell' ? 'spells' : 'maneuvers';
-      return `<p>${esc(B.cls)} learns ${word}. At level 1 you know up to <b>${s.slots}</b> ${bTierName(main).join(' or ')} ${word} (${cl.slots[0]} class slots${s.slots > cl.slots[0] ? ` + ${s.slots - cl.slots[0]} from Memory` : ''}). Picked: <b>${mainPicked.length}</b>.</p>
+      const bonusBlock = (grant, bucket) => {
+        if (!grant) return '';
+        const picked = B[bucket] || [];
+        const pool = D.spells.filter(x => x[2] === grant.tier && grant.schools.includes(x[1])).map(x => ({ name: x[0], group: x[1], href: x[3] }));
+        const groups = {};
+        pool.forEach(x => (groups[x.group] = groups[x.group] || []).push(x));
+        const body = Object.keys(groups).sort().map(g => `<div class="cs-b-group"><h4>${esc(g)} (${esc(grant.tier)})</h4><div class="cs-b-picks">${groups[g].map(x => {
+          const on = picked.includes(x.name);
+          return `<span class="cs-b-pick${on ? ' on' : ''}"><button type="button" data-bx="bpick:${bucket}:${esc(x.name)}" aria-pressed="${on}">${on ? '✓ ' : ''}${esc(x.name)}</button>${x.href ? link('info', x.href) : ''}</span>`;
+        }).join('')}</div></div>`).join('');
+        return `<div class="cs-b-detail"><h3>${esc(grant.label)} — Bonus Spells</h3>
+          <p class="cs-note">${esc(grant.note)} Picked: <b>${picked.length}</b> / ${grant.count}.</p>${body}</div>`;
+      };
+      const raceBonusHtml = bonusBlock(RACE_BONUS_SPELLS[B.race], 'raceSpells');
+      const subBonusHtml = bonusBlock(SUB_BONUS_SPELLS[B.sub], 'subSpells');
+      return `${raceBonusHtml}${subBonusHtml}
+        <p>${esc(B.cls)} learns ${word}. At level 1 you know up to <b>${s.slots}</b> ${bTierName(main).join(' or ')} ${word} (${cl.slots[0]} class slots${s.slots > cl.slots[0] ? ` + ${s.slots - cl.slots[0]} from Memory` : ''}). Picked: <b>${mainPicked.length}</b>.</p>
         ${main === 'spell' ? `<p class="cs-note">Anyone learns ${COMMON_SCHOOLS.join(', ')}.${granted.length ? ` Your class or subclass also opens ${granted.join(', ')}.` : ''} Other schools need a feature that grants them.</p>
         <label class="cs-check"><input type="checkbox" id="b-allsch" data-bchk="allSchools"${B.allSchools ? ' checked' : ''}> Show every school (GM approved)</label>` : ''}
         <label class="cs-b-filter"><span class="cs-lbl">Search</span><input id="b-filter" data-bf="filter" value="${esc(B.filter)}" placeholder="Name or ${main === 'spell' ? 'school' : 'tier'}" autocomplete="off"></label>
@@ -2861,10 +2910,10 @@
         } else closeBuilder();
         return;
       case 'race':
-        if (B.race !== arg) { B.race = arg; B.prevRace = ''; B.raceChoice = {}; B.raceResist = ''; B.adaptations = ['', '']; }
+        if (B.race !== arg) { B.race = arg; B.prevRace = ''; B.raceChoice = {}; B.raceResist = ''; B.adaptations = ['', '']; B.raceSpells = []; }
         break;
-      case 'class': if (B.cls !== arg) { B.cls = arg; B.sub = ''; B.spells = []; B.maneuvers = []; } break;
-      case 'sub': B.sub = arg; break;
+      case 'class': if (B.cls !== arg) { B.cls = arg; B.sub = ''; B.spells = []; B.subSpells = []; B.maneuvers = []; } break;
+      case 'sub': if (B.sub !== arg) { B.sub = arg; B.subSpells = []; } break;
       case 'method': B.method = arg; break;
       case 'pt': { const [k, dv] = arg.split(':'); const v = n(B.lvl[k]) + n(dv); if (v >= 0 && bSpent() + n(dv) <= bPoints()) B.lvl[k] = v; break; }
       case 'pick': {
@@ -2875,6 +2924,19 @@
         else {
           const s = bSlots();
           if (kind === s.kind && arr.length >= s.slots) { toast(`Every slot is full (${s.slots}). Remove one first.`, 'dmg'); return; }
+          arr.push(name);
+        }
+        break;
+      }
+      case 'bpick': {
+        const i = arg.indexOf(':'); const bucket = arg.slice(0, i), name = arg.slice(i + 1);
+        const grant = bucket === 'raceSpells' ? RACE_BONUS_SPELLS[B.race] : SUB_BONUS_SPELLS[B.sub];
+        if (!grant) break;
+        const arr = B[bucket] || (B[bucket] = []);
+        const at = arr.indexOf(name);
+        if (at >= 0) arr.splice(at, 1);
+        else {
+          if (arr.length >= grant.count) { toast(`You may pick up to ${grant.count} ${grant.tier} ${grant.schools.join('/')} spells.`, 'dmg'); return; }
           arr.push(name);
         }
         break;
@@ -3175,6 +3237,9 @@
       } catch (err) { /* ignore a half-written value */ }
     });
     window.addEventListener('scroll', () => { if (!$('#cs-pop').hidden) hidePop(); }, { passive: true });
+    window.addEventListener('hashchange', () => {
+      if (location.hash === '#new' && !B) openBuilder({ landing: false });
+    });
     fillInputs();
     if (/^#forge/.test(location.hash)) tab = 'combat';
     setTab(tab);
