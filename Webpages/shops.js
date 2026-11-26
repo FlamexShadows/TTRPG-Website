@@ -60,6 +60,7 @@
     const nm = it.name.toLowerCase();
     switch (it.shop) {
       case 'marionettes-market': return 'magic';
+      case 'general-smithing': return it.section === 'Armor' ? 'armor' : it.section === 'Shields' ? 'shield' : 'weapon';
       case 'grand-elixirs': return it.section === 'Potion Ingredients' ? 'material' : 'consumable';
       case 'black-market': return /coins/i.test(nm) ? 'gear' : 'consumable';
       case 'clouds-pet-shop': return 'companion';
@@ -76,7 +77,7 @@
         return 'gear';
     }
   }
-  const KIND_NOTE = { magic: 'goes to inventory. Equip it on the character sheet.', consumable: 'goes to inventory. Use it on the character sheet.', material: 'goes to inventory.', tool: 'goes to inventory. Add it to Tools on the character sheet.', gear: 'goes to inventory.', companion: 'goes to inventory as a companion.', boon: 'is added to Other features.', service: 'is recorded in purchase history.' };
+  const KIND_NOTE = { weapon: 'goes to inventory. Press Equip on the character sheet to add it to your weapons.', armor: 'goes to inventory. Press Equip on the character sheet to wear it.', shield: 'goes to inventory. Press Equip on the character sheet to carry it.', magic: 'goes to inventory. Equip it on the character sheet.', consumable: 'goes to inventory. Use it on the character sheet.', material: 'goes to inventory.', tool: 'goes to inventory. Add it to Tools on the character sheet.', gear: 'goes to inventory.', companion: 'goes to inventory as a companion.', boon: 'is added to Other features.', service: 'is recorded in purchase history.' };
   // apply one purchase to a character object
   function applyPurchase(c, it, qty, unit) {
     const kind = kindOf(it), shopName = SHOP[it.shop].name;

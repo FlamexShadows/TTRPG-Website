@@ -28,7 +28,7 @@
   // ---- magic items and shop purchases
   const STAT_WORD = { strength: 'str', finesse: 'fin', fortitude: 'fort', charisma: 'cha', wits: 'wits', intelligence: 'int', memory: 'mem' };
   const SLOT_ALIAS = { Belt: 'Waist', Hand: 'Hands', Rings: 'Ring' };
-  const KIND_LABEL = { magic: 'Magic item', consumable: 'Consumable', material: 'Material', tool: 'Tool', gear: 'Gear', companion: 'Companion', boon: 'Blessing', service: 'Service' };
+  const KIND_LABEL = { weapon: 'Weapon', armor: 'Armor', shield: 'Shield', magic: 'Magic item', consumable: 'Consumable', material: 'Material', tool: 'Tool', gear: 'Gear', companion: 'Companion', boon: 'Blessing', service: 'Service' };
   const BONUS_KEYS = [
     ['ac', 'Armor Class'], ['acMin', 'Armor Class becomes at least'], ['pa', 'Physical Armor'], ['ma', 'Magical Armor'], ['ta', 'True Armor'],
     ['health', 'Health'], ['mana', 'Mana'], ['stamina', 'Stamina'], ['save_evasion', 'Evasion'], ['save_body', 'Resistance (Body)'],
@@ -1174,6 +1174,21 @@
   function equip(i) {
     const c = char(), it = c.inventory[i];
     if (!it) return;
+    if (it.kind === 'weapon' || it.kind === 'armor' || it.kind === 'shield') {
+      const nm = it.name;
+      if (it.kind === 'weapon') {
+        const blank = c.weapons.findIndex(w => !w.item && !w.name);
+        if (blank >= 0) c.weapons[blank] = newWeapon(nm); else c.weapons.push(newWeapon(nm));
+      } else {
+        const key = it.kind === 'armor' ? 'armor' : 'shield';
+        if (c[key]) addToInventory(c, { name: c[key], qty: 1, kg: 0, where: 'Pack', notes: '', kind: it.kind, shop: 'General Smithing', desc: '' });
+        c[key] = nm;
+      }
+      takeOne(c, i);
+      fillInputs(); renderWeapons(compute(c)); renderInventory(); update(true);
+      toast(`${esc(nm)} equipped on the Combat tab.`);
+      return;
+    }
     const sl = normSlot(it.slot);
     let path;
     if (sl === 'Ring') { let k = c.rings.findIndex(r => !r || !r.name); if (k < 0) { c.rings.push({}); k = c.rings.length - 1; toast('Every ring slot was full, so the sheet added one. Check with your GM.'); } path = 'rings.' + k; }
@@ -1259,7 +1274,8 @@
     <label class="cs-roster"><span class="cs-lbl">Character</span>
       <select id="cs-roster" aria-label="Switch character"></select></label>
     <div class="cs-tools">
-      <button type="button" class="cs-btn" data-act="new">New</button>
+      <button type="button" class="cs-btn cs-btn-red" data-act="new">Create character</button>
+      <button type="button" class="cs-btn" data-act="new-blank">Blank sheet</button>
       <button type="button" class="cs-btn" data-act="dup">Duplicate</button>
       <button type="button" class="cs-btn" data-act="export">Export</button>
       <button type="button" class="cs-btn" data-act="import">Import</button>
@@ -1271,7 +1287,7 @@
   </div>
   <div id="cs-example" class="cs-example" hidden>
     <span>This is an example character so you can see the sheet at work.</span>
-    <button type="button" class="cs-btn cs-btn-red" data-act="start">Start my character</button>
+    <button type="button" class="cs-btn cs-btn-red" data-act="start">Create my character</button>
   </div>
   <header class="cs-hero">
     <div class="cs-hero-id">
@@ -1851,7 +1867,7 @@
       c.inventory.map((it, i) => {
         const acts = [];
         if (it.desc) acts.push(`<button type="button" class="cs-why" data-info="inv:${i}">Info</button>`);
-        if (it.kind === 'magic') acts.push(`<button type="button" class="cs-btn cs-btn-sm cs-btn-red" data-equip="${i}">Equip</button>`);
+        if (it.kind === 'magic' || it.kind === 'weapon' || it.kind === 'armor' || it.kind === 'shield') acts.push(`<button type="button" class="cs-btn cs-btn-sm cs-btn-red" data-equip="${i}">Equip</button>`);
         if (it.kind === 'consumable') acts.push(`<button type="button" class="cs-btn cs-btn-sm cs-btn-red" data-use="${i}">Use</button>`);
         if (toolNames.includes(String(it.name || '').toLowerCase()) && !(c.tools || []).some(t => String(t.name).toLowerCase() === String(it.name).toLowerCase())) acts.push(`<button type="button" class="cs-btn cs-btn-sm" data-totool="${i}">Add to Tools</button>`);
         const tag = it.kind ? `<span class="cs-tag cs-kind">${esc(KIND_LABEL[it.kind] || it.kind)}${it.slot ? ' · ' + esc(normSlot(it.slot)) : ''}</span>` : '';
@@ -2416,6 +2432,482 @@
     if (first) first.focus();
   }
 
+  // ------------------------------------------------------------------ character builder
+  // A step-by-step builder that runs before the sheet: name, race, class, subclass, statistics,
+  // spells or maneuvers, then equipment bought with starting gold. It fills a blank character and
+  // hands it to the sheet, so every number comes from the same rules engine.
+  const START_GOLD = 1000;
+  const STAT_ARRAY = [12, 12, 10, 8, 7, 6, 4];   // Selective Array (stat-generation.html)
+  const COMMON_SCHOOLS = ['Necromancy', 'Transmutation', 'Hydromancy', 'Pyromancy', 'Geomancy', 'Aeromancy'];
+  const ALL_SCHOOLS = Array.from(new Set(D.spells.map(s => s[1]))).sort();
+  const B_STEPS = [['who', 'Create character'], ['race', 'Race'], ['class', 'Class'], ['sub', 'Subclass'], ['stats', 'Statistics'], ['magic', 'Spells and maneuvers'], ['gear', 'Equipment'], ['review', 'Review']];
+  const SMITH_ID = 'general-smithing';
+  let B = null;
+
+  function shopItems(id) {
+    const sh = ((window.SPARKS_SHOPS && window.SPARKS_SHOPS.shops) || []).find(s => s.id === id);
+    return sh ? sh.items : [];
+  }
+  // General Smithing stock. Falls back to the sheet's weapon, armor, and shield tables if the shop is missing.
+  function smithStock() {
+    const items = shopItems(SMITH_ID);
+    if (items.length) return items.map(it => Object.assign({}, it, { shopName: 'General Smithing' }));
+    const out = [];
+    D.weapons.forEach(w => { if (typeof w.price === 'number') out.push({ name: w.name, gp: w.price, section: 'Weapons', shopName: 'General Smithing' }); });
+    D.armor.forEach(a => { if (typeof a.price === 'number') out.push({ name: a.name, gp: a.price, section: 'Armor', shopName: 'General Smithing' }); });
+    D.shields.forEach(s => { if (typeof s.price === 'number') out.push({ name: s.name, gp: s.price, section: 'Shields', shopName: 'General Smithing' }); });
+    return out;
+  }
+  function storeStock() {
+    return shopItems('general-store').filter(it => typeof it.gp === 'number').map(it => Object.assign({}, it, { section: 'Adventuring gear', shopName: 'General Store' }));
+  }
+  function gearKind(it) {
+    if (it.section === 'Weapons') return 'weapon';
+    if (it.section === 'Armor') return 'armor';
+    if (it.section === 'Shields') return 'shield';
+    const nm = it.name.toLowerCase();
+    if (D.tools.some(t => t.toLowerCase() === nm)) return 'tool';
+    if (/acid|smoke bomb|powder keg|dynamite|rations|^oil$|torch|candle|caltrops|ball bearings|parchment|ink/.test(nm)) return 'consumable';
+    return 'gear';
+  }
+  function gearInfo(it) {
+    const k = gearKind(it);
+    if (k === 'weapon' && WEAPON[it.name]) { const w = WEAPON[it.name]; return `${w.die} ${w.type || ''}${w.traits.length ? ' · ' + w.traits.join(', ') : ''}`; }
+    if (k === 'armor' && ARMOR[it.name]) { const a = ARMOR[it.name]; return `${a.type || ''} armor · AC ${a.ac} · max Finesse ${a.maxFin == null ? 'none' : '+' + a.maxFin}${a.penalty ? ' · penalty ' + a.penalty : ''}`; }
+    if (k === 'shield' && SHIELD[it.name]) { const s = SHIELD[it.name]; return `+${s.ac} AC${s.penalty ? ' · penalty ' + s.penalty : ''}`; }
+    return shortText(it.desc || '');
+  }
+
+  function newBuild(opts) {
+    const stats = {}; STAT_KEYS.forEach(k => { stats[k] = ''; });
+    const lvl = {}; STAT_KEYS.forEach(k => { lvl[k] = 0; });
+    return { step: opts && opts.landing ? 'start' : 'who', replaceId: (opts && opts.replaceId) || null,
+      name: '', player: '', alignment: '', deity: '', race: '', prevRace: '', raceChoice: {}, raceResist: '', adaptations: ['', ''],
+      cls: '', sub: '', method: 'array', assign: stats, custom: Object.fromEntries(STAT_KEYS.map(k => [k, 8])), lvl,
+      spells: [], maneuvers: [], allSchools: false, extraKind: false, cart: {}, wearArmor: '', wearShield: '', shop: 'smith', filter: '' };
+  }
+  function bRace() { return RACE[B.race] || null; }
+  function bClass() { return D.classes[B.cls] || null; }
+  function bBase(k) {
+    if (B.method === 'custom') return n(B.custom[k]);
+    return B.assign[k] === '' ? 8 : STAT_ARRAY[n(B.assign[k])];
+  }
+  function bPoints() { return D.levels[0].points; }
+  function bSpent() { return STAT_KEYS.reduce((a, k) => a + n(B.lvl[k]), 0); }
+  function bGold() { return START_GOLD - bCartTotal(); }
+  function bCartLines() {
+    const all = smithStock().concat(storeStock());
+    return Object.keys(B.cart).filter(key => B.cart[key] > 0).map(key => {
+      const it = all.find(x => `${x.shopName}|${x.name}` === key);
+      return it ? { it, qty: B.cart[key], key } : null;
+    }).filter(Boolean);
+  }
+  function bCartTotal() { return bCartLines().reduce((a, l) => a + l.it.gp * l.qty, 0); }
+  function bTierName(kind) {
+    const tiers = kind === 'spell' ? D.spellTiers : D.maneuverTiers;
+    return tiers.filter(t => t.level <= 1).map(t => t.name);
+  }
+  function bSlots() {
+    const cl = bClass();
+    if (!cl) return { kind: 'spell', slots: 0 };
+    const d = compute(bChar(true));
+    return { kind: cl.slotType, slots: cl.slots[0] + Math.max(0, d.slots.mem) };
+  }
+  function bGrantedSchools() {
+    const cl = bClass();
+    if (!cl) return [];
+    const text = [].concat(cl.prof || [], (cl.features || []).filter(f => f.level <= 1).map(f => f.text),
+      ((cl.subclasses || {})[B.sub] || []).filter(f => f.level <= 1).map(f => f.text)).join(' ');
+    return ALL_SCHOOLS.filter(s => new RegExp('\\b' + s + '\\b', 'i').test(text));
+  }
+
+  // the character the builder will hand to the sheet; light=true skips gear for previews
+  function bChar(light) {
+    const c = blankChar();
+    c.name = B.name.trim(); c.player = B.player.trim(); c.alignment = B.alignment; c.deity = B.deity.trim();
+    c.race = B.race; c.prevRace = B.prevRace; c.raceChoice = clone(B.raceChoice); c.raceResist = B.raceResist; c.adaptations = B.adaptations.slice();
+    c.classes = [{ name: B.cls, level: 1, sub: B.sub }, { name: '', level: 0, sub: '' }];
+    const r = bRace(); if (r) c.languages = r.languages || '';
+    STAT_KEYS.forEach(k => { c.stats[k].base = bBase(k); c.stats[k].lvl = n(B.lvl[k]); });
+    c.spells = B.spells.map(nm => SPELL_BY_NAME[nm.toLowerCase()]).filter(Boolean).map(s => ({ name: s[0], school: s[1], tier: s[2], href: s[3], notes: '' }));
+    c.maneuvers = B.maneuvers.map(nm => MAN_BY_NAME[nm.toLowerCase()]).filter(Boolean).map(m => ({ name: m[0], tier: m[1], href: m[2], notes: '' }));
+    c.gold = START_GOLD;
+    if (light) return c;
+    const weapons = [];
+    bCartLines().forEach(({ it, qty }) => {
+      const kind = gearKind(it), cost = it.gp * qty;
+      c.purchases.push({ t: Date.now(), name: it.name, shop: it.shopName, qty, cost, kind });
+      if (kind === 'weapon') { for (let i = 0; i < qty; i++) weapons.push(newWeapon(it.name)); return; }
+      let left = qty;
+      if (kind === 'armor' && B.wearArmor === it.name) { c.armor = it.name; left--; }
+      if (kind === 'shield' && B.wearShield === it.name) { c.shield = it.name; left--; }
+      if (left > 0) addToInventory(c, { name: it.name, qty: left, kg: 0, where: kind === 'consumable' ? 'Carried' : 'Pack', notes: '', shop: it.shopName, kind, desc: it.desc || gearInfo(it), paid: it.gp });
+    });
+    c.weapons = weapons.concat([newWeapon('Unarmed Strike')]);
+    c.gold = bGold();
+    return c;
+  }
+
+  // which steps are done, and what blocks the Next button
+  function bProblem(step) {
+    const r = bRace(), cl = bClass();
+    switch (step) {
+      case 'who': return B.name.trim() ? '' : 'Give your character a name.';
+      case 'race':
+        if (!r) return 'Pick a race.';
+        if (r.previousRace && !B.prevRace) return 'Pick your previous race.';
+        { const src = raceInfo(bChar(true)).statSrc;
+          if (src && src.choices.some((ch, i) => !B.raceChoice['c' + i])) return 'Pick the stat for your racial bonus.'; }
+        if (r.resistChoice && !B.raceResist) return 'Pick your resistance.';
+        if (r.auto.adaptations && B.adaptations.some(a => !a)) return 'Pick both adaptations.';
+        return '';
+      case 'class': return cl ? '' : 'Pick a class.';
+      case 'sub': return B.sub ? '' : 'Pick a subclass.';
+      case 'stats':
+        if (B.method === 'array') { const used = STAT_KEYS.map(k => B.assign[k]); if (used.some(v => v === '')) return 'Place every number from the array.'; }
+        if (bSpent() !== bPoints()) return `Spend all ${bPoints()} leveling points (${bSpent()} spent).`;
+        return '';
+      case 'magic': { const s = bSlots(); const have = (s.kind === 'spell' ? B.spells : B.maneuvers).length;
+        return have > s.slots ? `You picked ${have} but have ${s.slots} slots. Remove ${have - s.slots}.` : ''; }
+      case 'gear': return bGold() < 0 ? `You are ${(-bGold()).toLocaleString('en-US')} GP over budget.` : '';
+      default: return '';
+    }
+  }
+
+  function openBuilder(opts) {
+    B = newBuild(opts);
+    let box = $('#cs-builder');
+    const root = document.getElementById('cs-app');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'cs-builder'; box.className = 'cs-wrap cs-builder';
+      root.insertBefore(box, root.firstChild);
+      box.addEventListener('click', bClick);
+      box.addEventListener('input', bInput);
+      box.addEventListener('change', bInput);
+    }
+    root.classList.add('cs-building');
+    box.hidden = false;
+    bRender();
+    window.scrollTo(0, 0);
+  }
+  function closeBuilder() {
+    const box = $('#cs-builder');
+    if (box) box.hidden = true;
+    document.getElementById('cs-app').classList.remove('cs-building');
+    B = null;
+  }
+
+  function bRender(focusSel) {
+    const box = $('#cs-builder');
+    if (!box || !B) return;
+    if (B.step === 'start') {
+      const real = roster.order.filter(id => !roster.chars[id].example);
+      box.innerHTML = `<div class="cs-b-start">
+        <h2 class="cs-b-title">Sparks Character Builder</h2>
+        <p>Build a level 1 character one step at a time: race, class, subclass, statistics, spells or maneuvers, then equipment. You start with ${START_GOLD.toLocaleString('en-US')} GP.</p>
+        <div class="cs-btnrow cs-b-startbtns">
+          <button type="button" class="cs-btn cs-btn-red cs-b-big" data-bx="go:who">Create character</button>
+          ${real.length ? '<button type="button" class="cs-btn" data-bx="close">Open my characters</button>' : '<button type="button" class="cs-btn" data-bx="close">See the example sheet</button>'}
+          <button type="button" class="cs-btn cs-btn-quiet" data-bx="import">Import a character</button>
+        </div></div>`;
+      return;
+    }
+    const idx = B_STEPS.findIndex(s => s[0] === B.step);
+    const prob = bProblem(B.step);
+    const stepper = B_STEPS.map(([id, label], i) => {
+      const reach = i <= idx || B_STEPS.slice(0, i).every(s => !bProblem(s[0]));
+      return `<li><button type="button" class="cs-b-stepbtn${i === idx ? ' on' : ''}${i < idx ? ' done' : ''}" data-bx="go:${id}"${reach ? '' : ' disabled'}${i === idx ? ' aria-current="step"' : ''}><span class="cs-b-num">${i + 1}</span>${esc(label)}</button></li>`;
+    }).join('');
+    box.innerHTML = `
+      <div class="cs-b-head">
+        <h2 class="cs-b-title">${esc(B_STEPS[idx][1])}</h2>
+        <button type="button" class="cs-btn cs-btn-quiet cs-btn-sm" data-bx="cancel">Cancel</button>
+      </div>
+      <ol class="cs-b-steps" aria-label="Builder steps">${stepper}</ol>
+      <div class="cs-b-body">${B_VIEWS[B.step]()}</div>
+      <div class="cs-b-foot">
+        ${idx > 0 ? `<button type="button" class="cs-btn" data-bx="go:${B_STEPS[idx - 1][0]}">Back</button>` : '<span></span>'}
+        <span class="cs-b-prob${prob ? ' cs-bad' : ''}" role="status">${esc(prob)}</span>
+        ${B.step === 'review'
+          ? '<button type="button" class="cs-btn cs-btn-red" data-bx="finish">Create character</button>'
+          : `<button type="button" class="cs-btn cs-btn-red" data-bx="go:${B_STEPS[idx + 1][0]}"${prob ? ' disabled' : ''}>Next</button>`}
+      </div>`;
+    if (focusSel) { const el = $(focusSel, box); if (el) { el.focus(); if (el.setSelectionRange && el.value) el.setSelectionRange(el.value.length, el.value.length); } }
+  }
+  // re-render only the footer status and the Next button (used while typing)
+  function bFoot() {
+    const box = $('#cs-builder');
+    const prob = bProblem(B.step);
+    const p = $('.cs-b-prob', box); if (p) { p.textContent = prob; p.classList.toggle('cs-bad', !!prob); }
+    const nx = $('.cs-b-foot [data-bx^="go:"]:last-child', box); if (nx && B.step !== 'review') nx.disabled = !!prob;
+  }
+
+  const card = (key, active, title, sub, body) => `<button type="button" class="cs-b-card${active ? ' on' : ''}" data-bx="${key}" aria-pressed="${active}">
+    <span class="cs-b-card-t">${esc(title)}</span>${sub ? `<span class="cs-b-card-s">${esc(sub)}</span>` : ''}${body ? `<span class="cs-b-card-b">${body}</span>` : ''}</button>`;
+
+  const B_VIEWS = {
+    who() {
+      return `<p class="cs-note">Start with who your character is. You can change any of this later on the sheet.</p>
+      <div class="cs-b-grid2">
+        <label><span class="cs-lbl">Character name</span><input id="b-name" data-bf="name" value="${esc(B.name)}" autocomplete="off"></label>
+        <label><span class="cs-lbl">Player</span><input id="b-player" data-bf="player" value="${esc(B.player)}" autocomplete="off"></label>
+        <label><span class="cs-lbl">Alignment</span><select id="b-align" data-bf="alignment">${opt('', 'Choose later')}${D.alignments.map(a => opt(a, a, B.alignment)).join('')}</select></label>
+        <label><span class="cs-lbl">Deity (optional)</span><input id="b-deity" data-bf="deity" value="${esc(B.deity)}" autocomplete="off"></label>
+      </div>`;
+    },
+    race() {
+      const r = bRace();
+      const cards = D.races.map(x => card('race:' + x.name, x.name === B.race, x.name, `${x.statsText} · ${x.size} · ${x.speedText}`, '')).join('');
+      let detail = '';
+      if (r) {
+        let picks = '';
+        if (r.previousRace) picks += `<label><span class="cs-lbl">Previous race</span><select data-bf="prevRace" id="b-prev" data-rr="1">${opt('', 'Choose')}${D.races.filter(x => !x.previousRace).map(x => opt(x.name, x.name, B.prevRace)).join('')}</select></label>`;
+        const src = raceInfo(bChar(true)).statSrc;
+        if (src) src.choices.forEach((ch, i) => {
+          picks += `<label><span class="cs-lbl">${esc(src.name)}: +${ch.value} to</span><select data-bf="raceChoice.c${i}" id="b-rc${i}" data-rr="1">${opt('', 'Choose a stat')}${ch.options.map(k => opt(k, STAT[k].name, B.raceChoice['c' + i])).join('')}</select></label>`;
+        });
+        if (r.resistChoice) picks += `<label><span class="cs-lbl">Resistance ${r.resistChoice.value} to</span><select data-bf="raceResist" id="b-res" data-rr="1">${opt('', 'Choose')}${r.resistChoice.options.map(t => opt(t, t, B.raceResist)).join('')}</select></label>`;
+        if (r.auto.adaptations) [0, 1].forEach(i => {
+          picks += `<label><span class="cs-lbl">Adaptation ${i + 1}</span><select data-bf="adaptations.${i}" id="b-ad${i}" data-rr="1">${opt('', 'Choose')}${r.auto.adaptations.map(a => opt(a.name, a.name, B.adaptations[i])).join('')}</select></label>`;
+        });
+        detail = `<div class="cs-b-detail">
+          <h3 class="cs-h">${link(r.name, 'race.html#' + r.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'))}</h3>
+          <p>${esc(r.statsText)} · ${esc(r.size)} ${esc(r.type)} · ${esc(r.speedText)} · Languages: ${esc(r.languages)}</p>
+          ${r.abilities.map(a => `<p><b>${esc(a.name)}.</b> ${esc(a.text)}</p>`).join('')}
+          ${picks ? `<div class="cs-b-grid2">${picks}</div>` : ''}
+        </div>`;
+      }
+      return `<div class="cs-b-cards">${cards}</div>${detail}`;
+    },
+    class() {
+      const cards = CLASS_NAMES.map(nm => {
+        const cl = D.classes[nm];
+        return card('class:' + nm, nm === B.cls, nm, `${STAT[cl.primary].name} and ${STAT[cl.secondary].name} · d${cl.hitDie} · ${cl.resource === 'mana' ? 'Mana' : 'Stamina'}`, '');
+      }).join('');
+      const cl = bClass();
+      let detail = '';
+      if (cl) {
+        const f1 = (cl.features || []).filter(f => f.level <= 1);
+        detail = `<div class="cs-b-detail">
+          <h3 class="cs-h">${link(B.cls, cl.page)}</h3>
+          <p>Hit die d${cl.hitDie} · ${cl.resource === 'mana' ? 'Mana' : 'Stamina'} ${cl.resourceTable[0]} at level 1 · ${cl.slots[0]} ${cl.slotType} slots · ${cl.skillRanks[0]} skill ranks</p>
+          <p>Primary ${STAT[cl.primary].name} (+${cl.primaryBonus[0]}), secondary ${STAT[cl.secondary].name} (+${cl.secondaryBonus[0]}) · Saves: Evasion ${cl.saves.evasion}, Body ${cl.saves.body}, Mind ${cl.saves.mind}</p>
+          <p>Proficiencies: ${esc((cl.prof || []).join(', ') || 'None')}</p>
+          ${f1.map(f => `<p><b>${esc(f.name)}.</b> ${esc(f.text)}</p>`).join('')}
+        </div>`;
+      }
+      return `<div class="cs-b-cards">${cards}</div>${detail}`;
+    },
+    sub() {
+      const cl = bClass();
+      if (!cl) return '<p>Pick a class first.</p>';
+      const subs = cl.subclasses || {};
+      const cards = Object.keys(subs).map(nm => {
+        const f1 = subs[nm].filter(f => f.level <= 1);
+        return card('sub:' + nm, nm === B.sub, nm, f1.length ? 'Level 1: ' + f1.map(f => f.name).join(', ') : '', '');
+      }).join('');
+      let detail = '';
+      if (B.sub && subs[B.sub]) {
+        detail = `<div class="cs-b-detail"><h3 class="cs-h">${esc(B.sub)}</h3>${subs[B.sub].map(f => `<p${f.level > 1 ? ' class="cs-b-later"' : ''}><b>${esc(f.name)}</b> <small>(level ${f.level})</small>. ${esc(f.text)}</p>`).join('')}</div>`;
+      }
+      return `<div class="cs-b-cards">${cards}</div>${detail}`;
+    },
+    stats() {
+      const d = compute(bChar(true));
+      const usedIdx = STAT_KEYS.map(k => B.assign[k]).filter(v => v !== '').map(Number);
+      const rows = STAT_KEYS.map(k => {
+        const s = d.stat[k];
+        let baseCell;
+        if (B.method === 'array') {
+          baseCell = `<select id="b-as-${k}" data-bas="${k}" aria-label="${STAT[k].name} base">${opt('', '—', String(B.assign[k]))}${STAT_ARRAY.map((v, i) => (usedIdx.includes(i) && String(B.assign[k]) !== String(i)) ? '' : opt(String(i), String(v), String(B.assign[k]))).join('')}</select>`;
+        } else {
+          baseCell = `<input type="number" class="cs-num" id="b-cu-${k}" data-bcu="${k}" value="${n(B.custom[k])}" min="1" max="30" aria-label="${STAT[k].name} base">`;
+        }
+        const other = s.parts.filter(p => p[0] !== 'Base' && p[0] !== 'Leveling points').map(p => `${esc(p[0])} ${sign(p[1])}`).join(', ');
+        return `<tr><th scope="row">${esc(STAT[k].name)}${k === (bClass() || {}).primary ? ' <small>primary</small>' : k === (bClass() || {}).secondary ? ' <small>secondary</small>' : ''}</th>
+          <td>${baseCell}</td><td class="cs-b-other">${other || '—'}</td>
+          <td><span class="cs-b-step"><button type="button" class="cs-btn cs-btn-sm" data-bx="pt:${k}:-1" aria-label="Remove a point from ${STAT[k].name}"${n(B.lvl[k]) ? '' : ' disabled'}>−</button><b>${n(B.lvl[k])}</b><button type="button" class="cs-btn cs-btn-sm" data-bx="pt:${k}:1" aria-label="Add a point to ${STAT[k].name}"${bSpent() < bPoints() ? '' : ' disabled'}>+</button></span></td>
+          <td class="cs-b-score"><b>${s.score}</b> <span>(${sign(s.mod)})</span></td></tr>`;
+      }).join('');
+      return `<div class="cs-seg cs-b-method" role="radiogroup" aria-label="Stat method">
+          <button type="button" role="radio" aria-checked="${B.method === 'array'}" data-bx="method:array" class="${B.method === 'array' ? 'on' : ''}">Selective Array</button>
+          <button type="button" role="radio" aria-checked="${B.method === 'custom'}" data-bx="method:custom" class="${B.method === 'custom' ? 'on' : ''}">GM approved scores</button>
+        </div>
+        <p class="cs-note">${B.method === 'array' ? `Place each number once: ${STAT_ARRAY.join(', ')}. ${link('Stat Generation', 'stat-generation.html')} explains the array.` : 'Type the base scores your GM approved.'} Race, size, and your class bonuses add on their own. Then spend ${bPoints()} leveling points.</p>
+        <div class="cs-table-wrap"><table class="cs-b-stats"><thead><tr><th>Stat</th><th>Base</th><th>Race, size, class</th><th>Leveling points</th><th>Score</th></tr></thead><tbody>${rows}</tbody></table></div>
+        <p class="cs-note">Leveling points: ${bSpent()} of ${bPoints()} spent. Modifier = (score − 8) ÷ 2, rounded down.</p>
+        <p class="cs-b-preview">Health ${d.hp.total} · AC ${d.ac.total} · Mana ${d.mana.total} · Stamina ${d.stamina.total} · Evasion ${sign(d.save.evasion.total)} · Body ${sign(d.save.body.total)} · Mind ${sign(d.save.mind.total)}</p>`;
+    },
+    magic() {
+      const s = bSlots(), cl = bClass();
+      const main = s.kind;
+      const other = main === 'spell' ? 'maneuver' : 'spell';
+      const mainPicked = main === 'spell' ? B.spells : B.maneuvers;
+      const list = kind => {
+        const tiers = bTierName(kind);
+        const picked = kind === 'spell' ? B.spells : B.maneuvers;
+        let pool;
+        if (kind === 'spell') {
+          const ok = B.allSchools ? ALL_SCHOOLS : COMMON_SCHOOLS.concat(bGrantedSchools());
+          pool = D.spells.filter(x => tiers.includes(x[2]) && ok.includes(x[1])).map(x => ({ name: x[0], group: x[1], tier: x[2], href: x[3] }));
+        } else {
+          pool = D.maneuvers.filter(x => tiers.includes(x[1])).map(x => ({ name: x[0], group: x[1], tier: x[1], href: x[2] }));
+        }
+        const q = B.filter.trim().toLowerCase();
+        if (q) pool = pool.filter(x => x.name.toLowerCase().includes(q) || x.group.toLowerCase().includes(q));
+        const groups = {};
+        pool.forEach(x => (groups[x.group] = groups[x.group] || []).push(x));
+        return Object.keys(groups).sort().map(g => `<div class="cs-b-group"><h4>${esc(g)}</h4><div class="cs-b-picks">${groups[g].map(x => {
+          const on = picked.includes(x.name);
+          return `<span class="cs-b-pick${on ? ' on' : ''}"><button type="button" data-bx="pick:${kind}:${esc(x.name)}" aria-pressed="${on}">${on ? '✓ ' : ''}${esc(x.name)}</button>${x.href ? link('info', x.href) : ''}</span>`;
+        }).join('')}</div></div>`).join('') || '<p class="cs-note">Nothing matches.</p>';
+      };
+      const granted = bGrantedSchools();
+      const word = main === 'spell' ? 'spells' : 'maneuvers';
+      return `<p>${esc(B.cls)} learns ${word}. At level 1 you know up to <b>${s.slots}</b> ${bTierName(main).join(' or ')} ${word} (${cl.slots[0]} class slots${s.slots > cl.slots[0] ? ` + ${s.slots - cl.slots[0]} from Memory` : ''}). Picked: <b>${mainPicked.length}</b>.</p>
+        ${main === 'spell' ? `<p class="cs-note">Anyone learns ${COMMON_SCHOOLS.join(', ')}.${granted.length ? ` Your class or subclass also opens ${granted.join(', ')}.` : ''} Other schools need a feature that grants them.</p>
+        <label class="cs-check"><input type="checkbox" id="b-allsch" data-bchk="allSchools"${B.allSchools ? ' checked' : ''}> Show every school (GM approved)</label>` : ''}
+        <label class="cs-b-filter"><span class="cs-lbl">Search</span><input id="b-filter" data-bf="filter" value="${esc(B.filter)}" placeholder="Name or ${main === 'spell' ? 'school' : 'tier'}" autocomplete="off"></label>
+        ${list(main)}
+        <label class="cs-check cs-b-extra"><input type="checkbox" id="b-extra" data-bchk="extraKind"${B.extraKind ? ' checked' : ''}> A feature also grants me ${other === 'spell' ? 'spells' : 'maneuvers'}</label>
+        ${B.extraKind ? `<p class="cs-note">These do not use your slots. Take only what the feature allows. Picked: ${(other === 'spell' ? B.spells : B.maneuvers).length}.</p>${list(other)}` : ''}`;
+    },
+    gear() {
+      const stock = B.shop === 'smith' ? smithStock() : storeStock();
+      const q = B.filter.trim().toLowerCase();
+      const sections = {};
+      stock.filter(it => !q || it.name.toLowerCase().includes(q)).forEach(it => (sections[it.section || 'Items'] = sections[it.section || 'Items'] || []).push(it));
+      const gold = bGold();
+      const rows = Object.keys(sections).map(sec => `<div class="cs-b-group"><h4>${esc(sec)}</h4>${sections[sec].map(it => {
+        const key = `${it.shopName}|${it.name}`, qty = n(B.cart[key]);
+        const afford = gold >= it.gp;
+        return `<div class="cs-b-item${qty ? ' on' : ''}"><span class="cs-b-item-n"><b>${esc(it.name)}</b><small>${esc(gearInfo(it))}</small></span><span class="cs-b-item-p">${it.gp.toLocaleString('en-US')} GP</span>
+          <span class="cs-b-step"><button type="button" class="cs-btn cs-btn-sm" data-bx="cart:${esc(key)}:-1" aria-label="Remove one ${esc(it.name)}"${qty ? '' : ' disabled'}>−</button><b>${qty}</b><button type="button" class="cs-btn cs-btn-sm" data-bx="cart:${esc(key)}:1" aria-label="Add one ${esc(it.name)}"${afford ? '' : ' disabled'}>+</button></span></div>`;
+      }).join('')}</div>`).join('') || '<p class="cs-note">Nothing matches.</p>';
+      const lines = bCartLines();
+      const armors = lines.filter(l => gearKind(l.it) === 'armor'), shields = lines.filter(l => gearKind(l.it) === 'shield');
+      const cl = bClass();
+      return `<p class="cs-b-purse">Starting gold <b>${START_GOLD.toLocaleString('en-US')} GP</b> · Spent <b>${bCartTotal().toLocaleString('en-US')} GP</b> · Left <b class="${gold < 0 ? 'cs-bad' : ''}">${gold.toLocaleString('en-US')} GP</b></p>
+        ${cl ? `<p class="cs-note">${esc(B.cls)} proficiencies: ${esc((cl.prof || []).join(', '))}.</p>` : ''}
+        <div class="cs-b-shopcols">
+          <div>
+            <div class="cs-seg" role="tablist" aria-label="Shop">
+              <button type="button" role="tab" aria-selected="${B.shop === 'smith'}" class="${B.shop === 'smith' ? 'on' : ''}" data-bx="shop:smith">General Smithing</button>
+              <button type="button" role="tab" aria-selected="${B.shop === 'store'}" class="${B.shop === 'store' ? 'on' : ''}" data-bx="shop:store">General Store</button>
+            </div>
+            <label class="cs-b-filter"><span class="cs-lbl">Search</span><input id="b-filter" data-bf="filter" value="${esc(B.filter)}" autocomplete="off"></label>
+            ${rows}
+          </div>
+          <aside class="cs-b-cart" aria-label="Your gear">
+            <h3 class="cs-h">Your gear</h3>
+            ${lines.length ? `<ul>${lines.map(l => `<li><span>${l.qty > 1 ? l.qty + ' × ' : ''}${esc(l.it.name)}</span><b>${(l.it.gp * l.qty).toLocaleString('en-US')} GP</b></li>`).join('')}</ul>` : '<p class="cs-note">Nothing bought yet. Unspent gold stays with you.</p>'}
+            ${armors.length ? `<label><span class="cs-lbl">Wear armor</span><select id="b-wear-a" data-bf="wearArmor">${opt('', 'None')}${armors.map(l => opt(l.it.name, l.it.name, B.wearArmor)).join('')}</select></label>` : ''}
+            ${shields.length ? `<label><span class="cs-lbl">Carry shield</span><select id="b-wear-s" data-bf="wearShield">${opt('', 'None')}${shields.map(l => opt(l.it.name, l.it.name, B.wearShield)).join('')}</select></label>` : ''}
+          </aside>
+        </div>`;
+    },
+    review() {
+      const c = bChar(), d = compute(c);
+      const st = STAT_KEYS.map(k => `<span><small>${STAT[k].abbr}</small><b>${d.stat[k].score}</b><i>${sign(d.stat[k].mod)}</i></span>`).join('');
+      const kn = [].concat(c.spells.map(s => s.name), c.maneuvers.map(m => m.name));
+      const warn = d.warnings.filter(w => !/class levels|Pick a class/.test(w));
+      return `<div class="cs-b-review">
+        <h3 class="cs-b-rname">${esc(c.name)}</h3>
+        <p>Level 1 ${esc(c.race)}${c.prevRace ? ` (${esc(c.prevRace)})` : ''} ${esc(B.cls)} · ${esc(B.sub)}${c.alignment ? ' · ' + esc(c.alignment) : ''}</p>
+        <div class="cs-b-statrow">${st}</div>
+        <p class="cs-b-preview">Health ${d.hp.total} · AC ${d.ac.total} · Physical Armor ${d.pa.total} · Magical Armor ${d.ma.total} · Mana ${d.mana.total} · Stamina ${d.stamina.total} · Speed ${d.speed.text}</p>
+        <p><b>Spells and maneuvers:</b> ${kn.length ? esc(kn.join(', ')) : 'None yet'}</p>
+        <p><b>Weapons:</b> ${esc(c.weapons.map(w => w.item).join(', '))}</p>
+        <p><b>Armor:</b> ${esc(c.armor || 'None')}${c.shield ? ' · <b>Shield:</b> ' + esc(c.shield) : ''}</p>
+        ${c.inventory.length ? `<p><b>Pack:</b> ${esc(c.inventory.map(i => (i.qty > 1 ? i.qty + ' × ' : '') + i.name).join(', '))}</p>` : ''}
+        <p><b>Gold left:</b> ${c.gold.toLocaleString('en-US')} GP</p>
+        ${warn.length ? `<ul class="cs-b-warn">${warn.map(w => `<li>${esc(w)}</li>`).join('')}</ul>` : ''}
+        <p class="cs-note">Skill ranks, tools, languages, and feats go on the sheet next.</p>
+      </div>`;
+    },
+  };
+
+  function bInput(e) {
+    const el = e.target;
+    if (!B) return;
+    if (el.tagName === 'SELECT' && e.type !== 'change') return;
+    if (el.dataset.bf) {
+      const path = el.dataset.bf;
+      setPath(B, path, el.value);
+      if (path === 'prevRace') B.raceChoice = {};
+      if (el.tagName === 'SELECT') bRender('#' + el.id);
+      else if (path === 'filter') bRender('#b-filter');
+      else bFoot();
+      return;
+    }
+    if (el.dataset.bas && e.type === 'change') { B.assign[el.dataset.bas] = el.value; bRender('#' + el.id); return; }
+    if (el.dataset.bcu) { B.custom[el.dataset.bcu] = clamp(n(el.value), 1, 60); if (e.type === 'change') bRender('#' + el.id); return; }
+    if (el.dataset.bchk && e.type === 'change') { B[el.dataset.bchk] = el.checked; bRender('#' + el.id); }
+  }
+  function bClick(e) {
+    const t = e.target.closest('[data-bx]');
+    if (!t || !B) return;
+    e.stopPropagation();
+    const [act, ...rest] = t.dataset.bx.split(':');
+    const arg = rest.join(':');
+    switch (act) {
+      case 'go': B.filter = ''; B.step = arg; bRender(); window.scrollTo(0, Math.min(window.scrollY, $('#cs-builder').offsetTop)); return;
+      case 'close': closeBuilder(); return;
+      case 'import': closeBuilder(); importChar(); return;
+      case 'cancel':
+        if (B.name || B.race || B.cls) {
+          modal('Leave the builder?', '<p>The character you started will not be saved.</p>', [{ label: 'Leave', cls: 'cs-btn-red', fn: closeBuilder }, { label: 'Keep building' }]);
+        } else closeBuilder();
+        return;
+      case 'race':
+        if (B.race !== arg) { B.race = arg; B.prevRace = ''; B.raceChoice = {}; B.raceResist = ''; B.adaptations = ['', '']; }
+        break;
+      case 'class': if (B.cls !== arg) { B.cls = arg; B.sub = ''; B.spells = []; B.maneuvers = []; } break;
+      case 'sub': B.sub = arg; break;
+      case 'method': B.method = arg; break;
+      case 'pt': { const [k, dv] = arg.split(':'); const v = n(B.lvl[k]) + n(dv); if (v >= 0 && bSpent() + n(dv) <= bPoints()) B.lvl[k] = v; break; }
+      case 'pick': {
+        const i = arg.indexOf(':'); const kind = arg.slice(0, i), name = arg.slice(i + 1);
+        const arr = kind === 'spell' ? B.spells : B.maneuvers;
+        const at = arr.indexOf(name);
+        if (at >= 0) arr.splice(at, 1);
+        else {
+          const s = bSlots();
+          if (kind === s.kind && arr.length >= s.slots) { toast(`Every slot is full (${s.slots}). Remove one first.`, 'dmg'); return; }
+          arr.push(name);
+        }
+        break;
+      }
+      case 'shop': B.shop = arg; B.filter = ''; break;
+      case 'cart': {
+        const j = arg.lastIndexOf(':'); const key = arg.slice(0, j), dv = n(arg.slice(j + 1));
+        B.cart[key] = Math.max(0, n(B.cart[key]) + dv);
+        const lines = bCartLines();
+        const arm = lines.filter(l => gearKind(l.it) === 'armor').map(l => l.it.name), sh = lines.filter(l => gearKind(l.it) === 'shield').map(l => l.it.name);
+        if (!arm.includes(B.wearArmor)) B.wearArmor = arm[0] || '';
+        if (!sh.includes(B.wearShield)) B.wearShield = sh[0] || '';
+        break;
+      }
+      case 'finish': bFinish(); return;
+      default: return;
+    }
+    const id = t.id;
+    bRender(id ? '#' + id : null);
+    const same = $(`[data-bx="${CSS.escape(t.dataset.bx)}"]`, $('#cs-builder'));
+    if (same && !same.disabled) same.focus();
+  }
+  function bFinish() {
+    for (const [id] of B_STEPS) { const p = bProblem(id); if (p) { B.step = id; bRender(); toast(p, 'dmg'); return; } }
+    const c = bChar();
+    const replace = B.replaceId;
+    closeBuilder();
+    // the example sheet steps aside for the first real character
+    Object.keys(roster.chars).forEach(id => { if (roster.chars[id].example && (id === replace || roster.order.length === 1)) { delete roster.chars[id]; roster.order = roster.order.filter(x => x !== id); } });
+    addChar(c, `${esc(c.name)} is ready. Add skill ranks, tools, and feats next.`);
+    setTab('character');
+  }
+
   // ------------------------------------------------------------------ actions
   function addChar(c, msg) {
     roster.chars[c.id] = c; roster.order.push(c.id); roster.active = c.id;
@@ -2579,17 +3071,9 @@
     }
     switch (ds.act) {
       case 'close-pop': hidePop(); break;
-      case 'new': addChar(blankChar(), 'New character started.'); setTab('character'); $('#cs-name').focus(); break;
-      case 'start': {
-        const ex = c;
-        const fresh = blankChar();
-        roster.chars[fresh.id] = fresh;
-        roster.order = roster.order.filter(id => id !== ex.id);
-        delete roster.chars[ex.id];
-        roster.order.push(fresh.id);
-        switchTo(fresh.id); setTab('character'); $('#cs-name').focus();
-        break;
-      }
+      case 'new': openBuilder(); break;
+      case 'new-blank': addChar(blankChar(), 'Blank character started.'); setTab('character'); $('#cs-name').focus(); break;
+      case 'start': openBuilder({ replaceId: c.id }); break;
       case 'dup': { const cp = clone(c); cp.id = uid(); cp.name = (c.name || 'Character') + ' (copy)'; cp.example = false; addChar(cp, 'Copy made.'); break; }
       case 'delete':
         modal(`Delete ${c.name || 'this character'}?`, '<p>This removes the character from this browser. Export it first if you want a backup.</p>', [
@@ -2697,6 +3181,7 @@
     update(true);
     renderRolls();
     saveNow();
+    if (!/^#forge/.test(location.hash) && (location.hash === '#new' || !roster.order.some(id => !roster.chars[id].example))) openBuilder({ landing: location.hash !== '#new' });
     if (/^#forge/.test(location.hash)) {
       const b = Number((location.hash.match(/^#forge-(\d+)$/) || [])[1]);
       openForge('new');

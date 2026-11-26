@@ -440,6 +440,420 @@ window.SPARKS_SHOPS = {
    "sections": []
   },
   {
+   "id": "general-smithing",
+   "name": "General Smithing",
+   "page": "general-smithing.html",
+   "subtitle": "Weapons, armor, and shields",
+   "items": [
+    {
+     "name": "Arming Sword",
+     "price": "10 GP",
+     "gp": 10,
+     "section": "Weapons",
+     "desc": "1d8 slashing damage. Traits: Deadly I."
+    },
+    {
+     "name": "Bayonet",
+     "price": "15 GP",
+     "gp": 15,
+     "section": "Weapons",
+     "desc": "1d4 piercing damage. Traits: Attachment. Range Varies."
+    },
+    {
+     "name": "Chakram",
+     "price": "5 GP",
+     "gp": 5,
+     "section": "Weapons",
+     "desc": "1d4 slashing damage. Traits: Light, Deadly, Thrown (10), Skilled. Range 10."
+    },
+    {
+     "name": "Claymore",
+     "price": "100 GP",
+     "gp": 100,
+     "section": "Weapons",
+     "desc": "2d10 slashing damage. Traits: Heavy, Cleave, Reach I, Skilled."
+    },
+    {
+     "name": "Club",
+     "price": "1 GP",
+     "gp": 1,
+     "section": "Weapons",
+     "desc": "1d6 bludgeoning damage. Traits: Simple."
+    },
+    {
+     "name": "Firelance",
+     "price": "200 GP",
+     "gp": 200,
+     "section": "Weapons",
+     "desc": "1d6 fire damage. Traits: Reload, Ranged (Finesse) (5), Attachment, Firearm, Skilled. Range 5."
+    },
+    {
+     "name": "Flintlock",
+     "price": "375 GP",
+     "gp": 375,
+     "section": "Weapons",
+     "desc": "1d10 piercing damage. Traits: Reload, Ranged (Finesse) (10), Firearm, Exotic, Skilled. Range 10."
+    },
+    {
+     "name": "Flysaa",
+     "price": "35 GP",
+     "gp": 35,
+     "section": "Weapons",
+     "desc": "1d6 slashing damage. Traits: Deadly II."
+    },
+    {
+     "name": "Glaive",
+     "price": "25 GP",
+     "gp": 25,
+     "section": "Weapons",
+     "desc": "1d10 slashing damage. Traits: Heavy, Reach II, Cleave. Range 3."
+    },
+    {
+     "name": "Halberd",
+     "price": "75 GP",
+     "gp": 75,
+     "section": "Weapons",
+     "desc": "1d10 slashing damage. Traits: Heavy, Deadly I, Reach II, Skilled. Range 2."
+    },
+    {
+     "name": "Hand Crossbow",
+     "price": "750 GP",
+     "gp": 750,
+     "section": "Weapons",
+     "desc": "1d4 piercing damage. Traits: Light, Ranged (Finesse) (10), Exotic, Deadly I. Range 10."
+    },
+    {
+     "name": "Heavy Bow",
+     "price": "15 GP",
+     "gp": 15,
+     "section": "Weapons",
+     "desc": "1d10 piercing damage. Traits: Ranged (30), Two Handed, Skilled. Range 30."
+    },
+    {
+     "name": "Heavy Crossbow",
+     "price": "60 GP",
+     "gp": 60,
+     "section": "Weapons",
+     "desc": "1d10 piercing damage. Traits: Reload, Ranged (Finesse) (30), Heavy, Piercing. Range 30."
+    },
+    {
+     "name": "Heilongjiang",
+     "price": "100 GP",
+     "gp": 100,
+     "section": "Weapons",
+     "desc": "1d8 piercing damage. Traits: Firearm, Reload, Exotic, Ranged (Finesse) (10), Skilled. Range 10."
+    },
+    {
+     "name": "Hook Sword",
+     "price": "80 GP",
+     "gp": 80,
+     "section": "Weapons",
+     "desc": "1d4 slashing damage. Traits: Defensive, Secured, Hooked, Skilled."
+    },
+    {
+     "name": "Katar",
+     "price": "120 GP",
+     "gp": 120,
+     "section": "Weapons",
+     "desc": "1d6 piercing damage. Traits: Secured, Deadly."
+    },
+    {
+     "name": "Kusarigama",
+     "price": "25 GP",
+     "gp": 25,
+     "section": "Weapons",
+     "desc": "1d4 slashing damage. Traits: Reach II, Light, Exotic, Skilled. Range 3."
+    },
+    {
+     "name": "Light Bow",
+     "price": "10 GP",
+     "gp": 10,
+     "section": "Weapons",
+     "desc": "1d6 piercing damage. Traits: Ranged (20), Two Handed, Skilled. Range 20."
+    },
+    {
+     "name": "Light Crossbow",
+     "price": "30 GP",
+     "gp": 30,
+     "section": "Weapons",
+     "desc": "1d6 piercing damage. Traits: Two handed, Reload, Ranged (Finesse) (20), Piercing. Range 20."
+    },
+    {
+     "name": "Longsword",
+     "price": "20 GP",
+     "gp": 20,
+     "section": "Weapons",
+     "desc": "1d10 slashing damage. Traits: Two Handed."
+    },
+    {
+     "name": "Mace",
+     "price": "10 GP",
+     "gp": 10,
+     "section": "Weapons",
+     "desc": "1d6 bludgeoning damage. Traits: Deadly I."
+    },
+    {
+     "name": "Musket",
+     "price": "500 GP",
+     "gp": 500,
+     "section": "Weapons",
+     "desc": "2d8 piercing damage. Traits: Reload, Ranged (Finesse) (20), Two Handed, Firearm, Piercing, Exotic, Skilled. Range 20."
+    },
+    {
+     "name": "Rapier",
+     "price": "50 GP",
+     "gp": 50,
+     "section": "Weapons",
+     "desc": "1d6 piercing damage. Traits: Light, Deadly."
+    },
+    {
+     "name": "Spear",
+     "price": "10 GP",
+     "gp": 10,
+     "section": "Weapons",
+     "desc": "1d6 piercing damage. Traits: Reach II, Thrown (10), Two Handed. Range 3."
+    },
+    {
+     "name": "Tachi",
+     "price": "50 GP",
+     "gp": 50,
+     "section": "Weapons",
+     "desc": "1d10 slashing damage. Traits: Two Handed, Light."
+    },
+    {
+     "name": "Talons",
+     "price": "30 GP",
+     "gp": 30,
+     "section": "Weapons",
+     "desc": "1d4 slashing damage. Traits: Light, Secured, Deadly III."
+    },
+    {
+     "name": "Throwing Axe",
+     "price": "5 GP",
+     "gp": 5,
+     "section": "Weapons",
+     "desc": "1d4 slashing damage. Traits: Thrown (10)."
+    },
+    {
+     "name": "War Axe",
+     "price": "20 GP",
+     "gp": 20,
+     "section": "Weapons",
+     "desc": "2d4 slashing damage. Traits: Two Handed, Deadly I."
+    },
+    {
+     "name": "War Hammer",
+     "price": "15 GP",
+     "gp": 15,
+     "section": "Weapons",
+     "desc": "1d8 bludgeoning damage. Traits: Piercing."
+    },
+    {
+     "name": "Whip",
+     "price": "10 GP",
+     "gp": 10,
+     "section": "Weapons",
+     "desc": "1d4 slashing damage. Traits: Reach III, Light, Cleave, Skilled. Range 4."
+    },
+    {
+     "name": "Wrist Blade",
+     "price": "175 GP",
+     "gp": 175,
+     "section": "Weapons",
+     "desc": "1d4 piercing damage. Traits: Light, Hidden, Deadly II, Skilled."
+    },
+    {
+     "name": "Plate",
+     "price": "2,500 GP",
+     "gp": 2500,
+     "section": "Armor",
+     "desc": "Heavy armor. AC 30, maximum Finesse bonus +2, penalty 8."
+    },
+    {
+     "name": "Half Plate",
+     "price": "1,500 GP",
+     "gp": 1500,
+     "section": "Armor",
+     "desc": "Medium armor. AC 20, maximum Finesse bonus +7, penalty 3."
+    },
+    {
+     "name": "Chainmail",
+     "price": "200 GP",
+     "gp": 200,
+     "section": "Armor",
+     "desc": "Heavy armor. AC 18, maximum Finesse bonus +3, penalty 1."
+    },
+    {
+     "name": "Leather",
+     "price": "50 GP",
+     "gp": 50,
+     "section": "Armor",
+     "desc": "Light armor. AC 10, maximum Finesse bonus +30, penalty 0."
+    },
+    {
+     "name": "Dō",
+     "price": "1,250 GP",
+     "gp": 1250,
+     "section": "Armor",
+     "desc": "Medium armor. AC 17, maximum Finesse bonus +11, penalty 4."
+    },
+    {
+     "name": "Yoroi",
+     "price": "3,000 GP",
+     "gp": 3000,
+     "section": "Armor",
+     "desc": "Heavy armor. AC 25, maximum Finesse bonus +5, penalty 6."
+    },
+    {
+     "name": "Lamellar",
+     "price": "10 GP",
+     "gp": 10,
+     "section": "Armor",
+     "desc": "Light armor. AC 8, maximum Finesse bonus none, penalty 0."
+    },
+    {
+     "name": "Cuirass",
+     "price": "25 GP",
+     "gp": 25,
+     "section": "Armor",
+     "desc": "Medium armor. AC 19, maximum Finesse bonus +4, penalty 2."
+    },
+    {
+     "name": "Robes",
+     "price": "50 GP",
+     "gp": 50,
+     "section": "Armor",
+     "desc": "Light armor. AC 5, maximum Finesse bonus none, penalty 0."
+    },
+    {
+     "name": "Padded Armor",
+     "price": "25 GP",
+     "gp": 25,
+     "section": "Armor",
+     "desc": "Light armor. AC 10, maximum Finesse bonus +25, penalty 1."
+    },
+    {
+     "name": "Chitin Vest",
+     "price": "200 GP",
+     "gp": 200,
+     "section": "Armor",
+     "desc": "Medium armor. AC 15, maximum Finesse bonus +13, penalty 3."
+    },
+    {
+     "name": "Shadowcloak",
+     "price": "500 GP",
+     "gp": 500,
+     "section": "Armor",
+     "desc": "Light armor. AC 8, maximum Finesse bonus +30, penalty 0."
+    },
+    {
+     "name": "Studded Leather",
+     "price": "75 GP",
+     "gp": 75,
+     "section": "Armor",
+     "desc": "Light armor. AC 12, maximum Finesse bonus +25, penalty 0."
+    },
+    {
+     "name": "Hide Armor",
+     "price": "100 GP",
+     "gp": 100,
+     "section": "Armor",
+     "desc": "Medium armor. AC 14, maximum Finesse bonus +20, penalty 1."
+    },
+    {
+     "name": "Scale Mail",
+     "price": "200 GP",
+     "gp": 200,
+     "section": "Armor",
+     "desc": "Medium armor. AC 16, maximum Finesse bonus +15, penalty 2."
+    },
+    {
+     "name": "Chain Shirt",
+     "price": "150 GP",
+     "gp": 150,
+     "section": "Armor",
+     "desc": "Medium armor. AC 13, maximum Finesse bonus +18, penalty 1."
+    },
+    {
+     "name": "Brigandine",
+     "price": "250 GP",
+     "gp": 250,
+     "section": "Armor",
+     "desc": "Medium armor. AC 15, maximum Finesse bonus +12, penalty 2."
+    },
+    {
+     "name": "Splint Mail",
+     "price": "500 GP",
+     "gp": 500,
+     "section": "Armor",
+     "desc": "Heavy armor. AC 24, maximum Finesse bonus none, penalty 3."
+    },
+    {
+     "name": "Banded Mail",
+     "price": "400 GP",
+     "gp": 400,
+     "section": "Armor",
+     "desc": "Heavy armor. AC 17, maximum Finesse bonus +8, penalty 3."
+    },
+    {
+     "name": "Elven Chain",
+     "price": "2,000 GP",
+     "gp": 2000,
+     "section": "Armor",
+     "desc": "Medium armor. AC 18, maximum Finesse bonus +20, penalty 1."
+    },
+    {
+     "name": "Mithril Plate",
+     "price": "10,000 GP",
+     "gp": 10000,
+     "section": "Armor",
+     "desc": "Heavy armor. AC 30, maximum Finesse bonus +12, penalty 8."
+    },
+    {
+     "name": "Dragon Scale",
+     "price": "5,000 GP",
+     "gp": 5000,
+     "section": "Armor",
+     "desc": "Heavy armor. AC 20, maximum Finesse bonus +15, penalty 2."
+    },
+    {
+     "name": "Padded Gambeson",
+     "price": "25 GP",
+     "gp": 25,
+     "section": "Armor",
+     "desc": "Light armor. AC 10, maximum Finesse bonus +30, penalty 0."
+    },
+    {
+     "name": "Round Shield",
+     "price": "20 GP",
+     "gp": 20,
+     "section": "Shields",
+     "desc": "Shield. +3 AC, penalty 2."
+    },
+    {
+     "name": "Kite Shield",
+     "price": "30 GP",
+     "gp": 30,
+     "section": "Shields",
+     "desc": "Shield. +5 AC, penalty 3."
+    },
+    {
+     "name": "Buckler",
+     "price": "50 GP",
+     "gp": 50,
+     "section": "Shields",
+     "desc": "Shield. +1 AC, penalty 0."
+    }
+   ],
+   "hasSlots": false,
+   "hasPower": false,
+   "sections": [
+    "Weapons",
+    "Armor",
+    "Shields"
+   ]
+  },
+  {
    "id": "grand-elixirs",
    "name": "Grand Elixirs",
    "page": "grand-elixirs.html",

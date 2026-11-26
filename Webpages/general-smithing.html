@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Sparks | General Smithing</title>
+    <meta name="description" content="General Smithing: weapons, armor, and shields with prices, damage, and traits.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+    <link rel="stylesheet" type="text/css" href="shops.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $("#header-placeholder").load("a-header.html");
+        });
+    </script>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div id="shop-app" data-shop="general-smithing"></div>
+    <noscript><div class="content-box">The shops need JavaScript turned on.</div></noscript>
+
+    <script src="shops-data.js"></script>
+    <script src="shops.js"></script>
+</body>
+</html>

@@ -52,6 +52,18 @@ Added November 24, 2026.
 - The magic works only on the item it was made for. Switching a weapon or armor keeps the magic stored until the player picks that item again.
 - Magic Item +1 to +10 in the shops links to the forge.
 
+## Character builder and General Smithing
+
+Added November 25, 2026.
+
+- Create character opens a step-by-step builder before the sheet: name, race, class, subclass, statistics, spells or maneuvers, equipment, then review. The finished character opens on the sheet.
+- The builder shows first when the browser has no characters of its own. Blank sheet skips it. A link to character-sheet.html#new opens it straight away.
+- Statistics use the Selective Array (12, 12, 10, 8, 7, 6, 4) or GM approved scores, then the 2 level 1 leveling points.
+- Spells list the common schools plus any school the class or a level 1 subclass feature names. A box shows every school for GM approved picks.
+- Level 1 characters get 1,000 GP (START_GOLD in character-sheet.js). Equipment buys from General Smithing and the General Store.
+- General Smithing is a new shop in shops-data.js, built from the weapon, armor, and shield tables in character-sheet-data.js. Items without a price stay out. Weapons, armor, and shields bought in the shops have an Equip button in the sheet inventory.
+- Shops.xlsx does not have General Smithing. If you rebuild shops-data.js from it, add the shop again.
+
 ## Rules the sheet follows where the Google Sheet differed
 
 Each of these has a switch on the Bonuses & Rules tab, per character.
