@@ -424,8 +424,8 @@
     };
   }
   function defaultRules() {
-    return { armorMult: 5, unarmored: 'ten', initStat: 'wits', survivalStat: 'wits', critBase: 'score',
-      raceStats: true, weaponStat: 'best', manAtkLevel: false };
+    return { armorMult: 10, unarmored: 'ten', initStat: 'wits', survivalStat: 'wits', critBase: 'score',
+      raceStats: true, weaponStat: 'traits', manAtkLevel: true };
   }
   function newWeapon(item) {
     return { item: item || '', name: '', die: '', traits: '', range: '', type: '', prof: true, stat: 'auto', atk: 0, dmg: 0, notes: '', inHand: true, chosen: false, magic: null };
@@ -506,7 +506,7 @@
   function upgradeChar(c) {
     const b = blankChar();
     Object.keys(b).forEach(k => { if (c[k] === undefined) c[k] = clone(b[k]); });
-    c.rules = Object.assign(defaultRules(), c.rules || {});
+    c.rules = defaultRules();
     STAT_KEYS.forEach(k => { c.stats[k] = Object.assign({ base: 8, lvl: 0, perm: 0, temp: 0, drain: 0 }, c.stats[k] || {}); });
     while (c.classes.length < 2) c.classes.push({ name: '', level: 0, sub: '' });
     c.cur = Object.assign(b.cur, c.cur || {});
@@ -1625,7 +1625,6 @@
         ['Other', [['init', 'Initiative'], ['crit', 'Critical Chance'], ['speed', 'Speed'], ['skillRanks', 'Skill ranks'], ['feats', 'Feats'], ['carry', 'Carrying capacity (kg)']]],
         ['Spells and maneuvers', [['dc0', 'Class 1 DC'], ['atk0', 'Class 1 attack'], ['dc1', 'Class 2 DC'], ['atk1', 'Class 2 attack']]],
       ];
-      const rule = (key, label, opts, note) => `<div class="cs-rule"><label><span class="cs-lbl">${label}</span><select data-bind="rules.${key}" id="r-${key}" data-type="${typeof opts[0][0] === 'number' ? 'num' : ''}">${opts.map(o => opt(o[0], o[1])).join('')}</select></label><p class="cs-note">${note}</p></div>`;
       return `
 <div class="cs-box">
   <h3 class="cs-h">Active effects</h3>
@@ -1649,20 +1648,6 @@
   <h3 class="cs-h">Bonuses</h3>
   <p class="cs-note">These match the Cell Modifiers block on the Google Sheet. Weapon bonuses live on each weapon card.</p>
   ${G.map(([g, list]) => `<div class="cs-bonusgroup"><h4 class="cs-h4">${g}</h4><div class="cs-bonusgrid">${list.map(([k, l]) => `<label><span class="cs-lbl">${l}</span>${numIn('bonus.' + k, `id="b-${k}"`)}</label>`).join('')}</div></div>`).join('')}
-</div>
-<div class="cs-box">
-  <h3 class="cs-h">Rules</h3>
-  <p class="cs-note">The sheet follows the Basic Rules (revised November 3, 2026). Where the Google Sheet used a different formula, you can switch to it here. Each setting applies to this character only.</p>
-  <div class="cs-rules">
-    ${rule('armorMult', 'Physical and Magical Armor', [[5, '5 × modifier (Basic Rules)'], [10, '10 × modifier (Google Sheet)']], 'The Google Sheet multiplied the Fortitude and Intelligence modifiers by 10.')}
-    ${rule('unarmored', 'Armor Class with no armor', [['ten', '10 + Finesse modifier (Basic Rules)'], ['fin', 'Finesse modifier only (Google Sheet)']], 'With the Basic Rules version, Robes (AC 5), Lamellar (8), and Shadowcloak (8) give less AC than wearing nothing.')}
-    ${rule('initStat', 'Initiative', [['wits', 'd20 + Wits modifier (Basic Rules)'], ['fin', 'd20 + Finesse modifier (Google Sheet)']], 'Initiative rolls use this stat.')}
-    ${rule('survivalStat', 'Survival skill', [['wits', 'Wits (Basic Rules)'], ['fin', 'Finesse (Google Sheet)']], 'The skills table lists Survival under Wits.')}
-    ${rule('critBase', 'Critical Chance', [['score', 'Wits score (Basic Rules)'], ['base', 'Wits base only (Google Sheet)']], 'The Google Sheet read the Base column, so class and leveling bonuses did not raise it.')}
-    ${rule('weaponStat', 'Weapon attack stat', [['best', 'Higher of Strength or Finesse (Basic Rules)'], ['traits', 'Finesse for Light and Ranged (Finesse), else Strength']], 'Sheet Formulas says the higher stat. The Light trait says Finesse replaces Strength. Each weapon card can also pick a stat.')}
-    ${rule('raceStats', 'Racial stat bonuses', [[true, 'Add automatically'], [false, 'I include them in Base']], 'The Google Sheet had no race column, so players typed racial bonuses into Base.')}
-    ${rule('manAtkLevel', 'Maneuver attack', [[false, 'Stat modifier only (Google Sheet)'], [true, 'Stat modifier + level']], 'The Basic Rules do not say. Spell attacks add level on both versions.')}
-  </div>
 </div>`;
     },
   };
