@@ -1,0 +1,591 @@
+/* Sparks of Dynasty character sheet: class themes.
+   Classic lives in character-sheet.css. Each class theme overrides the theme tokens declared there.
+   Scoping: sheet parts use #cs-app[data-theme="<id>"] .cs-wrap:not(.cs-builder) ...;
+   overlays use #cs-app[data-theme="<id>"] :is(.cs-dice-fab, .cs-rolls, .cs-toasts, .cs-pop, .cs-modal).
+   Everything sits inside @media screen, so every theme prints exactly like Classic. */
+@media screen {
+  /* ---------- shared by every class theme (Classic keeps its own look) ---------- */
+  #cs-app[data-theme]:not([data-theme="classic"]) .cs-wrap:not(.cs-builder) { overflow-x: clip; isolation: isolate; font-variant-numeric: lining-nums; }
+  #cs-app[data-theme]:not([data-theme="classic"]) .cs-wrap:not(.cs-builder) .cs-hero { position: relative; }
+  #cs-app[data-theme]:not([data-theme="classic"]) .cs-wrap:not(.cs-builder) a.cs-btn-red { color: var(--cs-btn-strong-ink); }
+  #cs-app[data-theme]:not([data-theme="classic"]) .cs-wrap:not(.cs-builder) .cs-chip.on .cs-x { color: var(--cs-cream); }
+  #cs-app[data-theme]:not([data-theme="classic"]) .cs-wrap:not(.cs-builder) input.cs-vital-num { font-size: 1.3rem; font-variant-numeric: lining-nums tabular-nums; -moz-appearance: textfield; appearance: textfield; }
+  #cs-app[data-theme]:not([data-theme="classic"]) .cs-wrap:not(.cs-builder) input.cs-vital-num::-webkit-inner-spin-button, #cs-app[data-theme]:not([data-theme="classic"]) .cs-wrap:not(.cs-builder) input.cs-vital-num::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  #cs-app[data-theme]:not([data-theme="classic"]) .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big { font-size: 1.35rem; font-variant-numeric: lining-nums tabular-nums; }
+
+  /* ---------- Warrior: forged steel and war banners ---------- */
+  #cs-app[data-theme="warrior"] {
+    --cs-leaf: #1a1c21;
+    --cs-leaf-hi: #24272e;
+    --cs-leaf-lo: #1f2228;
+    --cs-leaf-edge: #3a3f48;
+    --cs-rule: #5c636d;
+    --cs-ink: #ecebe8;
+    --cs-ink-2: #d2d0cb;
+    --cs-ink-3: #a6abb2;
+    --cs-red: #f07a6e;
+    --cs-red-hi: #ff9d93;
+    --cs-amber: #d1ae74;
+    --cs-gold: #b8c0c9;
+    --cs-gold-hi: #e3e8ed;
+    --cs-gold-lo: #6d7480;
+    --cs-cream: #1a1c21;
+    --cs-hp: #ff9a8f;
+    --cs-pa: #b8c0c9;
+    --cs-ma: #b9a2e6;
+    --cs-ta: #e3c370;
+    --cs-mana: #86bdec;
+    --cs-sta: #93d493;
+    --cs-good: #93d493;
+    --cs-bad: #f07a6e;
+    --cs-shadow: rgba(0, 0, 0, 0.45);
+    --cs-display: 'Grenze', 'Cinzel', Georgia, serif;
+    --cs-body: 'Crimson Pro', 'EB Garamond', Georgia, serif;
+    --cs-wrap-bg: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.018) 0 2px, transparent 2px 5px), radial-gradient(ellipse 90% 45% at 50% 0%, rgba(255, 255, 255, 0.07) 0%, transparent 70%), linear-gradient(to bottom, #20232a 0%, #17191d 100%);
+    --cs-wrap-shadow: 0 0 0 1px #000, 0 0 0 4px #3a3f48, 0 0 0 5px #8a939e, 14px 20px 36px rgba(0, 0, 0, 0.75);
+    --cs-line: #3a3f48;
+    --cs-line-soft: #2e3239;
+    --cs-input-border: #5c636d;
+    --cs-placeholder: #8d939b;
+    --cs-btn-bg: linear-gradient(180deg, #3a3f48 0%, #2b2f36 100%);
+    --cs-btn-bg-hover: linear-gradient(180deg, #474d57 0%, #343840 100%);
+    --cs-btn-border: #5c636d;
+    --cs-btn-strong-bg: linear-gradient(180deg, #b8322a 0%, #8b1f19 100%);
+    --cs-btn-strong-bg-hover: linear-gradient(180deg, #cc3e34 0%, #a0261e 100%);
+    --cs-btn-strong-ink: #fff3ef;
+    --cs-val-bg: rgba(184, 192, 201, 0.10);
+    --cs-val-bg-hover: rgba(184, 192, 201, 0.20);
+    --cs-tab-bg: #2b2f36;
+    --cs-tab-border: #5c636d;
+    --cs-tab-on-bg: #a3262a;
+    --cs-tab-on-ink: #fff3ef;
+    --cs-box-bg: linear-gradient(180deg, #2a2d34 0%, #22252b 100%);
+    --cs-box-border: #3a3f48;
+    --cs-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 6px 14px rgba(0, 0, 0, 0.4);
+    --cs-seal-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 92 92'%3E%3Cpath d='M14 6 H78 V44 C78 68 62 80 46 88 C30 80 14 68 14 44 Z' fill='%233a3f48' stroke='%23b8c0c9' stroke-width='2.5'/%3E %3Cpath d='M15.3 7.3 H76.7 V26 H15.3 Z' fill='%239e2a22'/%3E%3Ccircle cx='21' cy='13' r='1.8' fill='%23b8c0c9'/%3E%3Ccircle cx='71' cy='13' r='1.8' fill='%23b8c0c9'/%3E%3C/svg%3E") center / contain no-repeat;
+    --cs-seal-shadow: none;
+    --cs-seal-ink: #f3e9e9;
+    --cs-seal-shape: none;
+    --cs-seal-fill: #3a3f48;
+    --cs-name-font: 'Grenze', 'Cinzel', Georgia, serif;
+    --cs-name-ink: #f3e9e9;
+    --cs-name-shadow: 0 2px 0 #000;
+    --cs-overlay-bg: #24272e;
+    --cs-overlay-ink: #ecebe8;
+    --cs-fab-bg: radial-gradient(circle at 35% 30%, #4d535c, #17191d);
+    --cs-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='46 26 58 80'%3E%3Cpath d='M50 30 H100 V60 C100 82 86 94 75 102 C64 94 50 82 50 60 Z' fill='%233a3f48' stroke='%238a939e' stroke-width='2'/%3E %3Ccircle cx='56' cy='36' r='1.6' fill='%238a939e'/%3E%3Ccircle cx='94' cy='36' r='1.6' fill='%238a939e'/%3E%3C/svg%3E");
+    --cs-frame-fill: #3a3f48;
+    --cs-frame-on: 1;
+    --cs-frame-dy: -2%;
+  }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) { background-color: #1a1c21; }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder)::before {
+    content: ''; position: absolute; inset: 8px; pointer-events: none;
+    background: radial-gradient(circle, #9aa3ad 0 2px, #4d535c 2.6px, transparent 3.2px) left top / 8px 8px no-repeat, radial-gradient(circle, #9aa3ad 0 2px, #4d535c 2.6px, transparent 3.2px) right top / 8px 8px no-repeat, radial-gradient(circle, #9aa3ad 0 2px, #4d535c 2.6px, transparent 3.2px) left bottom / 8px 8px no-repeat, radial-gradient(circle, #9aa3ad 0 2px, #4d535c 2.6px, transparent 3.2px) right bottom / 8px 8px no-repeat;
+  }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-hero::before {
+    content: ''; position: absolute; left: 34%; top: 50%; width: 200px; height: 160px; margin-top: -80px; z-index: -1;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 160'%3E%3Cg fill='none' stroke='%238a939e' stroke-linecap='round'%3E %3Cpath d='M28 14 L118 104' stroke-width='5'/%3E%3Cpath d='M106 116 L130 92' stroke-width='7'/%3E%3Cpath d='M118 104 L136 122' stroke-width='6' stroke='%236b4a2a'/%3E %3Cpath d='M172 14 L82 104' stroke-width='5'/%3E%3Cpath d='M94 116 L70 92' stroke-width='7'/%3E%3Cpath d='M82 104 L64 122' stroke-width='6' stroke='%236b4a2a'/%3E%3C/g%3E %3Ccircle cx='140' cy='126' r='5' fill='%238a939e'/%3E%3Ccircle cx='60' cy='126' r='5' fill='%238a939e'/%3E%3C/svg%3E") center / contain no-repeat; opacity: 0.32; pointer-events: none;
+  }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-hero::after {
+    content: ''; position: absolute; right: 16px; top: -30px; width: 60px; height: 150px; z-index: -1; pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='150' viewBox='0 0 60 150'%3E%3Cpath d='M0 0 H60 V150 L30 128 L0 150 Z' fill='%237d1d17'/%3E %3Cpath d='M5 0 V138 M55 0 V138' stroke='%23c9a46a' stroke-width='1.5' opacity='0.7'/%3E%3C/svg%3E") center top / 60px 150px no-repeat;
+  }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-seal { border-radius: 0; padding-top: 6px; }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-seal-lbl { margin-bottom: 6px; }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-tab { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%, 10px 50%); border-radius: 0 !important; border: 0 !important; padding-inline: 22px 26px !important; }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-tab.on { text-shadow: none; }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-tabs { border-bottom-color: #a3262a; }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-box { position: relative; border-width: 2px; border-radius: 2px; }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-box::before {
+    content: ''; position: absolute; inset: 5px; pointer-events: none;
+    background: radial-gradient(circle, #9aa3ad 0 2px, #4d535c 2.6px, transparent 3.2px) left top / 8px 8px no-repeat, radial-gradient(circle, #9aa3ad 0 2px, #4d535c 2.6px, transparent 3.2px) right top / 8px 8px no-repeat, radial-gradient(circle, #9aa3ad 0 2px, #4d535c 2.6px, transparent 3.2px) left bottom / 8px 8px no-repeat, radial-gradient(circle, #9aa3ad 0 2px, #4d535c 2.6px, transparent 3.2px) right bottom / 8px 8px no-repeat;
+  }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-vital { border-radius: 2px; }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big, #cs-app[data-theme="warrior"] .cs-vital { --cs-val-bg: transparent; }
+  #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-dead { color: #ffd3cf; }
+  @media (max-width: 640px) {
+    #cs-app[data-theme="warrior"] .cs-wrap:not(.cs-builder) .cs-hero::before { left: 30%; width: 140px; height: 112px; margin-top: -56px; }
+  }
+  /* ---------- Mage: arcane study (sigil circles, staffs, orbs) ---------- */
+  #cs-app[data-theme="mage"] {
+    --cs-leaf: #0e1130; --cs-leaf-hi: #161a40; --cs-leaf-lo: #12163a; --cs-leaf-edge: #2c3672;
+    --cs-rule: #3b4a8f; --cs-ink: #e6e9ff; --cs-ink-2: #c9cff5; --cs-ink-3: #9aa3d6;
+    --cs-red: #7fd4ff; --cs-red-hi: #b9e8ff; --cs-amber: #b9a0ff;
+    --cs-gold: #7fd4ff; --cs-gold-hi: #dff6ff; --cs-gold-lo: #4b69a6; --cs-cream: #0e1130;
+    --cs-hp: #ff8fa3; --cs-pa: #b4c0d6; --cs-ma: #c3a6ff; --cs-ta: #f0cf7a; --cs-mana: #7fd4ff; --cs-sta: #8fe3a8;
+    --cs-good: #8fe3a8; --cs-bad: #ff8fa3; --cs-shadow: rgba(0, 0, 0, 0.4);
+    --cs-display: 'Marcellus SC', 'Cinzel', Georgia, serif;
+    --cs-body: 'Spectral', Georgia, serif;
+    --cs-wrap-bg: radial-gradient(ellipse 70% 45% at 85% 0%, rgba(127, 212, 255, 0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 0% 100%, rgba(180, 140, 255, 0.10) 0%, transparent 70%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='%23c9d6ff'%3E%3Ccircle cx='18' cy='30' r='0.9'/%3E%3Ccircle cx='96' cy='12' r='0.6'/%3E%3Ccircle cx='170' cy='58' r='1'/%3E %3Ccircle cx='220' cy='140' r='0.7'/%3E%3Ccircle cx='60' cy='120' r='0.6'/%3E%3Ccircle cx='130' cy='190' r='0.9'/%3E%3Ccircle cx='30' cy='210' r='0.6'/%3E%3Ccircle cx='200' cy='226' r='0.8'/%3E%3C/g%3E%3C/svg%3E");
+    --cs-wrap-shadow: 0 0 0 1px #05071a, 0 0 0 4px #1f2557, 0 0 0 5px #3b4a8f, 14px 20px 36px rgba(0, 0, 0, 0.7);
+    --cs-line: #2c3672; --cs-line-soft: #232a5c; --cs-input-border: #3b4a8f; --cs-placeholder: #7d86bb;
+    --cs-btn-bg: linear-gradient(180deg, #232a63 0%, #181d48 100%);
+    --cs-btn-bg-hover: linear-gradient(180deg, #2c3577 0%, #1e2456 100%);
+    --cs-btn-border: #3b4a8f;
+    --cs-btn-strong-bg: linear-gradient(180deg, #8fdcff 0%, #5fb6ea 100%);
+    --cs-btn-strong-bg-hover: linear-gradient(180deg, #b0e7ff 0%, #7fc8f2 100%);
+    --cs-btn-strong-ink: #0b0e2a;
+    --cs-val-bg: rgba(127, 212, 255, 0.10); --cs-val-bg-hover: rgba(127, 212, 255, 0.20);
+    --cs-tab-bg: #1f2557; --cs-tab-border: #3b4a8f; --cs-tab-on-bg: #7fd4ff; --cs-tab-on-ink: #0b0e2a;
+    --cs-box-bg: linear-gradient(160deg, rgba(127, 212, 255, 0.06) 0%, rgba(22, 26, 64, 0) 45%);
+    --cs-box-border: #2c3672; --cs-box-shadow: 0 0 0 1px rgba(127, 212, 255, 0.05), 0 8px 18px rgba(0, 0, 0, 0.35);
+    --cs-seal-bg: radial-gradient(circle at 50% 42%, #2c3f8f 0%, #1b2a63 58%, #121c48 100%);
+    --cs-seal-shadow: 0 0 0 2px #7fd4ff, 0 0 0 6px #0e1130, 0 0 0 7px #b48cff, 0 0 20px rgba(127, 212, 255, 0.45);
+    --cs-seal-ink: #dff6ff; --cs-seal-shape: none;
+    --cs-name-font: 'Marcellus SC', 'Cinzel', Georgia, serif; --cs-name-ink: #f2f4ff; --cs-name-shadow: 0 0 14px rgba(127, 212, 255, 0.45);
+    --cs-overlay-bg: #161a40; --cs-overlay-ink: #e6e9ff;
+    --cs-fab-bg: radial-gradient(circle at 35% 30%, #2c3f8f, #0e1130);
+    --cs-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='46 22 58 86'%3E%3Cpath d='M75 26 L100 46 L100 82 L75 104 L50 82 L50 46 Z' fill='%231b2a63' stroke='%237fd4ff' stroke-width='2'/%3E %3Cpath d='M75 26 L75 104 M50 46 L100 82 M100 46 L50 82' stroke='%233b4a8f' stroke-width='0.8' fill='none'/%3E%3C/svg%3E");
+    --cs-frame-fill: #1b2a63; --cs-frame-on: 1; --cs-frame-dy: 0%;
+  }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) { background-color: #0e1130; overflow-x: clip; isolation: isolate; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder)::before {
+    content: ''; position: absolute; left: 6px; top: 10px; bottom: 16px; width: 26px; pointer-events: none;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Ccircle cx='13' cy='13' r='10' fill='%231b2a63' stroke='%237fd4ff' stroke-width='1.6'/%3E%3Ccircle cx='13' cy='13' r='4.5' fill='%237fd4ff'/%3E%3C/svg%3E") center top / 26px 26px no-repeat, linear-gradient(#6b5a9e, #6b5a9e) center 26px / 3px calc(100% - 26px) no-repeat;
+  }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-hero { position: relative; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-hero::before {
+    content: ''; position: absolute; right: -40px; top: 50%; width: 210px; height: 210px; margin-top: -105px; z-index: -1;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%237fd4ff' stroke-width='1'%3E %3Ccircle cx='100' cy='100' r='92'/%3E%3Ccircle cx='100' cy='100' r='80'/%3E%3Ccircle cx='100' cy='100' r='44'/%3E %3Cpolygon points='100,20 169,140 31,140'/%3E%3Cpolygon points='100,180 31,60 169,60'/%3E %3Cpath stroke='%23b48cff' d='M100 8v8M100 184v8M8 100h8M184 100h8M35 35l6 6M159 159l6 6M35 165l6-6M159 41l6-6'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat; opacity: 0.55; pointer-events: none;
+    animation: cs-mage-spin 60s linear infinite;
+  }
+  @keyframes cs-mage-spin { to { transform: rotate(360deg); } }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-seal { border-radius: 50%; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-tab { clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 10px 100%, 0 50%); border-radius: 0 !important; border: 0 !important; padding-inline: 20px !important; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-tab.on { text-shadow: none; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-box { position: relative; border-radius: 3px; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-box::before, #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-box::after { content: ''; position: absolute; width: 14px; height: 14px; pointer-events: none; border-color: #7fd4ff; border-style: solid; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-box::before { left: -1px; top: -1px; border-width: 2px 0 0 2px; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-box::after { right: -1px; bottom: -1px; border-width: 0 2px 2px 0; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-vital { border-radius: 3px; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big, #cs-app[data-theme="mage"] .cs-vital { --cs-val-bg: transparent; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-dead { color: #ffd3dc; }
+  #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-vital-num, #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big { font-family: var(--cs-body); font-weight: 700; }
+  @media (max-width: 640px) {
+    #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder)::before { left: 2px; width: 12px; background-size: 12px 12px, 2px calc(100% - 12px); background-position: center top, center 12px; }
+    #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-hero::before { width: 170px; height: 170px; margin-top: -85px; right: -50px; }
+  }
+  @media (prefers-reduced-motion: reduce) { #cs-app[data-theme="mage"] .cs-wrap:not(.cs-builder) .cs-hero::before { animation: none; } }
+  /* ---------- Hunter: a ranger's field journal ---------- */
+  #cs-app[data-theme="hunter"] {
+    --cs-leaf: #efe6d4;
+    --cs-leaf-hi: #faf5ea;
+    --cs-leaf-lo: #e8dcc4;
+    --cs-leaf-edge: #d6c6a6;
+    --cs-rule: #6b5232;
+    --cs-ink: #2e2213;
+    --cs-ink-2: #3e2f1c;
+    --cs-ink-3: #5e4a33;
+    --cs-red: #7a3b1c;
+    --cs-red-hi: #93492a;
+    --cs-amber: #6e5326;
+    --cs-gold: #a8783a;
+    --cs-gold-hi: #d9b07a;
+    --cs-gold-lo: #6b5232;
+    --cs-cream: #faf5ea;
+    --cs-hp: #963a2b;
+    --cs-pa: #4d5a63;
+    --cs-ma: #5f4a7d;
+    --cs-ta: #755812;
+    --cs-mana: #2f5f7a;
+    --cs-sta: #3d6b2c;
+    --cs-good: #3d6b2c;
+    --cs-bad: #963a2b;
+    --cs-shadow: rgba(70, 45, 20, 0.16);
+    --cs-display: 'IM Fell English SC', 'Cinzel', Georgia, serif;
+    --cs-body: 'Crimson Pro', 'EB Garamond', Georgia, serif;
+    --cs-wrap-bg: radial-gradient(ellipse 90% 40% at 50% 0%, rgba(255, 252, 244, 0.7) 0%, transparent 70%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='300' viewBox='0 0 420 300'%3E%3Cg fill='none' stroke='%236b5232' stroke-opacity='0.11' stroke-width='1.2'%3E %3Cpath d='M40 150 C40 80 140 60 200 90 S330 70 360 140 S300 250 210 240 S40 220 40 150 Z'/%3E%3Cpath d='M80 150 C82 105 150 95 200 115 S300 105 318 145 S270 210 210 205 S78 195 80 150 Z'/%3E %3Cpath d='M130 150 C132 128 170 122 205 132 S262 130 268 150 S240 178 205 176 S128 172 130 150 Z'/%3E%3Cpath d='M0 40 C80 20 160 50 240 30 S380 10 420 30'/%3E%3Cpath d='M0 280 C90 260 180 290 270 268 S390 250 420 262'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(to bottom, #f3ebdb 0%, #ebdfc8 60%, #e3d4b8 100%);
+    --cs-wrap-shadow: 0 0 0 1px #4a3520, 0 0 0 5px #8a6a45, 0 0 0 6px #4a3520, 12px 18px 32px rgba(0, 0, 0, 0.65);
+    --cs-line: #cdb994;
+    --cs-line-soft: #ddcdae;
+    --cs-input-border: #bfa47a;
+    --cs-placeholder: #7d6a52;
+    --cs-btn-bg: linear-gradient(180deg, #fffaf0 0%, #eadcc2 100%);
+    --cs-btn-bg-hover: linear-gradient(180deg, #fffdf7 0%, #f0e4cd 100%);
+    --cs-btn-border: #b59a6e;
+    --cs-btn-strong-bg: linear-gradient(180deg, #7a3b1c 0%, #5e2c14 100%);
+    --cs-btn-strong-bg-hover: linear-gradient(180deg, #8c4523 0%, #6e3418 100%);
+    --cs-btn-strong-ink: #faf5ea;
+    --cs-val-bg: rgba(168, 120, 58, 0.12);
+    --cs-val-bg-hover: rgba(168, 120, 58, 0.22);
+    --cs-tab-bg: #e3d4b6;
+    --cs-tab-border: #bfa47a;
+    --cs-tab-on-bg: #7a3b1c;
+    --cs-tab-on-ink: #faf5ea;
+    --cs-box-bg: linear-gradient(180deg, #fcf8ef 0%, #f6efe0 100%);
+    --cs-box-border: #d6c6a6;
+    --cs-box-shadow: 0 2px 6px rgba(70, 45, 20, 0.12);
+    --cs-seal-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 92 92'%3E%3Cg stroke='%236b5232' stroke-width='1.5'%3E %3Cpath d='M46 1 L51 12 H41 Z' fill='%239a3b2c'/%3E%3Cpath d='M91 46 L80 51 V41 Z' fill='%236b5232'/%3E%3Cpath d='M46 91 L41 80 H51 Z' fill='%236b5232'/%3E%3Cpath d='M1 46 L12 41 V51 Z' fill='%236b5232'/%3E%3C/g%3E %3Ccircle cx='46' cy='46' r='34' fill='%23faf5ea' stroke='%236b5232' stroke-width='2.5'/%3E%3Ccircle cx='46' cy='46' r='29' fill='none' stroke='%23a8783a' stroke-width='1' stroke-dasharray='2 3'/%3E%3C/svg%3E") center / contain no-repeat;
+    --cs-seal-shadow: none;
+    --cs-seal-ink: #3a2a17;
+    --cs-seal-shape: none;
+    --cs-seal-fill: #faf5ea;
+    --cs-name-font: 'IM Fell English SC', 'Cinzel', Georgia, serif;
+    --cs-name-ink: #4a2a14;
+    --cs-name-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+    --cs-overlay-bg: #faf5ea;
+    --cs-overlay-ink: #2e2213;
+    --cs-fab-bg: radial-gradient(circle at 35% 30%, #8c4523, #3a1d0c);
+    --cs-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='41 20 68 86'%3E%3Cpath d='M75 24 L105 80 L86 74 L75 102 L64 74 L45 80 Z' fill='%23faf5ea' stroke='%236b5232' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --cs-frame-fill: #faf5ea;
+    --cs-frame-on: 1;
+    --cs-frame-dy: 2%;
+  }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) { background-color: #efe6d4; }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder)::before { content: ''; position: absolute; inset: 7px; pointer-events: none; border: 1.5px dashed #a8783a; border-radius: 6px; }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder)::after { content: ''; position: absolute; right: 26px; bottom: 14px; width: 120px; height: 40px; pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'%3E%3Cg fill='%236b5232'%3E %3Cg transform='translate(10 22)'%3E%3Cellipse cx='6' cy='8' rx='5' ry='4'/%3E%3Ccircle cx='1' cy='1' r='1.8'/%3E%3Ccircle cx='5' cy='-1.5' r='1.8'/%3E%3Ccircle cx='9' cy='-1' r='1.8'/%3E%3Ccircle cx='12' cy='2' r='1.8'/%3E%3C/g%3E %3Cg transform='translate(48 8)'%3E%3Cellipse cx='6' cy='8' rx='5' ry='4'/%3E%3Ccircle cx='1' cy='1' r='1.8'/%3E%3Ccircle cx='5' cy='-1.5' r='1.8'/%3E%3Ccircle cx='9' cy='-1' r='1.8'/%3E%3Ccircle cx='12' cy='2' r='1.8'/%3E%3C/g%3E %3Cg transform='translate(86 22)'%3E%3Cellipse cx='6' cy='8' rx='5' ry='4'/%3E%3Ccircle cx='1' cy='1' r='1.8'/%3E%3Ccircle cx='5' cy='-1.5' r='1.8'/%3E%3Ccircle cx='9' cy='-1' r='1.8'/%3E%3Ccircle cx='12' cy='2' r='1.8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat; opacity: 0.35; }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-hero::before {
+    content: ''; position: absolute; right: 110px; top: 50%; width: 190px; height: 190px; margin-top: -95px; z-index: -1;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%236b5232' stroke-width='1.4'%3E%3Ccircle cx='100' cy='100' r='70'/%3E%3Ccircle cx='100' cy='100' r='56' stroke-dasharray='3 4'/%3E%3C/g%3E %3Cg fill='%236b5232'%3E%3Cpath d='M100 10 L110 100 L100 190 L90 100 Z'/%3E%3Cpath d='M10 100 L100 90 L190 100 L100 110 Z'/%3E%3C/g%3E %3Cg fill='%23a8783a'%3E%3Cpath d='M100 100 L150 50 L106 104 Z'/%3E%3Cpath d='M100 100 L50 150 L94 96 Z'/%3E%3Cpath d='M100 100 L150 150 L96 106 Z'/%3E%3Cpath d='M100 100 L50 50 L104 94 Z'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat; opacity: 0.2; pointer-events: none;
+  }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-seal { border-radius: 50%; text-shadow: none; }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-seal-num { font-family: var(--cs-body); font-weight: 600; }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-tab { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%, 10px 50%); border-radius: 0 !important; border: 0 !important; padding-inline: 14px 20px !important; }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-tab.on { text-shadow: none; }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-tabs { border-bottom-color: #7a3b1c; }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-box { border-radius: 3px; outline: 1px dashed #c8b38c; outline-offset: -6px; }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-vital { border-radius: 3px; }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big, #cs-app[data-theme="hunter"] .cs-vital { --cs-val-bg: transparent; }
+  #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-vital-num, #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big { font-family: var(--cs-body); font-weight: 600; }
+  @media (max-width: 640px) {
+    #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder) .cs-hero::before { right: 70px; width: 130px; height: 130px; margin-top: -65px; }
+    #cs-app[data-theme="hunter"] .cs-wrap:not(.cs-builder)::after { width: 90px; height: 30px; right: 14px; bottom: 10px; }
+  }
+  /* ---------- Phantom: shadow and smoke ---------- */
+  #cs-app[data-theme="phantom"] {
+    --cs-leaf: #120f1c;
+    --cs-leaf-hi: #1b1729;
+    --cs-leaf-lo: #161322;
+    --cs-leaf-edge: #2e2840;
+    --cs-rule: #574f70;
+    --cs-ink: #ece6fa;
+    --cs-ink-2: #d4cbea;
+    --cs-ink-3: #aaa0c6;
+    --cs-red: #cbb0f0;
+    --cs-red-hi: #e2ccff;
+    --cs-amber: #bba9df;
+    --cs-gold: #8f74c4;
+    --cs-gold-hi: #d8c8eb;
+    --cs-gold-lo: #574f70;
+    --cs-cream: #120f1c;
+    --cs-hp: #f39ab0;
+    --cs-pa: #b9bdcc;
+    --cs-ma: #cbb0f0;
+    --cs-ta: #e8d391;
+    --cs-mana: #97bef2;
+    --cs-sta: #a3dfb4;
+    --cs-good: #a3dfb4;
+    --cs-bad: #f39ab0;
+    --cs-shadow: rgba(0, 0, 0, 0.5);
+    --cs-display: 'Cormorant SC', 'Cinzel', Georgia, serif;
+    --cs-body: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+    --cs-wrap-bg: radial-gradient(ellipse 40% 26% at 0% 30%, rgba(143, 116, 196, 0.17) 0%, transparent 70%), radial-gradient(ellipse 45% 30% at 100% 72%, rgba(143, 116, 196, 0.14) 0%, transparent 70%), radial-gradient(ellipse 70% 18% at 50% 100%, rgba(205, 195, 235, 0.10) 0%, transparent 70%), radial-gradient(ellipse 50% 14% at 30% 0%, rgba(205, 195, 235, 0.08) 0%, transparent 70%), linear-gradient(to bottom, #151121 0%, #0f0c18 100%);
+    --cs-wrap-shadow: 0 0 0 1px #07050c, 0 0 40px rgba(143, 116, 196, 0.18), 14px 20px 36px rgba(0, 0, 0, 0.75);
+    --cs-line: #2e2840;
+    --cs-line-soft: #251f36;
+    --cs-input-border: #4a4262;
+    --cs-placeholder: #8a80a8;
+    --cs-btn-bg: linear-gradient(180deg, #2a2440 0%, #1f1a30 100%);
+    --cs-btn-bg-hover: linear-gradient(180deg, #342c4f 0%, #262039 100%);
+    --cs-btn-border: #574f70;
+    --cs-btn-strong-bg: linear-gradient(180deg, #b59be0 0%, #9479cc 100%);
+    --cs-btn-strong-bg-hover: linear-gradient(180deg, #c6b0ea 0%, #a58bd6 100%);
+    --cs-btn-strong-ink: #0e0b16;
+    --cs-val-bg: rgba(143, 116, 196, 0.12);
+    --cs-val-bg-hover: rgba(143, 116, 196, 0.22);
+    --cs-tab-bg: linear-gradient(180deg, #2a2440 0%, rgba(42, 36, 64, 0.15) 100%);
+    --cs-tab-border: transparent;
+    --cs-tab-on-bg: #cbb0f0;
+    --cs-tab-on-ink: #120f1c;
+    --cs-box-bg: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(143, 116, 196, 0.07) 0%, transparent 70%);
+    --cs-box-border: rgba(143, 116, 196, 0.22);
+    --cs-box-shadow: 0 0 26px rgba(143, 116, 196, 0.10), 0 8px 18px rgba(0, 0, 0, 0.4);
+    --cs-seal-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 92 92'%3E%3Ccircle cx='46' cy='46' r='36' fill='%23231d36' stroke='%238f74c4' stroke-width='2'/%3E %3Cpath d='M46 10 A36 36 0 0 1 46 82 A20 36 0 0 0 46 10 Z' transform='translate(16 0)' fill='%23d8c8eb' opacity='0.85'/%3E %3Ccircle cx='46' cy='46' r='41' fill='none' stroke='%23574f70' stroke-width='1' stroke-dasharray='1 5'/%3E%3C/svg%3E") center / contain no-repeat;
+    --cs-seal-shadow: none;
+    --cs-seal-ink: #ece6fa;
+    --cs-seal-shape: none;
+    --cs-seal-fill: #231d36;
+    --cs-name-font: 'Cormorant SC', 'Cinzel', Georgia, serif;
+    --cs-name-ink: #ece6fa;
+    --cs-name-shadow: 0 0 16px rgba(143, 116, 196, 0.55);
+    --cs-overlay-bg: #1b1729;
+    --cs-overlay-ink: #ece6fa;
+    --cs-fab-bg: radial-gradient(circle at 35% 30%, #3a3156, #0f0c18);
+    --cs-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='34 18 82 88'%3E%3Cpath d='M75 22 C92 22 100 34 100 46 C112 54 112 72 112 100 L104 95 L96 102 L88 95 L80 102 L72 95 L64 102 L56 95 L48 102 L38 100 C38 72 38 54 50 46 C50 34 58 22 75 22 Z' fill='%23231d36' stroke='%238f74c4' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --cs-frame-fill: #231d36;
+    --cs-frame-on: 1;
+    --cs-frame-dy: 8%;
+  }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) { background-color: #120f1c; font-weight: 500; }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-hero::before {
+    content: ''; position: absolute; left: 40%; top: 50%; width: 64px; height: 160px; margin-top: -80px; z-index: -1;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 200'%3E%3Cg fill='%23231d36' stroke='%238f74c4' stroke-width='2' stroke-linejoin='round'%3E %3Cpath d='M40 6 L50 120 L40 132 L30 120 Z'/%3E%3Cpath d='M14 124 H66 L62 134 H18 Z'/%3E%3Cpath d='M35 134 H45 V172 H35 Z'/%3E%3Ccircle cx='40' cy='180' r='8'/%3E%3C/g%3E %3Cpath d='M40 14 V118' stroke='%23574f70' stroke-width='1.5'/%3E%3C/svg%3E") center / contain no-repeat; opacity: 0.4; pointer-events: none; transform: rotate(20deg);
+  }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-seal { border-radius: 0; text-shadow: 0 1px 3px #000; }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-seal-num { transform: translateX(-6px); }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-seal-lbl { transform: translateX(-6px); }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-name { font-weight: 700; }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-tab { border: 0 !important; border-radius: 8px 8px 0 0 !important; }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-tab.on { text-shadow: none; }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-tabs { border-bottom: 1px solid rgba(203, 176, 240, 0.5); }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-box { border-radius: 10px; }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-vital { border-radius: 8px; border-color: rgba(143, 116, 196, 0.22); }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big, #cs-app[data-theme="phantom"] .cs-vital { --cs-val-bg: transparent; }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-vital-num, #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big { font-weight: 700; }
+  #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-dead { color: #ffd6e0; }
+  @media (max-width: 640px) {
+    #cs-app[data-theme="phantom"] .cs-wrap:not(.cs-builder) .cs-hero::before { left: 52%; width: 44px; height: 110px; margin-top: -55px; }
+  }
+  /* ---------- Priest: cathedral light ---------- */
+  #cs-app[data-theme="priest"] {
+    --cs-leaf: #fdf9ec;
+    --cs-leaf-hi: #fffef9;
+    --cs-leaf-lo: #f9efc8;
+    --cs-leaf-edge: #efe0ad;
+    --cs-rule: #b88b2e;
+    --cs-ink: #291e0b;
+    --cs-ink-2: #4a3717;
+    --cs-ink-3: #6e5527;
+    --cs-red: #7a3e0c;
+    --cs-red-hi: #93500f;
+    --cs-amber: #875810;
+    --cs-gold: #e3b946;
+    --cs-gold-hi: #ffe694;
+    --cs-gold-lo: #9c7417;
+    --cs-cream: #fffef9;
+    --cs-hp: #9c2f2a;
+    --cs-pa: #4d5a63;
+    --cs-ma: #5a3f8c;
+    --cs-ta: #755810;
+    --cs-mana: #2f4f8f;
+    --cs-sta: #3d6b2c;
+    --cs-good: #3d6b2c;
+    --cs-bad: #9c2f2a;
+    --cs-shadow: rgba(120, 90, 20, 0.16);
+    --cs-display: 'Forum', 'Cinzel', Georgia, serif;
+    --cs-body: 'Cardo', 'EB Garamond', Georgia, serif;
+    --cs-wrap-bg: radial-gradient(ellipse 80% 45% at 50% 0%, rgba(255, 255, 255, 0.95) 0%, transparent 70%), repeating-conic-gradient(from 0deg at 50% -8%, rgba(227, 185, 70, 0.07) 0deg 3deg, transparent 3deg 11deg), linear-gradient(to bottom, #fffdf5 0%, #fbf3d9 55%, #f5e8bf 100%);
+    --cs-wrap-shadow: 0 0 0 1px #8c6618, 0 0 0 4px #f5e6b8, 0 0 0 5px #b88b2e, 12px 18px 32px rgba(0, 0, 0, 0.6);
+    --cs-line: #e2cf95;
+    --cs-line-soft: #efe2b8;
+    --cs-input-border: #d4bb72;
+    --cs-placeholder: #8a7445;
+    --cs-btn-bg: linear-gradient(180deg, #fffef9 0%, #f5e6b8 100%);
+    --cs-btn-bg-hover: linear-gradient(180deg, #ffffff 0%, #f9edc9 100%);
+    --cs-btn-border: #c9a24a;
+    --cs-btn-strong-bg: linear-gradient(180deg, #9c7417 0%, #7a5a10 100%);
+    --cs-btn-strong-bg-hover: linear-gradient(180deg, #ad8320 0%, #8a6714 100%);
+    --cs-btn-strong-ink: #fffef9;
+    --cs-val-bg: rgba(227, 185, 70, 0.14);
+    --cs-val-bg-hover: rgba(227, 185, 70, 0.26);
+    --cs-tab-bg: #f9efc8;
+    --cs-tab-border: #d9c38a;
+    --cs-tab-on-bg: linear-gradient(180deg, #9c7417 0%, #7a5a10 100%);
+    --cs-tab-on-ink: #fffef9;
+    --cs-box-bg: linear-gradient(180deg, #fffef9 0%, #fbf3dc 100%);
+    --cs-box-border: #e2cf95;
+    --cs-box-shadow: 0 2px 10px rgba(120, 90, 20, 0.10);
+    --cs-seal-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 92 92'%3E%3Cg fill='%23e3b946'%3E%3Cpath d='M75.9 43.4 L91.0 46.0 L75.9 48.6 Z'/%3E%3Cpath d='M74.7 54.8 L87.7 62.9 L72.7 59.6 Z'/%3E%3Cpath d='M69.3 64.9 L78.4 77.3 L65.7 68.6 Z'/%3E%3Cpath d='M60.5 72.2 L64.3 87.1 L55.8 74.4 Z'/%3E%3Cpath d='M49.7 75.8 L47.6 91.0 L44.4 76.0 Z'/%3E%3Cpath d='M38.2 75.0 L30.6 88.3 L33.3 73.2 Z'/%3E%3Cpath d='M27.9 70.0 L15.9 79.4 L24.1 66.5 Z'/%3E%3Cpath d='M20.3 61.5 L5.6 65.7 L18.0 56.8 Z'/%3E%3Cpath d='M16.4 50.7 L1.1 49.1 L16.0 45.5 Z'/%3E%3Cpath d='M16.8 39.3 L3.2 32.1 L18.4 34.3 Z'/%3E%3Cpath d='M21.4 28.8 L11.5 17.1 L24.8 24.8 Z'/%3E%3Cpath d='M29.7 20.8 L24.9 6.3 L34.3 18.4 Z'/%3E%3Cpath d='M40.3 16.6 L41.3 1.2 L45.5 16.0 Z'/%3E%3Cpath d='M51.7 16.6 L58.4 2.7 L56.8 18.0 Z'/%3E%3Cpath d='M62.3 20.8 L73.7 10.5 L66.5 24.1 Z'/%3E%3Cpath d='M70.6 28.8 L85.0 23.5 L73.2 33.3 Z'/%3E%3Cpath d='M75.2 39.3 L90.6 39.7 L76.0 44.4 Z'/%3E%3C/g%3E%3Ccircle cx='46' cy='46' r='31' fill='%23fffef9' stroke='%23b88b2e' stroke-width='2'/%3E %3Ccircle cx='46' cy='46' r='26' fill='none' stroke='%23e3b946' stroke-width='1'/%3E%3C/svg%3E") center / contain no-repeat;
+    --cs-seal-shadow: none;
+    --cs-seal-ink: #4a3717;
+    --cs-seal-shape: none;
+    --cs-seal-fill: #fffef9;
+    --cs-name-font: 'Forum', 'Cinzel', Georgia, serif;
+    --cs-name-ink: #5a3a0a;
+    --cs-name-shadow: 0 1px 0 #ffffff;
+    --cs-overlay-bg: #fffef9;
+    --cs-overlay-ink: #291e0b;
+    --cs-fab-bg: radial-gradient(circle at 35% 30%, #ad8320, #4a3410);
+    --cs-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='48 26 60 78'%3E%3Crect x='52' y='30' width='48' height='70' rx='3' fill='%23fffef9' stroke='%23b88b2e' stroke-width='2'/%3E %3Crect x='52' y='30' width='8' height='70' fill='%23e3b946'/%3E%3Cpath d='M100 36 H104 V96 H100' fill='none' stroke='%23d9c38a' stroke-width='1.5'/%3E%3C/svg%3E");
+    --cs-frame-fill: #fffef9;
+    --cs-frame-on: 1;
+    --cs-frame-dy: 0%;
+    --cs-frame-dx: 8%;
+  }
+  #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) { background-color: #fdf9ec; }
+  #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-hero::before {
+    content: ''; position: absolute; left: -60px; top: 50%; width: 280px; height: 280px; margin-top: -140px; z-index: -1;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 260'%3E%3Cg fill='%23e3b946'%3E%3Cpath d='M169.9 127.9 L258.0 130.0 L169.9 132.1 Z'/%3E%3Cpath d='M169.1 138.3 L253.6 163.1 L168.0 142.4 Z'/%3E%3Cpath d='M165.6 148.2 L240.9 194.0 L163.5 151.8 Z'/%3E%3Cpath d='M159.7 156.8 L220.5 220.5 L156.8 159.7 Z'/%3E%3Cpath d='M151.8 163.5 L194.0 240.9 L148.2 165.6 Z'/%3E%3Cpath d='M142.4 168.0 L163.1 253.6 L138.3 169.1 Z'/%3E%3Cpath d='M132.1 169.9 L130.0 258.0 L127.9 169.9 Z'/%3E%3Cpath d='M121.7 169.1 L96.9 253.6 L117.6 168.0 Z'/%3E%3Cpath d='M111.8 165.6 L66.0 240.9 L108.2 163.5 Z'/%3E%3Cpath d='M103.2 159.7 L39.5 220.5 L100.3 156.8 Z'/%3E%3Cpath d='M96.5 151.8 L19.1 194.0 L94.4 148.2 Z'/%3E%3Cpath d='M92.0 142.4 L6.4 163.1 L90.9 138.3 Z'/%3E%3Cpath d='M90.1 132.1 L2.0 130.0 L90.1 127.9 Z'/%3E%3Cpath d='M90.9 121.7 L6.4 96.9 L92.0 117.6 Z'/%3E%3Cpath d='M94.4 111.8 L19.1 66.0 L96.5 108.2 Z'/%3E%3Cpath d='M100.3 103.2 L39.5 39.5 L103.2 100.3 Z'/%3E%3Cpath d='M108.2 96.5 L66.0 19.1 L111.8 94.4 Z'/%3E%3Cpath d='M117.6 92.0 L96.9 6.4 L121.7 90.9 Z'/%3E%3Cpath d='M127.9 90.1 L130.0 2.0 L132.1 90.1 Z'/%3E%3Cpath d='M138.3 90.9 L163.1 6.4 L142.4 92.0 Z'/%3E%3Cpath d='M148.2 94.4 L194.0 19.1 L151.8 96.5 Z'/%3E%3Cpath d='M156.8 100.3 L220.5 39.5 L159.7 103.2 Z'/%3E%3Cpath d='M163.5 108.2 L240.9 66.0 L165.6 111.8 Z'/%3E%3Cpath d='M168.0 117.6 L253.6 96.9 L169.1 121.7 Z'/%3E%3C/g%3E%3Ccircle cx='130' cy='130' r='44' fill='none' stroke='%23e3b946' stroke-width='3'/%3E%3C/svg%3E") center / contain no-repeat; opacity: 0.28; pointer-events: none;
+  }
+  #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-seal { border-radius: 50%; text-shadow: none; }
+  #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-seal-num { font-family: var(--cs-body); font-weight: 700; }
+  #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-tab { border-radius: 999px 999px 0 0 / 16px 16px 0 0 !important; padding-top: 11px !important; }
+  #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-tab.on { text-shadow: none; }
+  #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-tabs { border-bottom-color: #9c7417; }
+  #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-box { border-radius: 50% 50% 6px 6px / 26px 26px 6px 6px; padding-top: 26px; background: linear-gradient(90deg, #2f4f8f 0 25%, #8f2f3a 25% 50%, #2f6b4a 50% 75%, #b88b2e 75% 100%) top / 100% 6px no-repeat, linear-gradient(180deg, #fffef9 0%, #fbf3dc 100%) #fffef9; }
+  #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-vital { border-radius: 999px 999px 4px 4px / 14px 14px 4px 4px; }
+  #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big, #cs-app[data-theme="priest"] .cs-vital { --cs-val-bg: transparent; }
+  #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-vital-num, #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big { font-family: var(--cs-body); font-weight: 700; }
+  @media (max-width: 640px) {
+    #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-hero::before { left: -50px; width: 200px; height: 200px; margin-top: -100px; }
+    #cs-app[data-theme="priest"] .cs-wrap:not(.cs-builder) .cs-box { border-radius: 50% 50% 6px 6px / 18px 18px 6px 6px; padding-top: 22px; }
+  }
+  /* ---------- Pact Keeper: an infernal contract ---------- */
+  #cs-app[data-theme="pact-keeper"] {
+    --cs-leaf: #160609;
+    --cs-leaf-hi: #22090e;
+    --cs-leaf-lo: #1c070b;
+    --cs-leaf-edge: #3a1019;
+    --cs-rule: #6e1a29;
+    --cs-ink: #f3e3e6;
+    --cs-ink-2: #e0c6cb;
+    --cs-ink-3: #c4989f;
+    --cs-red: #ff7a8e;
+    --cs-red-hi: #ffa3b0;
+    --cs-amber: #e3a852;
+    --cs-gold: #b8293f;
+    --cs-gold-hi: #f0a3b0;
+    --cs-gold-lo: #6e1a29;
+    --cs-cream: #160609;
+    --cs-hp: #ff8c9b;
+    --cs-pa: #c8bcbe;
+    --cs-ma: #cba3f2;
+    --cs-ta: #e8c470;
+    --cs-mana: #97b6f2;
+    --cs-sta: #a5dba5;
+    --cs-good: #a5dba5;
+    --cs-bad: #ff8c9b;
+    --cs-shadow: rgba(0, 0, 0, 0.5);
+    --cs-display: 'Cinzel', Georgia, serif;
+    --cs-body: 'Crimson Pro', 'EB Garamond', Georgia, serif;
+    --cs-wrap-bg: radial-gradient(ellipse 70% 30% at 50% 100%, rgba(184, 41, 63, 0.16) 0%, transparent 70%), radial-gradient(ellipse 50% 25% at 50% 0%, rgba(224, 162, 74, 0.06) 0%, transparent 70%), linear-gradient(to bottom, #1b080c 0%, #120407 100%);
+    --cs-wrap-shadow: inset 0 0 40px rgba(0, 0, 0, 0.85), inset 0 0 90px rgba(140, 40, 10, 0.22), 0 0 0 1px #000, 0 0 0 4px #2a0d14, 0 0 0 5px #6e1a29, 14px 20px 36px rgba(0, 0, 0, 0.8);
+    --cs-line: #3a1019;
+    --cs-line-soft: #2c0c13;
+    --cs-input-border: #5a1726;
+    --cs-placeholder: #a8838a;
+    --cs-btn-bg: linear-gradient(180deg, #3a1019 0%, #2a0d14 100%);
+    --cs-btn-bg-hover: linear-gradient(180deg, #4a1420 0%, #351018 100%);
+    --cs-btn-border: #6e1a29;
+    --cs-btn-strong-bg: linear-gradient(180deg, #c22d45 0%, #8f1d30 100%);
+    --cs-btn-strong-bg-hover: linear-gradient(180deg, #d63a54 0%, #a3233a 100%);
+    --cs-btn-strong-ink: #fff1f3;
+    --cs-val-bg: rgba(184, 41, 63, 0.14);
+    --cs-val-bg-hover: rgba(184, 41, 63, 0.26);
+    --cs-tab-bg: #2a0d14;
+    --cs-tab-border: transparent;
+    --cs-tab-on-bg: #b8293f;
+    --cs-tab-on-ink: #fff1f3;
+    --cs-box-bg: radial-gradient(ellipse 90% 70% at 50% 40%, rgba(60, 14, 22, 0.5) 0%, transparent 80%);
+    --cs-box-border: #4a1420;
+    --cs-box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.75), 0 6px 14px rgba(0, 0, 0, 0.45);
+    --cs-seal-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 92 92'%3E%3Cpath d='M28 22 C22 14 18 8 20 0 C26 8 32 12 38 16 Z' fill='%23b8293f'/%3E%3Cpath d='M64 22 C70 14 74 8 72 0 C66 8 60 12 54 16 Z' fill='%23b8293f'/%3E %3Ccircle cx='46' cy='50' r='36' fill='%233a1019' stroke='%23b8293f' stroke-width='2.5'/%3E%3Ccircle cx='46' cy='50' r='31' fill='none' stroke='%23e0a24a' stroke-width='1' stroke-dasharray='1 4'/%3E%3C/svg%3E") center / contain no-repeat;
+    --cs-seal-shadow: none;
+    --cs-seal-ink: #fbe3e7;
+    --cs-seal-shape: none;
+    --cs-seal-fill: #3a1019;
+    --cs-name-font: 'UnifrakturMaguntia', 'Cinzel Decorative', Georgia, serif;
+    --cs-name-ink: #f6dfe3;
+    --cs-name-shadow: 0 0 12px rgba(184, 41, 63, 0.6);
+    --cs-overlay-bg: #22090e;
+    --cs-overlay-ink: #f3e3e6;
+    --cs-fab-bg: radial-gradient(circle at 35% 30%, #6e1a29, #120407);
+    --cs-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='41 20 68 86'%3E%3Crect x='67' y='24' width='16' height='7' rx='1.5' fill='%236b3a2a'/%3E %3Cpath d='M69 31 H81 V42 C98 47 105 60 105 72 C105 90 92 102 75 102 C58 102 45 90 45 72 C45 60 52 47 69 42 Z' fill='%233a1019' stroke='%23b8293f' stroke-width='2'/%3E%3C/svg%3E");
+    --cs-frame-fill: #3a1019;
+    --cs-frame-on: 1;
+    --cs-frame-dy: 12%;
+  }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder) { background-color: #160609; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder)::before, #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder)::after { content: ''; position: absolute; top: 14px; bottom: 14px; width: 14px; pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='28' viewBox='0 0 14 28'%3E%3Cellipse cx='7' cy='8' rx='4.5' ry='7' fill='none' stroke='%237a5a5f' stroke-width='2'/%3E%3Crect x='6' y='15' width='2' height='12' rx='1' fill='%237a5a5f'/%3E%3C/svg%3E") center top / 14px 28px repeat-y; opacity: 0.8; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder)::before { left: 8px; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder)::after { right: 8px; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder) .cs-hero-id::after { content: ''; display: block; width: min(320px, 80%); height: 16px; margin-top: 4px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='16' viewBox='0 0 320 16'%3E%3Cpath d='M2 3 L11 12 M11 3 L2 12' stroke='%23b8293f' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M18 13 H318' stroke='%23b8293f' stroke-width='1.2'/%3E%3C/svg%3E") left center / auto 16px no-repeat; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder) .cs-name { font-weight: 400; letter-spacing: 0; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder) .cs-seal { border-radius: 0; padding-top: 8px; text-shadow: 0 1px 3px #000; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder) .cs-tab { clip-path: polygon(0 0, 100% 0, 100% 84%, 92% 100%, 84% 86%, 76% 100%, 68% 86%, 60% 100%, 52% 86%, 44% 100%, 36% 86%, 28% 100%, 20% 86%, 12% 100%, 4% 86%, 0 100%); border: 0 !important; border-radius: 0 !important; padding-bottom: 12px !important; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder) .cs-tab.on { text-shadow: none; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder) .cs-tabs { border-bottom-color: #b8293f; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder) .cs-box { border-radius: 2px; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder) .cs-vital { border-radius: 2px; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big, #cs-app[data-theme="pact-keeper"] .cs-vital { --cs-val-bg: transparent; }
+  #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder) .cs-dead { color: #ffd6dc; }
+  @media (max-width: 640px) {
+    #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder)::before { left: 2px; width: 10px; background-size: 10px 20px; }
+    #cs-app[data-theme="pact-keeper"] .cs-wrap:not(.cs-builder)::after { right: 2px; width: 10px; background-size: 10px 20px; }
+  }
+  /* ---------- Grove Keeper: living wood (plants, animals, bark, vines) ---------- */
+  #cs-app[data-theme="grove-keeper"] {
+    --cs-leaf: #eef3e4;
+    --cs-leaf-hi: #f8faf2;
+    --cs-leaf-lo: #e3ecd5;
+    --cs-leaf-edge: #cfdcbc;
+    --cs-rule: #5a4630;
+    --cs-ink: #23301c;
+    --cs-ink-2: #33452a;
+    --cs-ink-3: #4f5f40;
+    --cs-red: #2f5424;
+    --cs-red-hi: #3d6b2c;
+    --cs-amber: #6b4a22;
+    --cs-gold: #6f9a4e;
+    --cs-gold-hi: #a8cf8a;
+    --cs-gold-lo: #3d6b2c;
+    --cs-cream: #f3f8ea;
+    --cs-hp: #a03c32;
+    --cs-pa: #4d5a63;
+    --cs-ma: #6a4f8a;
+    --cs-ta: #7a5c14;
+    --cs-mana: #2f6f76;
+    --cs-sta: #3d6b2c;
+    --cs-good: #2f6b3a;
+    --cs-bad: #a03c32;
+    --cs-shadow: rgba(40, 60, 25, 0.16);
+    --cs-display: 'Alegreya SC', 'Cinzel', Georgia, serif;
+    --cs-body: 'Alegreya', 'EB Garamond', Georgia, serif;
+    --cs-wrap-bg: radial-gradient(ellipse 90% 40% at 50% 0%, rgba(255, 255, 255, 0.7) 0%, transparent 70%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%236f9a4e' stroke-opacity='0.10' stroke-width='1.2'%3E %3Cpath d='M20 240 C60 180 90 150 150 120 M60 190 C50 170 52 160 58 150 M95 160 C100 140 108 132 118 128 M150 120 C190 100 220 60 240 20'/%3E%3C/g%3E%3C/svg%3E"), linear-gradient(to bottom, #f4f8ec 0%, #e9f0de 60%, #e1ead3 100%);
+    --cs-wrap-shadow: 0 0 0 1px #3e3020, 10px 16px 30px rgba(0, 0, 0, 0.6);
+    --cs-line: #b9cba3;
+    --cs-line-soft: #d3dfc2;
+    --cs-input-border: #a9bf92;
+    --cs-placeholder: #6f7d5f;
+    --cs-btn-bg: linear-gradient(180deg, #fbfdf6 0%, #e6eed8 100%);
+    --cs-btn-bg-hover: linear-gradient(180deg, #ffffff 0%, #edf3e2 100%);
+    --cs-btn-border: #9db584;
+    --cs-btn-strong-bg: linear-gradient(180deg, #4f7a3a 0%, #3a5f2a 100%);
+    --cs-btn-strong-bg-hover: linear-gradient(180deg, #5d8f41 0%, #45703a 100%);
+    --cs-btn-strong-ink: #f3f8ea;
+    --cs-val-bg: rgba(111, 154, 78, 0.12);
+    --cs-val-bg-hover: rgba(111, 154, 78, 0.22);
+    --cs-tab-bg: #dde8cc;
+    --cs-tab-border: #b9cba3;
+    --cs-tab-on-bg: #4f7a3a;
+    --cs-tab-on-ink: #f3f8ea;
+    --cs-box-bg: linear-gradient(135deg, #fbfdf6 0%, #eef4e3 100%);
+    --cs-box-border: #b9cba3;
+    --cs-box-shadow: 0 2px 8px rgba(40, 60, 25, 0.10);
+    --cs-seal-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 92 92'%3E%3Cg fill='%236f9a4e'%3E %3Cellipse cx='46' cy='8' rx='5' ry='9'/%3E%3Cellipse cx='73' cy='19' rx='5' ry='9' transform='rotate(45 73 19)'/%3E%3Cellipse cx='84' cy='46' rx='5' ry='9' transform='rotate(90 84 46)'/%3E %3Cellipse cx='73' cy='73' rx='5' ry='9' transform='rotate(135 73 73)'/%3E%3Cellipse cx='19' cy='73' rx='5' ry='9' transform='rotate(45 19 73)'/%3E %3Cellipse cx='8' cy='46' rx='5' ry='9' transform='rotate(90 8 46)'/%3E%3Cellipse cx='19' cy='19' rx='5' ry='9' transform='rotate(135 19 19)'/%3E%3C/g%3E %3Ccircle cx='46' cy='46' r='30' fill='%238a5a2b' stroke='%235a4630' stroke-width='2'/%3E%3C/svg%3E") center / contain no-repeat;
+    --cs-seal-shadow: none;
+    --cs-seal-ink: #f6efd8;
+    --cs-seal-shape: none;
+    --cs-seal-fill: #8a5a2b;
+    --cs-name-font: 'Alegreya SC', 'Cinzel', Georgia, serif;
+    --cs-name-ink: #2f5424;
+    --cs-name-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+    --cs-overlay-bg: #f8faf2;
+    --cs-overlay-ink: #23301c;
+    --cs-fab-bg: radial-gradient(circle at 35% 30%, #5d8f41, #23401a);
+    --cs-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='40 20 70 90'%3E%3Cpath d='M75 36 C70 24 44 24 44 50 C44 74 66 88 75 106 C84 88 106 74 106 50 C106 24 80 24 75 36 Z' fill='%23f8faf2' stroke='%234f7a3a' stroke-width='2'/%3E %3Cpath d='M75 36 C77 29 82 25 90 23' fill='none' stroke='%235a4630' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    --cs-frame-fill: #f8faf2;
+    --cs-frame-on: 1;
+    --cs-frame-dy: 5%;
+  }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) { background-color: #eef3e4; border: 6px solid #5a4630 !important; border-radius: 14px !important; }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder)::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 22px; pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='22' viewBox='0 0 200 22'%3E%3Cpath d='M0 11 C30 2 70 20 100 11 S170 2 200 11' fill='none' stroke='%234f7a3a' stroke-width='2'/%3E %3Cg fill='%238db86b'%3E%3Cellipse cx='40' cy='7' rx='7' ry='3' transform='rotate(-25 40 7)'/%3E%3Cellipse cx='88' cy='15' rx='7' ry='3' transform='rotate(25 88 15)'/%3E %3Cellipse cx='140' cy='6' rx='7' ry='3' transform='rotate(-20 140 6)'/%3E%3Cellipse cx='182' cy='14' rx='6' ry='2.6' transform='rotate(20 182 14)'/%3E%3C/g%3E%3C/svg%3E") left top / 200px 22px repeat-x; }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-hero::before {
+    content: ''; position: absolute; right: 120px; top: 50%; width: 220px; height: 143px; margin-top: -78px; z-index: -1;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 130'%3E%3Cg fill='none' stroke='%235a4630' stroke-width='3' stroke-linecap='round'%3E %3Cpath d='M100 125 V70 M100 80 C80 60 60 55 40 30 M60 50 L45 55 M50 38 L35 36 M100 80 C120 60 140 55 160 30 M140 50 L155 55 M150 38 L165 36'/%3E%3C/g%3E %3Cg fill='%238db86b'%3E%3Cellipse cx='40' cy='28' rx='8' ry='4'/%3E%3Cellipse cx='160' cy='28' rx='8' ry='4'/%3E%3Cellipse cx='100' cy='66' rx='5' ry='9'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat; opacity: 0.35; pointer-events: none;
+  }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-seal { border-radius: 50%; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-tab { border-radius: 16px 2px 16px 2px !important; border-bottom: 1px solid var(--cs-tab-border) !important; margin-bottom: 4px; }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-tab.on { text-shadow: none; }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-tabs { border-bottom-color: #4f7a3a; }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-box { position: relative; border-radius: 12px; }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-box::after { content: ''; position: absolute; right: 8px; top: 6px; width: 38px; height: 38px; pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M6 36 C14 26 22 18 34 6' fill='none' stroke='%235d8f41' stroke-width='1.5'/%3E %3Cg fill='%238db86b'%3E%3Cellipse cx='14' cy='26' rx='5' ry='2.5' transform='rotate(-60 14 26)'/%3E%3Cellipse cx='22' cy='18' rx='5' ry='2.5' transform='rotate(-20 22 18)'/%3E%3Cellipse cx='28' cy='12' rx='5' ry='2.5' transform='rotate(-70 28 12)'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat; }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-box > .cs-h, #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-box > .cs-h-row { padding-right: 40px; }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-vital { border-radius: 2px 14px 2px 14px; }
+  #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-q > .cs-val.big, #cs-app[data-theme="grove-keeper"] .cs-vital { --cs-val-bg: transparent; }
+  @media (max-width: 640px) {
+    #cs-app[data-theme="grove-keeper"] .cs-wrap:not(.cs-builder) .cs-hero::before { right: 70px; width: 150px; height: 98px; margin-top: -52px; }
+  }
+}

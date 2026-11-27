@@ -516,7 +516,7 @@
       resist: [], immune: '', vuln: '',
       notes: { appearance: '', backstory: '', allies: '', notes: '' }, art: '',
       bonus: {}, purchases: [], fxPick: {}, fxOn: {}, armorMagic: null, shieldMagic: null,
-      rules: defaultRules(),
+      rules: defaultRules(), theme: 'classic',
       updated: Date.now(),
     };
   }
@@ -1458,6 +1458,17 @@
   <div class="cs-toolbar" role="toolbar" aria-label="Character file">
     <label class="cs-roster"><span class="cs-lbl">Character</span>
       <select id="cs-roster" aria-label="Switch character"></select></label>
+    <label class="cs-roster"><span class="cs-lbl">Theme</span>
+      <select data-bind="theme" id="f-theme" data-rerender="theme" aria-label="Sheet theme">
+        <option value="classic">Classic</option>
+        <option value="warrior">Warrior</option>
+        <option value="mage">Mage</option>
+        <option value="hunter">Hunter</option>
+        <option value="phantom">Phantom</option>
+        <option value="priest">Priest</option>
+        <option value="pact-keeper">Pact Keeper</option>
+        <option value="grove-keeper">Grove Keeper</option>
+      </select></label>
     <div class="cs-tools">
       <button type="button" class="cs-btn" data-act="characters">All characters</button>
       <button type="button" class="cs-btn cs-btn-red" data-act="new">Create character</button>
@@ -1570,6 +1581,7 @@
     },
     combat() {
       return `
+<div id="cs-hunt-box" hidden></div>
 <div class="cs-grid2">
   <div class="cs-box">
     <h3 class="cs-h">Take damage or heal</h3>
@@ -1864,10 +1876,27 @@
     if (r.auto.adaptations) [0, 1].forEach(i => {
       h += `<label><span class="cs-lbl">Adaptation ${i + 1}</span><select data-bind="adaptations.${i}" id="f-adapt${i}" data-rerender="race">${opt('', 'Choose')}${r.auto.adaptations.map(a => opt(a.name, `${a.name}: ${a.text}`)).join('')}</select></label>`;
     });
-    if (r.auto.hunt) h += `<label class="cs-check"><input type="checkbox" data-bind="hunt" id="f-hunt" data-type="bool" data-rerender="hunt"> The Hunt is active</label>`;
     h += `<p class="cs-note">${esc(r.statsText)} · ${esc(r.size)} · ${esc(r.speedText)} · ${esc(r.type)}</p>`;
     box.innerHTML = h;
     fillInputs(box);
+  }
+  function renderHunt(d) {
+    const box = $('#cs-hunt-box');
+    if (!box) return;
+    const c = char(), r = d.race;
+    if (!r || !r.auto || !r.auto.hunt) { box.hidden = true; box.innerHTML = ''; return; }
+    box.hidden = false;
+    const on = !!c.hunt;
+    box.innerHTML = `<div class="cs-hunt${on ? ' on' : ''}">
+      <div class="cs-hunt-info">
+        <div class="cs-hunt-head">
+          <h3>The Hunt</h3>
+          <span class="cs-chip ${on ? 'on' : ''}">${on ? 'Active (1 min)' : 'Ready · 1 / full rest'}</span>
+        </div>
+        <p class="cs-note">Attack rolls <b>+${d.level}</b> · Resistance (Body) <b>+${d.level}</b> · Speed <b>+2 m</b> · Tracking <b>+5</b>. Ending The Hunt inflicts <b>Exhausted</b> until a partial rest.</p>
+      </div>
+      <button type="button" class="cs-btn ${on ? 'cs-btn-red' : ''}" data-act="toggle-hunt">${on ? 'End The Hunt' : 'Channel The Hunt'}</button>
+    </div>`;
   }
   function renderClassFacts() {
     const c = char();
@@ -2287,7 +2316,7 @@
       <div class="cs-vital-top"><span class="cs-lbl">${label}</span><button type="button" class="cs-why" data-break="${key}" aria-label="${label} maximum: show the math">max ${max}</button></div>
       <div class="cs-vital-row">
         <button type="button" class="cs-step" data-step="${key}:-1" aria-label="${label} minus 1">−</button>
-        <input type="number" inputmode="numeric" class="cs-vital-num" data-cur="${key}" id="cur-${key}" value="${cur}" aria-label="Current ${label}">
+        <span class="cs-frame"><input type="number" inputmode="numeric" class="cs-vital-num" data-cur="${key}" id="cur-${key}" value="${cur}" aria-label="Current ${label}"></span>
         <button type="button" class="cs-step" data-step="${key}:1" aria-label="${label} plus 1">+</button>
       </div>
       <div class="cs-bar"><span style="width:${pct}%"></span></div></div>`;
@@ -2303,6 +2332,16 @@
     </div>${(d.fxInfo || []).length ? `<h4 class="cs-h4">Notes from effects</h4><ul class="cs-fxnotes">${d.fxInfo.map(([l, t]) => `<li><b>${esc(l)}:</b> ${esc(t)}</li>`).join('')}</ul>` : ''}`
       : '<p class="cs-note">No effects yet. Equip a magic item, reach a class feature with a bonus, or type effects into an Other feature.</p>';
     fillInputs(box);
+  }
+  // Framed numbers (class themes): 3 or more characters get the smaller cs-long size so they fit the frame.
+  function fitFrames(root) {
+    if (!root) return;
+    const els = [...root.querySelectorAll('.cs-vital-num, .cs-q > .cs-val.big')];
+    if (root.matches && root.matches('.cs-vital-num, .cs-q > .cs-val.big')) els.push(root);
+    els.forEach(el => {
+      const text = String(el.tagName === 'INPUT' ? el.value : el.textContent).trim();
+      el.classList.toggle('cs-long', text.length >= 3);
+    });
   }
   function renderVitals(d) {
     const focus = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.cur : null;
@@ -2374,6 +2413,7 @@
     $$('[data-out-html]').forEach(el => { el.innerHTML = getPath(o, el.dataset.outHtml) || ''; });
     $$('[data-out-style]').forEach(el => { el.style.width = getPath(o, el.dataset.outStyle) + '%'; });
     renderVitals(d);
+    fitFrames(document.getElementById('cs-app'));
     renderConditions();
     safeRender('#cs-fxlist', () => renderFx(d));
     safeRender('#cs-dying', () => renderDying(d));
@@ -2399,10 +2439,32 @@
     $('#cs-example').hidden = !c.example;
     saveSoon();
   }
+  // Google Fonts families for each class theme. Classic uses the site fonts from styles.css.
+  const THEME_FONTS = {
+    mage: 'Marcellus+SC&family=Spectral:wght@400;500;700',
+    'grove-keeper': 'Alegreya+SC:wght@500;700&family=Alegreya:wght@400;500;700',
+    warrior: 'Grenze:wght@500;700&family=Crimson+Pro:wght@400;600',
+    hunter: 'IM+Fell+English+SC&family=Crimson+Pro:wght@400;600',
+    phantom: 'Cormorant+SC:wght@500;700&family=Cormorant+Garamond:wght@500;700',
+    priest: 'Forum&family=Cardo:wght@400;700',
+    'pact-keeper': 'UnifrakturMaguntia&family=Crimson+Pro:wght@400;600'
+  };
+  function applyTheme() {
+    const theme = char().theme || 'classic';
+    const app = document.getElementById('cs-app');
+    if (app) app.dataset.theme = theme;
+    let link = document.getElementById('cs-theme-fonts');
+    if (!THEME_FONTS[theme]) { if (link) link.remove(); return; }
+    const href = `https://fonts.googleapis.com/css2?family=${THEME_FONTS[theme]}&display=swap`;
+    if (!link) { link = document.createElement('link'); link.id = 'cs-theme-fonts'; link.rel = 'stylesheet'; document.head.appendChild(link); }
+    if (link.getAttribute('href') !== href) link.setAttribute('href', href);
+  }
   function fullRender(d) {
     d = d || compute(char());
+    applyTheme();
     renderRoster();
     renderRaceChoices();
+    renderHunt(d);
     renderClassSelects();
     renderWeapons(d);
     renderArmorMagic(d);
@@ -2420,10 +2482,11 @@
   }
   function rerender(kind) {
     const d = compute(char());
-    if (kind === 'race') { renderRaceChoices(); renderResists(d); renderFeatures(d); renderWeapons(d); }
+    if (kind === 'race') { renderRaceChoices(); renderHunt(d); renderResists(d); renderFeatures(d); renderWeapons(d); }
     if (kind === 'class') { renderClassSelects(); renderFeatures(d); renderTierList('#cs-spells', 'spells', D.spellTiers, d, 'Mana'); renderTierList('#cs-mans', 'maneuvers', D.maneuverTiers, d, 'Stamina'); renderWeapons(d); renderRoster(); }
-    if (kind === 'weapons' || kind === 'hunt') renderWeapons(d);
+    if (kind === 'weapons' || kind === 'hunt') { renderHunt(d); renderWeapons(d); }
     if (kind === 'name') renderRoster();
+    if (kind === 'theme') applyTheme();
     if (kind === 'items') { renderItems(); renderResists(d); }
     if (kind === 'fx') { renderItems(); renderFeatures(d); renderResists(d); renderFx(d); renderWeapons(d); renderArmorMagic(d); }
     if (kind === 'armor') { renderArmorMagic(d); renderFeatures(d); renderFx(d); renderResists(d); }
@@ -2481,6 +2544,7 @@
       update();
       return;
     }
+    if (el.dataset.cur) fitFrames(el);
     if (el.dataset.cur && e.type === 'change') {
       const d = compute(char());
       setCur(el.dataset.cur, n(el.value), d);
@@ -3592,6 +3656,20 @@
       case 'deathsave': deathSave(); break;
       case 'stabilize': c.cur.hp = 0; toggleCondition('Dying', false); c.dying = { fails: 0, rounds: 0, dead: false }; logRoll('Stabilized', 0, 'Stable at 0 Health. Dying ends.', 'heal'); update(); break;
       case 'clear-cond': c.conditions = []; c.dying = { fails: 0, rounds: 0, dead: false }; update(); break;
+      case 'toggle-hunt': {
+        c.hunt = !c.hunt;
+        if (!c.hunt) {
+          toggleCondition('Exhausted', true);
+          toast('The Hunt ends. You gain Exhausted until a partial rest.');
+        } else {
+          const lv = compute(c).level;
+          logRoll('The Hunt', `+${lv}`, `Attack +${lv}, Resistance (Body) +${lv}, Speed +2 m, Tracking +5.`, 'heal');
+          toast('The Hunt is active!');
+        }
+        const hd = compute(c);
+        renderHunt(hd); renderWeapons(hd); update();
+        break;
+      }
       case 'add-weapon': c.weapons.push(newWeapon('')); renderWeapons(compute(c)); update(); break;
       case 'add-tool': c.tools.push({ name: '', rank: 0 }); renderTools(compute(c)); update(); break;
       case 'add-lang': {

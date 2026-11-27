@@ -100,3 +100,14 @@ Each of these has a switch on the Bonuses & Rules tab, per character.
 - Maneuver attack: the Basic Rules do not say whether it adds level.
 - Transmuting: resolved as a +1 trait (matches Basic Rules, magic items table, magic traits page, and sheet).
 - Greater Storing was listed at +1. Fixed to +3 on the magic traits page and the sheet, above Storing at +2.
+
+## Class themes
+
+- Classic lives in `Webpages/character-sheet.css`. The seven class themes live in `Webpages/character-sheet-themes.css`, inside `@media screen`, so every theme prints like Classic.
+- The theme is saved per character and set as `data-theme` on `#cs-app`. New characters start on Classic.
+- Each class theme overrides the theme tokens at the top of `character-sheet.css`: colors (`--cs-leaf`, `--cs-ink`, `--cs-red`, `--cs-amber`, `--cs-gold`, gauge inks), fonts (`--cs-display`, `--cs-body`, `--cs-name-font`), surfaces (`--cs-wrap-bg`, `--cs-box-bg`, `--cs-tab-bg`, `--cs-btn-bg` and friends), the level badge (`--cs-seal-bg`, `--cs-seal-fill`, `--cs-seal-shape`) and the number frame (`--cs-frame`, `--cs-frame-fill`, `--cs-frame-on`, `--cs-frame-dx`, `--cs-frame-dy`).
+- Scoping rule: sheet parts use `#cs-app[data-theme="<id>"] .cs-wrap:not(.cs-builder) ...`. The character builder re-declares Classic tokens and stays Classic.
+- Ornaments, badges and frames are inline SVG in the CSS. No image files.
+- `character-sheet.js` loads only the active theme's Google Fonts (`THEME_FONTS`).
+- Tests: `tools/tests/test_sheet_themes.py` (pytest and Playwright). The Classic screenshot check needs a baseline: run `MAKE_BASELINE=1 pytest tools/tests/test_sheet_themes.py::test_make_baseline` on a known-good Classic first.
+- Classic has two low-contrast spots left as they were: the Go shopping button text matches its red button, and the remove × on an active condition chip is hard to see. The class themes fix both.
