@@ -222,3 +222,5 @@
 .sh-list-btns { flex-wrap: wrap; }
 @media (max-width: 640px) { .sh-sheetlink { margin-left: 0; } .sh-item-foot { flex-wrap: wrap; } }
 .sh-forge { display: inline-flex; align-items: center; text-decoration: none; }
+.sh-item-name a { color: inherit; text-decoration: none; }
+.sh-item-name a:hover { text-decoration: underline; }

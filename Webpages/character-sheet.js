@@ -38,6 +38,7 @@
     ['atkMelee', 'Melee attack'], ['atkRanged', 'Ranged attack'], ['dmgMelee', 'Melee damage'], ['dmgRanged', 'Ranged damage'],
     ['speed_fly', 'Fly speed'], ['speed_swim', 'Swim speed'], ['speed_climb', 'Climb speed'], ['speed_burrow', 'Burrow speed'],
     ['skillRanks', 'Skill ranks'], ['feats', 'Feats'], ['finMax', 'Armor Finesse max'], ['armorPen', 'Armor penalty reduction'],
+    ['ringSlots', 'Ring slots'], ['miscSlots', 'Attunement slots'],
     ['chosen_atk', 'Chosen weapon attack'], ['chosen_dmg', 'Chosen weapon damage'], ['chosen_crit', 'Chosen weapon Critical Chance'],
     ['chosen_deadly', 'Chosen weapon Deadly levels'], ['chosen_ench', 'Chosen weapon Enchanted levels'],
     ['w_deadly', 'Deadly levels on every weapon'], ['w_ench', 'Enchanted levels on every weapon'],
@@ -189,6 +190,8 @@
     put('dmgMelee', 'Melee Damage'); put('dmgRanged', 'Ranged Damage');
     put('skillRanks', 'Skill Ranks'); put('feats', 'Feats'); put('carry', 'Carrying Capacity', 'Carry');
     put('finMax', 'Armor Finesse Max'); put('armorPen', 'Armor Penalty Reduction');
+    put('ringSlots', 'Ring Slots', 'Ring Slot');
+    put('miscSlots', 'Attunement Slots', 'Attunement Slot', 'Misc Slots', 'Misc Slot');
     // weapon targets. "Chosen Weapon ..." lines apply to the weapon ticked as Chosen weapon on the Combat tab.
     put('chosen_atk', 'Chosen Weapon Attack'); put('chosen_dmg', 'Chosen Weapon Damage');
     put('chosen_crit', 'Chosen Weapon Critical Chance', 'Chosen Weapon Crit Chance');
@@ -307,7 +310,7 @@
       const list = kc.cls.features.map(f => [f, kc.name]).concat(kc.sub && kc.cls.subclasses[kc.sub] ? kc.cls.subclasses[kc.sub].map(f => [f, kc.sub]) : []);
       list.forEach(([f, src]) => { if (f.level <= kc.level) fxLines(f.effects).forEach((ln, i) => add(ln, fxId('cls', kc.name, src, f.name, f.level, i), f.name, `${src} ${f.level}`, kc.level)); });
     });
-    (c.features || []).forEach((f, j) => fxLines(f.fx == null ? itemFx(f) : f.fx).forEach((ln, i) => add(ln, fxId('feat', j, i), f.name || 'Other feature', 'Feature', d.level)));
+    (c.features || []).forEach((f, j) => fxLines((f.fx && String(f.fx).trim()) ? f.fx : itemFx(f)).forEach((ln, i) => add(ln, fxId('feat', j, i), f.name || 'Other feature', 'Feature', d.level)));
     // magic weapon traits work while the weapon is in hand. Magic armor and shield traits work while worn.
     c.weapons.forEach((w, i) => {
       const mg = w.inHand !== false && w.magic && w.magic.base === w.item && w.magic.attuned !== false ? magicOf(w.magic, 'weapon') : null;
@@ -820,6 +823,13 @@
     const overMg = d.weapon.filter(wc => wc && wc.stored && wc.stored.spent > wc.stored.bonus).map(wc => wc.title)
       .concat([[d.armorMagic, c.armor], [d.shieldMagic, c.shield]].filter(([mg]) => mg && mg.spent > mg.bonus).map(([mg, nm]) => magicTitle(mg, nm)));
     d.attune = attuneUse(c);
+    d.ringSlots = Math.min(10, Math.max(2, 2 + B('ringSlots')));
+    d.miscSlots = Math.max(3, 3 + B('miscSlots'));
+    while (c.rings.length < d.ringSlots) c.rings.push({});
+    while (c.rings.length > d.ringSlots && (!c.rings[c.rings.length - 1] || !c.rings[c.rings.length - 1].name)) c.rings.pop();
+    while (c.misc.length < d.miscSlots) c.misc.push({});
+    while (c.misc.length > d.miscSlots && (!c.misc[c.misc.length - 1] || !c.misc[c.misc.length - 1].name)) c.misc.pop();
+    d.attune = attuneUse(c);
     if (d.attune.used > d.attune.slots) d.warnings.push(`You are attuned to ${d.attune.used} items but have ${d.attune.slots} attunement slots. Unattune one or add a slot on the Gear tab.`);
     if (overMg.length) d.warnings.push(`${overMg.join(', ')}: the traits cost more than the magical bonus. Open Enchant on the Combat tab to fix it.`);
     if (d.usesChosen && !c.weapons.some(w => w.chosen && weaponData(w))) d.warnings.push('A class feature works with your chosen weapon. Tick Chosen weapon on one weapon on the Combat tab.');
@@ -1199,6 +1209,16 @@
   function equip(i) {
     const c = char(), it = c.inventory[i];
     if (!it) return;
+    if (it.kind === 'boon') {
+      c.features = c.features || [];
+      const entry = { name: it.name, text: it.desc || '', uses: 0, max: 0, reset: 'full' };
+      if (it.fx && String(it.fx).trim()) entry.fx = it.fx;
+      c.features.push(entry);
+      takeOne(c, i);
+      renderFeatures(compute(c)); renderItems(); renderInventory(); update(true);
+      toast(`${esc(it.name)} activated in Features.`);
+      return;
+    }
     if (it.kind === 'weapon' || it.kind === 'armor' || it.kind === 'shield') {
       const nm = it.name;
       if (it.kind === 'weapon') {
@@ -1904,7 +1924,7 @@
       c.inventory.map((it, i) => {
         const acts = [];
         if (it.desc) acts.push(`<button type="button" class="cs-why" data-info="inv:${i}">Info</button>`);
-        if (it.kind === 'magic' || it.kind === 'weapon' || it.kind === 'armor' || it.kind === 'shield') acts.push(`<button type="button" class="cs-btn cs-btn-sm cs-btn-red" data-equip="${i}">Equip</button>`);
+        if (it.kind === 'magic' || it.kind === 'weapon' || it.kind === 'armor' || it.kind === 'shield' || it.kind === 'boon') acts.push(`<button type="button" class="cs-btn cs-btn-sm cs-btn-red" data-equip="${i}">Equip</button>`);
         if (it.kind === 'consumable') acts.push(`<button type="button" class="cs-btn cs-btn-sm cs-btn-red" data-use="${i}">Use</button>`);
         if (toolNames.includes(String(it.name || '').toLowerCase()) && !(c.tools || []).some(t => String(t.name).toLowerCase() === String(it.name).toLowerCase())) acts.push(`<button type="button" class="cs-btn cs-btn-sm" data-totool="${i}">Add to Tools</button>`);
         const tag = it.kind ? `<span class="cs-tag cs-kind">${esc(KIND_LABEL[it.kind] || it.kind)}${it.slot ? ' · ' + esc(normSlot(it.slot)) : ''}</span>` : '';

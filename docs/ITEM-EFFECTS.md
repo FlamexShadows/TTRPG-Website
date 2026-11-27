@@ -70,7 +70,7 @@ Save the file. The shop shows the item, and the sheet applies its effects when a
 | Magic | Spell DC, Spell Attack, Maneuver DC, Maneuver Attack |
 | Movement | Speed, Fly, Swim, Climb, Burrow (also written as Fly Speed and so on) |
 | Skills | Any skill by its sheet name, such as Sneak or Knowledge (Arcane). All Skills, All Knowledge, Intimidate (both), Traverse (both). Stealth works as Sneak. |
-| Other | Skill Ranks, Feats, Carrying Capacity, Armor Finesse Max, Armor Penalty Reduction |
+| Other | Skill Ranks, Feats, Carrying Capacity, Armor Finesse Max, Armor Penalty Reduction, Ring Slots, Attunement Slots |
 | Resistance | Resist plus any damage type, Resist Physical, Resist Magical, Resist All |
 
 Attack and Damage apply to every weapon on the Combat tab. Melee and Ranged apply to weapons of that kind.

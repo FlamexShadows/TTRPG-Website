@@ -2,7 +2,7 @@
 
 A plan for a Sparks of Dynasty VTT built on the Basic Rules (`Sparks Basic Rules.docx`) and the existing site: `Webpages/character-sheet-data.js`, `Webpages/character-sheet.js`, `Webpages/shops-data.js`, `Webpages/styles.css`, and the monster notes in `C:\New Vault\Monsters`.
 
-Revised November 26, 2026. The changes from the first draft are listed in section 12.
+Revised November 26, 2026, and updated the same day for the Basic Rules changes. The changes are listed in section 12.
 
 ---
 
@@ -25,7 +25,8 @@ Revised November 26, 2026. The changes from the first draft are listed in sectio
 1. Move the pure rules functions out of `character-sheet.js` into `Webpages/sparks-rules.js`: `compute`, `weaponCalc`, `parseFx` and `collectFx`, `magicOf`, the damage pipeline, and condition effects.
 2. The character sheet and the VTT both load `sparks-rules.js`.
 3. Functions take plain data and return plain data. They never touch the page. This makes them testable.
-4. Add a test page (`Webpages/tests/rules-tests.html`) with known answers. Examples: the Bog Goblin Spearman and Ashen Knight from the Monster Making Guide, plus the example character on the sheet.
+4. The engine also holds the new rule tables as data: fall damage, object Hardness and Health, trap formulas, the XP and treasure tables, the TR budget bands and the loot tables. It reads multiclass saves (each class counts its own levels, added together), feats and the armor and shield proficiency check.
+5. Add a test page (`Webpages/tests/rules-tests.html`) with known answers. Examples: the Bog Goblin Spearman and Ashen Knight from the Monster Making Guide, the example character on the sheet, the 5 cm wooden door (Hardness 5, 20 Health) and the 30 cm stone wall (Hardness 8, 180 Health), and the four level 6 character budget (24 Normal, 36 Hard).
 
 ### 2.2 Data pipeline
 
@@ -35,6 +36,7 @@ The site cannot read the Obsidian vault at runtime, so monster data needs a buil
 - **Token art comes free.** The script copies `Monsters\Pixel Art\<Name> 8x.png` to `Webpages/Images/tokens/`. All 249 monsters already have a sprite.
 - **Validation.** The script runs the monster audit while it builds: stat totals, AC, Health, saves and Max Turns against the template rules. Problems go into `monsters-report.txt`. It does not stop the build.
 - **Conditions and vision types** come from the Basic Rules data, which `update_rules.py` already reads. The condition engine (section 7) holds a rules table built from that data, not hand-typed text.
+- **Loot roller.** The roller on the site (`loot-roller.html`) holds the loot tables in code. Move its table logic into `sparks-loot.js`. The roller page and the VTT both load it, so a defeated encounter rolls loot with the same tables.
 - `MONSTERS-200.md` is not imported. Every monster in it is already a note in the vault.
 
 ### 2.3 Game state and the action log
@@ -84,6 +86,12 @@ One plain JSON object holds the whole game: map, tokens, initiative, round, cond
 - Each AP spent on movement adds Speed meters to the token's move pool for the turn. Unused meters stay in the pool until the turn ends, so a token spends 1 AP, moves 3 m, attacks, then moves the last 2 m.
 - Separate Walk, Fly (with elevation), Swim, Climb and Burrow speeds. Burrowers cannot pass through rock or metal unless their entry says so or their Strength is over 40.
 - Modifiers: difficult terrain costs 2 m per 1 m. Dual wielding is −1 Speed. Heavy is −2 movement. Knocked Down is half speed. Slowed halves movement and Hastened doubles it. Pinned and Crippled cannot spend AP on movement.
+- **Jump** costs 3 AP. The distance is your Speed or half your Strength score, whichever is lower.
+- **Mounts:** mounting or dismounting costs 3 AP. A rider moves at the mount's Speed − 1. The rider's token follows the mount's token.
+- **Falling:** the VTT reads the height difference and suggests damage from the fall table (1 m 1d4, then the dice double each meter, up to 10 m at 512d4).
+- **Shoved:** the target moves 1 meter for each point it failed the check by, minimum 1. The VTT shows the path and stops it at the first obstacle. A creature stopped by an obstacle takes 5 damage per meter of movement lost. Shoved 2 meters or less, it passes a GM balance check or is Knocked Down. Shoved more than 2 meters, it is Knocked Down.
+- **Grapples:** breaking free costs 3 AP and a contested Overpower check. Forced movement of the grappler drops its target. Teleportation by either creature ends the grapple.
+- **Overland travel** (outside combat) uses kilometers per hour, not meters. See section 9.4.
 - Race features such as Half Elf's Best of Both come from the rules engine's race data, not code written for each race.
 
 ---
@@ -98,7 +106,10 @@ One plain JSON object holds the whole game: map, tokens, initiative, round, cond
 - Start of turn: AP = max AP (6, then +1 Hastened, −1 Slowed, 2 for Freezing, 0 for Paralyzed, Petrified, Stunned, Unconscious or Dying). The reaction refreshes. Start-of-turn conditions tick.
 - Unspent AP is lost at the end of the turn.
 - **AP carryover:** an action costing more than the AP left spends the remainder and stores what is still owed. The next turn pays the rest first. Actions longer than 1 round take 6 AP each turn.
-- **Action buttons:** Attack 3 (2 with Tempo), off-hand attack 1 (after an attack, light weapon, half the rolled damage), Move, Help 2, Activate Equipment 3, Object Interaction 4 (2 for quick tasks), Stand Up 1, Reload 1 (+1 for Firearm).
+- **Action buttons:** Attack 3 (2 with Tempo), off-hand attack 1 (after an attack, light weapon, half the rolled damage), Move, Help 2, Activate Equipment 3, Object Interaction 4 (2 for quick tasks), Stand Up 1, Reload 1 (+1 for Firearm, needs a free hand), Jump 3, Mount or Dismount 3, Break Grapple 3 (contested Overpower), Force Object 4 (Overpower against the obstacle DC), Pick Lock 4 (Lockpicking Kit).
+- **Ammunition counter:** a weapon with Reload (X) holds X shots. Each attack uses one and the token's weapon shows the shots left. At 0 the attack button turns into Reload. Reload fills the weapon.
+- **Punchthrough:** a toggle on the Attack button that adds 2 AP and turns the weapon's damage dice into true damage.
+- **Nonlethal:** a toggle declared before the roll, for melee and ranged attacks with an attack roll.
 
 ### 4.3 Opportunity attacks
 Before a move or action resolves, the VTT checks for enemies who see the actor, have it in reach, and still have their reaction. If any do, it prompts the defender. Triggers, from the Basic Rules:
@@ -106,7 +117,7 @@ Before a move or action resolves, the VTT checks for enemies who see the actor, 
 2. A ranged attack or a reload while in melee.
 3. A spell or maneuver in melee, unless it is a touch or melee attack.
 4. Activate Equipment. Both creatures provoke when the item belongs to or targets another creature.
-5. A distracting check: picking a lock, stabilizing, picking up an object, moving a heavy object.
+5. A distracting check: picking a lock, forcing an object, disarming a trap, stabilizing, picking up an object, moving a heavy object.
 6. Having max AP reduced to 0. The creature stays open until it rises.
 
 ---
@@ -117,8 +128,10 @@ Before a move or action resolves, the VTT checks for enemies who see the actor, 
 1. Roll 1d20 + attack modifier against AC. Advantage and disadvantage from all sources cancel into a normal roll if both are present.
 2. Flanking: two allies in melee with the target on different sides gain +2.
 3. Ranged attacks with a hostile creature in melee reach take −5.
-4. Miss chances: Blind attacker rolls d100 and misses on 50 or higher. Attacks against an unseen invisible creature miss on 75 or higher.
-5. Trait adjustments: Homing ignores cover, concealment and the Finesse bonus to AC. Phasing ignores Fortitude, armor and shield bonuses.
+4. **Cover:** quarter cover gives the target +2 AC and half cover +5 AC. Against full cover the attack cannot target. The GM sets the state, and the VTT suggests it from walls and tokens on the line between attacker and target.
+5. **Miss chances:** when an attack with a miss chance hits, roll d100. A result at or below the chance is a miss. Chances never stack. The highest one applies. Sources: concealment (10%), armor or a shield the attacker is not proficient with (20%), and the Blind and invisible values from the conditions table.
+6. **Armor penalty:** worn armor and a carried shield subtract their penalties from every Strength and Finesse skill check. A non-proficient item doubles its penalty.
+7. Trait adjustments: Homing ignores cover, concealment and the Finesse bonus to AC. Phasing ignores Fortitude, armor and shield bonuses.
 
 ### 5.2 Critical and Decisive Strikes
 Only physical melee and ranged attacks roll for these, plus spell attacks with the Deadly Magic feat.
@@ -138,7 +151,20 @@ Only physical melee and ranged attacks roll for these, plus spell attacks with t
    - Monsters have one Armor Value that takes the place of both pools.
 4. **Health** takes the rest. At 0 or below, the creature gains Dying. Damage taken while Dying marks one failed death save.
 
+**Nonlethal attacks:** a creature reduced to 0 Health by a nonlethal attack falls Unconscious and stable. It does not gain Dying.
+
+**Stat at 0:** a creature whose score in any stat reaches 0 dies at the start of its next turn. The VTT flags the token and asks the GM to confirm.
+
 Cursed: the creature counts as having 0 armor for effects that depend on armor, even while its armor holds.
+
+### 5.4 Objects and obstacles
+- **Object tokens.** Doors, walls, chests and gear can carry an Object stat block: size, material, thickness in cm, Hardness, Health and magical bonus.
+- **AC by size:** Tiny 15, Small 12, Medium 10, Large 8, Giant or bigger 5. A held object uses its holder's AC.
+- **Health** is thickness times the material's Health per cm. A magic object adds twice its bonus to Hardness and 10 times its bonus to Health.
+- **Damage:** Hardness is subtracted from every hit, and a hit at or under Hardness does nothing. True damage ignores Hardness. Objects take no poison or psychic damage and gain no conditions. Fire deals double damage to paper, cloth, rope and wood.
+- **Broken and destroyed:** at half Health the object is Broken (weapon −2 on attack and damage, armor and shields give half AC, rounded down). At 0 Health it is destroyed. A wall breach opens a gap 1 meter wide, and the map updates the wall segment.
+- **Forcing instead of breaking:** one Overpower check for 4 AP against the obstacle DC (stuck door 10, simple lock or wooden door 15, barred door 20, iron door or bars 25, vault door 35). Lock DCs for Pick Lock are 15, 20, 25 and 30 for the last four.
+- **Traps** (see 9.3) use the same token type with a Detect DC, a Disarm DC and an effect.
 
 ---
 
@@ -170,18 +196,20 @@ The engine stores each condition as `{name, source, expiresAtRound}` and reads i
 - **Cancel pairs:** Burning and Freezing. Hastened and Slowed. Fearful or Hopeless against Motivated or Inspired.
 - **Escalations:** Tired twice becomes Exhausted. Fearful twice becomes Hopeless. Motivated twice becomes Inspired.
 - **Start-of-turn ticks:** Bleeding (−1 Health), Burning (2d6 fire), Corroding (half current Physical Armor), Draining (half current Magical Armor), Shocked (d100, wastes the turn on 50 or lower).
-- **Dying:** 0 AP and Unconscious. End-of-turn death save: d100 at or under Fortitude modifier + level. Track failed saves, rounds spent Dying, and how far Health is below 0. The creature dies at 3 failed saves, after 5 rounds of Dying, or when its negative Health passes its Fortitude score. Stabilizing is a Knowledge (Medical) check against a DC equal to the negative Health.
+- **Dying:** 0 AP and Unconscious. End-of-turn death save: d100 at or under Fortitude modifier + level. Track failed saves, rounds spent Dying, and how far Health is below 0. The creature dies at 3 failed saves, after 5 rounds of Dying, or when its negative Health passes its Fortitude score. A **Resurrect** button on a dead token restores it to life when the GM confirms the soul is free to return. The token returns with the GM's chosen Health and loses the spell's materials. A body the creature cannot survive in returns the creature and then slays it at once. Stabilizing is a Knowledge (Medical) check against a DC equal to the negative Health.
 - **Exhausted:** Tired plus a cumulative −2 to physical stats. Past −10, each new stack calls for a DC 30 Resistance (Body) save, rising 10 each time.
+- **Suffocation and breath:** a creature holds its breath for its Fortitude modifier in minutes, minimum 1. At 0 breath it falls to 0 Health and gains Dying at the end of its next turn.
 - **Shown, not automated:** conditions that need GM judgment, such as Fearful's source, Possessed and Dominated, show their rules text and a reminder chip. The GM resolves them.
 
 ---
 
 ## 8. Spells, maneuvers, items and rest
 
-- **Casting** spends Mana by rank (Minor 5, Adept 10, Major 20, Grand 40) or Stamina by tier. It blocks spells needing Words of Power while Silenced, and blocks Mana, Stamina and magic items while Severed.
+- **Casting** spends Mana by rank (Minor 5, Adept 10, Major 20, Grand 40) or Stamina by tier (Minor 5, Adept 10, Major 15, Grand 20). It blocks spells needing Words of Power while Silenced, and blocks Mana, Stamina and magic items while Severed.
+- **Concentration:** each token holds one concentration effect. Casting a second one ends the first. When the caster takes damage, the VTT rolls a Resistance (Mind) save at DC 10 or half the damage, whichever is higher. A failure ends the effect. It also ends on Stunned, Paralyzed, Unconscious, Dying, 0 max AP, or when the caster ends it for 0 AP.
 - **Upcasting:** a stepper up to the caster's highest unlocked rank. Each step picks one of the four Basic Rules choices.
 - **Area templates:** cone, circle and line, snapped to the grid. They select the tokens inside and roll their saves in one batch, with half damage on a success where the effect says so.
-- **Items:** 9 worn slots, 2 rings and 3 or more attunement slots, taken straight from the character sheet. The item-effect lines from `ITEM-EFFECTS.md` apply through the shared engine. Magic trait riders (Flaming, Vampiric, Vortex and the rest) show as one-click follow-ups after a hit.
+- **Items:** armor gives AC with the +5 bonus the Basic Rules list, shields use the new stats and penalties from `character-sheet-data.js`, and 9 worn slots, 2 rings and 3 or more attunement slots, taken straight from the character sheet. The item-effect lines from `ITEM-EFFECTS.md` apply through the shared engine. Magic trait riders (Flaming, Vampiric, Vortex and the rest) show as one-click follow-ups after a hit.
 - **Rest (GM toolbar):** Partial rest restores Mana and Stamina equal to level, Physical Armor equal to Fortitude score and Magical Armor equal to Intelligence score, and removes Tired. Full rest restores everything to maximum, clears Exhausted, refreshes per-full-rest abilities and checks for level-up.
 
 ---
@@ -189,9 +217,33 @@ The engine stores each condition as `{name, source, expiresAtRound}` and reads i
 ## 9. Monsters and encounters
 
 - **Monster picker** from `monsters-data.js`: search by name, filter by type, TR and tier, and drop a token on the map with its sprite.
-- **Encounter budget:** party budget = total character levels. Costs: minion ½ × TR, elite 1 × TR, solo 2 × TR. The meter shows under, on and over budget. Hard and Deadly bands are left for a later pass, once there is playtest data to set them.
 - **Solo controls:** buttons for Unbreakable Will (once per round), Shake It Off (start of turn) and Second Phase (prompts at half Health), shown only on monsters that have those abilities.
 - **Monster sheets** list attacks, actions and DCs as roll buttons. Area actions open the matching template.
+
+### 9.1 Encounter budget
+- Party budget = total character levels. Costs: minion ½ × TR, elite 1 × TR, solo 2 × TR. A trap in the fight costs its TR.
+- **Difficulty bands** from the Basic Rules: Easy ½, Normal 1, Hard 1½ and Deadly 2 times party levels. The meter shows the band the encounter sits in.
+- **Warnings:** a monster with a TR above twice the party's average level, and a solo against a party of 2. The VTT suggests lowering that solo's TR by 2.
+- **Pacing tracker:** about 3 Normal fights fit between full rests. Swapping two Normal fights for one Hard fight keeps the pace. The tracker counts fights since the last full rest.
+
+### 9.2 XP and treasure
+- **XP:** defeated means killed, driven off, captured or overcome. The VTT adds the XP of every defeated monster and splits it evenly among the characters in the fight. Minion is half an elite and solo is double. The XP table is in the rules data.
+- **Loot:** an End Encounter button totals the treasure of the defeated monsters (minion, elite or solo value by TR) and opens the loot roller with that budget. The GM keeps, edits or rerolls the result.
+- **Wealth check:** a panel compares each character's wealth to the Wealth by Level table and flags gaps. It also applies the magic item cap (half the character's suggested wealth) and the earliest level for each magical bonus.
+
+### 9.3 Traps and hazards
+- **Trap builder:** enter a TR and the VTT fills in Detect DC, Disarm DC and Save DC (10 + 2 × TR each), the attack bonus (+3 × TR) and damage (1d6 per TR for one target, 1d8 per 2 TR for an area, half on a save). Sample traps load from the rules.
+- **Hidden until found.** A trap token is GM-only. When a character searches, the VTT rolls Inspect Object against the Detect DC. When no one searches, it compares the Detect DC to 10 + each character's Sense Environment bonus.
+- **Disarm:** 4 AP and an opportunity attack prompt. Missing by 5 or more triggers the trap.
+- **Magic traps** are Arcane Sigils. A dispel ends them and Knowledge (Arcane) replaces the disarm skill.
+- **Hazards:** a GM tool sets a severity DC (15 harsh, 20 severe, 25 extreme, 30 deadly) and rolls the matching save each hour for weather, thin air, deep pressure and disease. Hunger and thirst count days without rations and water and roll Endurance. Lava and acid act as an area trap with a TR the GM picks.
+
+### 9.4 Travel and exploration
+- **Travel tracker:** 8 hours a day. The party moves at its slowest member's pace. Slow is ½ × Speed, Normal is Speed and Fast is 1½ × Speed in kilometers per hour. Fast gives −5 on Sense Environment and no foraging or Sneak. Forest, hills, snow and swamp halve the pace, and roads add half again.
+- **Navigation:** a daily Survival check by the guide against the terrain DC (10 road, 15 forest, 20 jungle, 25 desert storm). A map gives +10. A failure loses 1d4 hours.
+- **Foraging:** a Survival check at Slow pace or after 1 hour, against the land DC (10, 15, 20, 25). Each 5 over the DC feeds 1 more creature.
+- **Forced march:** an Endurance check each hour past 8, DC 10 plus 2 per extra hour.
+- **Watches:** the tracker rolls a d20 every 4 hours. An 18 or higher meets an encounter, and a 15 or higher in dangerous land.
 
 ---
 
@@ -209,6 +261,7 @@ Each phase ends with a usable tool and a test session.
 - Canvas map: image upload, grid alignment, pan and zoom, size-scaled tokens, hand-drawn walls.
 - Initiative with solo second turns, AP counter, reaction toggle, move pool and measured movement.
 - Dice roller with advantage and disadvantage, d100, and damage dice. Plain-language log.
+- Ammunition counters, cover and miss chance fields, jump, mount and fall damage suggestions.
 - Bring in characters from the sheet (same site, so they are already in storage) and monsters from `monsters-data.js`.
 - Save to IndexedDB, export and import, undo and redo.
 - **Done when:** a full combat runs on one screen at the table.
@@ -218,7 +271,10 @@ Each phase ends with a usable tool and a test session.
 - Condition engine from the rules table, with ticks, cancels, escalations and Dying.
 - Opportunity attack prompts and AP carryover.
 - Area templates with batch saves. Upcasting.
-- Rest buttons and the encounter budget meter. Universal VTT wall import.
+- Rest buttons and the encounter budget meter with Easy to Deadly bands. Universal VTT wall import.
+- Concentration saves, nonlethal and Punchthrough toggles, shove paths, grapple breaks and object tokens with Hardness.
+- XP split, loot roller hand-off and the wealth check.
+- Trap builder with hidden traps and passive notice.
 - **Done when:** a level 5 party fights a solo with minions with no manual math, and every result can be undone.
 
 ### Phase 3: Online play (about 3 to 4 weeks)
@@ -226,6 +282,11 @@ Each phase ends with a usable tool and a test session.
 - **Hosting:** GitHub Pages cannot run a server. Use one small service for connections: a Cloudflare Worker with a Durable Object (one room per object), or PeerJS for direct WebRTC connections. Both have free tiers that cover a weekly game.
 - GM-only tokens, notes and hidden rolls.
 - **Done when:** four players on four devices finish a session, and a player who reconnects gets back the current state.
+
+### Phase 3b: Exploration tools (about 1 to 2 weeks)
+- Travel tracker, navigation, foraging, forced march and the watch roll.
+- Hazard roller for weather, hunger, thirst and suffocation.
+- **Done when:** a three-day journey runs from the tracker with no table lookups.
 
 ### Phase 4: Vision, fog and stealth (about 4 to 6 weeks)
 - Line of sight from walls, light layers, and the six vision types, with fog of war drawn for each player's own tokens.
@@ -247,7 +308,9 @@ Each phase ends with a usable tool and a test session.
 
 ---
 
-## 12. Changes from the first draft
+## 12. Changes
+
+### First revision
 
 1. **Added a shared rules engine** (2.1) so the VTT and the character sheet never disagree.
 2. **Added a monster build step** (2.2). A web page cannot read the vault directly. It also brings in the 249 pixel-art sprites as tokens.
@@ -263,5 +326,17 @@ Each phase ends with a usable tool and a test session.
    - Hastened and Slowed also change AC by 2.
    - The Critical and Decisive Strike steps are rewritten to match the rules: a roll in the decisive range is the automatic critical. Unaware makes only the first attack a Critical Strike. Hits on Unconscious creatures are automatic criticals.
    - Dying now lists all three ways to die and the stabilizing check.
-   - Removed the Trivial, Fair, Hard and Deadly bands. The rules set only the budget itself.
+   - Removed the Trivial, Fair, Hard and Deadly bands. The rules set only the budget itself. (The Basic Rules now define Easy, Normal, Hard and Deadly. See the second revision.)
 9. **Conditions become a data table** read from the rules, not hand-written logic for each one, with the judgment-heavy ones left to the GM.
+
+### Second revision: Basic Rules changes
+1. **Combat rules:** cover (quarter +2, half +5, full cannot target), concealment (10% miss chance), miss chances that never stack, armor and shield penalties, a 20% miss chance for non-proficient armor and shields, nonlethal attacks, and the ammunition counter with Reload (X).
+2. **Movement rules:** jump, mounts, the fall table, shove paths and damage, and grapple breaking.
+3. **Death rules:** a stat at 0 kills at the start of the creature's next turn. Resurrection has a button and a rule. Breath and suffocation have timers.
+4. **Spell rules:** Concentration saves, Words of Power and Arcane Sigils, and the Mana and Stamina costs by rank.
+5. **Items:** armor AC +5, new shield stats, Punchthrough as a 2 AP true damage toggle, and Armor Penalty on Strength and Finesse checks.
+6. **Objects and obstacles** (5.4): AC by size, Hardness, Health by material and thickness, broken state and forcing obstacles.
+7. **Running the Game** (9.1 to 9.4): Easy to Deadly budget bands, TR warnings, XP and treasure tables, traps and hazards, and travel, navigation and foraging.
+8. **Loot roller** moves into a shared `sparks-loot.js` (2.2). The VTT hands defeated monsters to it.
+9. **Rules data in the engine:** multiclass saves, feats and the new tables load through `sparks-rules.js` (2.1).
+10. **New Phase 3b** for the exploration tools.

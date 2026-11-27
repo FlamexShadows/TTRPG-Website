@@ -4246,6 +4246,28 @@ window.SPARKS_DATA = {
    "type": "Piercing"
   },
   {
+   "name": "Blowgun",
+   "die": "1",
+   "traits": [
+    "Ranged (Finesse) (15)",
+    "Hidden"
+   ],
+   "price": 15,
+   "range": 15,
+   "type": "Piercing"
+  },
+  {
+   "name": "Boomerang (War)",
+   "die": "1d4",
+   "traits": [
+    "Light",
+    "Thrown (15)"
+   ],
+   "price": 8,
+   "range": 15,
+   "type": "Bludgeoning"
+  },
+  {
    "name": "Chakram",
    "die": "1d4",
    "traits": [
@@ -4282,6 +4304,30 @@ window.SPARKS_DATA = {
    "type": "Bludgeoning"
   },
   {
+   "name": "Dagger",
+   "die": "1d4",
+   "traits": [
+    "Light",
+    "Hidden",
+    "Thrown (10)"
+   ],
+   "price": 4,
+   "range": 10,
+   "type": "Piercing"
+  },
+  {
+   "name": "Estoc",
+   "die": "1d8",
+   "traits": [
+    "Two Handed",
+    "Punchthrough",
+    "Deadly I"
+   ],
+   "price": 65,
+   "range": 1,
+   "type": "Piercing"
+  },
+  {
    "name": "Firelance",
    "die": "1d6",
    "traits": [
@@ -4294,6 +4340,17 @@ window.SPARKS_DATA = {
    "price": 200,
    "range": 5,
    "type": "Fire"
+  },
+  {
+   "name": "Flail",
+   "die": "1d8",
+   "traits": [
+    "Hooked",
+    "Punchthrough"
+   ],
+   "price": 18,
+   "range": 1,
+   "type": "Bludgeoning"
   },
   {
    "name": "Flintlock",
@@ -4499,6 +4556,17 @@ window.SPARKS_DATA = {
    "type": "Bludgeoning"
   },
   {
+   "name": "Morningstar",
+   "die": "1d8",
+   "traits": [
+    "Deadly I",
+    "Punchthrough"
+   ],
+   "price": 22,
+   "range": 1,
+   "type": "Piercing"
+  },
+  {
    "name": "Musket",
    "die": "2d8",
    "traits": [
@@ -4515,6 +4583,41 @@ window.SPARKS_DATA = {
    "type": "Piercing"
   },
   {
+   "name": "Net (Weighted)",
+   "die": "0",
+   "traits": [
+    "Thrown (5)",
+    "Hooked"
+   ],
+   "price": 10,
+   "range": 5,
+   "type": "Bludgeoning"
+  },
+  {
+   "name": "Pike",
+   "die": "1d10",
+   "traits": [
+    "Two Handed",
+    "Heavy",
+    "Reach III"
+   ],
+   "price": 15,
+   "range": 4,
+   "type": "Piercing"
+  },
+  {
+   "name": "Quarterstaff",
+   "die": "1d6",
+   "traits": [
+    "Simple",
+    "Two Handed",
+    "Defensive"
+   ],
+   "price": 2,
+   "range": 1,
+   "type": "Bludgeoning"
+  },
+  {
    "name": "Rapier",
    "die": "1d6",
    "traits": [
@@ -4524,6 +4627,40 @@ window.SPARKS_DATA = {
    "price": 50,
    "range": 1,
    "type": "Piercing"
+  },
+  {
+   "name": "Scimitar",
+   "die": "1d6",
+   "traits": [
+    "Light",
+    "Cleave"
+   ],
+   "price": 25,
+   "range": 1,
+   "type": "Slashing"
+  },
+  {
+   "name": "Shortsword",
+   "die": "1d6",
+   "traits": [
+    "Light",
+    "Deadly I"
+   ],
+   "price": 12,
+   "range": 1,
+   "type": "Piercing"
+  },
+  {
+   "name": "Sling",
+   "die": "1d4",
+   "traits": [
+    "Simple",
+    "Light",
+    "Ranged (Finesse) (15)"
+   ],
+   "price": 1,
+   "range": 15,
+   "type": "Bludgeoning"
   },
   {
    "name": "Spear",
@@ -4810,6 +4947,86 @@ window.SPARKS_DATA = {
    "penalty": 0,
    "price": 25,
    "type": "Light"
+  },
+  {
+   "name": "Quilted Aketon",
+   "ac": 12,
+   "maxFin": null,
+   "penalty": 0,
+   "price": 15,
+   "type": "Light"
+  },
+  {
+   "name": "Ring Mail",
+   "ac": 17,
+   "maxFin": 12,
+   "penalty": 2,
+   "price": 85,
+   "type": "Medium"
+  },
+  {
+   "name": "Breastplate (Steel)",
+   "ac": 22,
+   "maxFin": 10,
+   "penalty": 2,
+   "price": 350,
+   "type": "Medium"
+  },
+  {
+   "name": "Half-Plate (Nomad)",
+   "ac": 23,
+   "maxFin": 9,
+   "penalty": 2,
+   "price": 600,
+   "type": "Medium"
+  },
+  {
+   "name": "Jousting Plate",
+   "ac": 37,
+   "maxFin": 0,
+   "penalty": 10,
+   "price": 3500,
+   "type": "Heavy"
+  },
+  {
+   "name": "Scale Coat (Drakeskin)",
+   "ac": 26,
+   "maxFin": 12,
+   "penalty": 3,
+   "price": 4000,
+   "type": "Heavy"
+  },
+  {
+   "name": "Bone Brigandine",
+   "ac": 19,
+   "maxFin": 14,
+   "penalty": 2,
+   "price": 180,
+   "type": "Medium"
+  },
+  {
+   "name": "Silk-Reinforced Vest",
+   "ac": 14,
+   "maxFin": null,
+   "penalty": 0,
+   "price": 120,
+   "type": "Light"
+  },
+  {
+   "name": "Abyssal Iron Mail",
+   "ac": 31,
+   "maxFin": 4,
+   "penalty": 5,
+   "price": 2800,
+   "type": "Heavy"
+  },
+  {
+   "name": "Glider Harness Leather",
+   "ac": 15,
+   "maxFin": 25,
+   "penalty": 0,
+   "price": 220,
+   "type": "Light"
   }
  ],
  "shields": [
@@ -4855,6 +5072,35 @@ window.SPARKS_DATA = {
    "price": 55,
    "weight": 4,
    "penalty": 3
+  },
+  {
+   "name": "Pavise",
+   "ac": 6,
+   "price": 65,
+   "weight": 10,
+   "penalty": 7,
+   "twoHanded": true
+  },
+  {
+   "name": "Lantern Shield",
+   "ac": 3,
+   "price": 70,
+   "weight": 4.5,
+   "penalty": 3
+  },
+  {
+   "name": "Wicker Targe",
+   "ac": 2,
+   "price": 8,
+   "weight": 1.5,
+   "penalty": 1
+  },
+  {
+   "name": "Mithril Buckler",
+   "ac": 2,
+   "price": 1200,
+   "weight": 0.5,
+   "penalty": 0
   }
  ],
  "traits": {

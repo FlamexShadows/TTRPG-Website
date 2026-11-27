@@ -60,20 +60,21 @@
     const nm = it.name.toLowerCase();
     switch (it.shop) {
       case 'marionettes-market': return 'magic';
-      case 'general-smithing': return it.section === 'Armor' ? 'armor' : it.section === 'Shields' ? 'shield' : 'weapon';
+      case 'general-smithing': return it.section === 'Armor' ? 'armor' : it.section === 'Shields' ? 'shield' : it.section === 'Smithing Gear' ? (/oil|treatment/.test(nm) ? 'consumable' : 'gear') : 'weapon';
       case 'grand-elixirs': return it.section === 'Potion Ingredients' ? 'material' : 'consumable';
-      case 'black-market': return /coins/i.test(nm) ? 'gear' : 'consumable';
-      case 'clouds-pet-shop': return 'companion';
+      case 'black-market': return /coins?\b|pass$|seal|dice|deck|cutter|key ring|boots|flask|grapple|tabard|garrote|crate|blueprint|ledger/.test(nm) ? 'gear' : 'consumable';
+      case 'clouds-pet-shop': return /feed/.test(nm) ? 'consumable' : /saddle|harness|carrier|whistle/.test(nm) ? 'gear' : 'companion';
       case 'services': return /servant/.test(nm) ? 'companion' : 'service';
       case 'church':
         if (/^blessing/.test(nm)) return 'boon';
-        if (/resurrection|purge|confession/.test(nm)) return 'service';
+        if (/resurrection|purge|confession|^rite|rite$|lodging|temple healing/.test(nm)) return 'service';
+        if (/beads|bell|vestments|censer|locket|book|seal|token|tithe|shroud/.test(nm)) return 'gear';
         if (/silver/.test(nm)) return 'material';
         if (/symbol/.test(nm)) return 'gear';
         return 'consumable';
       default:
         if (TOOLS.includes(nm)) return 'tool';
-        if (/acid|smoke bomb|powder keg|dynamite|rations|^oil$|torch|candle|caltrops|ball bearings|parchment|ink/.test(nm)) return 'consumable';
+        if (/acid|smoke bomb|powder keg|dynamite|rations|^oil$|torch|candle|caltrops|ball bearings|parchment|ink|bandage|poultice|smelling salts|matchsticks|tallow|chalk|charcoal|vellum|firewood|jerky|hardtack|trail mix|wine|ale keg|coffee|sweetleaf|honey|salt pouch|lye soap|perfume|balm|bait|whistle-tipped/.test(nm)) return 'consumable';
         return 'gear';
     }
   }
@@ -81,16 +82,16 @@
   // apply one purchase to a character object
   function applyPurchase(c, it, qty, unit) {
     const kind = kindOf(it), shopName = SHOP[it.shop].name;
-    c.gold = money(c) - unit * qty;
+    c.gold = Math.round((money(c) - unit * qty) * 100) / 100;
     c.inventory = c.inventory || []; c.features = c.features || []; c.purchases = c.purchases || [];
     if (kind === 'boon') {
       if (!c.features.some(f => f.name === it.name)) c.features.push({ name: it.name, text: it.desc || '', uses: 0, max: 0, reset: 'none', fx: (it.effects || []).join('\n') });
     } else if (kind !== 'service') {
       const same = c.inventory.find(x => x.name === it.name && x.shop === shopName && x.kind === kind);
       if (same) same.qty = (Number(same.qty) || 0) + qty;
-      else c.inventory.push({ name: it.name, qty, kg: 0, where: kind === 'companion' ? 'Stored' : 'Pack', notes: '', shop: shopName, kind, slot: it.slot || '', power: it.power || '', desc: it.desc || '', paid: unit });
+      else c.inventory.push({ name: it.name, qty, kg: it.kg || 0, where: kind === 'companion' ? 'Stored' : 'Pack', notes: '', shop: shopName, kind, slot: it.slot || '', power: it.power || '', desc: it.desc || '', paid: unit });
     }
-    c.purchases.push({ t: Date.now(), name: it.name, shop: shopName, qty, cost: unit * qty, kind });
+    c.purchases.push({ t: Date.now(), name: it.name, shop: shopName, qty, cost: Math.round(unit * qty * 100) / 100, kind });
     c.updated = Date.now();
     if (c.example) c.example = false;
     return kind;
@@ -112,7 +113,7 @@
     const items = keys.map(k => ITEM[k]);
     const single = items.length === 1;
     const rows = single
-      ? (() => { const it = items[0]; return `<div class="sh-brow"><label class="sh-field"><span class="sh-lbl">Price each (GP)</span><input type="number" min="0" step="1" id="sh-m-price" value="${it.gp == null ? '' : it.gp}" placeholder="Ask your GM"></label>
+      ? (() => { const it = items[0]; return `<div class="sh-brow"><label class="sh-field"><span class="sh-lbl">Price each (GP)</span><input type="number" min="0" step="any" id="sh-m-price" value="${it.gp == null ? '' : it.gp}" placeholder="Ask your GM"></label>
           <label class="sh-field sh-qtyf"><span class="sh-lbl">Quantity</span><input type="number" min="1" step="1" id="sh-m-qty" value="1"></label></div>
           ${it.gp == null ? `<p class="sh-note">Listed price: ${esc(it.price)}. Enter the price your GM set.</p>` : '<p class="sh-note">Change the price if your GM gave you a deal.</p>'}
           <p class="sh-note">${esc(it.name)} ${esc(KIND_NOTE[kindOf(it)])}</p>`; })()
@@ -165,11 +166,12 @@
     if (showShop) meta.push(`<a class="sh-chip sh-chip-shop" href="${esc(SHOP[it.shop].page)}#${esc(it.anchor)}">${esc(SHOP[it.shop].name)}</a>`);
     if (it.section) meta.push(`<span class="sh-chip">${esc(it.section)}</span>`);
     if (it.slot) meta.push(`<span class="sh-chip">${esc(slotOf(it))} slot</span>`);
+    if (it.kg != null) meta.push(`<span class="sh-chip">${esc(it.kg)} kg</span>`);
     if (it.power) meta.push(`<span class="sh-chip sh-pow sh-pow-${POWER_COLOR[it.power]}"><span class="sh-dot" aria-hidden="true"></span>${esc(it.power)}</span>`);
     if (it.rarity) meta.push(`<span class="sh-chip">Rarity: ${esc(it.rarity)}</span>`);
     return `<article class="sh-item" id="${esc(it.anchor)}" data-key="${esc(it.key)}">
       <header class="sh-item-head">
-        <h3 class="sh-item-name">${esc(it.name)}</h3>
+        <h3 class="sh-item-name">${it.page ? `<a href="${esc(it.page)}">${esc(it.name)}</a>` : esc(it.name)}</h3>
         <span class="sh-price${it.gp == null ? ' sh-price-text' : ''}">${esc(it.price || '—')}</span>
       </header>
       ${meta.length ? `<div class="sh-meta">${meta.join('')}</div>` : ''}
