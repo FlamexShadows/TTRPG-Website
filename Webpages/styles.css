@@ -523,11 +523,13 @@ header#main-header nav,
     gap: 36px;
     padding: 50px 60px 70px;
 
-    /* Antique parchment page background */
+    /* Antique parchment page background with subtle deckled vellum grain */
     background-color: var(--parchment-base);
     background-image: 
-        radial-gradient(ellipse 90% 40% at 50% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 70%),
-        linear-gradient(to bottom, #fdf9ee 0%, #f7edd7 40%, #f3e6ca 85%, #ede0c2 100%);
+        radial-gradient(ellipse 90% 40% at 50% 0%, rgba(255, 252, 240, 0.85) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 25% at 50% 100%, rgba(168, 126, 68, 0.14) 0%, transparent 75%),
+        repeating-linear-gradient(0deg, rgba(140, 100, 50, 0.018) 0px, rgba(140, 100, 50, 0.018) 1px, transparent 1px, transparent 28px),
+        linear-gradient(to bottom, #fdf8ea 0%, #f7ebd2 42%, #f1e1be 85%, #e9d6ae 100%);
     color: var(--ink-dark);
 
     /* Double ruled frame around the page edges */
@@ -622,16 +624,22 @@ header#main-header nav,
     color: var(--ink-sepia);
 }
 
-/* Illuminated Drop Cap on Introduction Paragraph */
-.paragraph-box p::first-letter {
+/* Illuminated Drop Cap on Introduction Paragraph & Story Openings */
+.paragraph-box p::first-letter,
+.content-panel > p:first-of-type::first-letter {
     font-family: 'Cinzel Decorative', 'Cinzel', serif;
-    font-size: 3.4em;
+    font-size: 3.3em;
     font-weight: 700;
     float: left;
-    line-height: 0.85;
-    margin: 8px 12px 0 0;
-    color: var(--ink-crimson);
-    text-shadow: 1px 1px 0px #ead3a4, 2px 2px 3px rgba(120, 24, 22, 0.25);
+    line-height: 0.82;
+    margin: 6px 12px 2px 0;
+    padding: 6px 10px;
+    color: var(--gold-pale);
+    background: linear-gradient(145deg, #8e1f1c 0%, #5a100e 100%);
+    border: 2px solid var(--gold-leaf);
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(60, 20, 10, 0.35), inset 0 0 8px rgba(245, 215, 127, 0.25);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 /* ==========================================================================
@@ -726,21 +734,36 @@ header#main-header nav,
     margin-top: 10px;
     background-color: var(--parchment-light);
     background-image: 
-        radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.8) 0%, transparent 70%),
-        linear-gradient(to bottom, #fdfaf0 0%, #f6edd7 100%);
+        radial-gradient(ellipse at 50% 0%, rgba(255, 252, 242, 0.85) 0%, transparent 70%),
+        radial-gradient(ellipse at 50% 100%, rgba(180, 140, 75, 0.09) 0%, transparent 65%),
+        linear-gradient(to bottom, #fdf9ec 0%, #f6ebd3 100%);
     border: 2px solid var(--parchment-border);
     outline: 1px solid var(--gold-leaf);
-    outline-offset: -6px;
-    border-radius: 6px;
-    padding: 36px 42px;
+    outline-offset: -7px;
+    border-radius: 8px;
+    padding: 40px 46px;
     color: var(--ink-dark);
-    line-height: 1.75;
+    line-height: 1.78;
     font-size: 1.08em;
     box-shadow: 
-        0 6px 20px rgba(50, 30, 15, 0.16),
-        inset 0 0 30px rgba(160, 120, 60, 0.08);
+        0 8px 24px rgba(50, 30, 15, 0.18),
+        inset 0 0 42px rgba(160, 120, 60, 0.11);
     position: relative;
 }
+
+.content-panel::before,
+.content-panel::after {
+    content: '❧';
+    position: absolute;
+    top: 10px;
+    font-size: 1.1em;
+    color: var(--gold-dark);
+    opacity: 0.75;
+    pointer-events: none;
+}
+
+.content-panel::before { left: 14px; }
+.content-panel::after { right: 14px; transform: scaleX(-1); }
 
 /* Headings in the Book */
 h1, h2, h3, h4 {
@@ -750,11 +773,12 @@ h1, h2, h3, h4 {
 }
 
 .content-panel h2 {
-    font-size: 2em;
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    font-size: 2.05em;
     font-weight: 700;
     text-align: center;
-    margin: 0 0 20px 0;
-    padding-bottom: 12px;
+    margin: 0 0 22px 0;
+    padding-bottom: 14px;
     border-bottom: 2px double var(--parchment-border);
     color: var(--ink-crimson);
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -1033,6 +1057,7 @@ h1, h2, h3, h4 {
 .class-table,
 .list-table {
     width: 100%;
+    max-width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
     background-color: var(--parchment-light);
@@ -1065,6 +1090,40 @@ h1, h2, h3, h4 {
     color: var(--ink-dark);
     font-size: 0.98em;
     vertical-align: top;
+}
+
+.main-content:has(.class-table) {
+    width: 96%;
+    max-width: 1240px;
+    padding: 30px 2%;
+}
+
+.content-panel:has(.class-table) {
+    max-width: 1200px;
+    padding: 32px 24px;
+    overflow-x: auto;
+}
+
+.class-table {
+    table-layout: auto;
+    width: 100%;
+}
+
+.class-table th {
+    font-size: 0.75em;
+    letter-spacing: 0.2px;
+    padding: 9px 8px;
+    white-space: nowrap;
+}
+
+.class-table td {
+    font-size: 0.9em;
+    padding: 7px 8px;
+}
+
+.class-table th:nth-child(1),
+.class-table td:nth-child(1) {
+    text-align: center;
 }
 
 .class-table tr:nth-child(even),
@@ -1307,6 +1366,14 @@ button:hover {
 
     .content-panel {
         padding: 22px 18px;
+    }
+
+    .class-table th,
+    .class-table td {
+        padding: 6px 4px;
+        font-size: 0.74em;
+        letter-spacing: 0;
+        white-space: normal;
     }
 
     .condition {

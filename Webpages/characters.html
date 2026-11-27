@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Sparks | Characters</title>
+    <meta name="description" content="Select a previously created Sparks of Dynasty character or create a new one.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+    <link rel="stylesheet" type="text/css" href="character-sheet.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            $("#header-placeholder").load("a-header.html");
+        });
+    </script>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="cs-wrap cs-builder" id="chars-hub">
+        <div class="cs-b-start">
+            <h2 class="cs-b-title">Characters</h2>
+            <p id="chars-sub">Select a previously created character below, or create a new one.</p>
+            <div id="chars-grid" class="cs-char-grid"></div>
+            <div class="cs-btnrow cs-b-startbtns">
+                <a class="cs-btn cs-btn-red cs-b-big" href="character-sheet.html#new">Create new character</a>
+                <a class="cs-btn" href="character-sheet.html#blank">Blank sheet</a>
+                <button type="button" class="cs-btn cs-btn-quiet" id="chars-import-btn">Import a character</button>
+                <input type="file" id="chars-import-file" accept=".json,application/json" hidden>
+            </div>
+        </div>
+    </main>
+
+    <script src="character-sheet-data.js"></script>
+    <script>
+    (function () {
+      'use strict';
+      const D = window.SPARKS_DATA;
+      const STORE_KEY = 'sparks-sheet-v2';
+      const COOKIE_PFX = 'sparks_roster';
+      const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+
+      function readCookieRoster() {
+        try {
+          const map = Object.fromEntries(document.cookie.split(/;\s*/).filter(Boolean).map(p => { const i = p.indexOf('='); return i < 0 ? [p, ''] : [p.slice(0, i), p.slice(i + 1)]; }));
+          const count = Number(map[COOKIE_PFX + '_n'] || 0);
+          if (!count) return null;
+          let enc = '';
+          for (let i = 0; i < count; i++) enc += map[COOKIE_PFX + '_' + i] || '';
+          if (!enc) return null;
+          const r = JSON.parse(decodeURIComponent(enc));
+          return r && r.chars && r.order ? r : null;
+        } catch (e) { return null; }
+      }
+
+      function writeCookieRoster(r) {
+        try {
+          const compact = {
+            active: r.active,
+            order: r.order,
+            chars: Object.fromEntries(Object.entries(r.chars).filter(([, c]) => c && !c.example).map(([id, c]) => {
+              const copy = Object.assign({}, c);
+              if (copy.art && copy.art.length > 200) copy.art = '';
+              return [id, copy];
+            })),
+          };
+          const enc = encodeURIComponent(JSON.stringify(compact));
+          const chunkSize = 3500;
+          const count = Math.ceil(enc.length / chunkSize);
+          const oldCount = Number((document.cookie.match(/(?:^|;\s*)sparks_roster_n=(\d+)/) || [])[1] || 0);
+          for (let i = 0; i < oldCount; i++) document.cookie = `${COOKIE_PFX}_${i}=; max-age=0; path=/; SameSite=Lax`;
+          for (let i = 0; i < count; i++) document.cookie = `${COOKIE_PFX}_${i}=${enc.slice(i * chunkSize, (i + 1) * chunkSize)}; max-age=31536000; path=/; SameSite=Lax`;
+          document.cookie = `${COOKIE_PFX}_n=${count}; max-age=31536000; path=/; SameSite=Lax`;
+        } catch (e) { /* cookies blocked */ }
+      }
+
+      function loadRoster() {
+        try {
+          const raw = localStorage.getItem(STORE_KEY);
+          if (raw) {
+            const r = JSON.parse(raw);
+            if (r && r.chars && r.order) return r;
+          }
+        } catch (e) { /* storage blocked */ }
+        return readCookieRoster() || { active: null, order: [], chars: {} };
+      }
+
+      function saveRoster(r) {
+        try { localStorage.setItem(STORE_KEY, JSON.stringify(r)); } catch (e) { /* storage blocked */ }
+        writeCookieRoster(r);
+      }
+
+      function levelFromXp(xp) {
+        const x = parseInt(xp, 10) || 0;
+        let lv = 1;
+        (D.levels || []).forEach(r => { if (x >= r.xp) lv = r.level; });
+        return lv;
+      }
+
+      function render() {
+        const roster = loadRoster();
+        const savedIds = (roster.order || []).filter(id => roster.chars[id] && !roster.chars[id].example);
+        const showIds = savedIds.length ? savedIds : (roster.order || []).filter(id => roster.chars[id]);
+        const sub = document.getElementById('chars-sub');
+        const grid = document.getElementById('chars-grid');
+
+        if (!showIds.length) {
+          sub.textContent = 'No characters saved yet. Create a new character or start from a blank sheet.';
+          grid.innerHTML = '';
+          return;
+        }
+
+        sub.textContent = savedIds.length
+          ? 'Select a previously created character below, or create a new one.'
+          : 'No custom characters saved yet. Open the example character or create a new one.';
+
+        grid.innerHTML = showIds.map(id => {
+          const c = roster.chars[id];
+          const lv = levelFromXp(c.xp);
+          const clsList = (c.classes || [])
+            .filter(k => k && k.name && (parseInt(k.level, 10) || 0) > 0 && D.classes[k.name])
+            .map(k => `${k.name}${k.sub ? ' · ' + k.sub : ''}`)
+            .join(' / ') || 'Classless';
+          const initials = (c.name || '?').trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase() || '?';
+          const thumb = c.art
+            ? `<span class="cs-char-thumb"><img src="${esc(c.art)}" alt="${esc(c.name || 'Character')}"></span>`
+            : `<span class="cs-char-thumb" aria-hidden="true">${esc(initials)}</span>`;
+          return `<button type="button" class="cs-char-card${id === roster.active ? ' active' : ''}" data-open-char="${esc(id)}">
+            ${thumb}
+            <span class="cs-char-name">${esc(c.name || 'Unnamed')}${c.example ? ' (Example)' : ''}</span>
+            <span class="cs-char-meta">Level ${lv}<br>${esc(clsList)}</span>
+          </button>`;
+        }).join('');
+      }
+
+      document.getElementById('chars-hub').addEventListener('click', e => {
+        const card = e.target.closest('[data-open-char]');
+        if (card) {
+          const id = card.dataset.openChar;
+          const roster = loadRoster();
+          if (roster.chars[id]) {
+            roster.active = id;
+            saveRoster(roster);
+            location.href = 'character-sheet.html';
+          }
+          return;
+        }
+        if (e.target.id === 'chars-import-btn') {
+          document.getElementById('chars-import-file').click();
+        }
+      });
+
+      document.getElementById('chars-import-file').addEventListener('change', e => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const rd = new FileReader();
+        rd.onload = () => {
+          try {
+            const c = JSON.parse(rd.result);
+            if (!c || typeof c !== 'object' || !c.stats) throw new Error('Invalid character');
+            const roster = loadRoster();
+            const id = 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+            c.id = id;
+            delete c.example;
+            roster.chars[id] = c;
+            roster.order.push(id);
+            roster.active = id;
+            saveRoster(roster);
+            location.href = 'character-sheet.html';
+          } catch (err) {
+            alert('That file is not a Sparks character JSON file.');
+          }
+        };
+        rd.readAsText(f);
+        e.target.value = '';
+      });
+
+      render();
+    })();
+    </script>
+</body>
+</html>

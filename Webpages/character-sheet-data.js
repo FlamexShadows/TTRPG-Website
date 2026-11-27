@@ -4204,6 +4204,27 @@ window.SPARKS_DATA = {
    "desc": "Travel across terrain demanding physical strength, such as climbing, swimming against a current, or walking while encumbered."
   }
  ],
+ "languages": [
+  "Universal",
+  "Elvish",
+  "Dwarvish",
+  "Novan (Nova Strados)",
+  "Solvian (Sol Inos)",
+  "Brenchisch (Brenchisca)",
+  "Desertic (Black Desert)",
+  "Arendellian (Arendell)",
+  "Enochian",
+  "Bellsybabble",
+  "Draconic",
+  "Spirit",
+  "Kull",
+  "Orcish",
+  "Druidic",
+  "Aquarian",
+  "Kendar",
+  "Cryptic",
+  "Emptic"
+ ],
  "tools": [
   "Woodshop Toolkit",
   "Calligraphy Tools",

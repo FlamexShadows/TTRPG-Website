@@ -23,6 +23,67 @@
   D.maneuvers.forEach(m => { MAN_BY_NAME[m[0].toLowerCase()] = m; });
   const FEAT_BY_NAME = {};
   D.feats.forEach(f => { FEAT_BY_NAME[f[0].toLowerCase()] = f; });
+  const FEAT_FX = {
+    'ability improvement': ['Any Stat +4'],
+    'dragon gifted': ['Charisma +5 when speaking with draconids', 'Resist {Fire|Cold|Earth|Poison|Air} +10', 'Note: Breath die increases to d8.'],
+    'spirit-gifted': ['{Spell|Maneuver} DC +1', 'Note: Advantage on saves against Charmed.'],
+    'fiend-gifted': ['Resist Unholy = 20', 'Note: Gain Demonology spells (or cast them for half Mana).'],
+    'angel-gifted': ['Resist Holy = 20', 'Note: Gain Heavenly spells (or cast them for half Mana).'],
+    'terrifying': ['Note: On a decisive strike, non-friendly creatures within 5 m pass Mind DC 10 + level or become Fearful for 1 min.'],
+    'coordinated assault': ['Attack +2 when flanking'],
+    'chef': ['Note: Spend 1 hour cooking a meal for up to 5 creatures (+20 True Armor and Inspired for 8 hours).'],
+    'magic durability': ['Magical Armor +40'],
+    'physical durability': ['Physical Armor +40'],
+    'true durability': ['True Armor +20'],
+    'endurance': ['Stamina +20'],
+    'greater endurance': ['Stamina +20'],
+    'mana pooling': ['Mana +20'],
+    'greater mana pooling': ['Mana +40'],
+    'resistant': ['Resist {Piercing|Slashing|Bludgeoning|Necrotic|Fire|Cold|Air|Earth|Poison|Psychic|Holy|Unholy|Magic|True} +10'],
+    'combat ready': ['Initiative +5'],
+    'greater combat ready': ['Initiative +5', 'Note: On rolling initiative, roll Sense Environment to find unseen creatures.'],
+    'elemental affinity': ['Note: Choose Cold, Fire, Air, or Poison: +1 damage per die rolled and treat resistance as 5 lower.'],
+    'decisive striker': ['Chosen Weapon Deadly +1'],
+    'deadly magic': ['Note: Magical attack rolls can land critical and decisive strikes.'],
+    'skillful': ['Note: Gain +5 ranks in one chosen skill, or learn a tool with 1 rank.'],
+    'telekinesis': ['Note: 1 AP moves objects up to 10 kg within 15 m (or throws them up to 5 m).'],
+    'telepathy': ['Note: Telepathically speak with any creature you can see.'],
+    'linguistic': ['Note: Learn 3 languages of your choice.'],
+    'momentum': ['Speed +2'],
+    'magical knowledge': ['Note: Memorize 3 additional spells from schools you know.'],
+    'muscle memory': ['Note: Memorize 3 additional maneuvers you meet prerequisites for.'],
+    'light armor training': ['Note: Gain proficiency in Light Armor.'],
+    'medium armor training': ['Note: Gain proficiency in Medium Armor.'],
+    'heavy armor training': ['Note: Gain proficiency in Heavy Armor.'],
+    'light armor master': ['Armor Finesse Max + half level when wearing light armor'],
+    'medium armor master': ['Note: Double your damage resistances while wearing Medium Armor.'],
+    'heavy armor master': ['Resist Physical +5 when wearing heavy armor', 'Resist Magical +5 when wearing heavy armor'],
+    'quick reflexes': ['Note: Gain extra opportunity-attack reactions per round equal to half your Finesse modifier.'],
+    'evasive': ['Note: Halve your movement speed to avoid provoking opportunity attacks when leaving reach.'],
+    'reactive shot': ['Note: Creatures entering or exiting your ranged weapon reach pass an Evasion save or provoke an OA.'],
+    'manual mastery': ['Note: Use maneuver manuals up to your spellcasting tier by spending equivalent Mana.'],
+    'potion glutton': ['Note: Drinking a potion on yourself costs 1 AP less and provokes no OA.'],
+    'scroll mastery': ['Note: Use spell scrolls up to your maneuver tier by spending equivalent Stamina.'],
+    'exotic movement': ['Note: Non-walking speeds (Fly, Swim, Climb, Burrow) increase by 2 if you have them.'],
+    'all in': ['Note: Subtract 2 (up to level) from attack roll for +4 damage per -2.'],
+    'potent casting': ['Note: Lower a spell save DC by 5 to treat the spell as upcast 1 tier.'],
+    'in time': ['Note: Each miss against a target grants +2 to your next attack against it (max +10).'],
+    'spell specialization': ['Note: One chosen spell counts as upcast 1 tier.'],
+    'metamagic: extend spell': ['Note: Upcast spells to increase duration.'],
+    'metamagic: far spell': ['Note: Upcast spells to double range.'],
+    'metamagic: reliable spell': ['Note: Upcast spells 1 tier higher to add casting modifier to damage.'],
+    'metamagic: powerful spell': ['Note: Upcast spells to double damage dice.'],
+    'defensive opportunist': ['Note: Reaction when an ally within reach is attacked to make an OA against the attacker.'],
+    'opportune magic': ['Note: Cast a single-target spell or maneuver in place of a melee OA.'],
+    'armor master': ['Armor Penalty Reduction +3 when wearing any armor'],
+    'efficient caster': ['Note: Casting Minor spells costs half as much Mana.'],
+    'efficient caster adept': ['Note: Casting Adept spells costs half as much Mana.'],
+    'efficient caster major': ['Note: Casting Major spells costs half as much Mana.'],
+    'efficient maneuvers': ['Note: Basic maneuvers cost half as much Stamina.'],
+    'efficient maneuvers advanced': ['Note: Advanced maneuvers cost half as much Stamina.'],
+    'efficient maneuvers expert': ['Note: Expert maneuvers cost half as much Stamina.'],
+    'nimbily armored': ['Armor Finesse Max +4 when wearing any armor'],
+  };
   const ALL_DMG = [].concat(D.damageTypes.physical, D.damageTypes.magical, D.damageTypes.alignment);
   const SAVE_STAT = { mind: 'wits', body: 'fort', evasion: 'fin' };
   // ---- magic items and shop purchases
@@ -84,8 +145,43 @@
   // Each effect is one line: "<target> <+, - or => <amount> [when <situation>]". The full guide is ITEM-EFFECTS.md.
   //   Mana +5 · Fortitude = 30 · Resist {Fire|Cold} +10 · AC +5 when wielding your chosen weapon · Fly = walk speed
   const SHOP_FX = {};
+  const SHOP_CATALOG = [];
+  const SHOP_CATALOG_BY_KEY = {};
+  function shopItemKind(sh, it) {
+    const sid = sh.id || '', nm = String(it.name || '').toLowerCase(), sec = String(it.section || '').toLowerCase();
+    if (sid === 'general-smithing') {
+      if (sec === 'weapons' || WEAPON[it.name]) return 'weapon';
+      if (sec === 'armor' || ARMOR[it.name]) return 'armor';
+      if (sec === 'shields' || SHIELD[it.name]) return 'shield';
+    }
+    if (sid === 'marionettes-market' || it.slot) return 'magic';
+    if (sid === 'church' && /^blessing/i.test(nm)) return 'boon';
+    if (sid === 'clouds-pet-shop') return 'companion';
+    if (sid === 'grand-elixirs') return sec === 'potion ingredients' ? 'material' : 'consumable';
+    if (sid === 'black-market') return /poison|venom|tonic|draught|potion|apple|syrup|sugar|mucus|spit|ichor|powder|balm|tincture/i.test(nm) ? 'consumable' : 'gear';
+    if (D.tools.some(t => t.toLowerCase() === nm)) return 'tool';
+    if (/potion|elixir|tonic|acid|bomb|dynamite|rations|oil|torch|candle|caltrops|bandage|scroll|water|holy/i.test(nm)) return 'consumable';
+    return sid === 'services' ? 'service' : 'gear';
+  }
   ((window.SPARKS_SHOPS && window.SPARKS_SHOPS.shops) || []).forEach(sh => (sh.items || []).forEach(it => {
     if (it.effects && it.effects.length) SHOP_FX[String(it.name).toLowerCase()] = it.effects;
+    if (sh.id !== 'services') {
+      const entry = {
+        key: `${sh.id}|${it.name}`,
+        shopId: sh.id,
+        shopName: sh.name,
+        name: it.name,
+        price: it.price || '',
+        gp: it.gp || 0,
+        slot: it.slot || '',
+        power: it.power || '',
+        desc: it.desc || '',
+        kg: it.kg || 0,
+        kind: shopItemKind(sh, it),
+      };
+      SHOP_CATALOG.push(entry);
+      SHOP_CATALOG_BY_KEY[entry.key] = entry;
+    }
   }));
   // ---- magic weapons and armor. The magical bonus (+1 to +10) adds to attack and damage on a weapon, or to AC on armor
   // and shields. The bonus is also the budget for magic traits: each trait spends part of it. Traits: D.magicTraits.
@@ -310,6 +406,7 @@
       const list = kc.cls.features.map(f => [f, kc.name]).concat(kc.sub && kc.cls.subclasses[kc.sub] ? kc.cls.subclasses[kc.sub].map(f => [f, kc.sub]) : []);
       list.forEach(([f, src]) => { if (f.level <= kc.level) fxLines(f.effects).forEach((ln, i) => add(ln, fxId('cls', kc.name, src, f.name, f.level, i), f.name, `${src} ${f.level}`, kc.level)); });
     });
+    (c.feats || []).forEach((f, j) => fxLines(FEAT_FX[String(f.name || '').toLowerCase()]).forEach((ln, i) => add(ln, fxId('featcard', j, i), f.name || 'Feat', 'Feat', d.level)));
     (c.features || []).forEach((f, j) => fxLines((f.fx && String(f.fx).trim()) ? f.fx : itemFx(f)).forEach((ln, i) => add(ln, fxId('feat', j, i), f.name || 'Other feature', 'Feature', d.level)));
     // magic weapon traits work while the weapon is in hand. Magic armor and shield traits work while worn.
     c.weapons.forEach((w, i) => {
@@ -467,6 +564,39 @@
   // ------------------------------------------------------------------ storage
   let roster = { active: null, order: [], chars: {} };
   let storageOk = true;
+  const COOKIE_PFX = 'sparks_roster';
+  function writeCookieRoster(r) {
+    try {
+      const compact = {
+        active: r.active,
+        order: r.order,
+        chars: Object.fromEntries(Object.entries(r.chars).filter(([, c]) => c && !c.example).map(([id, c]) => {
+          const copy = Object.assign({}, c);
+          if (copy.art && copy.art.length > 200) copy.art = '';
+          return [id, copy];
+        })),
+      };
+      const enc = encodeURIComponent(JSON.stringify(compact));
+      const chunkSize = 3500;
+      const count = Math.ceil(enc.length / chunkSize);
+      const oldCount = Number((document.cookie.match(/(?:^|;\s*)sparks_roster_n=(\d+)/) || [])[1] || 0);
+      for (let i = 0; i < oldCount; i++) document.cookie = `${COOKIE_PFX}_${i}=; max-age=0; path=/; SameSite=Lax`;
+      for (let i = 0; i < count; i++) document.cookie = `${COOKIE_PFX}_${i}=${enc.slice(i * chunkSize, (i + 1) * chunkSize)}; max-age=31536000; path=/; SameSite=Lax`;
+      document.cookie = `${COOKIE_PFX}_n=${count}; max-age=31536000; path=/; SameSite=Lax`;
+    } catch (e) { /* cookies blocked */ }
+  }
+  function readCookieRoster() {
+    try {
+      const map = Object.fromEntries(document.cookie.split(/;\s*/).filter(Boolean).map(p => { const i = p.indexOf('='); return i < 0 ? [p, ''] : [p.slice(0, i), p.slice(i + 1)]; }));
+      const count = Number(map[COOKIE_PFX + '_n'] || 0);
+      if (!count) return null;
+      let enc = '';
+      for (let i = 0; i < count; i++) enc += map[COOKIE_PFX + '_' + i] || '';
+      if (!enc) return null;
+      const r = JSON.parse(decodeURIComponent(enc));
+      return r && r.chars && r.order ? r : null;
+    } catch (e) { return null; }
+  }
   function loadRoster() {
     try {
       const raw = localStorage.getItem(STORE_KEY);
@@ -474,13 +604,22 @@
         const r = JSON.parse(raw);
         if (r && r.chars && r.order) { roster = r; Object.values(roster.chars).forEach(upgradeChar); }
       } else {
-        const old = localStorage.getItem(OLD_KEY);
-        if (old) {
-          const c = migrateOld(JSON.parse(old));
-          roster.chars[c.id] = c; roster.order.push(c.id); roster.active = c.id;
+        const cr = readCookieRoster();
+        if (cr) {
+          roster = cr; Object.values(roster.chars).forEach(upgradeChar);
+        } else {
+          const old = localStorage.getItem(OLD_KEY);
+          if (old) {
+            const c = migrateOld(JSON.parse(old));
+            roster.chars[c.id] = c; roster.order.push(c.id); roster.active = c.id;
+          }
         }
       }
-    } catch (e) { storageOk = false; }
+    } catch (e) {
+      const cr = readCookieRoster();
+      if (cr) { roster = cr; Object.values(roster.chars).forEach(upgradeChar); }
+      else storageOk = false;
+    }
     if (!roster.order.length) {
       const c = exampleChar();
       roster.chars[c.id] = c; roster.order = [c.id]; roster.active = c.id;
@@ -497,6 +636,7 @@
     char().updated = Date.now();
     try { localStorage.setItem(STORE_KEY, JSON.stringify(roster)); storageOk = true; }
     catch (e) { storageOk = false; }
+    writeCookieRoster(roster);
     const st = $('#cs-save-state');
     if (st) {
       st.textContent = storageOk ? 'Saved in this browser' : 'This browser blocks saving. Use Export to keep your character.';
@@ -830,7 +970,7 @@
     while (c.misc.length < d.miscSlots) c.misc.push({});
     while (c.misc.length > d.miscSlots && (!c.misc[c.misc.length - 1] || !c.misc[c.misc.length - 1].name)) c.misc.pop();
     d.attune = attuneUse(c);
-    if (d.attune.used > d.attune.slots) d.warnings.push(`You are attuned to ${d.attune.used} items but have ${d.attune.slots} attunement slots. Unattune one or add a slot on the Gear tab.`);
+    if (d.attune.used > d.attune.slots) d.warnings.push(`You are attuned to ${d.attune.used} items but have ${d.attune.slots} attunement slots. Unattune one or add a slot on the Inventory tab.`);
     if (overMg.length) d.warnings.push(`${overMg.join(', ')}: the traits cost more than the magical bonus. Open Enchant on the Combat tab to fix it.`);
     if (d.usesChosen && !c.weapons.some(w => w.chosen && weaponData(w))) d.warnings.push('A class feature works with your chosen weapon. Tick Chosen weapon on one weapon on the Combat tab.');
 
@@ -1295,7 +1435,7 @@
   // ------------------------------------------------------------------ UI: shell
   const TABS = [
     ['character', 'Character'], ['combat', 'Combat'], ['skills', 'Skills'], ['magic', 'Spells & Maneuvers'],
-    ['gear', 'Gear'], ['features', 'Features'], ['notes', 'Notes'], ['bonuses', 'Bonuses & Rules'],
+    ['gear', 'Inventory'], ['features', 'Features'], ['notes', 'Notes'], ['bonuses', 'Bonuses & Rules'],
   ];
   let tab = 'character';
   try { tab = localStorage.getItem('sparks-sheet-tab') || 'character'; } catch (e) { /* storage blocked */ }
@@ -1319,6 +1459,7 @@
     <label class="cs-roster"><span class="cs-lbl">Character</span>
       <select id="cs-roster" aria-label="Switch character"></select></label>
     <div class="cs-tools">
+      <button type="button" class="cs-btn" data-act="characters">All characters</button>
       <button type="button" class="cs-btn cs-btn-red" data-act="new">Create character</button>
       <button type="button" class="cs-btn" data-act="new-blank">Blank sheet</button>
       <button type="button" class="cs-btn" data-act="dup">Duplicate</button>
@@ -1386,7 +1527,6 @@
       <label><span class="cs-lbl">Alignment</span><select data-bind="alignment" id="f-align">${opt('', 'Choose')}${D.alignments.map(a => opt(a)).join('')}</select></label>
       <label><span class="cs-lbl">Deity</span><input data-bind="deity" id="f-deity" autocomplete="off"></label>
       <label><span class="cs-lbl">Experience</span>${numIn('xp', 'id="f-xp" min="0" step="50"')}</label>
-      <label><span class="cs-lbl">Gold</span>${numIn('gold', 'id="f-gold" min="0"')}</label>
     </div>
   </div>
   <div class="cs-box">
@@ -1475,6 +1615,29 @@
 <div class="cs-box">
   <div class="cs-h-row"><h3 class="cs-h">Conditions</h3><button type="button" class="cs-btn cs-btn-sm" data-act="clear-cond">Clear all</button></div>
   <div id="cs-conditions" class="cs-condgrid"></div>
+</div>
+<div class="cs-box">
+  <h3 class="cs-h">Resistances &amp; Immunities</h3>
+  <div id="cs-race-res" class="cs-note"></div>
+  <span class="cs-lbl">Resistances</span>
+  <div class="cs-adder">
+    <select id="add-res-type" aria-label="Resistance damage type">${opt('', 'Choose damage type…')}${ALL_DMG.concat(['True']).map(t => opt(t)).join('')}</select>
+    <input type="number" inputmode="numeric" id="add-res-val" class="cs-num" value="5" min="0" aria-label="Resistance amount">
+    <button type="button" class="cs-btn cs-btn-sm" data-act="add-res">Add</button>
+  </div>
+  <div id="cs-res"></div>
+  <span class="cs-lbl">Immunities</span>
+  <div id="cs-immune-list" class="cs-fxrow"></div>
+  <div class="cs-adder">
+    <select id="add-immune-sel" aria-label="Choose an immunity">
+      ${opt('', 'Choose an immunity…')}
+      <optgroup label="Damage Types">${ALL_DMG.concat(['True']).map(t => opt(t)).join('')}</optgroup>
+      <optgroup label="Conditions">${D.conditions.map(k => opt(k.name)).join('')}</optgroup>
+    </select>
+    <input id="add-immune-custom" placeholder="Or type custom immunity" autocomplete="off" aria-label="Custom immunity">
+    <button type="button" class="cs-btn cs-btn-sm" data-act="add-immune">Add</button>
+  </div>
+  <label class="cs-stack"><span class="cs-lbl">Vulnerabilities (comma separated)</span><input data-bind="vuln" id="f-vuln" placeholder="Fire"></label>
 </div>`;
     },
     skills() {
@@ -1500,9 +1663,35 @@
   </div>
   <div class="cs-box">
     <h3 class="cs-h">Languages and proficiencies</h3>
-    <label class="cs-stack"><span class="cs-lbl">Languages</span><textarea data-bind="languages" id="f-lang" rows="2"></textarea></label>
+    <span class="cs-lbl">Languages</span>
+    <div id="cs-lang-list" class="cs-fxrow"></div>
+    <div class="cs-adder">
+      <select id="add-lang-sel" aria-label="Choose a language">${opt('', 'Choose a language…')}${(D.languages || []).map(l => opt(l)).join('')}</select>
+      <input id="add-lang-custom" placeholder="Or type custom language" autocomplete="off" aria-label="Custom language">
+      <button type="button" class="cs-btn cs-btn-sm" data-act="add-lang">Add</button>
+    </div>
     <p class="cs-note" data-out="raceLang"></p>
-    <label class="cs-stack"><span class="cs-lbl">Proficiencies</span><textarea data-bind="prof" id="f-prof" rows="3" placeholder="Weapons, armor, shields, tools"></textarea></label>
+    <span class="cs-lbl">Proficiencies</span>
+    <div id="cs-prof-list" class="cs-fxrow"></div>
+    <div class="cs-adder">
+      <select id="add-prof-sel" aria-label="Choose a proficiency">
+        ${opt('', 'Choose a proficiency…')}
+        <optgroup label="Armor &amp; Shields">
+          ${['Light Armor', 'Medium Armor', 'Heavy Armor', 'Light and Medium Armor', 'Shields', 'Light Shields', 'Medium Shields', 'Light and Medium Shields'].concat(D.armor.map(a => a.name), D.shields.map(s => s.name)).map(x => opt(x)).join('')}
+        </optgroup>
+        <optgroup label="Weapon Categories">
+          ${['Simple Weapons', 'Skilled Weapons', 'Light Weapons', 'Melee Weapons', 'Ranged Weapons', 'Firearms', 'Exotic Weapons', '1 Melee Weapon', '2 Ranged Weapons', '1 Light Melee or Ranged Weapon', '3 Weapons (1 can be skilled)'].map(x => opt(x)).join('')}
+        </optgroup>
+        <optgroup label="Weapons">
+          ${D.weapons.map(w => opt(w.name)).join('')}
+        </optgroup>
+        <optgroup label="Tools &amp; Kits">
+          ${D.tools.map(t => opt(t)).join('')}
+        </optgroup>
+      </select>
+      <input id="add-prof-custom" placeholder="Or type custom weapon, armor, or proficiency" autocomplete="off" aria-label="Custom proficiency">
+      <button type="button" class="cs-btn cs-btn-sm" data-act="add-prof">Add</button>
+    </div>
     <div class="cs-note" data-out-html="classProf"></div>
   </div>
 </div>`;
@@ -1551,8 +1740,13 @@
 <div class="cs-box">
   <div class="cs-h-row"><h3 class="cs-h">Inventory</h3><span class="cs-meter" data-out="carryText"></span>
     <span class="cs-btnrow">${CFG.siteLinks ? '<a class="cs-btn cs-btn-red cs-btn-sm" href="shops.html">Go shopping</a>' : ''}<button type="button" class="cs-btn cs-btn-sm" data-act="add-item">Add item</button></span></div>
-  <div class="cs-purse"><span class="cs-lbl">Gold</span><span class="cs-gold" data-out="goldText"></span><span class="cs-note">Edit gold on the Character tab. Shop purchases take it from here.</span></div>
+  <div class="cs-purse"><label class="cs-lbl" for="f-gold">Gold (GP)</label>${numIn('gold', 'id="f-gold" min="0"')}<span class="cs-note">Shop purchases take it from here.</span></div>
   <div class="cs-carry"><span data-out-style="carryPct"></span></div>
+  <div class="cs-adder cs-ac-wrap">
+    <input id="inv-shop-q" placeholder="Search all shop items…" autocomplete="off" aria-label="Search shop items">
+    <button type="button" class="cs-btn cs-btn-sm cs-btn-red" data-act="add-shop-item">Add to inventory</button>
+    <div id="inv-shop-ac" class="cs-ac" hidden></div>
+  </div>
   <div id="cs-inventory"></div>
   <p class="cs-note">Stored items do not count toward carried weight. An equipped shield does. Equip puts a magic item in its slot and applies the bonuses its text names. Use spends one and rolls what it restores.</p>
 </div>
@@ -1563,17 +1757,7 @@
     },
     features() {
       return `
-<div class="cs-grid2">
-  <div class="cs-box"><h3 class="cs-h">Racial abilities</h3><div id="cs-race-feats"></div></div>
-  <div class="cs-box">
-    <h3 class="cs-h">Defenses</h3>
-    <div id="cs-race-res" class="cs-note"></div>
-    <div class="cs-h-row"><span class="cs-lbl">Resistances</span><button type="button" class="cs-btn cs-btn-sm" data-act="add-res">Add resistance</button></div>
-    <div id="cs-res"></div>
-    <label class="cs-stack"><span class="cs-lbl">Immunities (comma separated)</span><input data-bind="immune" id="f-immune" placeholder="Poison, Fearful"></label>
-    <label class="cs-stack"><span class="cs-lbl">Vulnerabilities (comma separated)</span><input data-bind="vuln" id="f-vuln" placeholder="Fire"></label>
-  </div>
-</div>
+<div class="cs-box"><h3 class="cs-h">Racial abilities</h3><div id="cs-race-feats"></div></div>
 <div class="cs-box">
   <div class="cs-h-row"><h3 class="cs-h">Class features</h3><label class="cs-check"><input type="checkbox" id="f-upcoming"> Show upcoming</label></div>
   <div id="cs-class-feats"></div>
@@ -1785,6 +1969,35 @@
       <button type="button" class="cs-val" data-break="tool.${i}" aria-label="Tool total: show the math">${d.tool[i] ? sign(d.tool[i].total) : '+0'}</button>
       <button type="button" class="cs-btn cs-btn-sm" data-roll="tool:${i}" aria-label="Roll tool check">d20</button>`, 'No tools yet.');
   }
+  function splitTagList(str) {
+    const seen = new Set();
+    return String(str || '').split(/[\n,]+/).map(s => s.trim()).filter(s => {
+      if (!s) return false;
+      const k = s.toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+  }
+  function addTagValue(c, field, val) {
+    const v = String(val || '').trim();
+    if (!v) return;
+    const list = splitTagList(c[field]);
+    if (!list.some(x => x.toLowerCase() === v.toLowerCase())) list.push(v);
+    c[field] = list.join(', ');
+  }
+  function removeTagValue(c, field, idx) {
+    const list = splitTagList(c[field]);
+    list.splice(idx, 1);
+    c[field] = list.join(', ');
+  }
+  function renderLangAndProf() {
+    const c = char();
+    const langs = splitTagList(c.languages), profs = splitTagList(c.prof);
+    const lBox = $('#cs-lang-list'), pBox = $('#cs-prof-list');
+    if (lBox) lBox.innerHTML = langs.length ? langs.map((x, i) => `<span class="cs-chip on">${esc(x)} <button type="button" class="cs-x" data-rm-lang="${i}" aria-label="Remove ${esc(x)}">×</button></span>`).join('') : '<span class="cs-note">No languages added yet.</span>';
+    if (pBox) pBox.innerHTML = profs.length ? profs.map((x, i) => `<span class="cs-chip on">${esc(x)} <button type="button" class="cs-x" data-rm-prof="${i}" aria-label="Remove ${esc(x)}">×</button></span>`).join('') : '<span class="cs-note">No proficiencies added yet.</span>';
+  }
   function renderTierList(sel, key, tiers, d, resource) {
     const c = char();
     const list = c[key];
@@ -1900,6 +2113,57 @@
     $('#cs-purchases').innerHTML = list.length ? `<ul class="cs-hist">${list.map(p => `<li><span>${esc(new Date(p.t).toLocaleDateString())}</span><span>${p.qty > 1 ? esc(p.qty) + ' × ' : ''}${esc(p.name)} <small>${esc(p.shop || '')}</small></span><strong>${esc(Number(p.cost || 0).toLocaleString('en-US'))} GP</strong></li>`).join('')}</ul>`
       : `<p class="cs-note">Nothing bought yet.${CFG.siteLinks ? ' Open the <a href="shops.html">shops</a> and press Buy.' : ''}</p>`;
   }
+  let shopAcIdx = 0;
+  function searchShopItems(raw) {
+    const q = String(raw || '').trim().toLowerCase();
+    if (!q) return [];
+    const escRe = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const wordRe = new RegExp('(?:^|[\\s\\-(\\x27])' + escRe);
+    const hits = [];
+    SHOP_CATALOG.forEach(it => {
+      const nm = it.name.toLowerCase();
+      const idx = nm.indexOf(q);
+      if (idx < 0) return;
+      const tier = nm === q ? 0 : nm.startsWith(q) ? 1 : wordRe.test(nm) ? 2 : 3;
+      hits.push({ it, tier, idx, len: nm.length, nm });
+    });
+    hits.sort((a, b) => a.tier - b.tier || a.idx - b.idx || a.len - b.len || a.nm.localeCompare(b.nm));
+    return hits.slice(0, 4).map(h => h.it);
+  }
+  function renderShopAc() {
+    const box = $('#inv-shop-ac'), qIn = $('#inv-shop-q');
+    if (!box || !qIn) return;
+    const list = searchShopItems(qIn.value);
+    if (!list.length) { box.innerHTML = ''; box.hidden = true; shopAcIdx = 0; return; }
+    if (shopAcIdx >= list.length) shopAcIdx = 0;
+    box.innerHTML = list.map((it, i) => `<button type="button" class="cs-ac-item${i === shopAcIdx ? ' on' : ''}" data-pick-shop="${esc(it.key)}"><span><b>${esc(it.name)}</b></span><small>${esc(it.shopName)}${it.price ? ' · ' + esc(it.price) : ''}</small></button>`).join('');
+    box.hidden = false;
+  }
+  function addShopItemByKey(key) {
+    const it = SHOP_CATALOG_BY_KEY[key];
+    if (!it) return false;
+    const c = char();
+    addToInventory(c, {
+      name: it.name,
+      qty: 1,
+      kg: it.kg || 0,
+      where: it.kind === 'consumable' ? 'Carried' : it.kind === 'companion' ? 'Stored' : 'Pack',
+      notes: '',
+      shop: it.shopName,
+      kind: it.kind,
+      slot: it.slot || '',
+      power: it.power || '',
+      desc: it.desc || '',
+      paid: 0,
+    });
+    const qIn = $('#inv-shop-q'), box = $('#inv-shop-ac');
+    if (qIn) qIn.value = '';
+    if (box) { box.innerHTML = ''; box.hidden = true; }
+    shopAcIdx = 0;
+    renderInventory(); update();
+    toast(`Added ${esc(it.name)} to inventory.`);
+    return true;
+  }
   function renderInventory() {
     const c = char();
     const box = $('#cs-inventory');
@@ -1941,6 +2205,11 @@
       <select data-bind="resist.${i}.type" id="res${i}-type" aria-label="Damage type">${opt('', 'Type')}${ALL_DMG.concat(['True']).map(t => opt(t)).join('')}</select>
       <label class="cs-narrow"><span class="cs-lbl">Amount</span>${numIn(`resist.${i}.value`, `id="res${i}-val" min="0"`)}</label>
       <input data-bind="resist.${i}.src" id="res${i}-src" placeholder="Source" aria-label="Source" class="cs-grow">`, 'No other resistances.');
+    const immBox = $('#cs-immune-list');
+    if (immBox) {
+      const immList = splitTagList(c.immune);
+      immBox.innerHTML = immList.length ? immList.map((x, i) => `<span class="cs-chip on">${esc(x)} <button type="button" class="cs-x" data-rm-immune="${i}" aria-label="Remove ${esc(x)}">×</button></span>`).join('') : '<span class="cs-note">No manual immunities added.</span>';
+    }
   }
   function renderFeatures(d) {
     const c = char();
@@ -1963,8 +2232,12 @@
       </div>`;
     }).join('') : '<p class="cs-note">Pick a class to list its features.</p>';
     fillInputs($('#cs-class-feats'));
-    rowList('#cs-feats', 'feats', (f, i) => `<span class="cs-grow cs-spell-name">${link(f.name, f.href)}</span>
-      <input data-bind="feats.${i}.notes" id="feat${i}-notes" placeholder="Choice or notes" aria-label="Feat notes" class="cs-grow">`, 'No feats yet.');
+    rowList('#cs-feats', 'feats', (f, i) => {
+      const fl = (d.fxList || []).filter(x => x.src === 'Feat' && x.id.startsWith(fxId('featcard', i) + '|'));
+      return `<span class="cs-grow cs-spell-name">${link(f.name, f.href)}</span>
+      <input data-bind="feats.${i}.notes" id="feat${i}-notes" placeholder="Choice or notes" aria-label="Feat notes" class="cs-grow">
+      ${fl.length ? `<div class="cs-fxrow cs-span">${fl.map(fxChip).join('')}</div>` : ''}`;
+    }, 'No feats yet.');
     rowList('#cs-features', 'features', (f, i) => `<div class="cs-featedit">
       <input data-bind="features.${i}.name" id="fe${i}-name" placeholder="Feature name" aria-label="Feature name">
       <textarea data-bind="features.${i}.text" id="fe${i}-text" rows="2" placeholder="What it does" aria-label="Feature text"></textarea>
@@ -2134,9 +2407,11 @@
     renderWeapons(d);
     renderArmorMagic(d);
     renderTools(d);
+    renderLangAndProf();
     renderTierList('#cs-spells', 'spells', D.spellTiers, d, 'Mana');
     renderTierList('#cs-mans', 'maneuvers', D.maneuverTiers, d, 'Stamina');
     renderItems();
+    renderShopAc();
     renderInventory();
     renderPurchases();
     renderResists(d);
@@ -2176,6 +2451,7 @@
   }
   function onInput(e) {
     const el = e.target;
+    if (el.id === 'inv-shop-q') { shopAcIdx = 0; renderShopAc(); return; }
     if (el.dataset.bind) {
       const c = char();
       const path = el.dataset.bind;
@@ -2194,7 +2470,7 @@
         const au = attuneUse(c);
         if (au.used > au.slots) {
           setPath(c, path, false); el.checked = false;
-          toast(`No free attunement slot (${au.slots} of ${au.slots} used). Unattune an item or press Add slot on the Gear tab.`, 'dmg');
+          toast(`No free attunement slot (${au.slots} of ${au.slots} used). Unattune an item or press Add slot on the Inventory tab.`, 'dmg');
           return;
         }
       }
@@ -2387,7 +2663,7 @@
       else c[key] = dr;
       if (c.example) c.example = false;
       fillInputs(); update(true);
-      toast(`${esc(title)} is ready${pay && cost ? ` for ${gp(cost)}. ${gp(c.gold)} left` : ''}.${dr.attuned ? '' : ' It is not attuned, so its magic stays off. Free an attunement slot on the Gear tab, then tick Attuned.'}`);
+      toast(`${esc(title)} is ready${pay && cost ? ` for ${gp(cost)}. ${gp(c.gold)} left` : ''}.${dr.attuned ? '' : ' It is not attuned, so its magic stays off. Free an attunement slot on the Inventory tab, then tick Attuned.'}`);
       return true;
     };
     const btns = [
@@ -2534,8 +2810,8 @@
     const stats = {}; STAT_KEYS.forEach(k => { stats[k] = ''; });
     const lvl = {}; STAT_KEYS.forEach(k => { lvl[k] = 0; });
     return { step: opts && opts.landing ? 'start' : 'who', replaceId: (opts && opts.replaceId) || null,
-      name: '', player: '', alignment: '', deity: '', race: '', prevRace: '', raceChoice: {}, raceResist: '', adaptations: ['', ''],
-      cls: '', sub: '', method: 'array', assign: stats, custom: Object.fromEntries(STAT_KEYS.map(k => [k, 8])), lvl,
+      name: '', player: '', alignment: '', deity: '', race: '', prevRace: '', raceChoice: {}, raceResist: '', adaptations: ['', ''], langChoice: ['', ''],
+      cls: '', sub: '', profChoice: {}, method: 'array', assign: stats, custom: Object.fromEntries(STAT_KEYS.map(k => [k, 8])), lvl,
       spells: [], raceSpells: [], subSpells: [], maneuvers: [], allSchools: false, extraKind: false, cart: {}, wearArmor: '', wearShield: '', shop: 'smith', filter: '' };
   }
   function bRace() { return RACE[B.race] || null; }
@@ -2576,13 +2852,66 @@
     return ALL_SCHOOLS.filter(s => fromSub.includes(s) || new RegExp('\\b' + s + '\\b', 'i').test(text));
   }
 
+  function bClassProfSpec(clsName) {
+    switch (clsName) {
+      case 'Warrior': return { fixed: ['Shields'], picks: [
+        { key: 'w0', label: 'Weapon 1 (at most 1 Skilled)', kind: 'weapon' },
+        { key: 'w1', label: 'Weapon 2 (at most 1 Skilled)', kind: 'weapon' },
+        { key: 'w2', label: 'Weapon 3 (at most 1 Skilled)', kind: 'weapon' },
+      ] };
+      case 'Mage': return { fixed: ['Access to Arcanomancy Tree', 'Light Armor', 'Mathematics Toolkit'], picks: [{ key: 'w0', label: 'Melee Weapon', kind: 'melee' }] };
+      case 'Hunter': return { fixed: ['Light Armor', 'Tinkering Toolkit'], picks: [
+        { key: 'w0', label: 'Melee Weapon', kind: 'melee' },
+        { key: 'w1', label: 'Ranged Weapon 1', kind: 'ranged' },
+        { key: 'w2', label: 'Ranged Weapon 2', kind: 'ranged' },
+      ] };
+      case 'Phantom': return { fixed: ['Light Armor', 'Lockpicking Tools'], picks: [
+        { key: 'w0', label: 'Light Weapon', kind: 'light' },
+        { key: 't0', label: 'Tool of Choice 1', kind: 'tool' },
+        { key: 't1', label: 'Tool of Choice 2', kind: 'tool' },
+      ] };
+      case 'Priest': return { fixed: ['Medicine Kit', 'Light Armor'], picks: [] };
+      case 'Pact Keeper': return { fixed: ['Light Armor'], picks: [{ key: 't0', label: 'Toolkit of Choice', kind: 'tool' }, { key: 'w0', label: 'Melee Weapon', kind: 'melee' }] };
+      case 'Grove Keeper': return { fixed: ['Light and Medium Shields', 'Light and Medium Armor'], picks: [{ key: 'w0', label: 'Melee Weapon', kind: 'melee' }] };
+      default: return { fixed: (D.classes[clsName] && D.classes[clsName].prof) || [], picks: [] };
+    }
+  }
+  function bWeaponOptions(kind) {
+    const natural = new Set(['Unarmed Strike', 'Kull Bite', 'Gelatinous Weapon']);
+    return D.weapons.filter(w => {
+      if (natural.has(w.name)) return false;
+      const isRanged = hasTrait(w, 'Ranged');
+      if (kind === 'melee') return !isRanged;
+      if (kind === 'ranged') return isRanged;
+      if (kind === 'light') return hasTrait(w, 'Light');
+      return true;
+    });
+  }
+  function bLangChoiceCount(r) {
+    const m = r && String(r.languages || '').match(/(\d+)\s+languages?\s+of\s+choice/i);
+    return m ? n(m[1]) : 0;
+  }
   // the character the builder will hand to the sheet; light=true skips gear for previews
   function bChar(light) {
     const c = blankChar();
     c.name = B.name.trim(); c.player = B.player.trim(); c.alignment = B.alignment; c.deity = B.deity.trim();
     c.race = B.race; c.prevRace = B.prevRace; c.raceChoice = clone(B.raceChoice); c.raceResist = B.raceResist; c.adaptations = B.adaptations.slice();
     c.classes = [{ name: B.cls, level: 1, sub: B.sub }, { name: '', level: 0, sub: '' }];
-    const r = bRace(); if (r) c.languages = r.languages || '';
+    const r = bRace();
+    if (r) {
+      const nLang = bLangChoiceCount(r);
+      const baseLangs = splitTagList(r.languages).filter(x => !/languages?\s+of\s+choice/i.test(x));
+      for (let i = 0; i < nLang; i++) if (B.langChoice && B.langChoice[i]) baseLangs.push(B.langChoice[i]);
+      c.languages = baseLangs.join(', ');
+    }
+    const cl = bClass();
+    if (cl) {
+      const spec = bClassProfSpec(B.cls);
+      const profs = spec.fixed.slice();
+      spec.picks.forEach(p => { const v = B.profChoice && B.profChoice[p.key]; if (v) profs.push(v); });
+      if (B.sub === "Nature's Sentinel") profs.push('Medium Armor', 'Skilled Weapons');
+      c.prof = profs.join(', ');
+    }
     STAT_KEYS.forEach(k => { c.stats[k].base = bBase(k); c.stats[k].lvl = n(B.lvl[k]); });
     const spellNotes = {};
     const addSpell = (nm, note) => {
@@ -2629,8 +2958,19 @@
           if (src && src.choices.some((ch, i) => !B.raceChoice['c' + i])) return 'Pick the stat for your racial bonus.'; }
         if (r.resistChoice && !B.raceResist) return 'Pick your resistance.';
         if (r.auto.adaptations && B.adaptations.some(a => !a)) return 'Pick both adaptations.';
+        { const nLang = bLangChoiceCount(r);
+          for (let i = 0; i < nLang; i++) if (!B.langChoice || !B.langChoice[i]) return 'Pick your bonus language.'; }
         return '';
-      case 'class': return cl ? '' : 'Pick a class.';
+      case 'class': {
+        if (!cl) return 'Pick a class.';
+        const spec = bClassProfSpec(B.cls);
+        if (spec.picks.some(p => !B.profChoice || !B.profChoice[p.key])) return 'Choose your class proficiencies.';
+        if (B.cls === 'Warrior') {
+          const skilledCount = spec.picks.filter(p => hasTrait(WEAPON[B.profChoice[p.key]], 'Skilled')).length;
+          if (skilledCount > 1) return 'Only 1 of your 3 Warrior weapons can have the Skilled trait.';
+        }
+        return '';
+      }
       case 'sub': return B.sub ? '' : 'Pick a subclass.';
       case 'stats':
         if (B.method === 'array') { const used = STAT_KEYS.map(k => B.assign[k]); if (used.some(v => v === '')) return 'Place every number from the array.'; }
@@ -2679,13 +3019,29 @@
     const box = $('#cs-builder');
     if (!box || !B) return;
     if (B.step === 'start') {
-      const real = roster.order.filter(id => !roster.chars[id].example);
+      const savedIds = roster.order.filter(id => roster.chars[id] && !roster.chars[id].example);
+      const showIds = savedIds.length ? savedIds : roster.order.filter(id => roster.chars[id]);
+      const cards = showIds.map(id => {
+        const c = roster.chars[id];
+        const lv = levelFromXp(c.xp);
+        const clsList = activeClasses(c).map(k => `${k.name}${k.sub ? ' · ' + k.sub : ''}`).join(' / ') || 'Classless';
+        const initials = (c.name || '?').trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase() || '?';
+        const thumb = c.art
+          ? `<span class="cs-char-thumb"><img src="${esc(c.art)}" alt="${esc(c.name || 'Character')}"></span>`
+          : `<span class="cs-char-thumb" aria-hidden="true">${esc(initials)}</span>`;
+        return `<button type="button" class="cs-char-card${id === roster.active ? ' active' : ''}" data-bx="pickchar:${esc(id)}">
+          ${thumb}
+          <span class="cs-char-name">${esc(c.name || 'Unnamed')}${c.example ? ' (Example)' : ''}</span>
+          <span class="cs-char-meta">Level ${lv}<br>${esc(clsList)}</span>
+        </button>`;
+      }).join('');
       box.innerHTML = `<div class="cs-b-start">
-        <h2 class="cs-b-title">Sparks Character Builder</h2>
-        <p>Build a level 1 character one step at a time: race, class, subclass, statistics, spells or maneuvers, then equipment. You start with ${START_GOLD.toLocaleString('en-US')} GP.</p>
+        <h2 class="cs-b-title">Characters</h2>
+        <p>${savedIds.length ? 'Select a previously created character below, or create a new one.' : `Build a level 1 character one step at a time: race, class, subclass, statistics, spells or maneuvers, then equipment. You start with ${START_GOLD.toLocaleString('en-US')} GP.`}</p>
+        ${cards ? `<div class="cs-char-grid">${cards}</div>` : ''}
         <div class="cs-btnrow cs-b-startbtns">
           <button type="button" class="cs-btn cs-btn-red cs-b-big" data-bx="go:who">Create character</button>
-          ${real.length ? '<button type="button" class="cs-btn" data-bx="close">Open my characters</button>' : '<button type="button" class="cs-btn" data-bx="close">See the example sheet</button>'}
+          <button type="button" class="cs-btn" data-bx="close">${savedIds.length ? 'Open active sheet' : 'See the example sheet'}</button>
           <button type="button" class="cs-btn cs-btn-quiet" data-bx="import">Import a character</button>
         </div></div>`;
       return;
@@ -2748,6 +3104,13 @@
         if (r.auto.adaptations) [0, 1].forEach(i => {
           picks += `<label><span class="cs-lbl">Adaptation ${i + 1}</span><select data-bf="adaptations.${i}" id="b-ad${i}" data-rr="1">${opt('', 'Choose')}${r.auto.adaptations.map(a => opt(a.name, a.name, B.adaptations[i])).join('')}</select></label>`;
         });
+        { const nLang = bLangChoiceCount(r);
+          const knownLangs = new Set(splitTagList(r.languages).filter(x => !/languages?\s+of\s+choice/i.test(x)).map(x => x.toLowerCase()));
+          for (let i = 0; i < nLang; i++) {
+            const opts = (D.languages || []).filter(l => !knownLangs.has(l.toLowerCase()));
+            picks += `<label><span class="cs-lbl">Bonus language${nLang > 1 ? ' ' + (i + 1) : ''}</span><select data-bf="langChoice.${i}" id="b-lang${i}">${opt('', 'Choose a language')}${opts.map(l => opt(l, l, (B.langChoice && B.langChoice[i]) || '')).join('')}</select></label>`;
+          }
+        }
         detail = `<div class="cs-b-detail">
           <h3 class="cs-h">${link(r.name, 'race.html#' + r.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'))}</h3>
           <p>${esc(r.statsText)} · ${esc(r.size)} ${esc(r.type)} · ${esc(r.speedText)} · Languages: ${esc(r.languages)}</p>
@@ -2766,11 +3129,19 @@
       let detail = '';
       if (cl) {
         const f1 = (cl.features || []).filter(f => f.level <= 1);
+        const spec = bClassProfSpec(B.cls);
+        const profPicks = spec.picks.map(p => {
+          const opts = p.kind === 'tool'
+            ? D.tools.map(t => opt(t, t, (B.profChoice && B.profChoice[p.key]) || ''))
+            : bWeaponOptions(p.kind).map(w => opt(w.name, `${w.name}${hasTrait(w, 'Skilled') ? ' (Skilled)' : ''}`, (B.profChoice && B.profChoice[p.key]) || ''));
+          return `<label><span class="cs-lbl">${esc(p.label)}</span><select data-bf="profChoice.${p.key}" id="b-prof-${p.key}">${opt('', 'Choose')}${opts.join('')}</select></label>`;
+        }).join('');
         detail = `<div class="cs-b-detail">
           <h3 class="cs-h">${link(B.cls, cl.page)}</h3>
           <p>Hit die d${cl.hitDie} · ${cl.resource === 'mana' ? 'Mana' : 'Stamina'} ${cl.resourceTable[0]} at level 1 · ${cl.slots[0]} ${cl.slotType} slots · ${cl.skillRanks[0]} skill ranks</p>
           <p>Primary ${STAT[cl.primary].name} (+${cl.primaryBonus[0]}), secondary ${STAT[cl.secondary].name} (+${cl.secondaryBonus[0]}) · Saves: Evasion ${cl.saves.evasion}, Body ${cl.saves.body}, Mind ${cl.saves.mind}</p>
           <p>Proficiencies: ${esc((cl.prof || []).join(', ') || 'None')}</p>
+          ${profPicks ? `<div class="cs-b-grid2">${profPicks}</div>` : ''}
           ${f1.map(f => `<p><b>${esc(f.name)}.</b> ${esc(f.text)}</p>`).join('')}
         </div>`;
       }
@@ -2917,6 +3288,7 @@
         <p>Level 1 ${esc(c.race)}${c.prevRace ? ` (${esc(c.prevRace)})` : ''} ${esc(B.cls)} · ${esc(B.sub)}${c.alignment ? ' · ' + esc(c.alignment) : ''}</p>
         <div class="cs-b-statrow">${st}</div>
         <p class="cs-b-preview">Health ${d.hp.total} · AC ${d.ac.total} · Physical Armor ${d.pa.total} · Magical Armor ${d.ma.total} · Mana ${d.mana.total} · Stamina ${d.stamina.total} · Speed ${d.speed.text}</p>
+        <p><b>Languages:</b> ${esc(c.languages || 'None')} · <b>Proficiencies:</b> ${esc(c.prof || 'None')}</p>
         <p><b>Spells and maneuvers:</b> ${kn.length ? esc(kn.join(', ')) : 'None yet'}</p>
         <p><b>Weapons:</b> ${esc(c.weapons.map(w => w.item).join(', '))}</p>
         <p><b>Armor:</b> ${esc(c.armor || 'None')}${c.shield ? ' · <b>Shield:</b> ' + esc(c.shield) : ''}</p>
@@ -2953,6 +3325,7 @@
     const arg = rest.join(':');
     switch (act) {
       case 'go': B.filter = ''; B.step = arg; bRender(); window.scrollTo(0, Math.min(window.scrollY, $('#cs-builder').offsetTop)); return;
+      case 'pickchar': if (roster.chars[arg]) { switchTo(arg); closeBuilder(); } return;
       case 'close': closeBuilder(); return;
       case 'import': closeBuilder(); importChar(); return;
       case 'cancel':
@@ -2961,9 +3334,9 @@
         } else closeBuilder();
         return;
       case 'race':
-        if (B.race !== arg) { B.race = arg; B.prevRace = ''; B.raceChoice = {}; B.raceResist = ''; B.adaptations = ['', '']; B.raceSpells = []; }
+        if (B.race !== arg) { B.race = arg; B.prevRace = ''; B.raceChoice = {}; B.raceResist = ''; B.adaptations = ['', '']; B.langChoice = ['', '']; B.raceSpells = []; }
         break;
-      case 'class': if (B.cls !== arg) { B.cls = arg; B.sub = ''; B.spells = []; B.subSpells = []; B.maneuvers = []; } break;
+      case 'class': if (B.cls !== arg) { B.cls = arg; B.sub = ''; B.profChoice = {}; B.spells = []; B.subSpells = []; B.maneuvers = []; } break;
       case 'sub': if (B.sub !== arg) { B.sub = arg; B.subSpells = []; } break;
       case 'method': if (B.method !== arg) { B.method = arg; STAT_KEYS.forEach(k => { B.assign[k] = ''; }); } break;
       case 'roll': {
@@ -3168,6 +3541,10 @@
     if (ds.equip !== undefined) { equip(n(ds.equip)); return; }
     if (ds.use !== undefined && t.closest('#cs-inventory')) { useItem(n(ds.use)); return; }
     if (ds.unequip) { unequipTo(c, ds.unequip); renderItems(); renderInventory(); update(true); toast('Moved back to your inventory.'); return; }
+    if (ds.pickShop) { addShopItemByKey(ds.pickShop); return; }
+    if (ds.rmLang !== undefined) { removeTagValue(c, 'languages', n(ds.rmLang)); renderLangAndProf(); update(); return; }
+    if (ds.rmProf !== undefined) { removeTagValue(c, 'prof', n(ds.rmProf)); renderLangAndProf(); update(); return; }
+    if (ds.rmImmune !== undefined) { removeTagValue(c, 'immune', n(ds.rmImmune)); renderResists(compute(c)); update(); return; }
     if (ds.totool !== undefined) { const it = c.inventory[n(ds.totool)]; c.tools.push({ name: D.tools.find(x => x.toLowerCase() === it.name.toLowerCase()) || it.name, rank: 0 }); renderTools(compute(c)); renderInventory(); update(); toast(`${it.name} added to Tools on the Skills tab.`); return; }
     if (ds.bedit) { const box = document.getElementById(ds.bedit.replace(/\./g, '-') + '-bedit'); box.hidden = !box.hidden; t.setAttribute('aria-expanded', String(!box.hidden)); if (box.hidden) openEditors.delete(ds.bedit); else openEditors.add(ds.bedit); return; }
     if (ds.addbonus) { const e = getPath(c, ds.addbonus); e.bonuses = e.bonuses || []; e.bonuses.push({ key: 'ac', value: 1, manual: true }); openEditors.add(ds.addbonus); renderItems(); update(true); return; }
@@ -3193,6 +3570,7 @@
       case 'close-pop': hidePop(); break;
       case 'new': openBuilder(); break;
       case 'new-blank': addChar(blankChar(), 'Blank character started.'); setTab('character'); $('#cs-name').focus(); break;
+      case 'characters': location.href = 'characters.html'; break;
       case 'start': openBuilder({ replaceId: c.id }); break;
       case 'dup': { const cp = clone(c); cp.id = uid(); cp.name = (c.name || 'Character') + ' (copy)'; cp.example = false; addChar(cp, 'Copy made.'); break; }
       case 'delete':
@@ -3216,12 +3594,54 @@
       case 'clear-cond': c.conditions = []; c.dying = { fails: 0, rounds: 0, dead: false }; update(); break;
       case 'add-weapon': c.weapons.push(newWeapon('')); renderWeapons(compute(c)); update(); break;
       case 'add-tool': c.tools.push({ name: '', rank: 0 }); renderTools(compute(c)); update(); break;
+      case 'add-lang': {
+        const sel = $('#add-lang-sel'), inp = $('#add-lang-custom');
+        const val = (inp && inp.value.trim()) || (sel && sel.value) || '';
+        if (!val) { toast('Pick or type a language first.'); if (inp) inp.focus(); break; }
+        addTagValue(c, 'languages', val);
+        if (inp) inp.value = '';
+        if (sel) sel.value = '';
+        renderLangAndProf(); update(); break;
+      }
+      case 'add-prof': {
+        const sel = $('#add-prof-sel'), inp = $('#add-prof-custom');
+        const val = (inp && inp.value.trim()) || (sel && sel.value) || '';
+        if (!val) { toast('Pick or type a proficiency first.'); if (inp) inp.focus(); break; }
+        addTagValue(c, 'prof', val);
+        if (inp) inp.value = '';
+        if (sel) sel.value = '';
+        renderLangAndProf(); update(); break;
+      }
       case 'add-spell': addSpell('spell'); break;
       case 'add-man': addSpell('man'); break;
       case 'add-ring': c.rings.push({}); renderItems(); update(); break;
       case 'add-misc': c.misc.push({}); renderItems(); update(); break;
+      case 'add-shop-item': {
+        const qIn = $('#inv-shop-q');
+        const list = searchShopItems(qIn ? qIn.value : '');
+        const pick = list[shopAcIdx] || list[0];
+        if (!pick || !addShopItemByKey(pick.key)) { toast('Type an item name to search first.'); if (qIn) qIn.focus(); }
+        break;
+      }
       case 'add-item': c.inventory.push({ name: '', qty: 1, kg: 0, where: 'Pack', notes: '' }); renderInventory(); update(); $$('#cs-inventory input[data-bind$=".name"]').pop().focus(); break;
-      case 'add-res': c.resist.push({ type: '', value: 5, src: '' }); renderResists(compute(c)); update(); break;
+      case 'add-res': {
+        const sel = $('#add-res-type'), valIn = $('#add-res-val');
+        const tp = sel ? sel.value : '';
+        const val = valIn ? Math.max(0, n(valIn.value)) : 5;
+        if (!tp) { toast('Choose a damage type first.'); if (sel) sel.focus(); break; }
+        c.resist.push({ type: tp, value: val, src: '' });
+        if (sel) sel.value = '';
+        renderResists(compute(c)); update(); break;
+      }
+      case 'add-immune': {
+        const sel = $('#add-immune-sel'), inp = $('#add-immune-custom');
+        const val = (inp && inp.value.trim()) || (sel && sel.value) || '';
+        if (!val) { toast('Pick or type an immunity first.'); if (inp) inp.focus(); break; }
+        addTagValue(c, 'immune', val);
+        if (inp) inp.value = '';
+        if (sel) sel.value = '';
+        renderResists(compute(c)); update(); break;
+      }
       case 'add-feat': {
         const inp = $('#add-feat'); const nm = inp.value.trim();
         if (!nm) { toast('Type a feat name first.'); inp.focus(); break; }
@@ -3266,20 +3686,38 @@
         return;
       }
       if (e.target.id === 'f-art') { loadArt(e.target.files[0]); e.target.value = ''; return; }
+      if (e.target.id === 'add-lang-sel' && e.target.value) { addTagValue(char(), 'languages', e.target.value); e.target.value = ''; renderLangAndProf(); update(); return; }
+      if (e.target.id === 'add-prof-sel' && e.target.value) { addTagValue(char(), 'prof', e.target.value); e.target.value = ''; renderLangAndProf(); update(); return; }
+      if (e.target.id === 'add-immune-sel' && e.target.value) { const c = char(); addTagValue(c, 'immune', e.target.value); e.target.value = ''; renderResists(compute(c)); update(); return; }
       onInput(e);
     });
     root.addEventListener('click', onClick);
     root.addEventListener('keydown', e => {
-      if (e.key === 'Escape') { hidePop(); $('#cs-modal').hidden = true; }
+      if (e.key === 'Escape') { hidePop(); $('#cs-modal').hidden = true; const ac = $('#inv-shop-ac'); if (ac) ac.hidden = true; }
+      if (e.target.id === 'inv-shop-q' && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+        const list = searchShopItems(e.target.value);
+        if (list.length) { e.preventDefault(); shopAcIdx = (shopAcIdx + (e.key === 'ArrowDown' ? 1 : list.length - 1)) % list.length; renderShopAc(); }
+      }
       if (e.target.classList && e.target.classList.contains('cs-tab') && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
         const i = TABS.findIndex(t => t[0] === tab);
         const j = (i + (e.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length;
         setTab(TABS[j][0]); $('#cs-tab-' + TABS[j][0]).focus();
       }
-      if (e.key === 'Enter' && (e.target.id === 'add-spell' || e.target.id === 'add-man' || e.target.id === 'add-feat')) {
-        e.preventDefault(); if (e.target.id === 'add-feat') { onClick({ target: $('[data-act="add-feat"]') }); } else addSpell(e.target.id === 'add-spell' ? 'spell' : 'man');
+      if (e.key === 'Enter' && (e.target.id === 'add-spell' || e.target.id === 'add-man' || e.target.id === 'add-feat' || e.target.id === 'add-lang-custom' || e.target.id === 'add-prof-custom' || e.target.id === 'add-immune-custom' || e.target.id === 'add-res-val' || e.target.id === 'inv-shop-q')) {
+        e.preventDefault();
+        if (e.target.id === 'add-feat') onClick({ target: $('[data-act="add-feat"]') });
+        else if (e.target.id === 'add-lang-custom') onClick({ target: $('[data-act="add-lang"]') });
+        else if (e.target.id === 'add-prof-custom') onClick({ target: $('[data-act="add-prof"]') });
+        else if (e.target.id === 'add-immune-custom') onClick({ target: $('[data-act="add-immune"]') });
+        else if (e.target.id === 'add-res-val') onClick({ target: $('[data-act="add-res"]') });
+        else if (e.target.id === 'inv-shop-q') onClick({ target: $('[data-act="add-shop-item"]') });
+        else addSpell(e.target.id === 'add-spell' ? 'spell' : 'man');
       }
     });
+    root.addEventListener('wheel', () => {
+      const a = document.activeElement;
+      if (a && a.type === 'number' && root.contains(a)) a.blur();
+    }, { passive: true });
     document.addEventListener('click', e => { if (!root.contains(e.target)) hidePop(); });
     window.addEventListener('resize', hidePop);
     window.addEventListener('storage', e => {
@@ -3304,7 +3742,14 @@
     update(true);
     renderRolls();
     saveNow();
-    if (!/^#forge/.test(location.hash) && (location.hash === '#new' || !roster.order.some(id => !roster.chars[id].example))) openBuilder({ landing: location.hash !== '#new' });
+    if (location.hash === '#blank') {
+      const c = blankChar();
+      roster.chars[c.id] = c; roster.order.push(c.id); roster.active = c.id;
+      fillInputs(); update(true); saveNow();
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* file:// pages */ }
+    } else if (location.hash === '#new') {
+      openBuilder({ landing: false });
+    }
     if (/^#forge/.test(location.hash)) {
       const b = Number((location.hash.match(/^#forge-(\d+)$/) || [])[1]);
       openForge('new');
