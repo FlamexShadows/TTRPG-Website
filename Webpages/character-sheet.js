@@ -1568,15 +1568,14 @@
       <td data-label="Modifier" class="o2"><span class="cs-mod" data-out="statMod.${s.key}"></span></td>
     </tr>`).join('')}</tbody>
   </table></div>
-  <p class="cs-note">Modifier = (score − 8) ÷ 2, rounded down. Class bonuses come from each class chart at your class level. Leveling points are a running total from the Leveling table.</p>
 </div>
 <div class="cs-grid3">
-  <div class="cs-box"><h3 class="cs-h">Health</h3><div class="cs-bigstat">${brk('hp', 'Health')}</div><p class="cs-note">Hit die average × class level, plus Fortitude modifier.</p></div>
-  <div class="cs-box"><h3 class="cs-h">Mana</h3><div class="cs-bigstat">${brk('mana', 'Mana')}</div><p class="cs-note">Class Mana plus Charisma modifier.</p></div>
-  <div class="cs-box"><h3 class="cs-h">Stamina</h3><div class="cs-bigstat">${brk('stamina', 'Stamina')}</div><p class="cs-note">Class Stamina plus Fortitude modifier.</p></div>
-  <div class="cs-box"><h3 class="cs-h">Physical Armor</h3><div class="cs-bigstat">${brk('pa', 'Physical Armor')}</div><p class="cs-note" data-out="paNote"></p></div>
-  <div class="cs-box"><h3 class="cs-h">Magical Armor</h3><div class="cs-bigstat">${brk('ma', 'Magical Armor')}</div><p class="cs-note" data-out="maNote"></p></div>
-  <div class="cs-box"><h3 class="cs-h">Carrying Capacity</h3><div class="cs-bigstat">${brk('carry', 'Carrying capacity')}<small>kg</small></div><p class="cs-note" data-out="carryNote"></p></div>
+  <div class="cs-box"><h3 class="cs-h">Health</h3><div class="cs-bigstat">${brk('hp', 'Health')}</div></div>
+  <div class="cs-box"><h3 class="cs-h">Mana</h3><div class="cs-bigstat">${brk('mana', 'Mana')}</div></div>
+  <div class="cs-box"><h3 class="cs-h">Stamina</h3><div class="cs-bigstat">${brk('stamina', 'Stamina')}</div></div>
+  <div class="cs-box"><h3 class="cs-h">Physical Armor</h3><div class="cs-bigstat">${brk('pa', 'Physical Armor')}</div></div>
+  <div class="cs-box"><h3 class="cs-h">Magical Armor</h3><div class="cs-bigstat">${brk('ma', 'Magical Armor')}</div></div>
+  <div class="cs-box"><h3 class="cs-h">Carrying Capacity</h3><div class="cs-bigstat">${brk('carry', 'Carrying capacity')}<small>kg</small></div></div>
 </div>`;
     },
     combat() {
@@ -1617,7 +1616,6 @@
       <div><dt>Armor Class</dt><dd>${brk('ac', 'Armor Class')}</dd></div>
       <div><dt>Armor penalty</dt><dd>${brk('pen', 'Armor penalty')}</dd></div>
     </dl>
-    <p class="cs-note">The armor penalty comes off every Strength or Finesse skill check and the Lockpicking Kit. Armor or a shield you are not proficient with doubles its penalty and gives your attack rolls a 20% miss chance. A tower shield needs two hands.</p>
   </div>
 </div>
 <div class="cs-box">
@@ -1842,7 +1840,6 @@
 </div>
 <div class="cs-box">
   <h3 class="cs-h">Bonuses</h3>
-  <p class="cs-note">These match the Cell Modifiers block on the Google Sheet. Weapon bonuses live on each weapon card.</p>
   ${G.map(([g, list]) => `<div class="cs-bonusgroup"><h4 class="cs-h4">${g}</h4><div class="cs-bonusgrid">${list.map(([k, l]) => `<label><span class="cs-lbl">${l}</span>${numIn('bonus.' + k, `id="b-${k}"`)}</label>`).join('')}</div></div>`).join('')}
 </div>`;
     },
@@ -2223,7 +2220,7 @@
     if (r) {
       const parts = r.resist.map(x => `${x.type} ${x.value}`);
       if (r.resistChoice) parts.push(c.raceResist ? `${c.raceResist} ${r.resistChoice.value}` : `choose a type on the Character tab`);
-      raceTxt = parts.length ? `${esc(r.name)} resistance: ${esc(parts.join(', '))}` : `${esc(r.name)}: no racial resistance.`;
+      raceTxt = parts.length ? `${esc(r.name)} resistance: ${esc(parts.join(', '))}` : '';
     }
     const tot = Object.keys(d.resist).filter(t => d.resist[t]).sort().map(t => `${esc(t)} ${d.resist[t]}`);
     const fxImm = (d.fxImmune || []).length ? `<br>From effects, immune to: ${esc(d.fxImmune.join(', '))}` : '';
@@ -2292,10 +2289,12 @@
     const dying = c.conditions.includes('Dying');
     const target = d.stat.fort.mod + d.level;
     const maxRounds = c.race === 'Deadspawn' ? 5 + d.level : 5;
-    if (!dying) {
-      box.innerHTML = `<h4 class="cs-h4">Dying</h4><p class="cs-note">At 0 Health or below you gain Dying. Death saves succeed on a d100 at or under ${target} (Fortitude modifier + level). You die below −${d.stat.fort.score} Health, at 3 failed saves, or after ${maxRounds} rounds.</p>`;
+    if (!dying && hp > 0) {
+      box.hidden = true;
+      box.innerHTML = '';
       return;
     }
+    box.hidden = false;
     box.innerHTML = `<h4 class="cs-h4">Dying</h4>
       ${c.dying.dead ? '<p class="cs-dead">Your character has died.</p>' : ''}
       <dl class="cs-dl">
@@ -2586,7 +2585,16 @@
       key.startsWith('tool.') ? (char().tools[n(key.split('.')[1])].name || 'Tool') :
       key.startsWith('stat.') ? STAT[key.split('.')[1]].name + ' score' : key.startsWith('save.') ? SAVE_NAME[key.split('.')[1]] :
       key.startsWith('skill.') ? key.slice(6) : title);
-    return `<h4>${esc(label)}</h4><table class="cs-break">${obj.parts.map(p => `<tr><td>${esc(p[0])}</td><td>${sign(p[1])}</td></tr>`).join('')}<tr class="tot"><td>Total</td><td>${obj.total}</td></tr></table>`;
+    const note = {
+      pen: 'The armor penalty comes off every Strength or Finesse skill check and the Lockpicking Kit. Armor or a shield you are not proficient with doubles its penalty and gives your attack rolls a 20% miss chance. A tower shield needs two hands.',
+      hp: 'Hit die average × class level, plus Fortitude modifier.',
+      mana: 'Class Mana plus Charisma modifier.',
+      stamina: 'Class Stamina plus Fortitude modifier.',
+      pa: `10 × Fortitude modifier. A partial rest restores ${d.stat.fort.score}.`,
+      ma: `10 × Intelligence modifier. A partial rest restores ${d.stat.int.score}.`,
+      carry: 'Strength score × 5 kg.',
+    }[key] || (key.startsWith('stat.') ? 'Modifier = (score − 8) ÷ 2, rounded down. Class bonuses come from each class chart at your class level. Leveling points are a running total from the Leveling table.' : '');
+    return `<h4>${esc(label)}</h4><table class="cs-break">${obj.parts.map(p => `<tr><td>${esc(p[0])}</td><td>${sign(p[1])}</td></tr>`).join('')}<tr class="tot"><td>Total</td><td>${obj.total}</td></tr></table>${note ? `<p class="cs-note">${esc(note)}</p>` : ''}`;
   }
   function infoHtml(spec) {
     const [kind, ...rest] = spec.split(':');

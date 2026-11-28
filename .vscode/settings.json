@@ -11,5 +11,6 @@
         "scry",
         "Scrying",
         "Tenemancy"
-    ]
+    ],
+    "liveServer.settings.root": "/Webpages"
 }
